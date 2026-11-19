@@ -1,0 +1,1621 @@
+<title>EIGHT TEEN Prototype</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anuphan:wght@500;600;700&family=Noto+Sans+Thai:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap">
+<style>
+/* Layout: phone frame (390×844, Figma v0.2) beside a prototype control panel; phone fills the screen on mobile. */
+:root{
+  --f-display:'Anuphan','Noto Sans Thai',system-ui,sans-serif;
+  --f-body:'Noto Sans Thai','Plus Jakarta Sans',system-ui,sans-serif;
+  --f-num:'Plus Jakarta Sans','Noto Sans Thai',system-ui,sans-serif;
+  /* page */
+  --page-bg:#e8e5f2; --frame:#0b1026; --panel:#ffffff; --panel-line:#e3e1ea;
+  /* app (Figma et-color tokens) */
+  --canvas:#ffffff; --surface:#f3f3f6; --sunken:#eaeaef; --ink:#0b1026; --ink2:#545871; --muted:#6b6f85; --tert:#8b8ea3;
+  --border:#e3e1ea; --divider:#eceaf2; --brand:#7c3aed; --brand-ink:#5b21b6; --on-brand:#ffffff; --info:#f4f1fd;
+  --lime:#c6f43b; --danger:#c42b31; --danger-bg:#fdecec; --ok:#1f8a4c; --ok-bg:#e6f6ec; --warn-bg:#fff4d6; --warn:#8a5a00;
+  --nav:rgba(255,255,255,.86); --scrim:rgba(11,16,38,.45);
+  --peach-bg:#ffe7d6; --peach-fg:#8a3410; --mango-bg:#ffe39a; --mango:#ffc53d; --leaf:#3fa34d; --mango-ink:#2b1d0e;
+  --map-ground:#eef0e7; --map-road:#ffffff; --map-green:#cfe6b4; --map-bldg:#dedbe8; --map-water:#c3e2f2; --map-label:#7b7f95;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --page-bg:#06081a; --frame:#2a2f52; --panel:#0f1430; --panel-line:#232a4d;
+  --canvas:#0b1026; --surface:#151a35; --sunken:#1c2242; --ink:#f3f2fa; --ink2:#c3c5d6; --muted:#9a9db3; --tert:#7b7e96;
+  --border:#283050; --divider:#1f2544; --brand:#9b6bff; --brand-ink:#c9b0ff; --on-brand:#ffffff; --info:#1d1840;
+  --danger:#ff7a7f; --danger-bg:#3a1518; --ok:#5fd393; --ok-bg:#12301f; --warn-bg:#3a2e0e; --warn:#ffd36b;
+  --nav:rgba(16,21,48,.86); --scrim:rgba(0,0,0,.6);
+  --peach-bg:#3a2416; --peach-fg:#ffb98a; --mango-bg:#4a3a10;
+  --map-ground:#121733; --map-road:#212849; --map-green:#1d3a2b; --map-bldg:#262c50; --map-water:#173a52; --map-label:#8f93ad;
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --page-bg:#06081a; --frame:#2a2f52; --panel:#0f1430; --panel-line:#232a4d;
+  --canvas:#0b1026; --surface:#151a35; --sunken:#1c2242; --ink:#f3f2fa; --ink2:#c3c5d6; --muted:#9a9db3; --tert:#7b7e96;
+  --border:#283050; --divider:#1f2544; --brand:#9b6bff; --brand-ink:#c9b0ff; --on-brand:#ffffff; --info:#1d1840;
+  --danger:#ff7a7f; --danger-bg:#3a1518; --ok:#5fd393; --ok-bg:#12301f; --warn-bg:#3a2e0e; --warn:#ffd36b;
+  --nav:rgba(16,21,48,.86); --scrim:rgba(0,0,0,.6);
+  --peach-bg:#3a2416; --peach-fg:#ffb98a; --mango-bg:#4a3a10;
+  --map-ground:#121733; --map-road:#212849; --map-green:#1d3a2b; --map-bldg:#262c50; --map-water:#173a52; --map-label:#8f93ad;
+  color-scheme:dark}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{touch-action:manipulation;background:var(--page-bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
+input,textarea,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--brand);outline-offset:2px}
+.stage{min-height:100%;display:flex;gap:32px;justify-content:center;align-items:flex-start;flex-wrap:wrap;padding-block:24px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.phone{width:390px;max-width:100%;height:min(844px,calc(100vh - 48px));min-height:640px;border-radius:54px;background:var(--canvas);color:var(--ink);position:relative;overflow:hidden;box-shadow:0 0 0 11px var(--frame),0 30px 80px rgba(11,16,38,.3);display:flex;flex-direction:column;flex-shrink:0;margin:11px}
+.statusbar{height:50px;flex:none;display:flex;align-items:flex-end;justify-content:space-between;padding:0 30px 6px 40px;font-family:var(--f-num);font-weight:700;font-size:16px}
+.statusbar .sb{display:flex;gap:6px;align-items:center}
+.homebar{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);width:134px;height:5px;border-radius:9px;background:var(--ink);z-index:60;pointer-events:none}
+#app{flex:1;min-height:0;display:flex;flex-direction:column;position:relative}
+.screen{flex:1;min-height:0;display:flex;flex-direction:column;position:relative}
+.scroll{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;scrollbar-width:none}
+.scroll::-webkit-scrollbar{display:none}
+.pad{padding:0 20px}
+.tabpad{padding-bottom:120px}
+@media (max-width:520px){
+  .stage{padding:0;gap:0}
+  body{background:var(--canvas)}
+  .phone{width:100%;height:calc(100dvh - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px));min-height:0;border-radius:0;box-shadow:none;margin:0}
+  .statusbar,.homebar{display:none}
+}
+/* type */
+.display{font-family:var(--f-display);font-weight:700;font-size:30px;line-height:38px;letter-spacing:-.6px;text-wrap:balance}
+.h1{font-family:var(--f-display);font-weight:700;font-size:24px;line-height:32px;text-wrap:balance}
+.h2{font-family:var(--f-display);font-weight:700;font-size:18px;line-height:26px}
+.h3{font-family:var(--f-display);font-weight:700;font-size:16px;line-height:22px}
+.lbl{font-weight:600;font-size:14px;line-height:20px}
+.cap{font-size:12px;line-height:18px;color:var(--muted)}
+.muted{color:var(--muted)} .ink2{color:var(--ink2)}
+.num{font-family:var(--f-num);font-weight:700;font-variant-numeric:tabular-nums}
+.hl{background:var(--lime);color:#0b1026;padding:0 10px;border-radius:10px;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+/* buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:52px;padding:0 24px;border-radius:999px;font-family:var(--f-display);font-weight:700;font-size:17px;transition:transform .12s,box-shadow .12s,opacity .12s}
+.btn.block{width:100%}
+.btn.primary{background:var(--brand);color:var(--on-brand);box-shadow:4px 4px 0 var(--lime)}
+.btn.primary:active{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--lime)}
+.btn.dark{background:var(--ink);color:var(--canvas)}
+.btn.soft{background:var(--surface);color:var(--ink)}
+.btn.ghost{color:var(--brand-ink)}
+.btn.danger{background:var(--danger);color:#fff}
+.btn.sm{height:38px;padding:0 16px;font-size:14px}
+.btn[disabled],.btn.disabled{opacity:.38;box-shadow:none;pointer-events:none}
+.iconbtn{width:40px;height:40px;border-radius:999px;display:inline-flex;align-items:center;justify-content:center;background:var(--surface);color:var(--ink);flex:none}
+.iconbtn.plain{background:none}
+.link{color:var(--brand-ink);font-weight:600}
+svg.i{width:22px;height:22px;flex:none;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+svg.i.sm{width:18px;height:18px} svg.i.xs{width:15px;height:15px} svg.i.lg{width:28px;height:28px}
+/* chips */
+.chips{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding:2px 20px}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;height:36px;padding:0 15px;border-radius:999px;border:1px solid var(--border);background:var(--canvas);font-weight:600;font-size:14px;display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.chip.on{background:var(--ink);color:var(--canvas);border-color:var(--ink)}
+.chip.brand.on{background:var(--brand);border-color:var(--brand);color:#fff}
+.chip.ai{border-style:dashed;border-color:var(--brand)}
+.chip[disabled]{opacity:.4}
+/* header */
+.topbar{display:flex;align-items:center;gap:10px;height:56px;padding:0 16px;flex:none}
+.topbar .t{flex:1;text-align:center;font-family:var(--f-display);font-weight:700;font-size:17px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.topbar .sp{width:40px;flex:none}
+.hdr-home{padding:6px 20px 0;flex:none}
+.hdr-row{display:flex;align-items:center;gap:10px}
+.uni{font-family:var(--f-display);font-weight:700;font-size:30px;line-height:38px;display:flex;align-items:center;gap:6px}
+.feedtabs{display:flex;gap:22px;margin-top:6px;border-bottom:1px solid var(--divider);align-items:flex-end}
+.feedtab{font-family:var(--f-display);font-weight:700;font-size:17px;color:var(--tert);padding:8px 0 10px;border-bottom:2.5px solid transparent;margin-bottom:-1px}
+.feedtab.on{color:var(--ink);border-color:var(--ink)}
+.verified{display:inline-flex;color:var(--brand)}
+/* tabbar */
+.tabbar{position:absolute;left:16px;right:16px;bottom:22px;height:64px;border-radius:999px;background:var(--nav);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);box-shadow:0 0 0 1px rgba(11,16,38,.06),0 12px 32px rgba(11,16,38,.14);display:grid;grid-template-columns:repeat(3,1fr);align-items:center;z-index:30;padding:0 8px}
+@media (max-width:520px){.tabbar{bottom:12px}}
+.tab{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;font-size:11px;font-weight:600;color:var(--ink2);height:52px;margin:0 6px;border-radius:999px;position:relative}
+.tab.on{color:var(--ink);background:var(--surface)}
+.tab .dot{position:absolute;top:3px;left:calc(50% + 4px);min-width:18px;height:18px;border-radius:9px;background:var(--danger);color:#fff;font-family:var(--f-num);font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;padding:0 5px}
+.fab{width:54px;height:54px;border-radius:999px;background:var(--brand);color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:3px 3px 0 var(--lime)}
+.fab-float{position:absolute;right:20px;bottom:102px;z-index:31;width:58px;height:58px;border-radius:20px;box-shadow:4px 4px 0 var(--lime),0 10px 24px rgba(124,58,237,.35)}
+.onmap .fab-float{bottom:250px}
+.onmap .recentre{right:auto;left:14px}
+.fab-float:active{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--lime)}
+@media (max-width:520px){.fab-float{bottom:92px}}
+/* post card */
+.post{padding:16px 20px;border-bottom:1px solid var(--divider);display:block;width:100%;text-align:left}
+.post.pinned{background:var(--info)}
+.phead{display:flex;gap:10px;align-items:flex-start}
+.pname{font-weight:700;font-size:15px;display:flex;align-items:center;gap:4px;flex-wrap:wrap;line-height:20px}
+.pmeta{font-size:12px;color:var(--muted);line-height:18px}
+.av{border-radius:999px;display:inline-flex;align-items:center;justify-content:center;font-family:var(--f-display);font-weight:700;flex:none;overflow:hidden;background-size:cover;background-position:center}
+.ptext{margin-top:8px;font-size:15px;line-height:24px;white-space:pre-wrap;word-break:break-word}
+.tag{color:var(--brand-ink);font-weight:600}
+.mention{color:var(--brand-ink);font-weight:700}
+.pimgs{display:grid;gap:4px;margin-top:10px;border-radius:14px;overflow:hidden}
+.pimgs.n1{grid-template-columns:1fr}.pimgs.n2{grid-template-columns:1fr 1fr}.pimgs.n3,.pimgs.n4{grid-template-columns:1fr 1fr}
+.pimg{aspect-ratio:4/3;max-width:100%;background:var(--sunken);display:flex;align-items:center;justify-content:center;color:var(--tert);background-size:cover;background-position:center}
+.pimgs.n1 .pimg{aspect-ratio:16/10}
+.pacts{display:flex;align-items:center;gap:4px;margin-top:10px;margin-left:-8px}
+.pact{display:inline-flex;align-items:center;gap:5px;height:34px;padding:0 8px;border-radius:999px;color:var(--ink2);font-family:var(--f-num);font-weight:600;font-size:13px}
+.pact.ate.on{color:#ff5a1f}
+.pact.ate.on svg{fill:#ff5a1f;stroke:#ff5a1f}
+.pact .ate-l{font-size:11px;font-weight:800;letter-spacing:.04em}
+.pill{display:inline-flex;align-items:center;gap:4px;height:22px;padding:0 8px;border-radius:999px;font-size:11px;font-weight:600;background:var(--surface);color:var(--ink2);white-space:nowrap}
+.pill.brand{background:var(--info);color:var(--brand-ink)}
+.pill.op{background:var(--info);color:var(--brand-ink);height:20px}
+.pill.lime{background:var(--lime);color:#0b1026}
+.pill.warn{background:var(--warn-bg);color:var(--warn)}
+.pill.danger{background:var(--danger-bg);color:var(--danger)}
+.pill.oq{background:transparent;border:1px dashed var(--tert);color:var(--muted)}
+.lp{margin-top:10px;border:1px solid var(--border);border-radius:14px;overflow:hidden;display:flex;gap:0}
+.lp .lpi{width:84px;flex:none;background:linear-gradient(135deg,var(--info),var(--sunken));display:flex;align-items:center;justify-content:center;color:var(--brand-ink)}
+.lp .lpb{padding:10px 12px;min-width:0}
+.poll{margin-top:10px;display:flex;flex-direction:column;gap:8px}
+.popt{position:relative;height:44px;border-radius:12px;border:1px solid var(--border);display:flex;align-items:center;padding:0 14px;overflow:hidden;font-weight:600;font-size:14px;width:100%;text-align:left}
+.popt .bar{position:absolute;inset:0 auto 0 0;background:var(--info);z-index:0;transition:width .4s}
+.popt.mine .bar{background:color-mix(in srgb,var(--brand) 22%,var(--canvas))}
+.popt span{position:relative;z-index:1}
+.popt .pc{margin-left:auto;font-family:var(--f-num)}
+/* lists & rows */
+.row{display:flex;align-items:center;gap:14px;padding:14px 20px;width:100%;text-align:left;min-height:56px}
+.row + .row{border-top:1px solid var(--divider)}
+.row .rt{flex:1;min-width:0}
+.row .rv{color:var(--muted);font-size:14px}
+.section-t{padding:20px 20px 6px;font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
+.card{background:var(--surface);border-radius:16px}
+.banner{margin:12px 20px;padding:14px 16px;border-radius:16px;background:var(--info);display:flex;gap:12px;align-items:flex-start}
+.banner.warn{background:var(--warn-bg)} .banner.danger{background:var(--danger-bg)} .banner.ok{background:var(--ok-bg)}
+.field{display:flex;flex-direction:column;gap:6px}
+.field label{font-size:13px;font-weight:600;color:var(--ink2)}
+.input{height:50px;border-radius:14px;border:1.5px solid var(--border);background:var(--canvas);padding:0 14px;font-size:16px;width:100%}
+.input:focus{outline:none;border-color:var(--brand)}
+.input.err{border-color:var(--danger)}
+textarea.input{height:auto;padding:12px 14px;resize:none;line-height:24px}
+.err-t{color:var(--danger);font-size:13px;font-weight:600}
+.ok-t{color:var(--ok);font-size:13px;font-weight:600}
+.check{display:flex;gap:12px;align-items:flex-start;padding:14px 0;text-align:left;width:100%}
+.box{width:24px;height:24px;border-radius:8px;border:2px solid var(--border);flex:none;display:flex;align-items:center;justify-content:center;color:#fff;margin-top:1px}
+.box.on{background:var(--brand);border-color:var(--brand)}
+.toggle{width:50px;height:30px;border-radius:999px;background:var(--sunken);position:relative;flex:none;transition:background .15s}
+.toggle::after{content:"";position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:999px;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.25);transition:left .15s}
+.toggle.on{background:var(--brand)} .toggle.on::after{left:23px}
+.seg{display:flex;background:var(--surface);border-radius:999px;padding:3px;gap:2px}
+.seg button{height:32px;padding:0 14px;border-radius:999px;font-weight:700;font-size:13px;color:var(--ink2)}
+.seg button.on{background:var(--ink);color:var(--canvas)}
+.radio{width:22px;height:22px;border-radius:999px;border:2px solid var(--border);flex:none;display:flex;align-items:center;justify-content:center}
+.radio.on{border-color:var(--brand)} .radio.on::after{content:"";width:12px;height:12px;border-radius:9px;background:var(--brand)}
+.empty{padding:48px 32px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:10px}
+.empty .ill{width:72px;height:72px;border-radius:24px;background:var(--info);color:var(--brand);display:flex;align-items:center;justify-content:center;transform:rotate(-6deg);box-shadow:4px 4px 0 var(--lime)}
+.skel{background:linear-gradient(90deg,var(--surface),var(--sunken),var(--surface));background-size:200% 100%;animation:sk 1.1s infinite;border-radius:10px}
+@keyframes sk{to{background-position:-200% 0}}
+/* overlay */
+#overlay{position:absolute;inset:0;z-index:50;pointer-events:none}
+.scrim{position:absolute;inset:0;background:var(--scrim);pointer-events:auto;animation:fade .18s}
+.sheet{position:absolute;left:0;right:0;bottom:0;background:var(--canvas);border-radius:28px 28px 0 0;padding:10px 0 34px;pointer-events:auto;max-height:88%;display:flex;flex-direction:column;animation:up .22s cubic-bezier(.2,.8,.2,1)}
+.sheet .grab{width:40px;height:5px;border-radius:9px;background:var(--border);margin:0 auto 8px}
+.sheet .sh-t{padding:6px 20px 10px;font-family:var(--f-display);font-weight:700;font-size:19px}
+.sheet .sh-b{overflow-y:auto;min-height:0}
+.dialog{position:absolute;left:24px;right:24px;top:50%;transform:translateY(-50%);background:var(--canvas);border-radius:24px;padding:22px;pointer-events:auto;animation:fade .18s}
+@keyframes up{from{transform:translateY(40px);opacity:.4}}
+@keyframes fade{from{opacity:0}}
+#toast{position:absolute;left:50%;bottom:104px;transform:translateX(-50%);z-index:70;pointer-events:none}
+.toast{background:var(--ink);color:var(--canvas);padding:11px 18px;border-radius:999px;font-weight:600;font-size:14px;box-shadow:0 10px 30px rgba(0,0,0,.2);display:flex;gap:10px;align-items:center;white-space:nowrap;animation:up .2s;pointer-events:auto}
+.toast button{color:var(--lime);font-weight:700}
+.spinner{width:22px;height:22px;border-radius:999px;border:3px solid var(--info);border-top-color:var(--brand);animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+/* onboarding */
+.ob{flex:1;display:flex;flex-direction:column;min-height:0}
+.ob-body{flex:1;min-height:0;overflow-y:auto;padding:8px 24px 16px;scrollbar-width:none}
+.ob-foot{padding:12px 24px 34px;display:flex;flex-direction:column;gap:12px;align-items:center;flex:none}
+.hero{position:relative;height:300px;margin:8px 0 18px}
+.hero .card1{position:absolute;inset:20px 18px 30px 22px;background:var(--brand);border-radius:30px;box-shadow:12px 12px 0 var(--lime);transform:rotate(-3deg);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px}
+.logo{background:#fff;color:#0b1026;font-family:var(--f-num);font-weight:800;font-size:44px;line-height:.92;letter-spacing:-1px;padding:10px 18px;border-radius:18px;border:4px solid #0b1026;box-shadow:6px 6px 0 #0b1026;transform:rotate(-5deg);text-align:center}
+.dots{display:flex;gap:6px}
+.dots i{width:8px;height:8px;border-radius:9px;background:var(--border)}
+.dots i.on{width:24px;background:var(--ink)}
+.segbar{flex:1;display:flex;gap:6px}.segbar i{flex:1;height:4px;border-radius:9px;background:var(--surface)}.segbar i.on{background:var(--brand)}
+.progress{height:4px;background:var(--surface);border-radius:9px;margin:4px 24px 0;overflow:hidden;flex:none}
+.progress i{display:block;height:100%;background:var(--brand);border-radius:9px;transition:width .3s}
+.unirow{display:flex;align-items:center;gap:14px;padding:14px;border:1.5px solid var(--border);border-radius:16px;width:100%;text-align:left}
+.unirow.on{border-color:var(--brand);background:var(--info)}
+.unilogo{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-family:var(--f-num);font-weight:800;font-size:13px;color:#fff;flex:none}
+/* map */
+.mapwrap{flex:1;min-height:0;position:relative;overflow:hidden;background:var(--map-ground)}
+.mapwrap svg.map{position:absolute;inset:0;width:100%;height:100%}
+.mapchips{position:absolute;top:10px;left:0;right:0;z-index:5}
+.mapchips .chip{box-shadow:0 2px 8px rgba(11,16,38,.08)}
+.pinb{cursor:pointer}
+.recentre{position:absolute;right:14px;z-index:6;width:44px;height:44px;border-radius:999px;background:var(--canvas);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(11,16,38,.15);color:var(--brand)}
+.gattr{position:absolute;left:10px;z-index:6;font-size:10px;font-weight:700;color:var(--map-label);font-family:var(--f-num)}
+.bsheet{position:absolute;left:0;right:0;bottom:0;z-index:8;background:var(--canvas);border-radius:26px 26px 0 0;box-shadow:0 -8px 30px rgba(11,16,38,.12);display:flex;flex-direction:column;transition:height .25s cubic-bezier(.2,.8,.2,1)}
+.bsheet .grabb{padding:10px 0 4px;display:flex;justify-content:center;width:100%;flex:none}
+.bsheet .grabb i{width:40px;height:5px;border-radius:9px;background:var(--border)}
+.bcards{display:flex;gap:10px;overflow-x:auto;padding:4px 16px 12px;scrollbar-width:none}
+.bcards::-webkit-scrollbar{display:none}
+.bcard{flex:none;width:250px;border:1px solid var(--border);border-radius:18px;padding:12px;text-align:left;display:flex;flex-direction:column;gap:8px;background:var(--canvas)}
+.btype{width:36px;height:36px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex:none}
+.t-study{background:#e8f0ff;color:#2556c7}.t-food{background:#ffefe0;color:#b4520f}.t-event{background:#f4e9ff;color:#7c3aed}.t-faculty{background:#e7f6f0;color:#14805a}.t-sports{background:#fff6d6;color:#8a6400}.t-life{background:#ffe8f1;color:#c22a6a}
+:root[data-theme="dark"] .btype{filter:brightness(.85) saturate(1.2)}
+.pbanner{height:118px;background:#0b1026;position:relative;overflow:hidden;flex:none}
+.pbanner svg{position:absolute;inset:0;width:100%;height:100%}
+.pav{position:relative;z-index:2;border-radius:999px;box-shadow:0 0 0 4px var(--canvas),6px 6px 0 4px var(--lime);display:inline-flex}
+.composer-ta{width:100%;border:0;background:transparent;resize:none;font-size:17px;line-height:27px;min-height:120px;outline:none}
+.tb{display:flex;align-items:center;gap:4px;padding:8px 12px;border-top:1px solid var(--divider);flex:none}
+.tb .iconbtn{background:none;color:var(--brand)}
+.ring{width:24px;height:24px;margin-left:auto}
+.suggest{border-top:1px solid var(--divider);max-height:220px;overflow-y:auto;flex:none;background:var(--canvas)}
+.cbar{display:flex;gap:10px;align-items:flex-end;padding:10px 14px 30px;border-top:1px solid var(--divider);background:var(--canvas);flex:none}
+@media (max-width:520px){.cbar{padding-bottom:12px}}
+.cinput{flex:1;min-height:44px;max-height:120px;border-radius:22px;background:var(--surface);border:0;padding:10px 16px;resize:none;line-height:24px;outline:none;font-size:16px}
+.cmt{display:flex;gap:10px;padding:12px 20px}
+.cmt.reply{padding-left:62px}
+.cmt .cb{flex:1;min-width:0}
+.voice{display:flex;align-items:center;gap:10px;background:var(--surface);border-radius:999px;padding:6px 14px 6px 6px;margin-top:6px;width:min(250px,100%)}
+.voice .play{width:32px;height:32px;border-radius:99px;background:var(--brand);color:#fff;display:flex;align-items:center;justify-content:center}
+.wave{flex:1;display:flex;gap:2px;align-items:center;height:24px}
+.wave i{flex:1;background:var(--tert);border-radius:2px}
+.wave.playing i{background:var(--brand)}
+.notif{display:flex;gap:12px;padding:14px 20px;border-bottom:1px solid var(--divider);width:100%;text-align:left;align-items:flex-start}
+.notif.unread{background:var(--info)}
+.nicon{width:44px;height:44px;border-radius:999px;display:flex;align-items:center;justify-content:center;flex:none}
+/* panel */
+.panel{width:360px;max-width:100%;background:var(--panel);border:1px solid var(--panel-line);border-radius:22px;padding:20px;display:flex;flex-direction:column;gap:18px;color:var(--ink);font-size:13px;position:sticky;top:24px;max-height:calc(100vh - 48px);overflow-y:auto}
+@media (max-width:520px){.panel{display:none;position:fixed;inset:0;max-height:none;border-radius:0;border:0;width:100%;z-index:200;padding-top:calc(20px + env(safe-area-inset-top,0px));padding-bottom:calc(20px + env(safe-area-inset-bottom,0px))}.panel.open{display:flex}.panel .pclose{display:inline-flex!important}}
+.pclose{display:none}
+.panel h2{font-family:var(--f-display);font-size:18px;line-height:24px;margin:0}
+.panel h3{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 0 8px}
+.pbtns{display:flex;flex-wrap:wrap;gap:6px}
+.pbtn{height:30px;padding:0 11px;border-radius:999px;border:1px solid var(--panel-line);font-size:12px;font-weight:600;background:var(--canvas)}
+.pbtn:hover{border-color:var(--brand);color:var(--brand-ink)}
+.pbtn.on{background:var(--ink);color:var(--canvas);border-color:var(--ink)}
+.evlog{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;line-height:16px;display:flex;flex-direction:column;gap:6px;max-height:300px;overflow-y:auto}
+.ev{padding:6px 8px;border-radius:8px;background:var(--surface);word-break:break-word}
+.ev b{color:var(--brand-ink)}
+.ev .t{color:var(--muted)}
+.kbd{font-family:ui-monospace,Menlo,monospace;background:var(--surface);padding:1px 6px;border-radius:6px;font-size:12px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<div class="stage">
+  <div class="phone" id="phone">
+    <div class="statusbar"><span>9:41</span><span class="sb"><svg width="18" height="12" viewBox="0 0 18 12"><rect x="0" y="8" width="3" height="4" rx="1" fill="currentColor"/><rect x="5" y="5" width="3" height="7" rx="1" fill="currentColor"/><rect x="10" y="2.5" width="3" height="9.5" rx="1" fill="currentColor"/><rect x="15" y="0" width="3" height="12" rx="1" fill="currentColor"/></svg><svg width="26" height="12" viewBox="0 0 26 12"><rect x=".5" y=".5" width="22" height="11" rx="3.5" fill="none" stroke="currentColor" opacity=".4"/><rect x="2" y="2" width="19" height="8" rx="2" fill="currentColor"/><rect x="24" y="4" width="1.6" height="4" rx=".8" fill="currentColor" opacity=".4"/></svg></span></div>
+    <div id="app"></div>
+    <div id="overlay"></div>
+    <div id="toast"></div>
+    <div class="homebar"></div>
+  </div>
+  <aside class="panel" id="panel" aria-label="Prototype controls"></aside>
+</div>
+
+<script>
+(function(){
+'use strict';
+/* ============ constants ============ */
+const MIN=60000, HOUR=60*MIN, DAY=24*HOUR;
+const MIN_AGE=18; // PRD open question: minimum age to confirm with legal
+const KEY='eightteen-proto-v4';
+const SESSION_ID=Math.random().toString(36).slice(2,10);
+const UNIS=[
+  {id:'chula',th:'จุฬาลงกรณ์มหาวิทยาลัย',en:'Chulalongkorn University',short_th:'จุฬาฯ',short_en:'Chula',open:true,color:'#e0559a',abbr:'CU',domain:'student.chula.ac.th',sso:'Microsoft 365'},
+  {id:'tu',th:'มหาวิทยาลัยธรรมศาสตร์',en:'Thammasat University',open:false,color:'#c8102e',abbr:'TU',waiting:154},
+  {id:'mu',th:'มหาวิทยาลัยมหิดล',en:'Mahidol University',open:false,color:'#1b3f8b',abbr:'MU',waiting:212},
+  {id:'ku',th:'มหาวิทยาลัยเกษตรศาสตร์',en:'Kasetsart University',open:false,color:'#006b3f',abbr:'KU',waiting:98},
+  {id:'kmutt',th:'มจธ.',en:'KMUTT',open:false,color:'#f26522',abbr:'KM',waiting:61},
+];
+const CATS=[['class','เรียน','Class'],['event','อีเวนต์','Event'],['food','ของกิน','Food'],['question','ถามตอบ','Question'],['housing','หอพัก','Housing'],['lost','ของหาย','Lost & found'],['other','อื่นๆ','Other']];
+const BTYPES={study:['อ่านหนังสือ','Study','book'],food:['ของกิน','Food','cup'],event:['อีเวนต์','Event','star'],faculty:['คณะ','Faculty','building'],sports:['กีฬา','Sports','ball'],life:['ไลฟ์','Life','leaf']};
+const INTERESTS=[['class','เรียน','Class'],['food','ของกิน','Food'],['event','อีเวนต์','Event'],['sports','กีฬา','Sports'],['anime','อนิเมะ','Anime'],['music','ดนตรี','Music'],['games','เกม','Games'],['movies','หนัง','Movies'],['fashion','แฟชั่น','Fashion'],['tech','เทค','Tech'],['travel','เที่ยว','Travel'],['pets','สัตว์เลี้ยง','Pets']];
+const ALIAS=[['มะม่วง','Mango','#ffc53d','#ffe39a'],['ปริซึม','Prism','#8b5cf6','#ede4ff'],['ดาวหาง','Comet','#3b82f6','#dfeaff'],['บัว','Lotus','#ec4899','#ffe1f0'],['เต้าหู้','Tofu','#a3a3a3','#f0f0f0'],['พิกเซล','Pixel','#10b981','#d9f7ec'],['ชาไทย','Thai Tea','#f97316','#ffe7d6'],['เมฆ','Cloud','#0ea5e9','#dff4fd']];
+const TRENDING=['สามย่าน','มิดเทอม','ตารางสอบ','OpenHouse','ของหาย','หารูมเมท','วิศวะ','แบดมินตัน','ที่อ่านหนังสือ','ปี4'];
+const MOD={
+  high:[['โอนเงินก่อน','scam'],['รับจ้างทำการบ้าน','scam'],['scam','scam'],['ไอ้โง่','harassment'],['idiot','harassment']],
+  self:['อยากตาย','ไม่อยากอยู่แล้ว','ฆ่าตัวตาย','kill myself'],
+  medium:['ขายต่อ','แอดไลน์','add line'],
+  blockedDomains:['free-iphone.xyz','bit.ly','cutt.ly']
+};
+const USERS={
+  u1:{id:'u1',name:'ณัฐณิชา ศรีสุวรรณวงศ์',user:'natnicha',fac:['อักษรศาสตร์','Arts'],year:2,bg:'var(--peach-bg)',fg:'var(--peach-fg)',ini:'ณ',show:true,mentions:'all',bio:'ชอบกิน ชอบเที่ยว 🍜',interests:['food','travel']},
+  u2:{id:'u2',name:'ภูมิ ธนากร',user:'phum.eng',fac:['วิศวกรรมศาสตร์','Engineering'],year:3,bg:'#e3ecff',fg:'#2556c7',ini:'ภ',show:true,mentions:'all',bio:'ICE 🛠️ รับติวแคลฯ',interests:['class','tech']},
+  u3:{id:'u3',name:'ปาล์ม',user:'palm_cu',fac:['พาณิชยศาสตร์และการบัญชี','Commerce & Accountancy'],year:1,bg:'#e4f7ec',fg:'#14805a',ini:'ป',show:false,mentions:'all',bio:'',interests:['music']},
+  u4:{id:'u4',name:'มิ้นท์ อารยา',user:'mint.arch',fac:['สถาปัตยกรรมศาสตร์','Architecture'],year:4,bg:'#ffe8f1',fg:'#c22a6a',ini:'ม',show:true,mentions:'none',bio:'thesis mode 🫠',interests:['fashion','event']},
+  u6:{id:'u6',name:'ก้อง วรเมธ',user:'kong.sci',fac:['วิทยาศาสตร์','Science'],year:2,bg:'#fff6d6',fg:'#8a6400',ini:'ก',show:true,mentions:'all',bio:'แบดทุกเย็น 🏸',interests:['sports','games']},
+  u5:{id:'u5',name:'EIGHT TEEN',user:'eightteen',official:true,fac:['ทีมงาน','Team'],year:0,bg:'#7c3aed',fg:'#ffffff',ini:'18',show:false,mentions:'none',bio:'',interests:[]},
+};
+const BUBBLES=[
+  {id:'lib',th:'หอสมุดกลาง',en:'Central Library',type:'study',x:118,y:196,status:'active'},
+  {id:'cafe',th:'CU Café',en:'CU Café',type:'food',x:258,y:162,status:'active'},
+  {id:'arts',th:'คณะอักษรศาสตร์',en:'Faculty of Arts',type:'faculty',x:150,y:104,status:'active'},
+  {id:'eng',th:'คณะวิศวฯ',en:'Engineering',type:'faculty',x:278,y:300,status:'active'},
+  {id:'lawn',th:'สนามจุ๊บ',en:'Main Lawn',type:'life',x:196,y:250,status:'active'},
+  {id:'sports',th:'ศูนย์กีฬา',en:'Sports Complex',type:'sports',x:92,y:430,status:'active'},
+  {id:'icanteen',th:'โรงอาหาร iCanteen',en:'iCanteen',type:'food',x:212,y:392,status:'active'},
+  {id:'samyan',th:'สามย่านมิตรทาวน์',en:'Samyan Mitrtown',type:'food',x:286,y:486,status:'active'},
+  {id:'openhouse',th:'Chula Open House',en:'Chula Open House',type:'event',x:128,y:318,status:'active',start:'2026-11-18',end:'2026-11-22'},
+  {id:'freshy',th:'Freshy Night',en:'Freshy Night',type:'event',x:300,y:92,status:'ended',start:'2026-11-14',end:'2026-11-15'},
+  {id:'sala',th:'ศาลาพระเกี้ยว',en:'Sala Phra Kieo',type:'life',x:62,y:262,status:'paused',reason_th:'ทีมงานปิดโพสต์ชั่วคราวระหว่างตรวจสอบรายงาน',reason_en:'Read-only while the team reviews reports'},
+  {id:'lang',th:'สถาบันภาษา',en:'Language Institute',type:'study',x:338,y:226,status:'active'},
+];
+const ME_XY={x:206,y:350}; const MY=y=>20+y*.75; const M_PER_UNIT=3.2;
+
+/* ============ state ============ */
+let S;
+function seed(){
+  const now=Date.now();
+  const P=(o)=>Object.assign({anon:false,uni:true,bubble:null,images:[],poll:null,ate:0,ated:false,tags:[],mentions:[],edited:false,removed:false,pinned:false,reach:'normal'},o,{at:now-(o.ago||0)*MIN});
+  const posts=[
+    P({id:'p3',by:'u5',cat:'other',pinned:true,ago:600,text:'ยินดีต้อนรับสู่ EIGHT TEEN เบต้า 🎉 ทุกคนในนี้เป็นนิสิตจุฬาฯ ตัวจริง ยืนยันตัวตนแล้วทุกบัญชี อ่านกติกาชุมชนก่อนโพสต์นะ #EIGHTTEEN',ate:356}),
+    P({id:'p1',by:'u1',cat:'food',bubble:'samyan',ago:52,text:'ข้าวมันไก่ร้านใหม่หลังสามย่านฯ ATE มาก ไก่นุ่ม น้ำจิ้มถึง ไปบ่ายสองคิวไม่ยาว #สามย่าน',images:[{src:'img/chicken-rice.jpg'}],ate:1284}),
+    P({id:'p2',by:'u2',anon:true,cat:'question',ago:25,text:'ใครมีชีทแคลคูลัส 2 บทที่ 4 บ้างคะ สอบวันศุกร์นี้แล้ว 😭 #มิดเทอม',ate:88}),
+    P({id:'p5',by:'u4',cat:'event',bubble:'openhouse',ago:180,text:'Open House ปีนี้อยากให้มีบูธอะไรเพิ่ม? #OpenHouse',poll:{opts:['Workshop AI','ดนตรีสด','ตลาดนัดนิสิต','ฟู้ดทรัค'],votes:[42,31,57,64],mine:null,ends:now+2*DAY},ate:203}),
+    P({id:'p6',by:'u6',anon:true,cat:'other',bubble:'lawn',ago:95,text:'ใครนั่งเล่นกีตาร์ที่สนามจุ๊บตอนเย็นเมื่อวาน เพราะมากกก อยากรู้จัก 🎸',ate:412}),
+    P({id:'p4',by:'u3',cat:'lost',bubble:'lib',ago:40,text:'ใครเก็บบัตรนิสิตชื่อ "ปาล์ม" ได้ที่ชั้น 3 หอสมุดกลาง ทักหน่อยครับ 🙏 #ของหาย',ate:27}),
+    P({id:'p7',by:'u2',cat:'class',bubble:'eng',ago:130,text:'แล็บ Circuits วันนี้ย้ายไปห้อง 3-304 นะครับ ฝากบอกเพื่อน ๆ ปี 3 ด้วย #วิศวะ',ate:64}),
+    P({id:'p14',by:'u1',cat:'class',bubble:'lib',ago:300,text:'หอสมุดกลางชั้น 4 เงียบสุด ปลั๊กเยอะ แอร์เย็น แนะนำช่วงสอบ #ที่อ่านหนังสือ',ate:530,images:[{src:'img/library.jpg'},{src:'img/arts-library.jpg'}]}),
+    P({id:'p10',by:'u4',cat:'class',ago:420,text:'สรุปตารางสอบปลายภาค 2/2569 อยู่ในลิงก์นี้ https://www.reg.chula.ac.th/exam-schedule #ตารางสอบ',ate:941,edited:true}),
+    P({id:'p9',by:'u6',cat:'other',bubble:'sports',ago:70,text:'ใครว่างตีแบดเย็นนี้ 5 โมงที่ศูนย์กีฬาบ้าง ขาด 2 คน 🏸 #แบดมินตัน',ate:19}),
+    P({id:'p15',by:'u6',cat:'food',bubble:'cafe',uni:false,ago:15,text:'CU Café มีเมนูใหม่ ชาไทยโอ๊ตมิลค์ 45 บาท ลองแล้วโอเคเลย',ate:12}),
+    P({id:'p8',by:'u1',cat:'housing',ago:900,text:'หารูมเมทคอนโดแถวสามย่าน ผู้หญิง ไม่สูบบุหรี่ งบ 6,500/เดือน เดินไปสามย่านมิตรทาวน์ 5 นาที #หารูมเมท',ate:45,images:[{src:'img/samyan.jpg'}]}),
+    P({id:'p11',by:'u3',anon:true,cat:'other',ago:210,text:'เครียดกับโปรเจกต์จบมากเลย ใครเป็นเหมือนกันบ้าง ขอกำลังใจหน่อย #ปี4',ate:301}),
+    P({id:'p12',by:'u2',cat:'event',bubble:'freshy',ago:4*24*60,text:'ขอบคุณทุกคนที่มา Freshy Night! รูปทั้งหมดจะลงเพจคณะพรุ่งนี้',ate:388,images:[{src:'img/sala-night.jpg'}]}),
+    P({id:'p16',by:'u4',cat:'food',bubble:'icanteen',uni:false,ago:200,text:'iCanteen ร้านข้าวแกงเปิดถึง 2 ทุ่มแล้วนะ',ate:33}),
+    P({id:'p17',by:'u3',cat:'event',bubble:'openhouse',ago:35,text:'บูธคณะบัญชีแจกสติกเกอร์ฟรี มาก่อนได้ก่อน #OpenHouse',ate:76,images:[{src:'img/auditorium.jpg'}]}),
+    P({id:'p18',by:'u1',cat:'other',bubble:'sala',ago:500,text:'ศาลาพระเกี้ยวตอนเย็นสวยมาก',ate:58,images:[{src:'img/sala.jpg'}]}),
+  ];
+  const C=(o)=>Object.assign({anon:false,parent:null,replyTo:null,ate:0,ated:false,voice:null,mentions:[],removed:false},o,{at:now-(o.ago||0)*MIN});
+  const comments=[
+    C({id:'c1',post:'p1',by:'u3',anon:true,ago:8,text:'ร้านนี้มีไก่ทอดด้วยไหม ไปพรุ่งนี้กะว่าจะลอง',ate:32}),
+    C({id:'c2',post:'p1',by:'u1',parent:'c1',replyTo:{anon:true,uid:'u3'},ago:4,text:'มีค่ะ แต่หมดไว ไปก่อนเที่ยงนะ',ate:5}),
+    C({id:'c3',post:'p1',by:'u2',ago:3,voice:{sec:14},text:'',ate:2}),
+    C({id:'c4',post:'p2',by:'u6',anon:true,ago:20,text:'ฝากด้วยคนค่าา',ate:3}),
+    C({id:'c5',post:'p2',by:'u2',anon:true,parent:'c4',replyTo:{anon:true,uid:'u6'},ago:18,text:'ถ้าได้แล้วจะแชร์นะ',ate:6}),
+    C({id:'c6',post:'p11',by:'u1',ago:150,text:'สู้ ๆ นะ เป็นเหมือนกันเลย ค่อย ๆ ทำทีละส่วน 💜',ate:41}),
+    C({id:'c7',post:'p6',by:'u4',ago:60,text:'น่าจะชมรมดนตรีสากลนะ เล่นทุกวันพุธ',ate:22}),
+  ];
+  return {
+    v:4, lang:'th', done:false,
+    ob:{step:'welcome',slide:0,consent:{terms:false,mkt:false},wl:null,dob:{d:'',m:'',y:''},interests:[],perm:{loc:null,push:null},started:false},
+    me:{id:'me',name:'',user:'',fac:['วิศวกรรมศาสตร์','Engineering'],year:1,bg:'#ede4ff',fg:'#5b21b6',ini:'',photo:null,bio:'',interests:[],show:true,mentions:'all',email:'6930012321@student.chula.ac.th',verifiedAt:now},
+    settings:{mode:'identity',loc:true,theme:'system'},
+    posts, comments, notifs:[], blocked:[], mutedTags:[], hidden:[], reported:[], appealed:[], removedMentions:[],
+    nav:[{s:'home'}], tab:'home',
+    home:{feed:'university',sort:'hot',cat:'all',bcat:'all',sheet:'peek',firstPrompt:true},
+    draft:null, savedDraft:null, recent:[], waitlist:{},
+    sim:{offline:false,uploadFail:false},
+    events:[], seq:100
+  };
+}
+function load(){ try{ const raw=localStorage.getItem(KEY); if(raw){ const s=JSON.parse(raw); if(s&&s.v===4) return s; } }catch(e){} return seed(); }
+function save(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} }
+S=load();
+const T={ov:null,toast:null,loadingUntil:0,scroll:{},search:{q:'',tab:'posts'},rec:null,playing:null,cmode:null,reply:null};
+
+/* ============ helpers ============ */
+const $=s=>document.querySelector(s);
+const L=(th,en)=>S.lang==='th'?th:en;
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const uid=p=>p+(++S.seq);
+const uni=()=>UNIS[0];
+const user=id=>id==='me'?S.me:USERS[id];
+const bubble=id=>BUBBLES.find(b=>b.id===id);
+const bname=b=>b?L(b.th,b.en):'';
+const catName=id=>{const c=CATS.find(c=>c[0]===id);return c?L(c[1],c[2]):'';};
+function hashStr(s){let h=0;for(const ch of s)h=(h*31+ch.charCodeAt(0))>>>0;return h;}
+function aliasOf(postId,userId){const a=ALIAS[hashStr(postId+'|'+userId)%ALIAS.length];return {name:L(a[0]+'นิรนาม','Anonymous '+a[1]),c:a[2],bg:a[3]};}
+function rel(t){const d=Math.max(0,Date.now()-t);const m=Math.floor(d/MIN);if(m<1)return L('เมื่อสักครู่','now');if(m<60)return m+L(' นาที','m');const h=Math.floor(m/60);if(h<24)return h+L(' ชม.','h');const dd=Math.floor(h/24);return dd+L(' วัน','d');}
+function fmtDate(t){return new Date(t).toLocaleString(S.lang==='th'?'th-TH':'en-GB',{day:'numeric',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'});}
+function fmtDay(iso){return new Date(iso+'T00:00:00').toLocaleDateString(S.lang==='th'?'th-TH':'en-GB',{day:'numeric',month:'short'});}
+const nf=n=>n.toLocaleString('en-US');
+function facYear(u){if(u.official)return L('บัญชีทางการ','Official');if(!u.show)return '';return L(u.fac[0],u.fac[1])+(u.year?' · '+L('ปี ','Year ')+u.year:'');}
+function isBlocked(uid){return S.blocked.some(b=>b.uid===uid);}
+function quietHours(){const h=new Date().getHours();return h<7;}
+
+/* ============ analytics ============ */
+function track(name,props){
+  const common={user_id_hash:S.done?'u_'+hashStr(S.me.email).toString(16):null,university_id:'chula',platform:'ios',app_version:'0.4.0-proto',session_id:SESSION_ID};
+  S.events.unshift({name,props:props||{},common,at:Date.now()}); S.events=S.events.slice(0,80); renderPanel();
+}
+
+/* ============ icons ============ */
+const IP={
+home:'<path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/>',
+plus:'<path d="M12 5v14M5 12h14"/>',
+bell:'<path d="M6 9a6 6 0 1 1 12 0c0 6 3 8 3 8H3s3-2 3-8"/><path d="M10 20.5a2.2 2.2 0 0 0 4 0"/>',
+users:'<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.6 2.9-5.5 6.5-5.5s6.5 1.9 6.5 5.5"/><path d="M15.5 4.8a3.5 3.5 0 0 1 0 6.4M17.5 14.8c2.4.5 4 2.2 4 5.2"/>',
+user:'<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6"/>',
+search:'<circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>',
+back:'<path d="M15 18l-6-6 6-6"/>',
+chev:'<path d="M9 6l6 6-6 6"/>',
+down:'<path d="M6 9l6 6 6-6"/>',
+more:'<circle cx="5" cy="12" r="1.2" fill="currentColor"/><circle cx="12" cy="12" r="1.2" fill="currentColor"/><circle cx="19" cy="12" r="1.2" fill="currentColor"/>',
+flame:'<path d="M12 2.8c.9 3.2 5.2 5.4 5.2 10.4a5.2 5.2 0 0 1-10.4 0c0-2.1 1-3.6 2.1-4.6.1 1.9.9 3 2 3.1-.3-3.1-.5-5.6 1.1-8.9z"/>',
+comment:'<path d="M20.5 12a8.5 8.5 0 0 1-12.3 7.6L3.5 20.5l1-4.4A8.5 8.5 0 1 1 20.5 12z"/>',
+send:'<path d="M21 3 10 14M21 3l-6.5 18-4.5-7-7-4.5z"/>',
+flag:'<path d="M5 21V4m0 0h11.5l-2.2 4.2L16.5 12H5"/>',
+image:'<rect x="3" y="3" width="18" height="18" rx="3.5"/><circle cx="9" cy="9" r="1.8"/><path d="m21 15-5-5L5 21"/>',
+poll:'<path d="M4 6h9M4 12h16M4 18h6"/>',
+link:'<path d="M10 13.5a4.5 4.5 0 0 0 6.4 0l3-3a4.5 4.5 0 0 0-6.4-6.4l-1 1"/><path d="M14 10.5a4.5 4.5 0 0 0-6.4 0l-3 3a4.5 4.5 0 0 0 6.4 6.4l1-1"/>',
+hash:'<path d="M4 9h16M4 15h16M10 3 8 21M16 3l-2 18"/>',
+at:'<circle cx="12" cy="12" r="4"/><path d="M16 8v5a3 3 0 0 0 6 0v-1a10 10 0 1 0-4 8"/>',
+pin:'<path d="M12 22s7-6.4 7-12a7 7 0 1 0-14 0c0 5.6 7 12 7 12z"/><circle cx="12" cy="10" r="2.5"/>',
+x:'<path d="M18 6 6 18M6 6l12 12"/>',
+check:'<path d="M5 12.5l4.5 4.5L19 7.5"/>',
+lock:'<rect x="5" y="11" width="14" height="10" rx="2.5"/><path d="M8 11V7.5a4 4 0 0 1 8 0V11"/>',
+mask:'<path d="M2.5 8.5c3.2-1.3 6.4-1 9.5 1 3.1-2 6.3-2.3 9.5-1-.4 6.2-3.4 9.5-6.2 9.5-1.6 0-2.7-1.4-3.3-3-.6 1.6-1.7 3-3.3 3-2.8 0-5.8-3.3-6.2-9.5z"/><path d="M7 11.5h2.5M14.5 11.5H17"/>',
+gear:'<circle cx="12" cy="12" r="3.2"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/>',
+globe:'<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/>',
+mic:'<rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21"/>',
+target:'<circle cx="12" cy="12" r="3"/><circle cx="12" cy="12" r="8"/><path d="M12 1.5v3M12 19.5v3M1.5 12h3M19.5 12h3"/>',
+book:'<path d="M4 19.5V5a2 2 0 0 1 2-2h14v16H6a2 2 0 0 0-2 2.5zM20 19v2.5H6"/><path d="M9 7h7"/>',
+cup:'<path d="M4 8h13v4.5a6.5 6.5 0 0 1-13 0z"/><path d="M17 9.5h1.5a2.5 2.5 0 0 1 0 5H17M8 2.5v2.5M12 2.5v2.5"/>',
+star:'<path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/>',
+building:'<path d="M3 21h18M5 21V9l7-5 7 5v12"/><path d="M9.5 21v-5h5v5M9 11h.01M15 11h.01"/>',
+ball:'<circle cx="12" cy="12" r="9"/><path d="M3.5 9.5c4 1 13 1 17 0M3.5 14.5c4-1 13-1 17 0M12 3c-3 4-3 14 0 18"/>',
+leaf:'<path d="M5 20c0-9.5 6-15 15-15 0 9-5.5 15-15 15z"/><path d="M5 20l7.5-7.5"/>',
+sparkle:'<path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/><path d="M19 16l.7 1.8 1.8.7-1.8.7L19 21l-.7-1.8-1.8-.7 1.8-.7z"/>',
+trash:'<path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/>',
+edit:'<path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M13.5 6.5l4 4"/>',
+eyeoff:'<path d="M3 3l18 18M10.6 6.1A10 10 0 0 1 22 12a16 16 0 0 1-3.2 4M6.6 6.6A16 16 0 0 0 2 12s3.6 7 10 7a9.6 9.6 0 0 0 4.6-1.2"/><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/>',
+bellx:'<path d="M3 3l18 18M8.5 4.5A6 6 0 0 1 18 9c0 3 .8 5 1.6 6.3M17 17H3s3-2 3-8"/><path d="M10 20.5a2.2 2.2 0 0 0 4 0"/>',
+block:'<circle cx="12" cy="12" r="9"/><path d="M5.6 5.6l12.8 12.8"/>',
+help:'<circle cx="12" cy="12" r="9"/><path d="M9.5 9.2a2.6 2.6 0 1 1 3.6 2.4c-.7.3-1.1 1-1.1 1.7v.4M12 17h.01"/>',
+moon:'<path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a6.6 6.6 0 0 0 10.5 10.5z"/>',
+refresh:'<path d="M20 11a8 8 0 1 0-2.3 5.7M20 4v7h-7"/>',
+shield:'<path d="M12 3l8 3v6c0 4.5-3.4 8.3-8 9-4.6-.7-8-4.5-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/>',
+download:'<path d="M12 4v11M7 10l5 5 5-5M4 20h16"/>',
+logout:'<path d="M15 4h4v16h-4M10 8l-4 4 4 4M6 12h11"/>',
+mail:'<rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="m4 7 8 6 8-6"/>',
+heart:'<path d="M12 20s-7.5-4.5-7.5-10A4.5 4.5 0 0 1 12 7a4.5 4.5 0 0 1 7.5 3c0 5.5-7.5 10-7.5 10z"/>',
+copy:'<rect x="8" y="8" width="12" height="12" rx="2.5"/><path d="M16 8V5.5A1.5 1.5 0 0 0 14.5 4h-9A1.5 1.5 0 0 0 4 5.5v9A1.5 1.5 0 0 0 5.5 16H8"/>',
+play:'<path d="M8 5v14l11-7z" fill="currentColor"/>',
+pause:'<path d="M8 5h3v14H8zM13 5h3v14h-3z" fill="currentColor"/>',
+swap:'<path d="M7 7h11l-3-3M17 17H6l3 3"/>',
+wifi:'<path d="M2 8.5a15 15 0 0 1 20 0M5.5 12a10 10 0 0 1 13 0M9 15.5a5 5 0 0 1 6 0M12 19h.01"/><path d="M3 3l18 18"/>',
+clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+camera:'<path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/>',
+};
+const I=(n,c='')=>`<svg class="i ${c}" viewBox="0 0 24 24" aria-hidden="true">${IP[n]||''}</svg>`;
+const VERIFIED=`<span class="verified" title="Verified student"><svg width="16" height="16" viewBox="0 0 24 24"><path fill="currentColor" d="M12 1.8l2.6 2 3.2-.4 1.2 3 3 1.2-.4 3.2 2 2.6-2 2.6.4 3.2-3 1.2-1.2 3-3.2-.4-2.6 2-2.6-2-3.2.4-1.2-3-3-1.2.4-3.2-2-2.6 2-2.6-.4-3.2 3-1.2 1.2-3 3.2.4z"/><path d="M7.8 12.3l2.8 2.8 5.6-5.8" stroke="#fff" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></span>`;
+
+/* ============ avatars ============ */
+function avatar(u,size=40){
+  if(u.photo) return `<span class="av" style="width:${size}px;height:${size}px;background-image:url('${u.photo}')"></span>`;
+  const ini=u.ini||(u.name?[...u.name][0]:'?');
+  return `<span class="av" style="width:${size}px;height:${size}px;background:${u.bg};color:${u.fg};font-size:${Math.round(size*.42)}px">${esc(ini)}</span>`;
+}
+function anonAv(al,size=40){
+  return `<span class="av" style="width:${size}px;height:${size}px;background:${al.bg}"><svg viewBox="0 0 40 40" width="${size}" height="${size}"><ellipse cx="20" cy="23" rx="11" ry="12" fill="${al.c}"/><path d="M20 11c2-4 6-5 8-4-2 1-4 3-8 4z" fill="#3fa34d"/><circle cx="16.5" cy="22" r="1.6" fill="#2b1d0e"/><circle cx="23.5" cy="22" r="1.6" fill="#2b1d0e"/><path d="M17.5 26.5q2.5 2 5 0" stroke="#2b1d0e" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg></span>`;
+}
+/* who-shows-as for a post or comment, as seen by the viewer */
+function authorView(item,postId){
+  if(item.anon){const al=aliasOf(postId,item.by);return {anon:true,name:al.name,av:s=>anonAv(al,s),sub:L('นิสิตจุฬาฯ','Chula student'),al};}
+  const u=user(item.by);return {anon:false,name:u.name,av:s=>avatar(u,s),sub:facYear(u),u};
+}
+
+/* ============ text rendering ============ */
+const URL_RE=/((?:https?:\/\/|www\.)[^\s]+|\b[a-z0-9-]+(?:\.[a-z0-9-]+)*\.(?:com|net|org|co|th|io|ly|me|app|xyz|gl|to|link|info|ไทย)\b(?:\/[^\s]*)?)/i;
+function rich(text,item){
+  let h=esc(text);
+  h=h.replace(/(^|\s)#([\p{L}\p{M}\p{N}_]+)/gu,(m,a,t)=>`${a}<button class="tag" data-act="openTag" data-arg="${esc(t)}">#${t}</button>`);
+  const ments=(item&&item.mentions)||[];
+  h=h.replace(/@([a-z0-9._]{3,20})/g,(m,un)=>{
+    const id=ments.find(id=>user(id)&&user(id).user===un);
+    if(id && !S.removedMentions.includes(item.id+'|'+id)) return `<button class="mention" data-act="openProfile" data-arg="${id}">@${un}</button>`;
+    return m;
+  });
+  h=h.replace(/(https?:\/\/[^\s<]+)/g,u=>`<span class="tag">${u}</span>`);
+  return h;
+}
+function findUrl(t){const m=(t||'').match(URL_RE);return m?m[0]:null;}
+function domainOf(u){return u.replace(/^https?:\/\//,'').replace(/^www\./,'').split('/')[0].toLowerCase();}
+function tagsOf(t){return [...(t||'').matchAll(/(?:^|\s)#([\p{L}\p{M}\p{N}_]+)/gu)].map(m=>m[1]);}
+function mentionsIn(t){return [...(t||'').matchAll(/@([a-z0-9._]{3,20})/g)].map(m=>m[1]);}
+
+/* ============ selectors ============ */
+function viewerCanSee(p){
+  if(p.removed) return false;
+  if(p.by!=='me'){
+    if(S.hidden.includes(p.id)||S.reported.includes('post:'+p.id)) return false;
+    if(isBlocked(p.by)) return false;
+    if(p.tags.some(t=>S.mutedTags.includes(t.toLowerCase()))) return false;
+  }
+  return true;
+}
+function commentsOf(pid){return S.comments.filter(c=>c.post===pid && !c.removed && (c.by==='me'||(!isBlocked(c.by)&&!S.reported.includes('comment:'+c.id))));}
+function postsIn(bid){return S.posts.filter(p=>p.bubble===bid && viewerCanSee(p) && Date.now()-p.at<72*HOUR);}
+function count24(bid){return S.posts.filter(p=>p.bubble===bid && !p.removed && !S.hidden.includes(p.id) && Date.now()-p.at<DAY).length;}
+function hot(p){const h=(Date.now()-p.at)/HOUR;return (p.ate+3*commentsOf(p.id).length+1)/Math.pow(h+2,1.4);}
+function sortPosts(list,sort){return list.slice().sort(sort==='new'?(a,b)=>b.at-a.at:(a,b)=>hot(b)-hot(a));}
+function distance(b){const dx=b.x-ME_XY.x,dy=b.y-ME_XY.y;return Math.round(Math.hypot(dx,dy)*M_PER_UNIT/10)*10;}
+function locOn(){return S.settings.loc && S.ob.perm.loc==='granted';}
+function fmtDist(m){return m<1000?m+L(' ม.',' m'):(m/1000).toFixed(1)+L(' กม.',' km');}
+function bubbleOpen(b){if(b.status!=='active')return false;if(b.end&&new Date(b.end+'T23:59:59')<new Date())return false;return true;}
+
+/* ============ navigation ============ */
+function top(){return S.nav[S.nav.length-1];}
+function push(s,a){saveScroll();S.nav.push({s,a});render();}
+function pop(){saveScroll();if(S.nav.length>1)S.nav.pop();render();}
+function setTab(t){saveScroll();S.tab=t;S.nav=[{s:t}];render();}
+function scrollKey(){const t=top();return t.s+'|'+(t.a||'')+'|'+(t.s==='home'?S.home.feed:'');}
+function saveScroll(){const el=document.querySelector('#app .scroll');if(el)T.scroll[scrollKey()]=el.scrollTop;}
+function restoreScroll(){const el=document.querySelector('#app .scroll');if(el)el.scrollTop=T.scroll[scrollKey()]||0;}
+
+function toast(msg,action){
+  clearTimeout(T.toastTimer);
+  $('#toast').innerHTML=`<div class="toast">${msg}${action?`<button data-act="${action.act}" data-arg="${action.arg||''}">${action.label}</button>`:''}</div>`;
+  T.toastTimer=setTimeout(()=>{$('#toast').innerHTML='';},2800);
+}
+function openOv(o){T.ov=o;renderOverlay();}
+function closeOv(){T.ov=null;renderOverlay();}
+
+/* ============ theme ============ */
+const DARK_VARS={'--canvas':'#0b1026','--surface':'#151a35','--sunken':'#1c2242','--ink':'#f3f2fa','--ink2':'#c3c5d6','--muted':'#9a9db3','--tert':'#7b7e96','--border':'#283050','--divider':'#1f2544','--brand':'#9b6bff','--brand-ink':'#c9b0ff','--info':'#1d1840','--danger':'#ff7a7f','--danger-bg':'#3a1518','--ok':'#5fd393','--ok-bg':'#12301f','--warn-bg':'#3a2e0e','--warn':'#ffd36b','--nav':'rgba(16,21,48,.86)','--scrim':'rgba(0,0,0,.6)','--peach-bg':'#3a2416','--peach-fg':'#ffb98a','--map-ground':'#121733','--map-road':'#212849','--map-green':'#1d3a2b','--map-bldg':'#262c50','--map-water':'#173a52','--map-label':'#8f93ad'};
+const LIGHT_VARS={'--canvas':'#ffffff','--surface':'#f3f3f6','--sunken':'#eaeaef','--ink':'#0b1026','--ink2':'#545871','--muted':'#6b6f85','--tert':'#8b8ea3','--border':'#e3e1ea','--divider':'#eceaf2','--brand':'#7c3aed','--brand-ink':'#5b21b6','--info':'#f4f1fd','--danger':'#c42b31','--danger-bg':'#fdecec','--ok':'#1f8a4c','--ok-bg':'#e6f6ec','--warn-bg':'#fff4d6','--warn':'#8a5a00','--nav':'rgba(255,255,255,.86)','--scrim':'rgba(11,16,38,.45)','--peach-bg':'#ffe7d6','--peach-fg':'#8a3410','--map-ground':'#eef0e7','--map-road':'#ffffff','--map-green':'#cfe6b4','--map-bldg':'#dedbe8','--map-water':'#c3e2f2','--map-label':'#7b7f95'};
+function applyTheme(){
+  const ph=$('#phone');ph.removeAttribute('style');
+  const t=S.settings.theme; if(t==='system') return;
+  const v=t==='dark'?DARK_VARS:LIGHT_VARS; for(const k in v) ph.style.setProperty(k,v[k]);
+  ph.style.colorScheme=t;
+}
+
+/* ============ common UI ============ */
+function topbar(title,opts={}){
+  return `<div class="topbar">${opts.noBack?'<span class="sp"></span>':`<button class="iconbtn" data-act="${opts.backAct||'back'}" aria-label="${L('กลับ','Back')}">${I(opts.close?'x':'back')}</button>`}<div class="t">${title}</div>${opts.right||'<span class="sp"></span>'}</div>`;
+}
+function tabbar(){
+  const unread=S.notifs.filter(n=>!n.read).length;
+  const t=(id,icon,label)=>`<button class="tab ${S.tab===id?'on':''}" data-act="tab" data-arg="${id}">${I(icon)}<span>${label}</span>${id==='activity'&&unread?`<span class="dot">${unread}</span>`:''}</button>`;
+  return `<button class="fab fab-float" data-act="compose" aria-label="${L('สร้างโพสต์','Create post')}">${I('plus','lg')}</button><nav class="tabbar">${t('home','home',L('หน้าแรก','Home'))}${t('activity','bell',L('แจ้งเตือน','Activity'))}${t('profile','user',L('ฉัน','Me'))}</nav>`;
+}
+function oq(txt){return `<span class="pill oq" title="PRD open question">${I('help','xs')} ${txt}</span>`;}
+
+/* ============ POST CARD ============ */
+function postCard(p,ctx={}){
+  const a=authorView(p,p.id); const mine=p.by==='me';
+  const b=p.bubble&&bubble(p.bubble);
+  const n=commentsOf(p.id).length;
+  const where=[p.uni?L('มหาลัย','University'):null,b?bname(b):null].filter(Boolean).join(' + ');
+  const imgs=p.images.length?`<div class="pimgs n${p.images.length}">${p.images.map(im=>imgTile(im)).join('')}</div>`:'';
+  const url=findUrl(p.text);
+  return `<article class="post ${p.pinned?'pinned':''}" data-act="openPost" data-arg="${p.id}">
+   ${p.pinned?`<div class="cap" style="margin-bottom:8px;display:flex;gap:6px;align-items:center;color:var(--brand-ink);font-weight:700">${I('pin','xs')} ${L('ประกาศจากทีม EIGHT TEEN','Pinned by EIGHT TEEN')}</div>`:''}
+   <div class="phead">${a.av(40)}<div style="flex:1;min-width:0">
+     <div class="pname">${esc(a.name)}${a.anon?'':VERIFIED}${mine?`<span class="pill" style="background:var(--ink);color:var(--canvas);height:20px">${L('คุณ','You')}</span>`:''}${mine&&p.anon?`<span class="pill lime">${I('lock','xs')} ${L('มีแค่คุณที่เห็น','Only you can see this')}</span>`:''}</div>
+     <div class="pmeta">${[a.sub,rel(p.at),p.edited?L('แก้ไขแล้ว','edited'):null].filter(Boolean).map(esc).join(' · ')}</div>
+   </div><button class="iconbtn plain" data-act="postMenu" data-arg="${p.id}" aria-label="${L('เพิ่มเติม','More')}">${I('more')}</button></div>
+   <div class="ptext">${rich(p.text,p)}</div>
+   ${imgs}${p.poll?pollHTML(p):''}${url&&!p.images.length?linkPreview(url):''}
+   <div style="display:flex;gap:6px;margin-top:10px;flex-wrap:wrap">${p.cat?`<span class="pill">${esc(catName(p.cat))}</span>`:''}${b&&!ctx.inBubble?`<button class="pill brand" data-act="openBubble" data-arg="${b.id}">${I(BTYPES[b.type][2],'xs')} ${esc(bname(b))}</button>`:''}${mine&&p.reach==='reduced'?`<span class="pill warn">${L('กำลังตรวจสอบ','Under review')}</span>`:''}</div>
+   <div class="pacts">
+     <button class="pact" data-act="openPost" data-arg="${p.id}" aria-label="${L('คอมเมนต์','Comments')}">${I('comment','sm')} ${n||''}</button>
+     <button class="pact ate ${p.ated?'on':''}" data-act="ate" data-arg="post:${p.id}" aria-pressed="${p.ated}">${I('flame','sm')} <span>${nf(p.ate)}</span> <span class="ate-l">ATE</span></button>
+     <button class="pact" data-act="share" data-arg="${p.id}" aria-label="${L('แชร์','Share')}">${I('send','sm')}</button>
+     ${ctx.showWhere?`<span class="cap" style="margin-left:auto">${esc(where)}</span>`:''}
+   </div></article>`;
+}
+function imgTile(im){
+  if(im.src) return `<div class="pimg" style="background-image:url('${im.src}')"></div>`;
+  return `<div class="pimg" style="background:linear-gradient(135deg,hsl(${im.h} 70% 86%),hsl(${(im.h+40)%360} 60% 72%))">${I('image','lg')}</div>`;
+}
+function linkPreview(url){
+  const d=domainOf(url);
+  return `<div class="lp"><div class="lpi">${I('link','lg')}</div><div class="lpb"><div class="cap">${esc(d)}</div><div class="lbl" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${d.includes('chula')?L('สำนักงานการทะเบียน จุฬาฯ','Chula Registrar'):esc(d)}</div><div class="cap">${L('ตรวจลิงก์แล้ว ปลอดภัย','Link checked')}</div></div></div>`;
+}
+function pollHTML(p){
+  const po=p.poll; const total=po.votes.reduce((a,b)=>a+b,0); const closed=Date.now()>po.ends;
+  const show=po.mine!=null||closed||p.by==='me';
+  const left=closed?L('ปิดโหวตแล้ว','Final results'):L('เหลือ ','')+rel(Date.now()-(po.ends-Date.now())).replace(/^/,'')+L('',' left');
+  return `<div class="poll">${po.opts.map((o,i)=>{const pc=total?Math.round(po.votes[i]/total*100):0;
+    return show?`<div class="popt ${po.mine===i?'mine':''}"><i class="bar" style="width:${pc}%"></i><span>${esc(o)}${po.mine===i?' ✓':''}</span><span class="pc">${pc}%</span></div>`
+    :`<button class="popt" data-act="vote" data-arg="${p.id}:${i}"><span>${esc(o)}</span></button>`;}).join('')}
+    <div class="cap">${nf(total)} ${L('โหวต','votes')} · ${L('โหวตแบบไม่ระบุตัวตน','Votes are anonymous')} · ${closed?L('ปิดโหวตแล้ว','Closed'):L('ปิดใน ','Ends in ')+timeLeft(po.ends)}</div></div>`;
+}
+function timeLeft(t){const d=t-Date.now();if(d<=0)return '0';const h=Math.floor(d/HOUR);if(h<24)return h+L(' ชม.','h');return Math.ceil(h/24)+L(' วัน','d');}
+
+/* ============ ONBOARDING ============ */
+const OB_ORDER=['sso','dob','profile','interests','location'];
+function obTop(backTo,step){
+  const i=step?OB_ORDER.indexOf(step==='push'?'location':step):-1;
+  return `<div class="topbar" style="gap:12px">${backTo?`<button class="iconbtn" data-act="obGo" data-arg="${backTo}" aria-label="${L('กลับ','Back')}">${I('back')}</button>`:'<span class="sp"></span>'}${i<0?'<div style="flex:1"></div>':`<div class="segbar">${OB_ORDER.map((_,k)=>`<i class="${k<=i?'on':''}"></i>`).join('')}</div><span class="num cap" style="min-width:30px;text-align:right">${i+1}/${OB_ORDER.length}</span>`}</div>`;
+}
+const WHITELIST=['student.chula.ac.th','chula.ac.th'];
+const PERSONAL=['gmail.com','googlemail.com','outlook.com','hotmail.com','live.com','msn.com','yahoo.com','icloud.com','me.com','proton.me','protonmail.com'];
+const KNOWN_UNI={'tu.ac.th':['มหาวิทยาลัยธรรมศาสตร์','Thammasat University','ธรรมศาสตร์','Thammasat',154],'mahidol.ac.th':['มหาวิทยาลัยมหิดล','Mahidol University','มหิดล','Mahidol',212],'mahidol.edu':['มหาวิทยาลัยมหิดล','Mahidol University','มหิดล','Mahidol',212],'ku.ac.th':['มหาวิทยาลัยเกษตรศาสตร์','Kasetsart University','เกษตรศาสตร์','Kasetsart',98],'ku.th':['มหาวิทยาลัยเกษตรศาสตร์','Kasetsart University','เกษตรศาสตร์','Kasetsart',98],'kmutt.ac.th':['มจธ.','KMUTT','มจธ.','KMUTT',61],'cmu.ac.th':['มหาวิทยาลัยเชียงใหม่','Chiang Mai University','ม.เชียงใหม่','Chiang Mai University',87],'kku.ac.th':['มหาวิทยาลัยขอนแก่น','Khon Kaen University','ม.ขอนแก่น','Khon Kaen University',43],'psu.ac.th':['มหาวิทยาลัยสงขลานครินทร์','Prince of Songkla University','ม.สงขลานครินทร์','PSU',39],'swu.ac.th':['มหาวิทยาลัยศรีนครินทรวิโรฒ','Srinakharinwirot University','มศว','SWU',57]};
+function classifyEmail(e){
+  e=(e||'').trim().toLowerCase(); if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e)) return {k:'invalid'};
+  const d=e.split('@')[1];
+  if(d==='alumni.chula.ac.th') return {k:'graduated',d};
+  if(WHITELIST.includes(d)) return {k:e.startsWith('6430011121@')?'dup':'ok',d};
+  if(PERSONAL.includes(d)) return {k:'personal',d};
+  const key=Object.keys(KNOWN_UNI).find(x=>d===x||d.endsWith('.'+x));
+  if(key) return {k:'waitlist',d,key,uni:KNOWN_UNI[key]};
+  if(/\.(ac\.[a-z]{2}|edu(\.[a-z]{2})?)$/.test(d)) return {k:'waitlist',d,key:d,uni:null};
+  return {k:'notuni',d};
+}
+function goStep(step){S.ob.step=step;if(step!=='welcome')S.ob.started=true;const idx=OB_ORDER.indexOf(step);track('onboarding_step_viewed',{step_name:step,step_index:idx<0?0:idx+1});render();}
+function vOnboarding(){
+  if(!['welcome','resume','consent','sso','waitlist','ssoerr','dob','profile','interests','location','push'].includes(S.ob.step)||(S.ob.step==='waitlist'&&!S.ob.wl))S.ob.step='welcome';
+  const st=S.ob.step;
+    if(st==='resume') return `<div class="ob"><div class="ob-body" style="display:flex;flex-direction:column;justify-content:center;gap:14px">
+      <div class="empty" style="padding:0"><div class="ill">${I('refresh','lg')}</div></div>
+      <div class="h1" style="text-align:center">${L('สมัครต่อจากที่ค้างไว้','Pick up where you left off')}</div>
+      <p class="ink2" style="text-align:center;margin:0">${L('ข้อมูลที่กรอกไว้ยังอยู่ครบ ไปต่อได้เลย','Everything you entered is saved.')}</p></div>
+      <div class="ob-foot"><button class="btn primary block" data-act="obGo" data-arg="${S.ob.resumeTo}">${L('ไปต่อ','Continue')}</button><button class="btn ghost" data-act="obRestart">${L('เริ่มใหม่','Start over')}</button></div></div>`;
+  if(st==='welcome'){
+    const slides=[
+      [L('ทุกคนในนี้<br>เป็นนิสิตนักศึกษา ','Everyone here is a<br>'),L('ตัวจริง','real student'),L('ยืนยันด้วยบัญชีมหาวิทยาลัยครั้งเดียว ไม่มีบัญชีปลอม ไม่มีมิจฉาชีพแฝง','Verify once with your university account. No fake accounts, no scammers.')],
+      [L('ดูว่าตรงไหนในรั้ว<br>กำลัง','See what’s '),L('คึกคัก','buzzing'),L('บับเบิลคือพื้นที่ของแต่ละที่ในแคมปัส หอสมุด โรงอาหาร คณะ หรืองานอีเวนต์','Bubbles are spaces for places on campus: the library, canteens, faculties, live events.')],
+      [L('พูดได้เต็มที่<br>แม้','Speak freely,<br>even '),L('ไม่ระบุตัวตน','anonymously'),L('โพสต์นิรนามได้ แต่ทุกบัญชียืนยันตัวตนแล้ว คนทำผิดจึงรับผิดชอบได้','Post anonymously inside a verified network, where bad actors are still accountable.')],
+    ];
+    const s=slides[S.ob.slide];
+    return `<div class="ob"><div class="topbar" style="padding:0 20px"><div class="seg"><button class="${S.lang==='th'?'on':''}" data-act="lang" data-arg="th">ไทย</button><button class="${S.lang==='en'?'on':''}" data-act="lang" data-arg="en">EN</button></div><div style="flex:1"></div><button class="lbl" data-act="obGo" data-arg="consent">${L('ข้าม','Skip')}</button></div>
+    <div class="ob-body" data-act="slideNext" style="cursor:pointer">
+      <div class="hero"><div class="card1"><div class="logo">EIGHT<br>TEEN</div><span class="pill" style="background:#fff;color:#0b1026;height:32px;padding:0 14px;font-size:13px">${VERIFIED} ${L('นิสิตนักศึกษาตัวจริงเท่านั้น','Verified students only')}</span></div></div>
+      <div class="display">${s[0]}<span class="hl">${s[1]}</span></div>
+      <p class="ink2" style="margin:10px 0 14px">${s[2]}</p>
+      <div class="dots">${[0,1,2].map(i=>`<i class="${i===S.ob.slide?'on':''}"></i>`).join('')}</div>
+    </div>
+    <div class="ob-foot"><button class="btn primary block" data-act="obGo" data-arg="consent">${L('เริ่มเลย','Get started')}</button><button class="lbl" data-act="obReturning">${L('มีบัญชีอยู่แล้ว? เข้าสู่ระบบ','Have an account? Sign in')}</button></div></div>`;
+  }
+  if(st==='consent'){
+    const c=S.ob.consent;
+    const rule=(icon,t,s)=>`<div style="display:flex;gap:12px;padding:12px 14px;align-items:flex-start"><span class="nicon" style="width:36px;height:36px;border-radius:12px;background:var(--canvas)">${I(icon,'sm')}</span><span><span class="h3" style="display:block">${t}</span><span class="cap" style="color:var(--ink2)">${s}</span></span></div>`;
+    const ck=(k,html)=>`<button class="check" data-act="consent" data-arg="${k}" style="border:1.5px solid ${c[k]?'var(--brand)':'var(--border)'};border-radius:14px;padding:12px 14px;margin-top:10px;${c[k]&&k==='terms'?'background:var(--info)':''}"><span class="box ${c[k]?'on':''}">${c[k]?I('check','xs'):''}</span><span class="lbl" style="font-weight:500">${html}</span></button>`;
+    return `<div class="ob">${obTop('welcome')}<div class="ob-body">
+      <div class="h1" style="margin-top:8px">${L('กติกาสั้น ๆ 3 ข้อ','3 quick rules')}</div>
+      <p class="ink2" style="margin:4px 0 12px">${L('อ่านไม่ถึงนาที แล้วไปต่อกัน','Under a minute to read.')}</p>
+      <div class="card">${rule('eyeoff',L('Anonymous ได้ แต่ไม่ใช่ล่องหน','Anonymous, not invisible'),L('เพื่อนไม่เห็นว่าเป็นคุณ แต่ทีมงานยังรู้ และเปิดเผยได้เฉพาะเมื่อมีคำสั่งตามกฎหมาย','Classmates can’t see it’s you, but our team can, and only discloses it on a legal order.'))}${rule('users',L('แซวได้ ไม่แฉ ไม่บูลลี่','Tease, don’t expose or bully'),L('ห้ามระบุชื่อหรือตัวตนคนจริงในโพสต์ anonymous','Never name or identify a real person in an anonymous post.'))}${rule('shield',L('ไม่หลอก ไม่สแปม','No scams, no spam'),L('โพสต์หลอกลวงหรือสแปมถูกแบนถาวร','Scams and spam get a permanent ban.'))}</div>
+      ${ck('terms',L('ฉันยอมรับ <span class="link">เงื่อนไขการใช้งาน</span> และ <span class="link">นโยบายความเป็นส่วนตัว</span> (PDPA)','I accept the <span class="link">Terms</span> and <span class="link">Privacy Policy</span> (PDPA)'))}
+      ${ck('mkt',L('รับข่าวสารและกิจกรรมทางอีเมล <span class="muted">(ไม่บังคับ)</span>','Send me news and events by email <span class="muted">(optional)</span>'))}
+    </div><div class="ob-foot"><button class="btn primary block" ${c.terms?'':'disabled'} data-act="consentNext">${L('ยอมรับและไปต่อ','Accept and continue')}</button></div></div>`;
+  }
+  if(st==='sso'){
+    const prov=(id,label,logo)=>`<button class="unirow" style="justify-content:center;position:relative;height:56px;border-radius:999px;padding:0 20px" data-act="ssoOpen" data-arg="${id}"><span style="position:absolute;left:20px;display:flex">${logo}</span><span class="lbl" style="font-size:15px">${label}</span></button>`;
+    const G='<svg width="22" height="22" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 13 4 4 13 4 24s9 20 20 20 20-9 20-20c0-1.3-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.5z"/></svg>';
+    const M='<svg width="20" height="20" viewBox="0 0 22 22"><rect width="10" height="10" fill="#f25022"/><rect x="12" width="10" height="10" fill="#7fba00"/><rect y="12" width="10" height="10" fill="#00a4ef"/><rect x="12" y="12" width="10" height="10" fill="#ffb900"/></svg>';
+    const tip=(ic,col,html)=>`<div style="display:flex;gap:10px;align-items:flex-start"><span style="color:${col};display:flex;margin-top:2px">${I(ic,'sm')}</span><span>${html}</span></div>`;
+    return `<div class="ob">${obTop('consent','sso')}<div class="ob-body">
+      <div class="h1" style="margin-top:8px">${L('เข้าสู่ระบบด้วย<br>บัญชีมหาวิทยาลัย','Sign in with your<br>university account')}</div>
+      <p class="ink2" style="margin:6px 0 16px">${L('เลือกระบบที่มหาวิทยาลัยของคุณใช้ เราดูจากอีเมลที่ได้กลับมาว่าคุณเรียนที่ไหน ไม่ต้องรอรหัสทางอีเมล','Pick the sign-in your university uses. We work out where you study from your email. No codes to wait for.')}</p>
+      <div style="display:flex;flex-direction:column;gap:10px">${prov('google',L('ดำเนินการต่อด้วย Google','Continue with Google'),G)}${prov('microsoft',L('ดำเนินการต่อด้วย Microsoft','Continue with Microsoft'),M)}${prov('other',L('ระบบอื่นของมหาวิทยาลัย','Other university sign-in'),I('building'))}</div>
+      <div class="card" style="padding:14px 16px;margin-top:16px;display:flex;flex-direction:column;gap:10px;font-size:14px;line-height:21px">
+        ${tip('check','var(--ok)',L('ใช้บัญชีที่มหาวิทยาลัยออกให้ (อีเมลมหาวิทยาลัย)','Use the account your university gave you (your university email)'))}
+        ${tip('x','var(--danger)',L('บัญชี Gmail หรือ Outlook ส่วนตัวใช้สมัครไม่ได้','Personal Gmail or Outlook accounts can’t sign up'))}
+        ${tip('clock','var(--warn)',L('มหาวิทยาลัยที่ยังไม่เปิด เราลงชื่อรอให้อัตโนมัติ','If your university isn’t open yet, we add you to its waitlist'))}
+      </div>
+      <div class="cap" style="display:flex;gap:8px;margin-top:12px">${I('lock','xs')}<span>${L('เราได้รับแค่ชื่อ อีเมล และคณะจากมหาวิทยาลัย ไม่เห็นรหัสผ่าน และไม่โพสต์อะไรแทนคุณ','We only receive your name, email and faculty. We never see your password or post for you.')}</span></div>
+    </div></div>`;
+  }
+  if(st==='waitlist'){
+    const w=S.ob.wl; const n=w.count;
+    const name=w.uni?L(w.uni[2],w.uni[3]):L('มหาวิทยาลัยของคุณ','your university');
+    return `<div class="ob">${obTop('sso')}<div class="ob-body">
+      <div class="h1" style="margin-top:8px">${L('ยังไม่เปิดที่'+name+'<br>แต่ใกล้แล้ว','Not open at '+name+' yet,<br>but close')}</div>
+      <p class="ink2" style="margin:6px 0 16px">${L('คุณเข้าสู่ระบบด้วยบัญชี @'+esc(w.d)+' เรายังไม่เปิดที่นี่ เลยลงชื่อรอให้แล้ว และจะส่งอีเมลไปบอกทันทีที่เปิด','You signed in with an @'+esc(w.d)+' account. We’re not open there yet, so we’ve added you to the waitlist and will email you the moment it opens.')}</p>
+      <div class="card" style="padding:16px 18px"><div style="display:flex;align-items:baseline;gap:8px"><span class="num" style="font-size:30px">${n} / 500</span><span class="cap">${L('คนลงชื่อรอแล้ว','students waiting')}</span></div><div class="progress" style="margin:10px 0 8px;background:var(--canvas)"><i style="width:${Math.min(100,n/5)}%"></i></div><div class="cap">${L('ยิ่งเพื่อนร่วมมหาลัยลงชื่อเยอะ ยิ่งเปิดเร็วขึ้น','The more classmates sign up, the sooner we open.')}</div></div>
+      <div class="banner ok" style="margin:14px 0 0">${I('check')}<div><div class="lbl">${L('คุณอยู่ในรายชื่อรอแล้ว','You’re on the waitlist')}</div><div class="cap" style="color:var(--ink2);word-break:break-all">${L('จะแจ้งที่ ','We’ll email ')}${esc(w.email)}${L(' ครั้งเดียวตอนเปิด ไม่ส่งสแปม',' once, when it opens. No spam.')}</div></div></div>
+    </div><div class="ob-foot"><button class="btn primary block" data-act="share" data-arg="waitlist">${L('ชวนเพื่อนมาลงชื่อ','Invite classmates')}</button><button class="lbl link" data-act="obGo" data-arg="sso">${L('ใช้บัญชีอื่น','Use another account')}</button></div></div>`;
+  }
+  if(st==='ssoerr'){
+    const e=S.ob.err; const map={
+      cancel:[L('การเข้าสู่ระบบยังไม่เสร็จ','Sign-in didn’t finish'),L('หน้าเข้าสู่ระบบถูกปิดก่อนเสร็จ ลองใหม่ได้เลย','The sign-in page closed before it finished. Try again.')],
+      personal:[L('นี่เป็นบัญชีส่วนตัว','That’s a personal account'),L('Gmail, Outlook หรืออีเมลส่วนตัวใช้สมัครไม่ได้ ใช้อีเมลที่มหาวิทยาลัยออกให้','Personal email accounts can’t sign up. Use the email your university gave you.')],
+      notuni:[L('อีเมลนี้ไม่ใช่อีเมลมหาวิทยาลัย','That isn’t a university email'),L('ใช้บัญชีที่มหาวิทยาลัยออกให้ เช่นอีเมลที่ลงท้ายด้วย .ac.th','Use the account your university gave you, such as an email ending in .ac.th.')],
+      graduated:[L('บัญชีนี้สมัครไม่ได้','This account can’t sign up'),L('มหาวิทยาลัยแจ้งว่าบัญชีนี้เป็นศิษย์เก่าหรือถูกระงับ ถ้าคิดว่าผิดพลาด ติดต่อทีมงาน','Your university says this account has graduated or is suspended. Contact support if that’s wrong.')],
+      dup:[L('อีเมลนี้มีบัญชีอยู่แล้ว','This email already has an account'),L('อีเมลมหาวิทยาลัยหนึ่งอีเมลใช้ได้กับบัญชีเดียว เข้าสู่ระบบบัญชีเดิมแทน','One university email links to one account. Sign in to that account instead.')],
+    }[e];
+    return `<div class="ob">${obTop('sso')}<div class="ob-body"><div class="banner danger" style="margin:8px 0">${I('x')}<div><div class="lbl">${map[0]}</div><div class="cap" style="color:var(--ink2)">${map[1]}</div></div></div></div>
+      <div class="ob-foot"><button class="btn primary block" data-act="obGo" data-arg="sso">${L('ลองอีกครั้ง','Try again')}</button>${e==='graduated'?`<button class="btn ghost" data-act="toastMsg" data-arg="${L('ส่งเรื่องถึงทีมงานแล้ว','Sent to support')}">${L('ติดต่อทีมงาน','Contact support')}</button>`:''}</div></div>`;
+  }
+  if(st==='dob'){
+    const d=S.ob.dob; const months=Array.from({length:12},(_,i)=>new Date(2026,i,1).toLocaleDateString(S.lang==='th'?'th-TH':'en-GB',{month:'long'}));
+    const years=[];for(let y=2012;y>=1980;y--)years.push(y);
+    const sel=(id,ph,opts,val)=>`<select class="input" id="${id}" data-on="dob" data-k="${id.slice(3).toLowerCase()}"><option value="">${ph}</option>${opts.map(o=>`<option value="${o[0]}" ${String(val)===String(o[0])?'selected':''}>${o[1]}</option>`).join('')}</select>`;
+    const err=S.ob.dobErr;
+    return `<div class="ob">${obTop('sso','dob')}<div class="ob-body">
+      <div class="h1" style="margin-top:8px">${L('ยืนยันแล้ว! อีกนิดเดียว','You’re verified! One more thing')}</div>
+      <div class="card" style="margin:14px 0 18px">
+        <div style="display:flex;align-items:center;gap:10px;padding:12px 16px"><div style="flex:1;min-width:0"><div class="lbl">${L('อีเมล','Email')}</div><div class="cap" style="color:var(--ink2);word-break:break-all">${esc(S.me.email)}</div></div><span style="color:var(--ok)">${I('check')}</span></div>
+        <div style="display:flex;align-items:center;gap:10px;padding:12px 16px;border-top:1px solid var(--divider)"><div style="flex:1"><div class="lbl">${L('มหาวิทยาลัย','University')}</div><div class="cap" style="color:var(--ink2)">${L(uni().th,uni().en)} · ${L('รู้จากโดเมนอีเมล','from your email domain')}</div></div>${VERIFIED}</div>
+      </div>
+      <div class="lbl" style="margin-bottom:8px">${L('วันเกิดของคุณ','Your date of birth')}</div>
+      <div style="display:grid;grid-template-columns:1fr 1.6fr 1.3fr;gap:8px">
+        ${sel('dobD',L('วัน','Day'),Array.from({length:31},(_,i)=>[i+1,i+1]),d.d)}
+        ${sel('dobM',L('เดือน','Month'),months.map((m,i)=>[i+1,m]),d.m)}
+        ${sel('dobY',L('ปี','Year'),years.map(y=>[y,S.lang==='th'?y+543:y]),d.y)}
+      </div>
+      <div class="cap" style="display:flex;gap:8px;margin-top:10px">${I('lock','xs')}<span>${L('เราเก็บแค่อีเมลและคณะจากมหาวิทยาลัยไว้ยืนยันตัวตน วันเกิดไม่แสดงให้ใครเห็น ใช้ตรวจอายุเท่านั้น · ทุก 12 เดือนจะให้เข้าสู่ระบบอีกครั้ง','We keep only your university email and faculty to verify you. Your birthday is never shown and is only used for age rules. We ask you to sign in again every 12 months.')}</span></div>
+      ${err?`<div class="banner danger" style="margin:14px 0 0">${I('x')}<div><div class="lbl">${L('ยังสมัครไม่ได้','You can’t sign up yet')}</div><div class="cap" style="color:var(--ink2)">${L('EIGHT TEEN สำหรับผู้ที่อายุ '+MIN_AGE+' ปีขึ้นไป','EIGHT TEEN is for people aged '+MIN_AGE+' and over.')}</div></div></div>`:''}
+      <div style="margin-top:14px">${oq(L('อายุขั้นต่ำ '+MIN_AGE+' เป็นค่าชั่วคราว รอฝ่ายกฎหมาย','Minimum age '+MIN_AGE+' is a placeholder until legal confirms'))}</div>
+    </div><div class="ob-foot"><button class="btn primary block" id="dobNext" ${d.d&&d.m&&d.y?'':'disabled'} data-act="dobNext">${L('ไปต่อ','Continue')}</button></div></div>`;
+  }
+  if(st==='profile'){
+    const m=S.me; const v=validUsername(m.user);
+    const presets=[['#ede4ff','#5b21b6'],['#ffe7d6','#8a3410'],['#e3ecff','#2556c7'],['#e4f7ec','#14805a'],['#ffe8f1','#c22a6a'],['#c6f43b','#0b1026']];
+    return `<div class="ob">${obTop('dob','profile')}<div class="ob-body">
+      <div class="h1" style="margin-top:14px">${L('ตั้งค่าโปรไฟล์','Set up your profile')}</div>
+      <div style="display:flex;gap:14px;align-items:center;margin:14px 0 18px">
+        <span id="avPrev">${avatar(Object.assign({},m,{ini:m.name?[...m.name][0]:'?'}),72)}</span>
+        <div style="display:flex;flex-direction:column;gap:8px"><div style="display:flex;gap:6px">${presets.map(p=>`<button aria-label="color" data-act="avPreset" data-arg="${p[0]}|${p[1]}" style="width:28px;height:28px;border-radius:99px;background:${p[0]};border:2px solid ${m.bg===p[0]&&!m.photo?'var(--brand)':'var(--border)'}"></button>`).join('')}</div>
+        <label class="link" style="font-size:14px;cursor:pointer">${I('camera','xs')} ${L('อัปโหลดรูป','Upload photo')}<input type="file" accept="image/*" hidden data-on="avatarFile"></label></div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div class="field"><label for="pfName">${L('ชื่อที่แสดง','Display name')}</label><input class="input" id="pfName" maxlength="40" value="${esc(m.name)}" placeholder="${L('เช่น วิน','e.g. Win')}" data-on="pfName"></div>
+        <div class="field"><label for="pfUser">${L('ชื่อผู้ใช้','Username')}</label><input class="input ${m.user&&!v.ok?'err':''}" id="pfUser" maxlength="20" value="${esc(m.user)}" placeholder="win.cu" autocapitalize="off" data-on="pfUser"><span id="pfUserMsg" class="${v.ok?'ok-t':'err-t'}">${m.user?v.msg:L('3–20 ตัว a–z 0–9 . _','3–20 characters: a–z 0–9 . _')}</span></div>
+        <div style="display:grid;grid-template-columns:1.6fr 1fr;gap:8px">
+          <div class="field"><label>${L('คณะ (จาก SSO)','Faculty (from SSO)')}</label><div class="input" style="display:flex;align-items:center;background:var(--surface)">${L(m.fac[0],m.fac[1])}</div></div>
+          <div class="field"><label>${L('ชั้นปี','Year')}</label><div class="input" style="display:flex;align-items:center;background:var(--surface)">${L('ปี ','Year ')}${m.year}</div></div>
+        </div>
+        <div class="field"><label for="pfBio">${L('แนะนำตัว (ไม่บังคับ)','Bio (optional)')}</label><textarea class="input" id="pfBio" rows="2" maxlength="150" data-on="pfBio">${esc(m.bio)}</textarea></div>
+      </div>
+    </div><div class="ob-foot"><button class="btn primary block" id="pfNext" ${m.name.trim()&&v.ok?'':'disabled'} data-act="profileNext">${L('ไปต่อ','Continue')}</button></div></div>`;
+  }
+  if(st==='interests'){
+    const sel=S.ob.interests;
+    return `<div class="ob">${obTop('profile','interests')}<div class="ob-body">
+      <div class="h1" style="margin-top:14px">${L('สนใจเรื่องอะไรบ้าง?','What are you into?')}</div>
+      <p class="ink2">${L('เลือกอย่างน้อย 3 อย่าง เพื่อให้ฟีดมีเรื่องที่คุณชอบ','Pick at least 3 so your feed starts with things you like.')}</p>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px">${INTERESTS.map(i=>`<button class="chip brand ${sel.includes(i[0])?'on':''}" style="height:44px;padding:0 18px" data-act="interest" data-arg="${i[0]}">${L(i[1],i[2])}</button>`).join('')}</div>
+    </div><div class="ob-foot"><button class="btn primary block" ${sel.length>=3?'':'disabled'} data-act="interestsNext">${sel.length>=3?L('ไปต่อ','Continue'):L('เลือกอีก ','Pick ')+(3-sel.length)+L(' อย่าง',' more')}</button></div></div>`;
+  }
+  if(st==='location'||st==='push'){
+    const loc=st==='location';
+    return `<div class="ob">${obTop(loc?'interests':'location',st)}<div class="ob-body" style="display:flex;flex-direction:column;justify-content:center;gap:14px">
+      <div class="empty" style="padding:0"><div class="ill">${I(loc?'pin':'bell','lg')}</div></div>
+      <div class="h1" style="text-align:center">${loc?L('โชว์ตำแหน่งคุณบนแผนที่บับเบิล','Show you on the Bubble map'):L('ไม่พลาดเมื่อมีคนตอบ','Know when people reply')}</div>
+      <p class="ink2" style="text-align:center;margin:0">${loc?L('ใช้แค่จัดกึ่งกลางแผนที่และบอกระยะทางไปแต่ละบับเบิล ตำแหน่งอยู่ในเครื่องคุณเท่านั้น ไม่ติดไปกับโพสต์','Only used to centre the map and show distances to bubbles. Your location stays on your phone and is never attached to posts.'):L('แจ้งเตือนเมื่อมีคน ATE คอมเมนต์ หรือพูดถึงคุณ ไม่ส่งช่วง 00:00–07:00','Get notified about ATE, comments and mentions. Nothing is sent between 00:00 and 07:00.')}</p>
+    </div><div class="ob-foot"><button class="btn primary block" data-act="perm" data-arg="${st}:granted">${loc?L('เปิดตำแหน่ง','Turn on location'):L('เปิดการแจ้งเตือน','Turn on notifications')}</button><button class="btn ghost" data-act="perm" data-arg="${st}:denied">${L('ไว้ทีหลัง','Not now')}</button></div></div>`;
+  }
+  return '';
+}
+function validUsername(u){
+  if(!u) return {ok:false,msg:''};
+  if(u.length<3) return {ok:false,msg:L('สั้นไป ต้องมีอย่างน้อย 3 ตัว','Too short: at least 3 characters')};
+  if(!/^[a-z0-9._]+$/.test(u)) return {ok:false,msg:L('ใช้ได้แค่ a–z 0–9 . และ _','Only a–z, 0–9, . and _')};
+  const taken=Object.values(USERS).map(x=>x.user).concat(['admin','win','beam']);
+  if(taken.includes(u)) return {ok:false,msg:L('@'+u+' มีคนใช้แล้ว ลอง @'+u+'.cu','@'+u+' is taken. Try @'+u+'.cu')};
+  return {ok:true,msg:L('@'+u+' ใช้ได้','@'+u+' is available')};
+}
+
+/* ============ HOME ============ */
+function vHome(){
+  const h=S.home;
+  return `<div class="screen ${h.feed==='bubble'?'onmap':''}">
+    <div class="hdr-home"><div class="hdr-row"><div class="uni">${L('จุฬาฯ','Chula')} ${VERIFIED}</div><div style="flex:1"></div>
+      <button class="iconbtn" data-act="openSearch" aria-label="${L('ค้นหา','Search')}">${I('search')}</button>
+      <button data-act="tab" data-arg="profile" aria-label="${L('โปรไฟล์','Profile')}">${avatar(S.me,40)}</button></div>
+      <div class="feedtabs"><button class="feedtab ${h.feed==='university'?'on':''}" data-act="feed" data-arg="university">${L('มหาลัย','University')}</button><button class="feedtab ${h.feed==='bubble'?'on':''}" data-act="feed" data-arg="bubble">${L('บับเบิล','Bubble')}</button><div style="flex:1"></div><span class="cap" style="padding-bottom:10px;display:flex;align-items:center;gap:4px">${I('shield','xs')} ${L('นิสิตจุฬาฯ เท่านั้น','Chula students only')}</span></div>
+    </div>
+    ${h.feed==='university'?vUniFeed():vBubbleMap()}
+    ${tabbar()}</div>`;
+}
+function catChips(cur,act,list){
+  return `<div class="chips" style="padding-top:12px;padding-bottom:8px">${list.map(c=>`<button class="chip ${cur===c[0]?'on':''}" data-act="${act}" data-arg="${c[0]}">${L(c[1],c[2])}</button>`).join('')}</div>`;
+}
+function skeleton(){return Array.from({length:3},()=>`<div class="post"><div class="phead"><div class="skel" style="width:40px;height:40px;border-radius:99px"></div><div style="flex:1;display:flex;flex-direction:column;gap:6px"><div class="skel" style="height:14px;width:50%"></div><div class="skel" style="height:10px;width:30%"></div></div></div><div class="skel" style="height:14px;margin-top:14px"></div><div class="skel" style="height:14px;margin-top:8px;width:70%"></div></div>`).join('');}
+function vUniFeed(){
+  const h=S.home;
+  const loading=Date.now()<T.loadingUntil;
+  let body;
+  if(S.sim.offline) body=`<div class="empty"><div class="ill">${I('wifi','lg')}</div><div class="h2">${L('โหลดฟีดไม่ได้','Couldn’t load the feed')}</div><p class="ink2" style="margin:0">${L('เช็กอินเทอร์เน็ตแล้วลองใหม่','Check your connection and try again.')}</p><button class="btn dark sm" data-act="retryFeed">${I('refresh','sm')} ${L('ลองใหม่','Try again')}</button></div>`;
+  else if(loading) body=skeleton();
+  else{
+    let list=S.posts.filter(p=>p.uni&&viewerCanSee(p)&&!p.pinned);
+    if(h.cat!=='all') list=list.filter(p=>p.cat===h.cat);
+    list=sortPosts(list,h.sort);
+    const pinned=S.posts.find(p=>p.pinned&&viewerCanSee(p));
+    body=(h.cat==='all'&&pinned?postCard(pinned):'')+(list.length?list.map(p=>postCard(p)).join(''):`<div class="empty"><div class="ill">${I('sparkle','lg')}</div><div class="h2">${L('ยังไม่มีโพสต์ในหมวดนี้','No posts in this category yet')}</div><button class="btn primary sm" data-act="compose">${L('โพสต์เป็นคนแรก','Be the first to post')}</button></div>`);
+  }
+  const prompt=h.firstPrompt?firstPostPrompt():'';
+  return `<div class="scroll tabpad">${catChips(h.cat,'cat',[['all','ทั้งหมด','All']].concat(CATS))}
+    <div style="display:flex;align-items:center;gap:8px;padding:2px 20px 8px"><div class="seg"><button class="${h.sort==='hot'?'on':''}" data-act="sort" data-arg="hot">${L('มาแรง','Hot')}</button><button class="${h.sort==='new'?'on':''}" data-act="sort" data-arg="new">${L('ล่าสุด','New')}</button></div></div>
+    ${prompt}${body}</div>`;
+}
+function firstPostPrompt(){
+  const top3=BUBBLES.filter(bubbleOpen).sort((a,b)=>count24(b.id)-count24(a.id)).slice(0,3);
+  return `<div class="banner" style="flex-direction:column;gap:10px;margin-top:4px"><div style="display:flex;gap:10px;width:100%"><div style="flex:1"><div class="h3">${L('ทักทายเพื่อนในรั้วกัน 👋','Say hi to campus 👋')}</div><div class="cap" style="color:var(--ink2)">${L('บับเบิลที่คึกคักตอนนี้ โพสต์แรกของคุณรอเลย','These bubbles are busy right now. Make your first post.')}</div></div><button class="iconbtn plain" data-act="dismissPrompt" aria-label="${L('ปิด','Dismiss')}">${I('x','sm')}</button></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">${top3.map(b=>`<button class="chip" data-act="composeIn" data-arg="${b.id}:first_post_prompt">${I(BTYPES[b.type][2],'xs')} ${esc(bname(b))} <span class="num muted" style="font-size:12px">${count24(b.id)}</span></button>`).join('')}</div></div>`;
+}
+
+/* ============ BUBBLE MAP ============ */
+function vBubbleMap(){
+  const h=S.home; const on=locOn();
+  const vis=BUBBLES.filter(b=>b.status!=='ended'||(Date.now()-new Date(b.end+'T23:59:59')<7*DAY)).filter(b=>h.bcat==='all'||b.type===h.bcat);
+  const sorted=vis.slice().sort((a,b)=>{const A=count24(a.id)>0,B=count24(b.id)>0;if(A!==B)return B-A;return on?distance(a)-distance(b):count24(b.id)-count24(a.id);});
+  const sheetH=h.sheet==='full'?'calc(100% - 4px)':'232px';
+  const pins=vis.map(b=>{const n=count24(b.id);const ty=BTYPES[b.type];const dim=b.status!=='active'||!bubbleOpen(b);
+    return `<g class="pinb" data-act="openBubble" data-arg="${b.id}:pin" transform="translate(${b.x},${MY(b.y)})" opacity="${dim?.55:1}" role="button" aria-label="${esc(bname(b))}">
+      <circle r="19" fill="var(--canvas)" stroke="${b.type==='event'?'#7c3aed':'var(--ink)'}" stroke-width="2.5"/>
+      <g transform="translate(-10,-10) scale(.84)" fill="none" stroke="${b.type==='event'?'#7c3aed':'var(--ink)'}" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">${IP[ty[2]]}</g>
+      ${n?`<g transform="translate(14,-16)"><rect x="-2" y="-9" width="${String(n).length*7+12}" height="18" rx="9" fill="#c42b31"/><text x="${(String(n).length*7+8)/2}" y="4.5" text-anchor="middle" font-family="Plus Jakarta Sans" font-weight="800" font-size="11" fill="#fff">${n}</text></g>`:''}
+      <text y="34" text-anchor="middle" font-family="Noto Sans Thai" font-weight="700" font-size="11" fill="var(--ink)" stroke="var(--map-ground)" stroke-width="3" paint-order="stroke">${esc(bname(b))}</text></g>`;}).join('');
+  const map=`<svg class="map" viewBox="0 0 390 440" preserveAspectRatio="xMidYMin meet" role="img" aria-label="${L('แผนที่แคมปัส','Campus map')}">
+    <rect width="390" height="440" fill="var(--map-ground)"/><g transform="translate(0,20) scale(1,.75)">
+    <rect x="0" y="0" width="390" height="26" fill="var(--map-road)"/><text x="195" y="17" text-anchor="middle" font-size="9" fill="var(--map-label)" font-family="Plus Jakarta Sans" font-weight="700">RAMA I RD</text>
+    <rect x="22" y="0" width="16" height="560" fill="var(--map-road)"/>
+    <rect x="356" y="0" width="16" height="560" fill="var(--map-road)"/>
+    <rect x="0" y="530" width="390" height="22" fill="var(--map-road)"/><text x="195" y="545" text-anchor="middle" font-size="9" fill="var(--map-label)" font-family="Plus Jakarta Sans" font-weight="700">RAMA IV RD</text>
+    <rect x="38" y="356" width="318" height="12" fill="var(--map-road)"/>
+    <rect x="234" y="26" width="10" height="330" fill="var(--map-road)"/>
+    <rect x="130" y="200" width="140" height="110" rx="30" fill="var(--map-green)"/>
+    <ellipse cx="80" cy="140" rx="30" ry="18" fill="var(--map-water)"/>
+    <g fill="var(--map-bldg)"><rect x="60" y="60" width="60" height="40" rx="6"/><rect x="130" y="60" width="80" height="30" rx="6"/><rect x="260" y="50" width="80" height="60" rx="6"/><rect x="70" y="170" width="50" height="60" rx="6"/><rect x="256" y="130" width="70" height="40" rx="6"/><rect x="256" y="240" width="90" height="90" rx="6"/><rect x="60" y="380" width="110" height="80" rx="10"/><rect x="190" y="380" width="60" height="40" rx="6"/><rect x="270" y="440" width="70" height="80" rx="6"/><rect x="300" y="200" width="45" height="40" rx="6"/></g>
+    <rect x="60" y="390" width="90" height="56" rx="20" fill="var(--map-green)" opacity=".7"/></g>
+    ${on?`<g transform="translate(${ME_XY.x},${MY(ME_XY.y)})"><circle r="22" fill="#7c3aed" opacity=".15"/><circle r="8" fill="#7c3aed" stroke="#fff" stroke-width="3"/></g>`:''}
+    ${pins}</svg>`;
+  const card=b=>{const tp=postsIn(b.id).filter(p=>Date.now()-p.at<DAY).sort((a,c)=>c.ate-a.ate)[0];const a=tp&&authorView(tp,tp.id);
+    return `<button class="bcard" data-act="openBubble" data-arg="${b.id}:card"><div style="display:flex;gap:10px;align-items:center;width:100%"><span class="btype t-${b.type}">${I(BTYPES[b.type][2],'sm')}</span><div style="flex:1;min-width:0"><div class="lbl" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(bname(b))}</div><div class="cap">${[L(BTYPES[b.type][0],BTYPES[b.type][1]),on?fmtDist(distance(b)):null,b.status==='paused'?L('ปิดชั่วคราว','Paused'):null,b.status==='ended'?L('จบแล้ว','Ended'):null].filter(Boolean).join(' · ')}</div></div>${count24(b.id)?`<span class="pill danger num">${count24(b.id)}</span>`:''}</div>
+    ${tp?`<div style="display:flex;gap:8px;align-items:flex-start;width:100%">${a.av(22)}<div style="min-width:0;flex:1"><div class="cap" style="color:var(--ink);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">${esc(tp.text)}</div><div class="cap">${esc(a.name)} · ${rel(tp.at)} · <span style="color:#ff5a1f">${I('flame','xs')}</span> ${nf(tp.ate)}</div></div></div>`:`<div class="cap">${L('เงียบ ๆ อยู่ เป็นคนแรกที่โพสต์สิ','It’s quiet here. Be the first to post')}</div>`}</button>`;};
+  const listRow=b=>`<button class="row" data-act="openBubble" data-arg="${b.id}:list"><span class="btype t-${b.type}">${I(BTYPES[b.type][2],'sm')}</span><span class="rt"><span class="lbl">${esc(bname(b))}</span><br><span class="cap">${[L(BTYPES[b.type][0],BTYPES[b.type][1]),count24(b.id)?count24(b.id)+L(' โพสต์ใน 24 ชม.',' posts in 24h'):L('ยังไม่มีโพสต์วันนี้','No posts today'),on?fmtDist(distance(b)):null,b.status==='paused'?L('ปิดชั่วคราว','Paused'):null,b.status==='ended'?L('จบแล้ว','Ended'):null].filter(Boolean).join(' · ')}</span></span>${I('chev','sm')}</button>`;
+  return `<div class="mapwrap">${map}
+    <div class="mapchips">${catChips(h.bcat,'bcat',[['all','ทั้งหมด','All'],['food','ของกิน','Food'],['event','อีเวนต์','Event'],['study','อ่านหนังสือ','Study'],['faculty','คณะ','Faculty'],['life','ไลฟ์','Life']]).replace('padding-top:12px;padding-bottom:8px','padding:0 16px')}</div>
+    ${!on?`<div class="banner" style="position:absolute;top:52px;left:0;right:0;z-index:6;margin:0 16px;padding:10px 12px;align-items:center">${I('pin','sm')}<div style="flex:1" class="cap"><span style="color:var(--ink);font-weight:600">${L('ตำแหน่งปิดอยู่','Location is off')}</span> · ${L('แผนที่ยังใช้ได้ แค่ไม่มีระยะทาง','The map still works, without distances')}</div><button class="link" style="font-size:13px" data-act="enableLoc">${L('เปิด','Turn on')}</button></div>`:''}
+    ${on?`<button class="recentre" style="bottom:${h.sheet==='full'?'-100px':'246px'}" data-act="toastMsg" data-arg="${L('จัดแผนที่ให้อยู่ตรงกลางแล้ว','Map recentred')}" aria-label="${L('กลับมาตรงกลาง','Recentre')}">${I('target')}</button>`:''}
+    <span class="gattr" style="bottom:240px">Google · ${L('แผนที่จำลอง','map mock')}</span>
+    <div class="bsheet" style="height:${sheetH}"><button class="grabb" data-act="sheet" aria-label="${L('ขยายรายการ','Expand list')}"><i></i></button>
+      <div style="display:flex;align-items:center;padding:0 20px 8px"><div class="h3" style="flex:1">${h.sheet==='full'?L('บับเบิลทั้งหมด','All bubbles'):L('บับเบิลใกล้คุณ','Nearby bubbles')}</div><button class="link" style="font-size:13px" data-act="sheet">${h.sheet==='full'?L('ดูแผนที่','Show map'):L('ดูทั้งหมด','See all')}</button></div>
+      ${h.sheet==='full'?`<div class="scroll tabpad">${sorted.map(listRow).join('')}</div>`:`<div class="bcards">${sorted.map(card).join('')}</div>`}
+    </div></div>`;
+}
+
+/* ============ BUBBLE PAGE ============ */
+function vBubble(id){
+  const b=bubble(id); const ty=BTYPES[b.type]; const open=bubbleOpen(b);
+  const sort=T.bsort||'hot'; const list=sortPosts(postsIn(id),sort);
+  let banner='';
+  if(b.status==='paused') banner=`<div class="banner warn">${I('lock')}<div><div class="lbl">${L('ปิดโพสต์ชั่วคราว','Read-only for now')}</div><div class="cap" style="color:var(--ink2)">${L(b.reason_th,b.reason_en)}</div></div></div>`;
+  else if(b.status==='ended'||(b.end&&!open)) banner=`<div class="banner">${I('clock')}<div><div class="lbl">${L('งานจบแล้ว','This event has ended')}</div><div class="cap" style="color:var(--ink2)">${L('อ่านได้อย่างเดียว 7 วัน แล้วจะหายจากแผนที่','Read-only for 7 days, then hidden from the map')}</div></div></div>`;
+  return `<div class="screen">${topbar('',{right:`<button class="iconbtn" data-act="share" data-arg="bubble:${id}" aria-label="share">${I('send')}</button>`})}
+   <div class="scroll" style="padding-bottom:40px">
+    <div class="pad" style="display:flex;gap:14px;align-items:center"><span class="btype t-${b.type}" style="width:60px;height:60px;border-radius:20px">${I(ty[2],'lg')}</span><div style="flex:1;min-width:0"><div class="h1">${esc(bname(b))}</div><div class="cap">${[L(ty[0],ty[1]),count24(id)+L(' โพสต์วันนี้',' posts today'),locOn()?fmtDist(distance(b)):null].filter(Boolean).join(' · ')}</div>${b.start?`<div class="pill brand" style="margin-top:6px">${I('star','xs')} ${fmtDay(b.start)} – ${fmtDay(b.end)}</div>`:''}</div></div>
+    <div class="pad" style="margin-top:14px"><button class="btn primary block" ${open?'':'disabled'} data-act="composeIn" data-arg="${id}:bubble_page">${I('plus','sm')} ${L('โพสต์ในบับเบิลนี้','Post in this bubble')}</button></div>
+    ${banner}
+    <div style="display:flex;align-items:center;gap:8px;padding:16px 20px 4px;border-bottom:1px solid var(--divider)"><div class="seg"><button class="${sort==='hot'?'on':''}" data-act="bsort" data-arg="hot">${L('มาแรง','Hot')}</button><button class="${sort==='new'?'on':''}" data-act="bsort" data-arg="new">${L('ล่าสุด','New')}</button></div><span class="cap" style="margin-left:auto">${L('โพสต์อยู่ในบับเบิล 72 ชม.','Posts stay 72h')}</span></div>
+    ${list.length?list.map(p=>postCard(p,{inBubble:true})).join(''):`<div class="empty"><div class="ill">${I(ty[2],'lg')}</div><div class="h2">${L('เงียบ ๆ อยู่','It’s quiet here')}</div><p class="ink2" style="margin:0">${L('เป็นคนแรกที่โพสต์ในบับเบิลนี้','Be the first to post in this bubble.')}</p>${open?`<button class="btn primary sm" data-act="composeIn" data-arg="${id}:bubble_page">${L('โพสต์','Post')}</button>`:''}</div>`}
+   </div></div>`;
+}
+
+/* ============ HASHTAG ============ */
+function vHashtag(tag){
+  const muted=S.mutedTags.includes(tag.toLowerCase()); const sort=T.hsort||'hot';
+  const list=sortPosts(S.posts.filter(p=>p.tags.some(t=>t.toLowerCase()===tag.toLowerCase())&&!p.removed&&!S.hidden.includes(p.id)&&!isBlocked(p.by)),sort);
+  return `<div class="screen">${topbar('#'+esc(tag))}<div class="scroll" style="padding-bottom:40px">
+    <div class="pad" style="display:flex;align-items:center;gap:10px"><div style="flex:1"><div class="h1">#${esc(tag)}</div><div class="cap">${list.length} ${L('โพสต์','posts')} · ${L('เฉพาะจุฬาฯ','Chula only')}</div></div><button class="btn ${muted?'dark':'soft'} sm" data-act="muteTag" data-arg="${esc(tag)}">${I(muted?'bell':'bellx','sm')} ${muted?L('เลิกปิดเสียง','Unmute'):L('ปิดเสียง','Mute')}</button></div>
+    ${muted?`<div class="banner warn">${I('bellx')}<div class="cap" style="color:var(--ink2)">${L('ปิดเสียงแฮชแท็กนี้แล้ว โพสต์จะไม่ขึ้นในฟีดของคุณ','Hashtag muted. These posts won’t show in your feeds.')}</div></div>`:''}
+    <div style="padding:12px 20px 4px;border-bottom:1px solid var(--divider)"><div class="seg" style="display:inline-flex"><button class="${sort==='hot'?'on':''}" data-act="hsort" data-arg="hot">${L('มาแรง','Hot')}</button><button class="${sort==='new'?'on':''}" data-act="hsort" data-arg="new">${L('ล่าสุด','New')}</button></div></div>
+    ${list.map(p=>postCard(p)).join('')||`<div class="empty"><div class="h2">${L('ยังไม่มีโพสต์','No posts yet')}</div></div>`}
+  </div></div>`;
+}
+
+/* ============ SEARCH ============ */
+function searchResults(q){
+  q=q.trim().toLowerCase(); if(!q) return {posts:[],tags:[],people:[]};
+  const qt=q.replace(/^#/,'').replace(/^@/,'');
+  const posts=S.posts.filter(p=>viewerCanSee(p)&&p.reach!=='reduced'&&(p.text.toLowerCase().includes(qt)));
+  const tagset={};S.posts.filter(p=>!p.removed).forEach(p=>p.tags.forEach(t=>{if(t.toLowerCase().includes(qt))tagset[t]=(tagset[t]||0)+1;}));
+  TRENDING.forEach(t=>{if(t.toLowerCase().includes(qt)&&!tagset[t])tagset[t]=0;});
+  const tags=Object.entries(tagset).sort((a,b)=>b[1]-a[1]);
+  const people=Object.values(USERS).filter(u=>!u.official&&!isBlocked(u.id)&&(u.name.toLowerCase().includes(qt)||u.user.includes(qt)));
+  return {posts,tags,people};
+}
+function vSearch(){
+  const q=T.search.q;
+  return `<div class="screen"><div class="topbar" style="gap:8px"><button class="iconbtn" data-act="back" aria-label="${L('กลับ','Back')}">${I('back')}</button>
+    <div style="flex:1;position:relative"><span style="position:absolute;left:14px;top:11px;color:var(--tert)">${I('search','sm')}</span><input id="searchInput" class="input" style="height:42px;border-radius:999px;padding-left:40px;background:var(--surface);border-color:transparent" placeholder="${L('ค้นหาโพสต์ แฮชแท็ก คน','Search posts, hashtags, people')}" value="${esc(q)}" data-on="search" enterkeyhint="search" autocomplete="off"></div></div>
+    <div id="searchBody" class="scroll" style="padding-bottom:40px">${searchBody()}</div></div>`;
+}
+function searchBody(){
+  const q=T.search.q.trim();
+  if(!q) return `<div class="section-t">${L('ค้นหาล่าสุด','Recent')}</div>${S.recent.length?S.recent.map(r=>`<button class="row" data-act="searchFill" data-arg="${esc(r)}">${I('clock','sm')}<span class="rt">${esc(r)}</span></button>`).join(''):`<div class="pad cap">${L('ยังไม่มีประวัติค้นหา','No recent searches')}</div>`}
+    <div class="section-t">${L('กำลังมาแรงในจุฬาฯ','Trending at Chula')}</div><div style="display:flex;flex-wrap:wrap;gap:8px;padding:0 20px">${TRENDING.slice(0,8).map(t=>`<button class="chip" data-act="openTag" data-arg="${t}" data-src="search">#${t}</button>`).join('')}</div>`;
+  const r=searchResults(q); const tab=T.search.tab;
+  const tb=(id,label,n)=>`<button class="feedtab ${tab===id?'on':''}" data-act="searchTab" data-arg="${id}">${label} <span class="num" style="font-size:12px">${n}</span></button>`;
+  let list='';
+  if(tab==='posts') list=r.posts.map(p=>postCard(p,{showWhere:true})).join('');
+  if(tab==='tags') list=r.tags.map(([t,n])=>`<button class="row" data-act="openTag" data-arg="${esc(t)}" data-src="search"><span class="btype" style="background:var(--info);color:var(--brand-ink)">${I('hash','sm')}</span><span class="rt"><span class="lbl">#${esc(t)}</span><br><span class="cap">${n} ${L('โพสต์','posts')}</span></span>${I('chev','sm')}</button>`).join('');
+  if(tab==='people') list=r.people.map(u=>`<button class="row" data-act="openProfile" data-arg="${u.id}" data-src="search">${avatar(u,44)}<span class="rt"><span class="lbl" style="display:inline-flex;gap:4px;align-items:center">${esc(u.name)} ${VERIFIED}</span><br><span class="cap">@${u.user}${facYear(u)?' · '+facYear(u):''}</span></span></button>`).join('');
+  const cnt={posts:r.posts.length,tags:r.tags.length,people:r.people.length}[tab];
+  return `<div class="feedtabs" style="padding:0 20px;margin-top:0">${tb('posts',L('โพสต์','Posts'),r.posts.length)}${tb('tags',L('แฮชแท็ก','Hashtags'),r.tags.length)}${tb('people',L('คน','People'),r.people.length)}</div>
+   ${cnt?list:`<div class="empty"><div class="ill">${I('search','lg')}</div><div class="h2">${L('ไม่เจอ "'+esc(q)+'"','No results for "'+esc(q)+'"')}</div><p class="ink2" style="margin:0">${L('ลองคำสั้นลง หรือค้นด้วยแฮชแท็ก เช่น #สามย่าน','Try a shorter word, or a hashtag like #สามย่าน')}</p></div>`}
+   ${tab==='people'?`<div class="pad cap" style="margin-top:12px">${I('mask','xs')} ${L('ค้นหาคนจะไม่แสดงโพสต์นิรนามของเขา','People results never show anyone’s anonymous posts.')}</div>`:''}`;
+}
+
+/* ============ POST DETAIL ============ */
+function vPost(id){
+  const p=S.posts.find(x=>x.id===id);
+  if(!p||!viewerCanSee(p)) return `<div class="screen">${topbar(L('โพสต์','Post'))}<div class="empty"><div class="ill">${I('eyeoff','lg')}</div><div class="h2">${L('โพสต์นี้ไม่พร้อมใช้งาน','This post isn’t available')}</div><p class="ink2" style="margin:0">${S.reported.includes('post:'+id)?L('คุณรายงานโพสต์นี้แล้ว เราซ่อนไว้ให้คุณ','You reported this post, so it’s hidden for you.'):L('โพสต์อาจถูกลบหรือซ่อนไว้','It may have been deleted or hidden.')}</p></div></div>`;
+  const a=authorView(p,p.id); const b=p.bubble&&bubble(p.bubble);
+  const cs=commentsOf(id); const tops=cs.filter(c=>!c.parent);
+  const where=[p.uni?L('มหาลัย','University'):null,b?bname(b):null].filter(Boolean).join(' + ');
+  const url=findUrl(p.text);
+  const cm=T.cmode||S.settings.mode;
+  const cAuthor=cm==='anon'?{av:s=>anonAv(aliasOf(p.id,'me'),s)}:{av:s=>avatar(S.me,s)};
+  return `<div class="screen">${topbar(L('โพสต์','Post'))}
+   <div class="scroll" id="postScroll">
+    <div class="pad"><div class="phead">${a.av(48)}<div style="flex:1;min-width:0"><div class="pname" style="font-size:16px">${esc(a.name)}${a.anon?'':VERIFIED}${p.by==='me'&&p.anon?`<span class="pill lime">${I('lock','xs')} ${L('มีแค่คุณที่เห็น','Only you can see this')}</span>`:''}</div><div class="pmeta">${esc(a.sub)}</div></div><button class="iconbtn" data-act="postMenu" data-arg="${p.id}" aria-label="more">${I('more')}</button></div>
+    <div class="ptext" style="font-size:16px;line-height:26px">${rich(p.text,p)}</div>
+    ${p.images.length?`<div class="pimgs n${p.images.length}">${p.images.map(imgTile).join('')}</div>`:''}${p.poll?pollHTML(p):''}${url&&!p.images.length?linkPreview(url):''}
+    <div class="cap" style="margin-top:10px">${fmtDate(p.at)} · ${esc(catName(p.cat))} · ${esc(where)}${p.edited?' · '+L('แก้ไขแล้ว','edited'):''}</div>
+    <div style="display:flex;gap:18px;padding:12px 0;border-bottom:1px solid var(--divider)"><span><b class="num">${nf(p.ate)}</b> <span class="muted">ATE</span></span><span><b class="num">${cs.length}</b> <span class="muted">${L('คอมเมนต์','comments')}</span></span></div>
+    <div style="display:flex;justify-content:space-around;padding:4px 0;border-bottom:1px solid var(--divider)">
+      <button class="pact" data-act="focusComment">${I('comment')}</button>
+      <button class="pact ate ${p.ated?'on':''}" data-act="ate" data-arg="post:${p.id}">${I('flame')}</button>
+      <button class="pact" data-act="share" data-arg="${p.id}">${I('send')}</button>
+      <button class="pact" data-act="postMenu" data-arg="${p.id}">${I('more')}</button></div></div>
+    <div style="padding:6px 0 24px">${tops.length?tops.map(c=>commentHTML(c,p)+cs.filter(r=>r.parent===c.id).map(r=>commentHTML(r,p,true)).join('')).join(''):`<div class="empty" style="padding:28px"><div class="cap">${L('ยังไม่มีคอมเมนต์ เริ่มคุยเลย','No comments yet. Start the conversation.')}</div></div>`}</div>
+   </div>
+   <div id="cSuggest"></div>
+   ${T.reply?`<div style="display:flex;align-items:center;gap:8px;padding:8px 16px;background:var(--surface);font-size:13px;flex:none"><span style="flex:1">${L('ตอบกลับ ','Replying to ')}<b>${esc(T.reply.label)}</b></span><button class="iconbtn plain" style="width:28px;height:28px" data-act="cancelReply" aria-label="cancel">${I('x','sm')}</button></div>`:''}
+   <div id="cHint" class="cap" style="padding:0 16px;flex:none"></div>
+   <div class="cbar">${T.rec?`<div style="flex:1;display:flex;align-items:center;gap:10px;height:44px;border-radius:22px;background:var(--danger-bg);padding:0 16px;color:var(--danger);font-weight:700"><span style="width:10px;height:10px;border-radius:9px;background:var(--danger)"></span> ${L('กำลังอัด','Recording')} <span class="num" id="recT">0:00</span><span class="cap" style="margin-left:auto">${L('สูงสุด 60 วิ','max 60s')}</span></div><button class="iconbtn" data-act="recCancel" aria-label="cancel">${I('x')}</button><button class="fab" style="width:44px;height:44px;box-shadow:none" data-act="recStop" aria-label="send">${I('send','sm')}</button>`:
+     `<button data-act="cmode" aria-label="${L('สลับโหมด','Switch mode')}" style="position:relative">${cAuthor.av(36)}<span style="position:absolute;right:-3px;bottom:-3px;width:18px;height:18px;border-radius:99px;background:var(--ink);color:var(--canvas);display:flex;align-items:center;justify-content:center">${I('swap','xs')}</span></button>
+      <textarea id="cInput" class="cinput" rows="1" maxlength="500" placeholder="${cm==='anon'?L('ตอบในนามนิรนาม…','Reply anonymously…'):L('ตอบในนาม ','Reply as ')+esc(S.me.name)+'…'}" data-on="cInput"></textarea>
+      <button class="iconbtn" id="cMic" data-act="recStart" aria-label="${L('คอมเมนต์เสียง','Voice comment')}">${I('mic')}</button>
+      <button class="fab" id="cSend" style="width:44px;height:44px;box-shadow:none;display:none" data-act="sendComment" aria-label="${L('ส่ง','Send')}">${I('send','sm')}</button>`}</div>
+  </div>`;
+}
+function commentHTML(c,p,isReply){
+  const a=authorView(c,p.id); const op=c.by===p.by&&c.anon===p.anon;
+  let replyLbl='';
+  if(c.replyTo){const r=c.replyTo; const lab=r.anon?aliasOf(p.id,r.uid).name:user(r.uid).name; replyLbl=`<span class="cap" style="color:var(--brand-ink)">${L('ตอบกลับ ','Replying to ')}${esc(lab)}</span><br>`;}
+  return `<div class="cmt ${isReply?'reply':''}">${a.av(isReply?30:36)}<div class="cb">
+    <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap"><span class="lbl">${esc(a.name)}</span>${a.anon?'':VERIFIED}${op?`<span class="pill op">${L('ผู้โพสต์','OP')}</span>`:''}<span class="cap">· ${rel(c.at)}</span></div>
+    ${replyLbl}${c.voice?voiceHTML(c):`<div style="font-size:14px;line-height:22px;white-space:pre-wrap;word-break:break-word">${rich(c.text,c)}</div>`}
+    <div style="display:flex;gap:4px;margin-left:-8px;margin-top:2px">
+      <button class="pact" data-act="reply" data-arg="${c.id}">${I('comment','xs')} ${L('ตอบ','Reply')}</button>
+      <button class="pact ate ${c.ated?'on':''}" data-act="ate" data-arg="comment:${c.id}">${I('flame','xs')} ${c.ate||''}</button>
+      <button class="pact" style="margin-left:auto" data-act="commentMenu" data-arg="${c.id}" aria-label="more">${I('more','xs')}</button></div></div></div>`;
+}
+function voiceHTML(c){
+  const playing=T.playing===c.id; const bars=Array.from({length:28},(_,i)=>6+Math.abs(Math.sin(i*1.7+c.voice.sec))*16);
+  return `<div class="voice"><button class="play" data-act="playVoice" data-arg="${c.id}" aria-label="play">${I(playing?'pause':'play','xs')}</button><div class="wave ${playing?'playing':''}">${bars.map(h=>`<i style="height:${h}px"></i>`).join('')}</div><span class="num cap">0:${String(c.voice.sec).padStart(2,'0')}</span></div>`;
+}
+
+/* ============ COMPOSE ============ */
+function newDraft(o){return Object.assign({text:'',mode:S.settings.mode,cat:null,catAuto:null,uni:true,bubble:null,images:[],poll:null,editing:null,src:null},o||{});}
+function vCompose(){
+  const d=S.draft; const ed=!!d.editing;
+  const me=d.mode==='anon'?{av:s=>anonAv({c:'#ffc53d',bg:'#ffe39a'},s),name:L('นิรนาม','Anonymous')}:{av:s=>avatar(S.me,s),name:S.me.name};
+  const b=d.bubble&&bubble(d.bubble);
+  return `<div class="screen" style="background:var(--canvas)">
+   <div class="topbar"><button class="lbl" data-act="composeCancel">${L('ยกเลิก','Cancel')}</button><div class="t">${ed?L('แก้ไขโพสต์','Edit post'):''}</div><button class="btn primary sm" style="box-shadow:2px 2px 0 var(--lime)" id="postBtn" data-act="publish">${ed?L('บันทึก','Save'):L('โพสต์','Post')}</button></div>
+   <div class="scroll">
+    <div class="pad" style="display:flex;gap:12px;align-items:flex-start">
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px">${me.av(40)}</div>
+      <div style="flex:1;min-width:0">
+        ${ed?'':`<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:6px">
+          <button class="chip ${d.mode==='identity'?'on':''}" style="height:30px;font-size:12px" data-act="dmode" data-arg="identity">${I('user','xs')} ${esc(S.me.name||L('ชื่อจริง','Identity'))}</button>
+          <button class="chip ${d.mode==='anon'?'on':''}" style="height:30px;font-size:12px" data-act="dmode" data-arg="anon">${I('mask','xs')} ${L('นิรนาม','Anonymous')}</button></div>
+          ${d.mode==='anon'?`<div class="cap" style="margin-bottom:6px">${I('shield','xs')} ${L('คนอื่นเห็นแค่ชื่อแฝง แต่ระบบเก็บบัญชีจริงไว้ ถ้าผิดกติกาก็โดนลงโทษได้','Others only see an alias. We keep your real account, so the rules still apply.')}</div>`:''}`}
+        <textarea id="cmpText" class="composer-ta" maxlength="1000" placeholder="${L('มีอะไรเกิดขึ้นในรั้วบ้าง?','What’s happening on campus?')}" data-on="cmpText">${esc(d.text)}</textarea>
+        <div id="cmpImgs">${composeImgs()}</div>
+        <div id="cmpPoll">${ed?'':composePoll()}</div>
+        <div id="cmpLink">${composeLink()}</div>
+      </div></div>
+    ${ed?'':`<div class="section-t" style="padding-top:18px">${L('โพสต์ไปที่','Post to')}</div>
+    <div class="chips"><button class="chip ${d.uni?'on':''}" data-act="dUni">${d.uni?I('check','xs'):''} ${L('มหาลัย','University')}</button>
+      <button class="chip ${b?'on':''}" data-act="pickBubble">${I('pin','xs')} ${b?esc(bname(b)):L('เลือกบับเบิล','Pick a bubble')} ${I('down','xs')}</button>
+      ${b?`<button class="chip" data-act="clearBubble" aria-label="remove bubble">${I('x','xs')}</button>`:''}</div>
+    <div class="pad cap" id="whereErr" style="margin-top:6px">${!d.uni&&!b?`<span class="err-t">${L('เลือกอย่างน้อย 1 ที่','Pick at least one place')}</span>`:L('โพสต์มีแค่บับเบิลที่คุณเลือก ไม่มีตำแหน่งของคุณ','Your post carries the bubble you pick, never your location.')}</div>`}
+   </div>
+   <div id="cmpSuggest"></div>
+   <div id="cmpCats">${composeCats()}</div>
+   <div class="tb">
+     <label class="iconbtn" style="cursor:pointer" aria-label="${L('เพิ่มรูป','Add photos')}">${I('image')}<input type="file" accept="image/*" multiple hidden data-on="cmpFiles"></label>
+     ${ed?'':`<button class="iconbtn" data-act="addPoll" aria-label="${L('โพล','Poll')}">${I('poll')}</button>`}
+     <button class="iconbtn" data-act="insert" data-arg="#" aria-label="hashtag">${I('hash')}</button>
+     <button class="iconbtn" data-act="insert" data-arg="@" aria-label="mention">${I('at')}</button>
+     <span id="cmpCount" class="num cap" style="margin-left:auto"></span>
+   </div><div style="height:28px;flex:none"></div>
+  </div>`;
+}
+function composeImgs(){
+  const d=S.draft; if(!d.images.length) return '';
+  return `<div style="display:grid;grid-template-columns:repeat(${Math.min(d.images.length,2)},1fr);gap:8px;margin-top:10px">${d.images.map((im,i)=>`<div style="position:relative;border-radius:14px;overflow:hidden">${imgTile(im)}${im.failed?`<div style="position:absolute;inset:0;background:rgba(11,16,38,.6);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;font-size:12px;font-weight:600">${L('อัปโหลดไม่สำเร็จ','Upload failed')}<button class="btn sm" style="background:#fff;color:#0b1026;height:30px" data-act="retryImg" data-arg="${i}">${L('ลองใหม่','Retry')}</button></div>`:''}<button aria-label="remove" data-act="rmImg" data-arg="${i}" style="position:absolute;top:6px;right:6px;width:26px;height:26px;border-radius:99px;background:rgba(11,16,38,.6);color:#fff;display:flex;align-items:center;justify-content:center">${I('x','xs')}</button></div>`).join('')}</div>
+  <div class="cap" style="margin-top:6px">${I('lock','xs')} ${L('ลบข้อมูลตำแหน่ง (EXIF/GPS) ในรูปออกแล้ว','Location data (EXIF/GPS) removed from photos')} · ${d.images.length}/4</div>`;
+}
+function composePoll(){
+  const po=S.draft.poll; if(!po) return '';
+  return `<div class="card" style="padding:12px;margin-top:10px;display:flex;flex-direction:column;gap:8px">
+   <div style="display:flex;align-items:center"><span class="lbl" style="flex:1">${I('poll','xs')} ${L('โพล','Poll')}</span><button class="iconbtn plain" style="width:28px;height:28px" data-act="rmPoll" aria-label="remove poll">${I('x','sm')}</button></div>
+   ${po.opts.map((o,i)=>`<div style="display:flex;gap:6px"><input class="input" style="height:42px" maxlength="40" placeholder="${L('ตัวเลือก ','Option ')}${i+1}" value="${esc(o)}" data-on="pollOpt" data-i="${i}">${po.opts.length>2?`<button class="iconbtn plain" data-act="rmOpt" data-arg="${i}" aria-label="remove">${I('x','sm')}</button>`:''}</div>`).join('')}
+   ${po.opts.length<4?`<button class="link" style="text-align:left;font-size:14px" data-act="addOpt">+ ${L('เพิ่มตัวเลือก','Add option')}</button>`:''}
+   <div style="display:flex;align-items:center;gap:8px"><span class="cap">${L('ระยะเวลา','Length')}</span><div class="seg">${[1,3,7].map(n=>`<button class="${po.days===n?'on':''}" data-act="pollDays" data-arg="${n}">${n} ${L('วัน','d')}</button>`).join('')}</div></div>
+   <div class="cap">${L('โหวตไม่ระบุตัวตน · เห็นผลหลังโหวต','Votes are anonymous · results show after voting')}</div></div>`;
+}
+function composeLink(){
+  const url=findUrl(S.draft.text); if(!url) return '';
+  const d=domainOf(url); const bad=MOD.blockedDomains.some(x=>d.endsWith(x));
+  if(bad) return `<div class="banner danger" style="margin:10px 0 0">${I('link')}<div><div class="lbl">${L('ลิงก์นี้ใช้ไม่ได้','This link can’t be posted')}</div><div class="cap" style="color:var(--ink2)">${esc(d)} ${L('อยู่ในรายชื่อเว็บที่ไม่ปลอดภัย ลบลิงก์ออกก่อนโพสต์','is on our unsafe-sites list. Remove it to post.')}</div></div></div>`;
+  return S.draft.images.length?'':linkPreview(url);
+}
+function suggestCat(t){
+  t=(t||'').toLowerCase();
+  const rules=[['lost',['หาย','lost','found','เก็บได้']],['housing',['หอ','รูมเมท','คอนโด','roommate','ห้องเช่า']],['food',['ข้าว','กิน','อร่อย','ร้าน','กาแฟ','ชา','food','eat','ate']],['class',['สอบ','เรียน','ชีท','แล็บ','exam','midterm','final','lecture','ควิซ','เซค']],['event',['งาน','คอนเสิร์ต','event','open house','กิจกรรม','บูธ']],['question',['?','ใครรู้','ถาม','ยังไง','how']]];
+  for(const [c,ws] of rules) if(ws.some(w=>t.includes(w))) return c; return null;
+}
+function composeCats(){
+  const d=S.draft; const sug=d.catAuto;
+  const order=sug?[CATS.find(c=>c[0]===sug)].concat(CATS.filter(c=>c[0]!==sug)):CATS;
+  return `<div style="border-top:1px solid var(--divider);padding:10px 0 4px"><div style="display:flex;align-items:center;gap:6px;padding:0 20px 6px"><span class="cap" style="font-weight:700;color:var(--ink2)">${L('หมวด','Category')} <span class="err-t" style="font-size:12px">*</span></span>${sug?`<span class="cap" style="color:var(--brand-ink)">${I('sparkle','xs')} ${L('AI แนะนำ','AI suggestion')}</span>`:''}</div>
+    <div class="chips">${order.map(c=>`<button class="chip ${d.cat===c[0]?'on':''} ${sug===c[0]&&d.cat!==c[0]?'ai':''}" style="height:32px;font-size:13px" data-act="dcat" data-arg="${c[0]}">${sug===c[0]?I('sparkle','xs'):''}${L(c[1],c[2])}</button>`).join('')}</div></div>`;
+}
+function composeValid(){
+  const d=S.draft; const t=d.text.trim(); const errs=[];
+  if(!t) errs.push('text');
+  if(!d.cat) errs.push('cat');
+  if(!d.editing&&!d.uni&&!d.bubble) errs.push('where');
+  if(d.poll&&d.poll.opts.filter(o=>o.trim()).length<2) errs.push('poll');
+  if(d.images.some(i=>i.failed)) errs.push('img');
+  if(tagsOf(d.text).length>5) errs.push('tags');
+  if(mentionsIn(d.text).length>5&&d.mode!=='anon') errs.push('mentions');
+  const url=findUrl(d.text); if(url&&MOD.blockedDomains.some(x=>domainOf(url).endsWith(x))) errs.push('link');
+  return errs;
+}
+function refreshCompose(){
+  const d=S.draft; const errs=composeValid();
+  const btn=$('#postBtn'); if(btn){btn.disabled=errs.length>0;btn.classList.toggle('disabled',errs.length>0);}
+  const c=$('#cmpCount'); if(c){const n=d.text.length; const extra=[]; if(errs.includes('tags'))extra.push(L('แฮชแท็กเกิน 5','Max 5 hashtags'));if(errs.includes('mentions'))extra.push(L('แท็กได้ไม่เกิน 5 คน','Max 5 mentions'));if(errs.includes('cat')&&d.text.trim())extra.push(L('เลือกหมวด','Pick a category'));if(errs.includes('poll'))extra.push(L('โพลต้องมี 2 ตัวเลือก','Poll needs 2 options'));
+    c.innerHTML=(extra.length?`<span class="err-t">${extra.join(' · ')}</span> `:'')+`<span style="${n>950?'color:var(--danger)':''}">${n}/1000</span>`;}
+}
+
+/* mention / hashtag autocomplete */
+function mentionCandidates(q,postId){
+  const pool=Object.values(USERS).filter(u=>!u.official&&u.mentions!=='none'&&!isBlocked(u.id));
+  const inThread=postId?new Set([S.posts.find(p=>p.id===postId)?.by].concat(S.comments.filter(c=>c.post===postId&&!c.anon).map(c=>c.by))):new Set();
+  const interacted=new Set(['u1','u6']);
+  const score=u=>(inThread.has(u.id)?0:interacted.has(u.id)?1:u.fac[1]===S.me.fac[1]?2:3);
+  const group=s=>['thread','interacted','faculty','university'][s];
+  return pool.filter(u=>!q||u.user.startsWith(q)||u.name.toLowerCase().includes(q)).sort((a,b)=>score(a)-score(b)).slice(0,5).map(u=>({u,group:group(score(u))}));
+}
+function activeToken(el){
+  const v=el.value.slice(0,el.selectionStart); const m=v.match(/(^|\s)([@#])([\p{L}\p{M}\p{N}._]*)$/u); return m?{sym:m[2],q:m[3].toLowerCase(),start:v.length-m[3].length-1}:null;
+}
+function suggestHTML(tok,mode,ctx){
+  if(!tok) return '';
+  if(tok.sym==='@'){
+    if(mode==='anon') return `<div class="suggest"><div class="banner" style="margin:10px 14px;align-items:center">${I('mask')}<div style="flex:1"><div class="lbl">${L('โหมดไม่ระบุตัวตนแท็กใครไม่ได้','You can’t mention anyone in anonymous mode')}</div><div class="cap" style="color:var(--ink2)">${L('@ จะเป็นข้อความธรรมดา','The @ stays plain text')}</div></div><button class="btn dark sm" data-act="${ctx}Identity">${L('ใช้ชื่อจริง','Use identity')}</button></div></div>`;
+    const list=mentionCandidates(tok.q,ctx==='c'?top().a:null);
+    if(!list.length) return `<div class="suggest"><div class="pad cap" style="padding-block:12px">${L('ไม่พบคนที่แท็กได้','No one you can mention')}</div></div>`;
+    return `<div class="suggest">${list.map((x,i)=>`<button class="row" style="min-height:52px;padding:8px 16px" data-act="pickMention" data-arg="${ctx}|${x.u.user}|${x.group}|${i}">${avatar(x.u,32)}<span class="rt"><span class="lbl">${esc(x.u.name)}</span> <span class="cap">@${x.u.user}</span><br><span class="cap">${{thread:L('อยู่ในโพสต์นี้','In this thread'),interacted:L('เคยคุยกัน','You’ve interacted'),faculty:L('คณะเดียวกัน','Your faculty'),university:L('จุฬาฯ','Chula')}[x.group]}</span></span></button>`).join('')}</div>`;
+  }
+  const tags=TRENDING.filter(t=>t.toLowerCase().startsWith(tok.q)).slice(0,5);
+  if(!tags.length) return '';
+  return `<div class="suggest">${tags.map(t=>`<button class="row" style="min-height:44px;padding:8px 16px" data-act="pickTag" data-arg="${ctx}|${t}">${I('hash','sm')}<span class="rt lbl">${t}</span><span class="cap">${L('มาแรง','Trending')}</span></button>`).join('')}</div>`;
+}
+function replaceToken(el,tok,text){
+  const v=el.value; const before=v.slice(0,tok.start); const after=v.slice(el.selectionStart);
+  el.value=before+text+' '+after; const pos=(before+text+' ').length; el.focus(); el.setSelectionRange(pos,pos);
+  el.dispatchEvent(new Event('input',{bubbles:true}));
+}
+
+/* ============ ACTIVITY ============ */
+function vActivity(){
+  const tab=T.atab||'all'; const list=S.notifs.filter(n=>tab==='all'||n.type==='mention');
+  return `<div class="screen"><div class="hdr-home"><div class="uni" style="font-size:26px">${L('แจ้งเตือน','Activity')}</div>
+    <div class="feedtabs"><button class="feedtab ${tab==='all'?'on':''}" data-act="atab" data-arg="all">${L('ทั้งหมด','All')}</button><button class="feedtab ${tab==='mention'?'on':''}" data-act="atab" data-arg="mention">${L('พูดถึงคุณ','Mentions')}</button></div></div>
+    <div class="scroll tabpad">
+    ${quietHours()?`<div class="banner">${I('moon')}<div class="cap" style="color:var(--ink2)">${L('ช่วงพักการแจ้งเตือน 00:00–07:00 ไม่ส่งพุช รายการรออยู่ที่นี่','Quiet hours 00:00–07:00: no push. Items wait here.')}</div></div>`:''}
+    ${list.length?list.map(notifHTML).join(''):`<div class="empty"><div class="ill">${I('bell','lg')}</div><div class="h2">${L('ยังไม่มีอะไรใหม่','Nothing new yet')}</div><p class="ink2" style="margin:0">${L('เมื่อมีคน ATE คอมเมนต์ หรือพูดถึงคุณ จะขึ้นที่นี่','When people ATE, comment or mention you, it shows here.')}</p><button class="btn primary sm" data-act="compose">${L('โพสต์อะไรสักอย่าง','Post something')}</button></div>`}
+    <div class="pad cap" style="margin-top:16px;text-align:center">${L('การแจ้งเตือนเปิดทุกประเภทเป็นค่าเริ่มต้นใน MVP 1','All notification types are on by default in MVP 1')}</div>
+    </div>${tabbar()}</div>`;
+}
+function notifHTML(n){
+  const ic={ate:['flame','#fff1ea','#ff5a1f'],comment:['comment','var(--info)','var(--brand)'],mention:['at','var(--info)','var(--brand)'],poll:['poll','#e8f0ff','#2556c7'],removed:['shield','var(--danger-bg)','var(--danger)'],report:['check','var(--ok-bg)','var(--ok)'],reverify:['refresh','var(--warn-bg)','var(--warn)'],welcome:['sparkle','var(--info)','var(--brand)']}[n.type];
+  const avs=(n.avs||[]).map((id,i)=>`<span style="margin-left:${i?-6:0}px;border-radius:99px;box-shadow:0 0 0 2px var(--canvas);display:inline-flex">${avatar(user(id),26)}</span>`).join('');
+  return `<button class="notif ${n.read?'':'unread'}" data-act="openNotif" data-arg="${n.id}"><span style="color:${ic[2]};width:28px;display:flex;justify-content:center;padding-top:${avs?34:2}px">${I(ic[0])}</span><span style="flex:1;min-width:0">${avs?`<span style="display:flex;margin-bottom:6px">${avs}</span>`:''}<span style="font-size:14px;line-height:21px;display:block">${n.html} <span class="muted">· ${rel(n.at)}</span></span>${n.prev?`<span class="cap" style="display:block;color:var(--ink2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(n.prev)}</span>`:''}<span class="cap" style="font-size:11px">${n.channel==='push'?L('พุช + ในแอป','Push + in-app'):L('ในแอป','In-app')}</span></span></button>`;
+}
+function addNotif(o){const n=Object.assign({id:uid('n'),at:Date.now(),read:false,channel:'push'},o);if(quietHours()&&n.channel==='push')n.channel='in_app';S.notifs.unshift(n);return n;}
+
+/* ============ PROFILE ============ */
+function vProfile(id){
+  const own=!id||id==='me'; const u=own?S.me:USERS[id];
+  if(!own&&isBlocked(id)) return `<div class="screen">${topbar('@'+u.user)}<div class="empty"><div class="ill">${I('block','lg')}</div><div class="h2">${L('คุณบล็อกคนนี้อยู่','You blocked this person')}</div><p class="ink2" style="margin:0">${L('คุณจะไม่เห็นโพสต์ของกันและกัน และแท็กกันไม่ได้','You won’t see each other’s posts or mention each other.')}</p><button class="btn soft sm" data-act="unblock" data-arg="${id}">${L('เลิกบล็อก','Unblock')}</button>${oq(L('ทางเลิกบล็อกยังรอสรุป','Undo path still open'))}</div></div>`;
+  const posts=S.posts.filter(p=>p.by===(own?'me':id)&&!p.removed&&(own||!p.anon)).sort((a,b)=>b.at-a.at);
+  const ateRecv=posts.reduce((s,p)=>s+p.ate,0); const cmts=S.comments.filter(c=>c.by===(own?'me':id)).length;
+  const kfmt=n=>n>=1000?(n/1000).toFixed(1).replace(/\.0$/,'')+'K':String(n);
+  const banner=`<div class="pbanner"><svg viewBox="0 0 390 120" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><circle cx="300" cy="10" r="74" fill="#c6f43b"/><circle cx="292" cy="0" r="70" fill="#7c3aed"/><circle cx="162" cy="28" r="7" fill="#c6f43b"/><rect x="198" y="46" width="26" height="9" rx="4.5" fill="#fff" transform="rotate(-24 211 50)"/><rect x="352" y="62" width="18" height="18" rx="5" fill="#7c3aed" transform="rotate(16 361 71)"/></svg>
+    ${own?'':`<button class="iconbtn" style="position:absolute;top:10px;left:14px;background:rgba(255,255,255,.9);color:#0b1026" data-act="back" aria-label="${L('กลับ','Back')}">${I('back')}</button><button class="iconbtn" style="position:absolute;top:10px;right:14px;background:rgba(255,255,255,.9);color:#0b1026" data-act="profileMenu" data-arg="${id}" aria-label="more">${I('more')}</button>`}</div>`;
+  return `<div class="screen"><div class="scroll ${own?'tabpad':''}" style="${own?'':'padding-bottom:40px'}">${banner}
+    <div class="pad"><div style="display:flex;align-items:flex-end;gap:8px;margin-top:-46px">
+      <span class="pav">${avatar(u,92)}</span><div style="flex:1"></div>
+      ${own?`<button class="btn sm" style="border:1.5px solid var(--ink);height:40px" data-act="go" data-arg="editProfile">${L('แก้ไขโปรไฟล์','Edit profile')}</button><button class="iconbtn" style="background:var(--canvas);border:1.5px solid var(--border)" data-act="go" data-arg="settings" aria-label="${L('ตั้งค่า','Settings')}">${I('gear')}</button>`:''}
+    </div>
+    <div class="h1" style="margin-top:10px;display:flex;gap:6px;align-items:center">${esc(u.name)} ${VERIFIED}</div>
+    <div class="cap">@${esc(u.user)}${facYear(u)?' · '+facYear(u):''} · ${L('จุฬาฯ','Chula')}</div>
+    <div style="margin-top:8px;font-size:14px"><b class="num">${posts.length}</b> ${L('โพสต์','posts')} · <b class="num">${kfmt(ateRecv)}</b> ${L('ATE ที่ได้','ATE received')} · <b class="num">${cmts}</b> ${L('คอมเมนต์','comments')}</div>
+    ${u.bio?`<p style="margin:6px 0 0;font-size:14px">${esc(u.bio)}</p>`:''}
+    ${u.interests&&u.interests.length?`<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:10px">${u.interests.map(i=>{const x=INTERESTS.find(y=>y[0]===i);return x?`<span class="pill">${L(x[1],x[2])}</span>`:'';}).join('')}</div>`:''}
+    </div>
+    <div class="feedtabs" style="padding:0 20px;margin-top:14px"><span class="feedtab on">${own?L('โพสต์ของฉัน','My Posts'):L('โพสต์','Posts')}</span></div>
+    ${posts.length?posts.map(p=>postCard(p,{showWhere:true})).join(''):`<div class="empty"><div class="ill">${I('edit','lg')}</div><div class="h2">${own?L('ยังไม่มีโพสต์','No posts yet'):L('ยังไม่มีโพสต์ที่ใช้ชื่อจริง','No identity posts yet')}</div>${own?`<p class="ink2" style="margin:0">${L('โพสต์นิรนามของคุณก็จะขึ้นที่นี่ มีแค่คุณที่เห็น','Your anonymous posts show here too. Only you can see them.')}</p><button class="btn primary sm" data-act="compose">${L('โพสต์แรก','First post')}</button>`:''}</div>`}
+  </div>${own?tabbar():''}</div>`;
+}
+function vEditProfile(){
+  const m=S.me;
+  return `<div class="screen">${topbar(L('แก้ไขโปรไฟล์','Edit profile'),{right:`<button class="link" data-act="saveProfile">${L('บันทึก','Save')}</button>`})}<div class="scroll pad" style="padding-bottom:40px;display:flex;flex-direction:column;gap:14px">
+    <div style="display:flex;justify-content:center;padding:8px 0"><label style="cursor:pointer;position:relative">${avatar(m,96)}<span style="position:absolute;right:0;bottom:0;width:32px;height:32px;border-radius:99px;background:var(--brand);color:#fff;display:flex;align-items:center;justify-content:center">${I('camera','sm')}</span><input type="file" accept="image/*" hidden data-on="avatarFile"></label></div>
+    <div class="field"><label for="epName">${L('ชื่อที่แสดง','Display name')}</label><input class="input" id="epName" value="${esc(m.name)}" maxlength="40"></div>
+    <div class="field"><label>${L('ชื่อผู้ใช้','Username')}</label><div class="input" style="display:flex;align-items:center;background:var(--surface)">@${esc(m.user)}</div></div>
+    <div class="field"><label for="epBio">${L('แนะนำตัว','Bio')}</label><textarea class="input" id="epBio" rows="3" maxlength="150">${esc(m.bio)}</textarea></div>
+    <div class="field"><label>${L('ความสนใจ','Interests')}</label><div style="display:flex;flex-wrap:wrap;gap:6px">${INTERESTS.map(i=>`<button class="chip brand ${m.interests.includes(i[0])?'on':''}" data-act="meInterest" data-arg="${i[0]}">${L(i[1],i[2])}</button>`).join('')}</div></div>
+  </div></div>`;
+}
+
+/* ============ SETTINGS ============ */
+function sRow(icon,label,val,act,arg){return `<button class="row" data-act="${act}" data-arg="${arg||''}">${I(icon)}<span class="rt lbl">${label}</span>${val?`<span class="rv">${val}</span>`:''}${I('chev','sm')}</button>`;}
+function tRow(label,sub,on,act,arg){return `<button class="row" data-act="${act}" data-arg="${arg||''}" role="switch" aria-checked="${on}"><span class="rt"><span class="lbl">${label}</span>${sub?`<br><span class="cap">${sub}</span>`:''}</span><span class="toggle ${on?'on':''}"></span></button>`;}
+function vSettings(){
+  const th={system:L('ตามระบบ','System'),light:L('สว่าง','Light'),dark:L('มืด','Dark')}[S.settings.theme];
+  return `<div class="screen">${topbar(L('ตั้งค่า','Settings'))}<div class="scroll" style="padding-bottom:40px">
+   <div class="card" style="margin:6px 16px">${sRow('user',L('บัญชี','Account'),'','go','account')}${sRow('lock',L('ความเป็นส่วนตัว','Privacy'),'','go','privacy')}${sRow('globe',L('ภาษา','Language'),S.lang==='th'?'ไทย':'English','go','language')}${sRow('moon',L('ธีม','Theme'),th,'go','theme')}${sRow('help',L('ช่วยเหลือ','Help'),'','go','help')}</div>
+   <div class="pad cap" style="margin-top:14px">${L('การแจ้งเตือน ช่วงพักแจ้งเตือน และรายการที่บล็อก/ปิดเสียง จะมาใน MVP 2','Notification settings, quiet hours and the Blocked & muted list come in MVP 2.')}</div>
+   <div class="card" style="margin:14px 16px 0">${sRow('sparkle',L('เครื่องมือทดสอบ (ต้นแบบ)','Prototype test tools'),'','panelOpen')}</div><div class="pad cap" style="margin-top:6px">EIGHT TEEN 0.4.0 · ${L('ต้นแบบ','prototype')}</div></div></div>`;
+}
+function vAccount(){
+  const days=Math.round((S.me.verifiedAt+365*DAY-Date.now())/DAY);
+  return `<div class="screen">${topbar(L('บัญชี','Account'))}<div class="scroll" style="padding-bottom:40px">
+   <div class="card" style="margin:6px 16px;padding:16px"><div class="cap">${L('บัญชีมหาวิทยาลัย','University account')}</div><div class="lbl" style="word-break:break-all">${S.me.email}</div><div class="cap" style="margin-top:8px">${L('มหาวิทยาลัย','University')}</div><div class="lbl">${L(uni().th,uni().en)}</div><div class="cap" style="margin-top:8px">${L('ยืนยันตัวตนครั้งถัดไปใน ','Re-verify in ')}<b style="color:var(--ink)">${days} ${L('วัน','days')}</b></div></div>
+   <div class="card" style="margin:12px 16px">${sRow('refresh',L('ยืนยันตัวตนอีกครั้ง','Re-verify now'),'','reverify')}${sRow('download',L('ดาวน์โหลดข้อมูลของฉัน','Download my data'),'','downloadData')}${sRow('logout',L('ออกจากระบบ','Log out'),'','logout')}</div>
+   <div class="card" style="margin:12px 16px"><button class="row" data-act="go" data-arg="deleteAccount" style="color:var(--danger)">${I('trash')}<span class="rt lbl">${L('ลบบัญชี','Delete account')}</span>${I('chev','sm')}</button></div></div></div>`;
+}
+function vDeleteAccount(){
+  return `<div class="screen">${topbar(L('ลบบัญชี','Delete account'))}<div class="scroll pad" style="padding-bottom:20px">
+   <div class="h1" style="margin-top:8px">${L('ลบบัญชีของคุณ?','Delete your account?')}</div>
+   <p class="ink2">${L('บัญชีจะถูกปิดทันที และลบถาวรหลัง 30 วันตาม PDPA ถ้าเปลี่ยนใจ เข้าสู่ระบบภายใน 30 วันเพื่อกู้คืน เราจะส่งอีเมลกู้บัญชีให้','Your account closes now and is permanently deleted after 30 days under PDPA. Change your mind? Sign in within 30 days and we’ll email you a recovery link.')}</p>
+   <div class="card" style="padding:14px 16px;display:flex;flex-direction:column;gap:8px;font-size:14px"><div>• ${L('โพสต์ คอมเมนต์ และ ATE ทั้งหมดจะถูกลบ','All posts, comments and ATE are deleted')}</div><div>• ${L('อีเมลมหาวิทยาลัยนี้จะสมัครใหม่ได้หลังลบถาวร','This university email can sign up again after deletion')}</div></div>
+   </div><div class="ob-foot"><button class="btn danger block" data-act="deleteAccount">${L('ลบบัญชี','Delete account')}</button><button class="btn ghost" data-act="back">${L('ยกเลิก','Cancel')}</button></div></div>`;
+}
+function vPrivacy(){
+  const s=S.settings; const m=S.me;
+  return `<div class="screen">${topbar(L('ความเป็นส่วนตัว','Privacy'))}<div class="scroll" style="padding-bottom:40px">
+   <div class="section-t">${L('โหมดโพสต์เริ่มต้น','Default post mode')}</div>
+   <div class="card" style="margin:0 16px">${[['identity',L('ชื่อจริง','Identity'),L('แสดงชื่อ รูป คณะ และชั้นปี','Shows your name, photo, faculty and year')],['anon',L('นิรนาม','Anonymous'),L('แสดงชื่อแฝงที่เปลี่ยนทุกโพสต์','Shows an alias that changes per post')]].map(o=>`<button class="row" data-act="setMode" data-arg="${o[0]}"><span class="rt"><span class="lbl">${o[1]}</span><br><span class="cap">${o[2]}</span></span><span class="radio ${s.mode===o[0]?'on':''}"></span></button>`).join('')}</div>
+   <div class="section-t">${L('โปรไฟล์','Profile')}</div>
+   <div class="card" style="margin:0 16px">${tRow(L('แสดงคณะและชั้นปี','Show faculty and year'),L('บนโปรไฟล์และโพสต์ที่ใช้ชื่อจริง','On your profile and identity posts'),m.show,'toggleShow')}</div>
+   <div class="section-t">${L('แผนที่','Map')}</div>
+   <div class="card" style="margin:0 16px">${tRow(L('ใช้ตำแหน่งของฉันบนแผนที่','Use my location on the map'),L('อยู่ในเครื่องเท่านั้น ไม่ส่งขึ้นเซิร์ฟเวอร์','Stays on your phone, never sent to our servers'),locOn(),'toggleLoc')}</div>
+   <div class="section-t">${L('ใครพูดถึงฉันได้','Who can mention me')}</div>
+   <div class="card" style="margin:0 16px">${[['all',L('ทุกคนในจุฬาฯ','Everyone at my university')],['none',L('ไม่มีใคร','No one')]].map(o=>`<button class="row" data-act="setMentions" data-arg="${o[0]}"><span class="rt lbl">${o[1]}</span><span class="radio ${m.mentions===o[0]?'on':''}"></span></button>`).join('')}</div>
+   <div class="pad cap" style="margin-top:8px">${L('โหมดนิรนามแท็กใครไม่ได้ และคนที่คุณบล็อกจะแท็กคุณไม่ได้','Anonymous mode can’t mention anyone, and people you block can’t mention you.')}</div></div></div>`;
+}
+function vLanguage(){return `<div class="screen">${topbar(L('ภาษา','Language'))}<div class="card" style="margin:6px 16px">${[['th','ไทย'],['en','English']].map(o=>`<button class="row" data-act="lang" data-arg="${o[0]}"><span class="rt lbl">${o[1]}</span><span class="radio ${S.lang===o[0]?'on':''}"></span></button>`).join('')}</div><div class="pad cap" style="margin-top:8px">${L('วันที่แสดงเป็นพุทธศักราชในภาษาไทย','Dates use the Buddhist Era in Thai')}</div></div>`;}
+function vTheme(){return `<div class="screen">${topbar(L('ธีม','Theme'))}<div class="card" style="margin:6px 16px">${[['system',L('ตามระบบ','System')],['light',L('สว่าง','Light')],['dark',L('มืด','Dark')]].map(o=>`<button class="row" data-act="setTheme" data-arg="${o[0]}"><span class="rt lbl">${o[1]}</span><span class="radio ${S.settings.theme===o[0]?'on':''}"></span></button>`).join('')}</div></div>`;}
+function vHelp(){return `<div class="screen">${topbar(L('ช่วยเหลือ','Help'))}<div class="card" style="margin:6px 16px">${sRow('shield',L('กติกาชุมชน','Community Rules'),'','go','rules')}${sRow('lock',L('นโยบายความเป็นส่วนตัว','Privacy Policy'),'','go','privacyPolicy')}${sRow('mail',L('ติดต่อทีมงาน','Contact support'),'','go','support:contact')}${sRow('flag',L('แจ้งปัญหาการใช้งาน','Report a problem'),'','go','support:problem')}${sRow('image',L('เครดิตภาพตัวอย่าง','Sample photo credits'),'','go','credits')}</div></div>`;}
+const CREDITS=[['chicken-rice.jpg','Hainanese chicken rice','Misaochan','CC BY 4.0','Hainanese_chicken_rice.jpg'],['library.jpg','Chula UltimateX Library','Apiwat K.','CC BY 4.0','Chula_UltimateX_Library_20201124_182323.jpg'],['arts-library.jpg','Faculty of Arts Library, Chulalongkorn University','Geonuch','CC BY-SA 4.0','Faculty_of_Arts_Library,_Chulalongkorn_University.jpg'],['auditorium.jpg','Chulalongkorn University Auditorium','Supanut Arunoprayote','CC BY-SA 4.0','Chulalongkorn_University_Auditorium.jpg'],['sala.jpg','Entrance of Sala Phra Kiao','Supanut Arunoprayote','CC BY 4.0','Entrance_of_Sala_Phra_Kiao.jpg'],['sala-night.jpg','Event in Sala Phra Kiao at night','Supanut Arunoprayote','CC BY 4.0','Event_in_Sala_Phra_Kiao_at_night.jpg'],['samyan.jpg','Samyan Mitrtown (back)','Chainwit.','CC BY-SA 4.0','Samyan_Mitrtown_Back.jpg']];
+function vCredits(){return `<div class="screen">${topbar(L('เครดิตภาพตัวอย่าง','Sample photo credits'))}<div class="scroll" style="padding-bottom:40px"><p class="pad cap" style="margin-top:0">${L('ภาพในโพสต์ตัวอย่างมาจาก Wikimedia Commons ปรับขนาดและลบข้อมูล EXIF แล้ว','Sample post photos come from Wikimedia Commons, resized with EXIF removed.')}</p>${CREDITS.map(c=>`<a class="row" href="https://commons.wikimedia.org/wiki/File:${c[4]}" target="_blank" rel="noopener" style="color:inherit;text-decoration:none"><span class="av" style="width:56px;height:42px;border-radius:10px;background-image:url('img/${c[0]}')"></span><span class="rt"><span class="lbl">${c[1]}</span><br><span class="cap">${c[2]} · ${c[3]}</span></span></a>`).join('')}</div></div>`;}
+function vDoc(kind){
+  const rules=kind==='rules';
+  const body=rules?L(`<h3 class="h3">1. เคารพกัน</h3><p>ไม่กลั่นแกล้ง ด่าทอ เหยียดเพศ เชื้อชาติ ศาสนา หรือความพิการ</p><h3 class="h3">2. ไม่หลอกลวง</h3><p>ห้ามโกง ขายของผิดกฎหมาย หรือชวนโอนเงินก่อน</p><h3 class="h3">3. ปกป้องข้อมูลส่วนตัว</h3><p>ห้ามเปิดเผยเบอร์ ที่อยู่ หรือรูปของคนอื่นโดยไม่ได้รับอนุญาต</p><h3 class="h3">4. นิรนามแต่รับผิดชอบ</h3><p>ทุกบัญชียืนยันตัวตนแล้ว ระบบเก็บบัญชีจริงไว้เสมอ</p><h3 class="h3">บทลงโทษ</h3><p>เตือน → จำกัดการโพสต์ 7 วัน → ระงับ 14 วัน → แบนถาวร</p>`,`<h3 class="h3">1. Respect each other</h3><p>No bullying, harassment or hate based on gender, race, religion or disability.</p><h3 class="h3">2. No scams</h3><p>No cheating, illegal sales or asking people to transfer money first.</p><h3 class="h3">3. Protect personal info</h3><p>Never share someone’s phone, address or photos without permission.</p><h3 class="h3">4. Anonymous, still accountable</h3><p>Every account is verified, and we always keep the real account behind a post.</p><h3 class="h3">Penalties</h3><p>Warning → 7-day posting limit → 14-day suspension → permanent ban.</p>`)
+   :L(`<p>เราเก็บอีเมลมหาวิทยาลัย คณะ ชั้นปี และวันเกิดเพื่อยืนยันนิสิตและตรวจอายุ ไม่ส่งข้อมูลส่วนตัวหรือวันเกิดไปยังเครื่องมือวิเคราะห์ภายนอก ตำแหน่งของคุณอยู่ในเครื่องเท่านั้น</p><p>คุณดาวน์โหลดหรือลบข้อมูลได้ในตั้งค่า › บัญชี</p><p>ผู้ติดต่อด้านข้อมูลส่วนบุคคล: dpo@eightteen.app</p>`,`<p>We store your university email, faculty, year and date of birth to verify you and apply age rules. Personal data and date of birth are never sent to third-party analytics. Your location stays on your phone.</p><p>Download or delete your data in Settings › Account.</p><p>Data protection contact: dpo@eightteen.app</p>`);
+  return `<div class="screen">${topbar(rules?L('กติกาชุมชน','Community Rules'):L('นโยบายความเป็นส่วนตัว','Privacy Policy'))}<div class="scroll pad" style="padding-bottom:40px;font-size:15px">${body}</div></div>`;
+}
+function vSupport(kind){
+  const contact=kind==='contact';
+  return `<div class="screen">${topbar(contact?L('ติดต่อทีมงาน','Contact support'):L('แจ้งปัญหา','Report a problem'))}<div class="scroll pad" style="display:flex;flex-direction:column;gap:14px;padding-bottom:20px">
+   <p class="ink2" style="margin:0">${contact?L('บอกเราว่าต้องการความช่วยเหลือเรื่องอะไร ทีมงานตอบกลับในแอป','Tell us what you need. We reply in the app.'):L('เจออะไรไม่ทำงาน? เล่าให้เราฟังหน่อย','Something not working? Tell us what happened.')}</p>
+   <div class="field"><label for="supText">${L('รายละเอียด','Details')}</label><textarea class="input" id="supText" rows="6" maxlength="1000" placeholder="${L('เกิดอะไรขึ้น','What happened?')}"></textarea></div>
+   ${contact?'':`<label class="check" style="padding:0"><span class="box on">${I('check','xs')}</span><span class="cap" style="color:var(--ink2)">${L('แนบข้อมูลอุปกรณ์และเวอร์ชันแอป','Attach device info and app version')}</span></label>`}
+  </div><div class="ob-foot"><button class="btn primary block" data-act="sendSupport" data-arg="${kind}">${L('ส่ง','Send')}</button></div></div>`;
+}
+function vRemoval(nid){
+  const n=S.notifs.find(x=>x.id===nid); const appealed=S.appealed.includes(nid);
+  return `<div class="screen">${topbar(L('เนื้อหาถูกลบ','Content removed'))}<div class="scroll pad" style="padding-bottom:20px">
+   <div class="banner danger" style="margin:6px 0 14px">${I('shield')}<div><div class="lbl">${L('คอมเมนต์ของคุณถูกลบ','Your comment was removed')}</div><div class="cap" style="color:var(--ink2)">${L('ขัดกับกติกาชุมชนข้อ 1: เคารพกัน','Breaks Community Rule 1: Respect each other')}</div></div></div>
+   <div class="card" style="padding:14px 16px"><div class="cap">${L('เนื้อหาที่ถูกลบ','Removed content')}</div><div style="margin-top:4px">"${esc(n.removedText)}"</div></div>
+   <p class="ink2">${L('นี่เป็นคำเตือนระดับ 1 ถ้าคิดว่าเราตัดสินผิด ขออุทธรณ์ได้ 1 ครั้ง เจ้าหน้าที่จะตรวจอีกครั้ง','This is a level 1 warning. If you think we got it wrong, you can appeal once and a person will review it.')}</p>
+   ${appealed?`<div class="banner ok" style="margin:0">${I('check')}<div class="lbl">${L('ส่งอุทธรณ์แล้ว เราจะแจ้งผลในแอป','Appeal sent. We’ll tell you the result in the app.')}</div></div>`:`<div class="field"><label for="appealText">${L('ทำไมคิดว่าควรคืนเนื้อหานี้','Why should we restore it?')}</label><textarea class="input" id="appealText" rows="4" maxlength="500"></textarea></div>`}
+  </div>${appealed?'':`<div class="ob-foot"><button class="btn primary block" data-act="appeal" data-arg="${nid}">${L('ส่งอุทธรณ์','Send appeal')}</button></div>`}</div>`;
+}
+function vShared(){
+  return `<div class="screen"><div class="scroll pad" style="display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;gap:14px;padding-top:60px">
+   <div class="empty" style="padding:0"><div class="ill">${I('lock','lg')}</div></div>
+   <div class="h1">${L('โพสต์นี้สำหรับนิสิตจุฬาฯ เท่านั้น','This post is for verified Chula students only')}</div>
+   <p class="ink2" style="margin:0">${L('คุณยืนยันตัวตนกับมหาวิทยาลัยธรรมศาสตร์ โพสต์ในฟีดมหาลัยจะเห็นได้เฉพาะนิสิตของมหาวิทยาลัยนั้น','You’re verified at Thammasat. University feed posts are visible only to that university’s students.')}</p>
+   <button class="btn primary" data-act="back">${L('กลับไปฟีดของฉัน','Back to my feed')}</button>
+   <div class="cap">${L('(จำลองการเปิดลิงก์จากมหาวิทยาลัยอื่น)','(Simulated: opening a shared link from another campus)')}</div></div></div>`;
+}
+
+/* ============ OVERLAYS ============ */
+function sheet(title,body,opts={}){return `<div class="scrim" data-act="closeOv"></div><div class="sheet" role="dialog" aria-label="${esc(title||'')}"><div class="grab"></div>${title?`<div class="sh-t">${title}</div>`:''}<div class="sh-b">${body}</div></div>`;}
+function dialog(body){return `<div class="scrim" data-act="closeOv"></div><div class="dialog" role="dialog">${body}</div>`;}
+function mRow(icon,label,act,arg,danger){return `<button class="row" data-act="${act}" data-arg="${arg||''}" ${danger?'style="color:var(--danger)"':''}>${I(icon)}<span class="rt lbl">${label}</span></button>`;}
+function renderOverlay(){
+  const o=T.ov; const el=$('#overlay');
+  if(!o){el.innerHTML='';return;}
+  let h='';
+  if(o.t==='postMenu'){
+    const p=S.posts.find(x=>x.id===o.id); const mine=p.by==='me'; const rows=[];
+    const mentionsMe=p.mentions.includes('me')&&!S.removedMentions.includes(p.id+'|me');
+    if(mine){ if(Date.now()-p.at<15*MIN) rows.push(mRow('edit',L('แก้ไข (ภายใน 15 นาที)','Edit (within 15 min)'),'editPost',p.id)); else rows.push(`<div class="row cap">${I('edit')}<span class="rt">${L('แก้ไขได้ภายใน 15 นาทีหลังโพสต์','Editing closes 15 min after posting')}</span></div>`);
+      rows.push(mRow('trash',L('ลบโพสต์','Delete post'),'askDelete',p.id,true)); }
+    else{
+      rows.push(mRow('eyeoff',L('ซ่อนโพสต์นี้','Hide post'),'hidePost',p.id));
+      p.tags.forEach(t=>rows.push(mRow('bellx',(S.mutedTags.includes(t.toLowerCase())?L('เลิกปิดเสียง ','Unmute '):L('ปิดเสียง ','Mute '))+'#'+esc(t),'muteTag',t)));
+      if(mentionsMe) rows.push(mRow('at',L('ลบชื่อฉันออกจากโพสต์นี้','Remove me from this post'),'removeMe','post:'+p.id));
+      if(!p.official&&!USERS[p.by]?.official) rows.push(mRow('block',p.anon?L('บล็อกผู้โพสต์นิรนามคนนี้','Block this anonymous author'):L('บล็อก ','Block ')+esc(user(p.by).name),'askBlock',p.by+':'+(p.anon?1:0)));
+      rows.push(S.reported.includes('post:'+p.id)?`<div class="row cap">${I('flag')}<span class="rt">${L('รายงานแล้ว','Already reported')}</span></div>`:mRow('flag',L('รายงานโพสต์','Report post'),'report','post:'+p.id,true));
+    }
+    rows.push(mRow('copy',L('คัดลอกลิงก์','Copy link'),'copyLink',p.id));
+    h=sheet('',`<div class="card" style="margin:0 16px">${rows.join('')}</div>`);
+  }
+  if(o.t==='commentMenu'){
+    const c=S.comments.find(x=>x.id===o.id); const mine=c.by==='me'; const rows=[];
+    if(c.mentions.includes('me')&&!S.removedMentions.includes(c.id+'|me')) rows.push(mRow('at',L('ลบชื่อฉันออกจากคอมเมนต์นี้','Remove me from this comment'),'removeMe','comment:'+c.id));
+    if(mine) rows.push(mRow('trash',L('ลบคอมเมนต์','Delete comment'),'deleteComment',c.id,true));
+    else{ rows.push(mRow('block',c.anon?L('บล็อกคนนี้ (นิรนาม)','Block this person (anonymous)'):L('บล็อก ','Block ')+esc(user(c.by).name),'askBlock',c.by+':'+(c.anon?1:0)));
+      rows.push(S.reported.includes('comment:'+c.id)?`<div class="row cap">${I('flag')}<span class="rt">${L('รายงานแล้ว','Already reported')}</span></div>`:mRow('flag',L('รายงานคอมเมนต์','Report comment'),'report','comment:'+c.id,true)); }
+    h=sheet('',`<div class="card" style="margin:0 16px">${rows.join('')}</div>`);
+  }
+  if(o.t==='profileMenu'){
+    h=sheet('',`<div class="card" style="margin:0 16px">${mRow('copy',L('คัดลอกลิงก์โปรไฟล์','Copy profile link'),'toastMsg',L('คัดลอกลิงก์แล้ว','Link copied'))}${mRow('block',L('บล็อก','Block'),'askBlock',o.id+':0')}${S.reported.includes('profile:'+o.id)?'':mRow('flag',L('รายงานโปรไฟล์','Report profile'),'report','profile:'+o.id,true)}</div>`);
+  }
+  if(o.t==='report'){
+    const reasons=[['spam','สแปมหรือหลอกลวง','Spam or scam'],['harassment','กลั่นแกล้งหรือคุกคาม','Harassment or bullying'],['hate','เกลียดชัง','Hate'],['sexual','เนื้อหาทางเพศ','Sexual content'],['selfharm','ทำร้ายตัวเอง','Self-harm'],['false','ข้อมูลเท็จ','False information'],['personal','เปิดเผยข้อมูลส่วนตัว','Personal info exposed'],['other','อื่น ๆ','Other']];
+    h=sheet(L('รายงาน','Report'),`<div class="pad cap" style="margin-bottom:6px">${L('ผู้ถูกรายงานจะไม่รู้ว่าใครรายงาน','They won’t know who reported them.')}</div><div class="card" style="margin:0 16px">${reasons.map(r=>`<button class="row" data-act="reportReason" data-arg="${r[0]}"><span class="rt lbl">${L(r[1],r[2])}</span><span class="radio ${o.reason===r[0]?'on':''}"></span></button>`).join('')}</div>
+      <div class="pad" style="margin-top:12px"><div class="field"><label for="repNote">${L('รายละเอียดเพิ่มเติม (ไม่บังคับ)','Add a note (optional)')}</label><textarea class="input" id="repNote" rows="2" maxlength="200" placeholder="${L('ไม่เกิน 200 ตัวอักษร','Up to 200 characters')}"></textarea></div>
+      <button class="btn primary block" style="margin-top:14px" ${o.reason?'':'disabled'} data-act="submitReport">${L('ส่งรายงาน','Send report')}</button></div>`);
+  }
+  if(o.t==='reported') h=sheet('',`<div class="empty" style="padding:16px 28px 8px"><div class="ill" style="background:var(--ok-bg);color:var(--ok)">${I('check','lg')}</div><div class="h2">${L('ขอบคุณที่รายงาน','Thanks for reporting')}</div><p class="ink2" style="margin:0">${L('เราซ่อนเนื้อหานี้จากคุณแล้ว ทีมงานจะตรวจภายใน 12 ชั่วโมง และแจ้งในแอปเมื่อดำเนินการ','We’ve hidden it from you. The team reviews within 12 hours and will let you know in the app.')}</p><button class="btn dark block" style="margin-top:10px" data-act="closeOv">${L('เรียบร้อย','Done')}</button></div>`);
+  if(o.t==='block'){
+    const u=user(o.uid);
+    h=dialog(`<div class="h2">${o.anon?L('บล็อกผู้โพสต์นิรนาม?','Block this anonymous author?'):L('บล็อก ','Block ')+esc(u.name)+'?'}</div><p class="ink2">${o.anon?L('คุณจะไม่เห็นโพสต์และคอมเมนต์ของคนนี้อีก เราจะไม่บอกว่าเป็นใคร และการบล็อกแบบนิรนามยกเลิกไม่ได้','You won’t see their posts or comments again. We won’t reveal who they are, and anonymous blocks can’t be undone.'):L('คุณจะไม่เห็นโพสต์ของกันและกัน ค้นหาและแท็กกันไม่ได้ เลิกบล็อกได้ที่โปรไฟล์ของเขา','You won’t see each other’s posts and can’t find or mention each other. Unblock from their profile.')}</p><div style="display:flex;gap:8px"><button class="btn soft" style="flex:1" data-act="closeOv">${L('ยกเลิก','Cancel')}</button><button class="btn danger" style="flex:1" data-act="doBlock" data-arg="${o.uid}:${o.anon?1:0}">${L('บล็อก','Block')}</button></div>`);
+  }
+  if(o.t==='delete') h=dialog(`<div class="h2">${L('ลบโพสต์นี้?','Delete this post?')}</div><p class="ink2">${L('ลบแล้วกู้คืนไม่ได้ คอมเมนต์และ ATE จะหายไปด้วย','This can’t be undone. Comments and ATE go with it.')}</p><div style="display:flex;gap:8px"><button class="btn soft" style="flex:1" data-act="closeOv">${L('ยกเลิก','Cancel')}</button><button class="btn danger" style="flex:1" data-act="doDelete" data-arg="${o.id}">${L('ลบ','Delete')}</button></div>`);
+  if(o.t==='share'){
+    const chans=[['line','LINE','#06c755'],['instagram','Instagram','#d62976'],['copy',L('คัดลอกลิงก์','Copy link'),'var(--ink)'],['more',L('อื่น ๆ','More'),'var(--tert)']];
+    const p=o.id&&S.posts.find(x=>x.id===o.id);
+    h=sheet(L('แชร์','Share'),`${p?`<div class="card" style="margin:0 16px 14px;padding:12px;display:flex;gap:10px;align-items:center">${authorView(p,p.id).av(32)}<div class="cap" style="flex:1;min-width:0;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(p.text)}</div></div><div class="pad cap" style="margin-bottom:10px">${p.anon?L('โพสต์นิรนามแชร์ออกไปโดยไม่มีตัวตนของผู้โพสต์','Anonymous posts share without the author’s identity.'):''} ${p.uni?L('คนนอกจุฬาฯ จะเห็นหน้า "เฉพาะนิสิตที่ยืนยันแล้ว"','Non-Chula viewers see a "verified students only" page.'):''}</div>`:''}
+      <div style="display:flex;justify-content:space-around;padding:4px 16px 10px">${chans.map(c=>`<button data-act="doShare" data-arg="${c[0]}" style="display:flex;flex-direction:column;align-items:center;gap:6px;font-size:12px;font-weight:600"><span style="width:56px;height:56px;border-radius:18px;background:${c[2]};color:#fff;display:flex;align-items:center;justify-content:center">${c[0]==='copy'?I('copy'):c[0]==='more'?I('more'):`<span class="num" style="font-size:13px">${c[1].slice(0,2)}</span>`}</span>${c[1]}</button>`).join('')}</div>`);
+  }
+  if(o.t==='bubblePicker'){
+    const q=(o.q||'').toLowerCase();
+    const list=BUBBLES.filter(bubbleOpen).filter(b=>!q||bname(b).toLowerCase().includes(q)||b.th.includes(q)).sort((a,b)=>(count24(b.id)>0)-(count24(a.id)>0)||(locOn()?distance(a)-distance(b):0));
+    h=sheet(L('เลือกบับเบิล','Pick a bubble'),`<div class="pad" style="margin-bottom:8px"><input class="input" id="bpSearch" style="height:42px;border-radius:999px;background:var(--surface);border-color:transparent" placeholder="${L('ค้นหาบับเบิล','Search bubbles')}" value="${esc(o.q||'')}" data-on="bpSearch"></div>
+      <div id="bpList">${list.map(b=>`<button class="row" data-act="setBubble" data-arg="${b.id}"><span class="btype t-${b.type}">${I(BTYPES[b.type][2],'sm')}</span><span class="rt"><span class="lbl">${esc(bname(b))}</span><br><span class="cap">${[count24(b.id)?count24(b.id)+L(' โพสต์วันนี้',' posts today'):L('ยังเงียบ','Quiet'),locOn()?fmtDist(distance(b)):null].filter(Boolean).join(' · ')}</span></span><span class="radio ${S.draft.bubble===b.id?'on':''}"></span></button>`).join('')}</div>
+      <div class="pad cap" style="margin-top:8px">${L('บับเบิลที่ปิดชั่วคราวหรือจบแล้วจะไม่แสดงที่นี่','Paused and ended bubbles aren’t listed.')}</div>`);
+  }
+  if(o.t==='sso'){
+    const names={google:'Google',microsoft:'Microsoft',other:L('ระบบของมหาวิทยาลัย','University sign-in')};
+    const tests=[['6930012321@student.chula.ac.th',L('เปิดแล้ว','Live')],['pim.r@dome.tu.ac.th',L('ยังไม่เปิด → รอ','Not open → waitlist')],['mint@student.mahidol.ac.th',L('ยังไม่เปิด → รอ','Not open → waitlist')],['someone@gmail.com',L('บัญชีส่วนตัว','Personal')],['old.grad@alumni.chula.ac.th',L('ศิษย์เก่า','Graduated')],['6430011121@student.chula.ac.th',L('มีบัญชีแล้ว','Already linked')]];
+    h=`<div class="scrim" data-act="ssoCancel"></div><div class="sheet" role="dialog" aria-label="sign in"><div class="grab"></div>
+      <div style="display:flex;align-items:center;padding:0 20px 4px"><div class="sh-t" style="padding:6px 0;flex:1">${L('ลงชื่อเข้าใช้ด้วย ','Sign in with ')}${names[o.prov]}</div><button class="lbl link" data-act="ssoCancel">${L('ยกเลิก','Cancel')}</button></div>
+      <div class="sh-b"><div class="pad"><div class="cap" style="margin-bottom:10px">${I('shield','xs')} ${L('หน้าจำลองของผู้ให้บริการ ต้นแบบนี้ไม่มีช่องรหัสผ่าน','Simulated provider page. This prototype has no password field.')}</div>
+      <div class="field"><label for="ssoEmail">${L('อีเมลมหาวิทยาลัย','University email')}</label><input class="input ${o.err?'err':''}" id="ssoEmail" type="email" inputmode="email" autocomplete="off" autocapitalize="off" placeholder="name@university.ac.th" data-on="ssoEmail" enterkeyhint="go"><span class="err-t" id="ssoErr">${o.err||''}</span></div>
+      <button class="btn primary block" style="margin-top:12px" data-act="ssoSubmit">${L('ถัดไป','Next')}</button>
+      <div class="section-t" style="padding:18px 0 8px">${L('บัญชีทดสอบ','Test accounts')}</div>
+      <div style="display:flex;flex-direction:column;gap:6px">${tests.map(t=>`<button class="row" style="padding:10px 12px;min-height:0;border:1px solid var(--border);border-radius:12px" data-act="ssoPick" data-arg="${t[0]}"><span class="rt" style="word-break:break-all;font-size:14px">${t[0]}</span><span class="pill">${t[1]}</span></button>`).join('')}</div></div></div></div>`;
+  }
+  if(o.t==='keepDraft') h=sheet(L('เก็บร่างไว้ไหม?','Keep this draft?'),`<div class="pad" style="display:flex;flex-direction:column;gap:10px"><p class="ink2" style="margin:0">${L('ร่างจะเก็บไว้ในเครื่องนี้ เปิดหน้าโพสต์ครั้งหน้าจะกลับมา','Drafts are saved on this phone and come back next time you post.')}</p><button class="btn primary block" data-act="draftKeep">${L('เก็บร่าง','Keep draft')}</button><button class="btn soft block" data-act="draftDiscard" style="color:var(--danger)">${L('ทิ้ง','Discard')}</button></div>`);
+  if(o.t==='aicheck') h=`<div class="scrim"></div><div class="dialog" style="text-align:center;display:flex;flex-direction:column;align-items:center;gap:12px"><div class="spinner"></div><div class="h3">${L('AI กำลังตรวจโพสต์…','AI is checking your post…')}</div><div class="cap">${L('ใช้เวลาไม่ถึง 1 วินาที','Takes under a second')}</div></div>`;
+  if(o.t==='blocked') h=sheet('',`<div class="empty" style="padding:8px 28px"><div class="ill" style="background:var(--danger-bg);color:var(--danger)">${I('shield','lg')}</div><div class="h2">${L('โพสต์นี้ยังโพสต์ไม่ได้','This post can’t go up')}</div><p class="ink2" style="margin:0">${o.reason==='scam'?L('ข้อความดูเหมือนการหลอกลวง เช่น ขอให้โอนเงินก่อน (กติกาข้อ 2)','It looks like a scam, such as asking for money upfront (Rule 2).'):L('ข้อความมีถ้อยคำคุกคามหรือด่าทอ (กติกาข้อ 1)','It contains harassment or insults (Rule 1).')}</p><button class="btn dark block" style="margin-top:8px" data-act="closeOv">${L('แก้ไขโพสต์','Edit post')}</button><button class="link" data-act="go" data-arg="rules">${L('อ่านกติกาชุมชน','Read the Community Rules')}</button></div>`);
+  if(o.t==='support') h=sheet('',`<div class="empty" style="padding:8px 28px"><div class="ill" style="background:#ffe8f1;color:#c22a6a">${I('heart','lg')}</div><div class="h2">${L('เราอยู่ตรงนี้นะ','You’re not alone')}</div><p class="ink2" style="margin:0">${L('ดูเหมือนคุณกำลังผ่านช่วงที่หนักอยู่ คุยกับคนที่พร้อมรับฟังได้ตลอด 24 ชั่วโมง','It sounds like things are heavy right now. Someone is ready to listen, 24 hours a day.')}</p>
+     <div class="card" style="width:100%;padding:14px;text-align:left;display:flex;flex-direction:column;gap:10px"><div style="display:flex;align-items:center;gap:10px"><span class="num" style="font-size:26px;color:var(--brand)">1323</span><span class="cap" style="color:var(--ink2)">${L('สายด่วนสุขภาพจิต กรมสุขภาพจิต (ฟรี 24 ชม.)','Department of Mental Health hotline (free, 24h)')}</span></div><div style="display:flex;align-items:center;gap:10px"><span class="num" style="font-size:18px">02-218-0540</span><span class="cap" style="color:var(--ink2)">${L('ศูนย์ให้คำปรึกษา จุฬาฯ (Chula Student Wellness)','Chula Student Wellness')}</span></div></div>
+     <button class="btn primary block" data-act="closeOv">${L('ขอบคุณ กลับไปที่โพสต์','Thanks, back to my post')}</button><div class="cap">${L('โพสต์นี้ยังไม่ได้เผยแพร่','This post hasn’t been published')}</div></div>`);
+  if(o.t==='rateLimit') h=sheet('',`<div class="empty" style="padding:8px 28px"><div class="ill">${I('clock','lg')}</div><div class="h2">${L('โพสต์ครบ 10 ครั้งใน 1 ชั่วโมงแล้ว','You’ve posted 10 times this hour')}</div><p class="ink2" style="margin:0">${L('พักแป๊บนึง แล้วลองใหม่ใน ','Take a short break and try again in ')}${o.wait} ${L('นาที','min')}. ${L('ร่างของคุณยังอยู่','Your draft is saved.')}</p><button class="btn dark block" data-act="closeOv">${L('โอเค','OK')}</button></div>`);
+  el.innerHTML=h;
+}
+
+/* ============ PANEL ============ */
+function renderPanel(){
+  const p=$('#panel'); if(!p) return;
+  const jump=[['home','Home · University'],['bubbleMap','Bubble map'],['search','Search'],['compose','Compose'],['post','Post detail'],['activity','Activity'],['profile','My profile'],['other','Classmate profile'],['settings','Settings']];
+  p.innerHTML=`<div style="display:flex;gap:10px;align-items:flex-start"><div style="flex:1"><h2>EIGHT TEEN · MVP 1</h2><div class="cap">Clickable prototype of PRD v1.3 (Jira KAN-4…KAN-64). No backend: data lives in this browser and resets with the button below.</div></div><button class="iconbtn pclose" data-act="panelClose" aria-label="Close">${I('x')}</button></div>
+   <div><h3>Jump to</h3><div class="pbtns">${S.done?jump.map(j=>`<button class="pbtn" data-act="jump" data-arg="${j[0]}">${j[1]}</button>`).join(''):`<button class="pbtn" data-act="skipOnboarding">Skip onboarding</button>`}<button class="pbtn" data-act="resetAll">Reset demo</button></div></div>
+   <div><h3>App</h3><div class="pbtns"><button class="pbtn ${S.lang==='th'?'on':''}" data-act="lang" data-arg="th">ไทย</button><button class="pbtn ${S.lang==='en'?'on':''}" data-act="lang" data-arg="en">English</button>${['system','light','dark'].map(t=>`<button class="pbtn ${S.settings.theme===t?'on':''}" data-act="setTheme" data-arg="${t}">${t}</button>`).join('')}</div></div>
+   ${S.done?`<div><h3>Simulate</h3><div class="pbtns">
+     <button class="pbtn" data-act="simComment">Someone comments on my post</button>
+     <button class="pbtn" data-act="simRemoved">My comment gets removed</button>
+     <button class="pbtn" data-act="simReverify">Re-verify due</button>
+     <button class="pbtn ${S.sim.offline?'on':''}" data-act="simOffline">Feed offline</button>
+     <button class="pbtn ${S.sim.uploadFail?'on':''}" data-act="simUpload">Image upload fails</button>
+     <button class="pbtn" data-act="simShared">Link opened by another campus</button>
+     <button class="pbtn" data-act="simRestart">Kill app mid-onboarding</button></div></div>
+   <div><h3>AI moderation test phrases</h3><div class="cap" style="line-height:20px">Type in a post: <span class="kbd">โอนเงินก่อน</span> → blocked (scam) · <span class="kbd">ไอ้โง่</span> → blocked (harassment) · <span class="kbd">อยากตาย</span> → support sheet with 1323 · <span class="kbd">ขายต่อ</span> → published with reduced reach · link <span class="kbd">bit.ly/x</span> → blocked domain. In comments any link is blocked.</div></div>`:`<div class="cap">Onboarding tips: on the sign-in step use the test accounts, or type any email. Chula addresses (@student.chula.ac.th) get in; other university domains (.ac.th, .edu) are put on that university's waitlist; Gmail/Outlook are refused; a birth year after ${new Date().getFullYear()-MIN_AGE} is under the minimum age; usernames <span class="kbd">natnicha</span>, <span class="kbd">win</span> are taken.</div>`}
+   <div><h3>Analytics events (${S.events.length})</h3><div class="evlog">${S.events.slice(0,30).map(e=>`<div class="ev"><b>${e.name}</b> <span class="t">${new Date(e.at).toLocaleTimeString('en-GB')}</span><br>${esc(JSON.stringify(e.props))}</div>`).join('')||'<span class="cap">Events appear here as you use the app. Every event also carries user_id_hash, university_id, platform, app_version and session_id.</span>'}</div></div>`;
+}
+
+/* ============ VIEW ROUTER ============ */
+function view(){
+  if(!S.done) return `<div class="screen">${vOnboarding()}</div>`;
+  if(S.draft&&top().s==='compose') return vCompose();
+  const t=top();
+  switch(t.s){
+    case 'home': return vHome();
+    case 'activity': return vActivity();
+    case 'profile': return vProfile(t.a);
+    case 'bubble': return vBubble(t.a);
+    case 'hashtag': return vHashtag(t.a);
+    case 'search': return vSearch();
+    case 'post': return vPost(t.a);
+    case 'settings': return vSettings();
+    case 'account': return vAccount();
+    case 'deleteAccount': return vDeleteAccount();
+    case 'privacy': return vPrivacy();
+    case 'language': return vLanguage();
+    case 'theme': return vTheme();
+    case 'help': return vHelp();
+    case 'rules': return vDoc('rules');
+    case 'privacyPolicy': return vDoc('privacy');
+    case 'support': return vSupport(t.a);
+    case 'editProfile': return vEditProfile();
+    case 'removal': return vRemoval(t.a);
+    case 'shared': return vShared();
+    case 'credits': return vCredits();
+  }
+  return vHome();
+}
+function render(){
+  $('#app').innerHTML=view();
+  restoreScroll();
+  renderOverlay(); applyTheme(); renderPanel(); save();
+  document.documentElement.lang=S.lang;
+  if(S.done&&top().s==='compose') refreshCompose();
+}
+
+/* ============ ACTIONS ============ */
+const A={
+  back(){pop();},
+  panelOpen(){$('#panel').classList.add('open');},
+  panelClose(){$('#panel').classList.remove('open');},
+  closeOv(){closeOv();},
+  toastMsg(a){closeOv();toast(a);},
+  tab(a){setTab(a);if(a==='profile')track('profile_viewed',{own:true,source:'tab'});if(a==='home')track('feed_viewed',{feed:S.home.feed,sort:S.home.sort,category:S.home.cat});},
+  go(a){closeOv();const [s,arg]=a.split(':');push(s,arg);},
+  lang(a){S.lang=a;render();},
+  setTheme(a){S.settings.theme=a;render();},
+  /* onboarding */
+  slideNext(){S.ob.slide=(S.ob.slide+1)%3;render();},
+  obGo(a){goStep(a);},
+  obReturning(){S.ob.consent={terms:true,mkt:false};goStep('sso');},
+  obRestart(){const keep=S.lang;S=seed();S.lang=keep;render();},
+  consent(a){S.ob.consent[a]=!S.ob.consent[a];render();},
+  consentNext(){goStep('sso');},
+  ssoOpen(a){openOv({t:'sso',prov:a,err:''});setTimeout(()=>{const i=$('#ssoEmail');i&&i.focus();},40);},
+  ssoPick(a){const i=$('#ssoEmail');i.value=a;A.ssoSubmit();},
+  ssoCancel(){closeOv();S.ob.err='cancel';S.ob.step='ssoerr';render();},
+  ssoSubmit(){const email=($('#ssoEmail').value||'').trim().toLowerCase();const r=classifyEmail(email);const prov=T.ov.prov;
+    if(r.k==='invalid'){T.ov.err=L('ใส่อีเมลให้ถูกต้อง','Enter a valid email');renderOverlay();const i=$('#ssoEmail');i.value=email;i.focus();return;}
+    closeOv();
+    if(r.k==='ok'){S.me.email=email;track('sso_verified',{university_id:'chula',provider:prov,reverify:false});goStep('dob');return;}
+    if(r.k==='waitlist'){const base=r.uni?r.uni[4]:3+(hashStr(r.d)%40);const first=!S.waitlist[r.key];S.waitlist[r.key]=email;S.ob.wl={email,d:r.d,uni:r.uni,count:base+1};if(first)track('waitlist_joined',{university_id:r.key});S.ob.step='waitlist';track('onboarding_step_viewed',{step_name:'waitlist',step_index:1});render();return;}
+    S.ob.err=r.k;S.ob.step='ssoerr';render();},
+  dobNext(){const d=S.ob.dob;const bd=new Date(+d.y,+d.m-1,+d.d);const now=new Date();let age=now.getFullYear()-bd.getFullYear();const m=now.getMonth()-bd.getMonth();if(m<0||(m===0&&now.getDate()<bd.getDate()))age--;if(age<MIN_AGE){S.ob.dobErr=true;render();return;}S.ob.dobErr=false;goStep('profile');},
+  avPreset(a){const [bg,fg]=a.split('|');S.me.bg=bg;S.me.fg=fg;S.me.photo=null;render();},
+  profileNext(){S.me.ini=[...S.me.name.trim()][0];goStep('interests');},
+  interest(a){const s=S.ob.interests;const i=s.indexOf(a);i<0?s.push(a):s.splice(i,1);render();},
+  interestsNext(){S.me.interests=S.ob.interests.slice();track('profile_completed',{has_avatar:!!S.me.photo,interests_count:S.me.interests.length});goStep('location');},
+  perm(a){const [k,v]=a.split(':');S.ob.perm[k==='location'?'loc':'push']=v;track('permission_result',{permission:k==='location'?'location':'push',granted:v==='granted'});if(k==='location')goStep('push');else finishOnboarding();},
+  skipOnboarding(){S.ob.consent={terms:true,mkt:false};S.me.name=S.me.name||'วิน';S.me.user=S.me.user||'win.cu';S.me.ini='ว';S.me.interests=['food','class','music'];S.ob.perm={loc:'granted',push:'granted'};finishOnboarding();},
+  /* home */
+  feed(a){S.home.feed=a;T.loadingUntil=Date.now()+350;setTimeout(render,360);if(a==='bubble')track('bubble_map_viewed',{pins_visible:BUBBLES.length,location_granted:locOn(),category_filter:S.home.bcat});else track('feed_viewed',{feed:'university',sort:S.home.sort,category:S.home.cat});render();},
+  sort(a){S.home.sort=a;T.loadingUntil=Date.now()+300;setTimeout(render,310);track('feed_viewed',{feed:'university',sort:a,category:S.home.cat});render();},
+  cat(a){S.home.cat=a;T.loadingUntil=Date.now()+300;setTimeout(render,310);track('feed_viewed',{feed:'university',sort:S.home.sort,category:a});render();},
+  bcat(a){S.home.bcat=a;track('bubble_map_viewed',{pins_visible:BUBBLES.filter(b=>a==='all'||b.type===a).length,location_granted:locOn(),category_filter:a});render();},
+  sheet(){S.home.sheet=S.home.sheet==='full'?'peek':'full';render();},
+  enableLoc(){S.ob.perm.loc='granted';S.settings.loc=true;track('permission_result',{permission:'location',granted:true});render();},
+  retryFeed(){S.sim.offline=false;T.loadingUntil=Date.now()+500;setTimeout(render,510);render();},
+  dismissPrompt(){S.home.firstPrompt=false;render();},
+  openSearch(){T.search={q:'',tab:'posts'};push('search');setTimeout(()=>{const i=$('#searchInput');i&&i.focus();},30);},
+  searchTab(a){T.search.tab=a;$('#searchBody').innerHTML=searchBody();},
+  searchFill(a){T.search.q=a;render();runSearch(true);},
+  openBubble(a){closeOv();const [id,src]=a.split(':');T.bsort='hot';track('bubble_opened',{bubble_id:id,source:src||'deeplink',posts_24h:count24(id)});push('bubble',id);},
+  bsort(a){T.bsort=a;render();},
+  hsort(a){T.hsort=a;render();},
+  openTag(a,el){closeOv();T.hsort='hot';track('hashtag_viewed',{source:(el&&el.dataset.src)||(top().s==='compose'?'autocomplete':'post')});if(top().s==='search')saveRecent('#'+a);push('hashtag',a);},
+  muteTag(a){closeOv();const k=a.toLowerCase();const i=S.mutedTags.indexOf(k);if(i<0){S.mutedTags.push(k);toast(L('ปิดเสียง #'+a+' แล้ว','Muted #'+a),{act:'muteTag',arg:a,label:L('เลิกทำ','Undo')});}else{S.mutedTags.splice(i,1);toast(L('เลิกปิดเสียง #'+a,'Unmuted #'+a));}render();},
+  openProfile(a,el){closeOv();if(a==='me'){setTab('profile');return;}if(top().s==='search')saveRecent('@'+USERS[a].user);track('profile_viewed',{own:false,source:(el&&el.dataset.src)||top().s});push('profile',a);},
+  profileMenu(a){openOv({t:'profileMenu',id:a});},
+  /* posts */
+  openPost(a,el,e){if(e&&e.target.closest('a'))return;T.reply=null;T.cmode=null;push('post',a);},
+  ate(a){const [type,id]=a.split(':');const o=(type==='post'?S.posts:S.comments).find(x=>x.id===id);o.ated=!o.ated;o.ate+=o.ated?1:-1;track('ate_toggled',{target_type:type,target_id:id,state:o.ated?'on':'off'});
+    document.querySelectorAll(`[data-act="ate"][data-arg="${a}"]`).forEach(b=>{b.classList.toggle('on',o.ated);b.setAttribute('aria-pressed',o.ated);const s=b.querySelector('span');if(s&&type==='post')s.textContent=nf(o.ate);else if(type==='comment'){b.lastChild.textContent=' '+(o.ate||'');}});save();},
+  vote(a){const [id,i]=a.split(':');const p=S.posts.find(x=>x.id===id);p.poll.mine=+i;p.poll.votes[+i]++;track('poll_voted',{post_id:id,option_index:+i});render();},
+  share(a){if(a==='waitlist'){openOv({t:'share',id:null});return;}if(a.startsWith('bubble:')||a.startsWith('profile:')){openOv({t:'share',id:null,ref:a});return;}openOv({t:'share',id:a});},
+  doShare(a){const o=T.ov;closeOv();if(o.id)track('post_shared',{post_id:o.id,channel:a});toast(a==='copy'?L('คัดลอกลิงก์แล้ว','Link copied'):L('เปิด ','Opening ')+(a==='line'?'LINE':a==='instagram'?'Instagram':L('เมนูแชร์','share sheet')));},
+  copyLink(a){closeOv();track('post_shared',{post_id:a,channel:'copy'});try{navigator.clipboard.writeText('https://eightteen.app/p/'+a).catch(()=>{});}catch(e){}toast(L('คัดลอกลิงก์แล้ว','Link copied'));},
+  postMenu(a){openOv({t:'postMenu',id:a});},
+  commentMenu(a){openOv({t:'commentMenu',id:a});},
+  hidePost(a){closeOv();S.hidden.push(a);toast(L('ซ่อนโพสต์แล้ว','Post hidden'),{act:'unhide',arg:a,label:L('เลิกทำ','Undo')});if(top().s==='post')pop();else render();},
+  unhide(a){S.hidden=S.hidden.filter(x=>x!==a);$('#toast').innerHTML='';render();},
+  report(a){openOv({t:'report',target:a,reason:null});},
+  reportReason(a){const note=($('#repNote')||{}).value;T.ov.reason=a;renderOverlay();if(note)$('#repNote').value=note;},
+  submitReport(){const o=T.ov;S.reported.push(o.target);setTimeout(()=>{addNotif({type:'report',html:L('<b>รายงานที่คุณส่งได้รับการดำเนินการแล้ว</b>','<b>We acted on your report</b>'),prev:L('ขอบคุณที่ช่วยให้ชุมชนปลอดภัย','Thanks for keeping the community safe')});render();},8000);const [type]=o.target.split(':');track('report_submitted',{target_type:type,reason:o.reason});openOv({t:'reported'});if(type==='post'&&top().s==='post')S.nav.pop();render();},
+  askBlock(a){const [uid,anon]=a.split(':');openOv({t:'block',uid,anon:anon==='1'});},
+  doBlock(a){const [uid,anon]=a.split(':');S.blocked.push({uid,anon:anon==='1'});closeOv();toast(L('บล็อกแล้ว','Blocked'));if(top().s==='post'&&S.posts.find(p=>p.id===top().a)?.by===uid)pop();else render();},
+  unblock(a){S.blocked=S.blocked.filter(b=>!(b.uid===a&&!b.anon));toast(L('เลิกบล็อกแล้ว','Unblocked'));render();},
+  removeMe(a){const [type,id]=a.split(':');S.removedMentions.push(id+'|me');track('mention_removed',{target_type:type});closeOv();toast(L('ลบชื่อคุณออกแล้ว จะไม่ได้รับแจ้งเตือนจากโพสต์นี้อีก','You’ve been removed. No more notifications from this post.'));render();},
+  askDelete(a){openOv({t:'delete',id:a});},
+  doDelete(a){const p=S.posts.find(x=>x.id===a);p.removed=true;track('post_deleted',{post_id:a,age_minutes:Math.round((Date.now()-p.at)/MIN)});closeOv();toast(L('ลบโพสต์แล้ว','Post deleted'));if(top().s==='post')pop();else render();},
+  editPost(a){closeOv();const p=S.posts.find(x=>x.id===a);S.draft=newDraft({text:p.text,mode:p.anon?'anon':'identity',cat:p.cat,uni:p.uni,bubble:p.bubble,images:p.images.slice(),editing:a});push('compose');},
+  deleteComment(a){closeOv();S.comments.find(c=>c.id===a).removed=true;render();toast(L('ลบคอมเมนต์แล้ว','Comment deleted'));},
+  /* comments */
+  focusComment(){const i=$('#cInput');i&&i.focus();},
+  cmode(){const cur=T.cmode||S.settings.mode;T.cmode=cur==='anon'?'identity':'anon';const v=($('#cInput')||{}).value;render();const i=$('#cInput');if(i&&v){i.value=v;H.cInput(i);}toast(T.cmode==='anon'?L('ตอบแบบนิรนาม','Replying anonymously'):L('ตอบด้วยชื่อจริง','Replying with your name'));},
+  cIdentity(){T.cmode='identity';const v=$('#cInput').value;render();const i=$('#cInput');i.value=v;i.focus();H.cInput(i);},
+  reply(a){const c=S.comments.find(x=>x.id===a);const p=S.posts.find(x=>x.id===c.post);const label=c.anon?aliasOf(p.id,c.by).name:user(c.by).name;T.reply={id:c.parent||c.id,to:{anon:c.anon,uid:c.by},label};const v=($('#cInput')||{}).value;render();const i=$('#cInput');if(i){i.value=v||'';i.focus();}},
+  cancelReply(){T.reply=null;render();},
+  sendComment(){
+    const i=$('#cInput'); const text=i.value.trim(); if(!text) return;
+    if(URL_RE.test(text)) return;
+    const pid=top().a; const p=S.posts.find(x=>x.id===pid); const mode=T.cmode||S.settings.mode;
+    const ments=mode==='anon'?[]:mentionsIn(text).map(u=>Object.values(USERS).find(x=>x.user===u)).filter(u=>u&&u.mentions!=='none'&&!isBlocked(u.id)).map(u=>u.id);
+    if(mentionsIn(text).length>5&&mode!=='anon'){toast(L('แท็กได้ไม่เกิน 5 คน','Max 5 mentions'));return;}
+    const mod=moderate(text); if(mod.level==='high'){openOv({t:'blocked',reason:mod.reason});return;} if(mod.level==='self'){openOv({t:'support'});return;}
+    const c={id:uid('c'),post:pid,by:'me',anon:mode==='anon',parent:T.reply?T.reply.id:null,replyTo:T.reply?T.reply.to:null,text,at:Date.now(),ate:0,ated:false,voice:null,mentions:ments,removed:false};
+    S.comments.push(c);
+    track('comment_created',{post_id:pid,type:'text',mode:c.anon?'anonymous':'identity',is_reply:!!c.parent,replying_to_anonymous:!!(c.replyTo&&c.replyTo.anon),mentions_count:ments.length});
+    T.reply=null; render(); const sc=$('#postScroll'); if(sc) sc.scrollTop=sc.scrollHeight; toast(L('ส่งคอมเมนต์แล้ว','Comment sent'));
+  },
+  pickMention(a){const [ctx,un,group,pos]=a.split('|');const el=ctx==='c'?$('#cInput'):$('#cmpText');const tok=activeToken(el);if(!tok)return;track('mention_added',{source:ctx==='c'?'comment':'post',group,position:+pos});replaceToken(el,tok,'@'+un);},
+  pickTag(a){const [ctx,t]=a.split('|');const el=ctx==='c'?$('#cInput'):$('#cmpText');const tok=activeToken(el);if(tok)replaceToken(el,tok,'#'+t);},
+  recStart(){T.rec={start:Date.now()};render();T.recTimer=setInterval(()=>{const s=Math.floor((Date.now()-T.rec.start)/1000);const el=$('#recT');if(el)el.textContent='0:'+String(s).padStart(2,'0');if(s>=60)A.recStop();},250);},
+  recCancel(){clearInterval(T.recTimer);T.rec=null;render();},
+  recStop(){clearInterval(T.recTimer);const sec=Math.max(1,Math.round((Date.now()-T.rec.start)/1000));T.rec=null;const pid=top().a;const mode=T.cmode||S.settings.mode;
+    S.comments.push({id:uid('c'),post:pid,by:'me',anon:mode==='anon',parent:T.reply?T.reply.id:null,replyTo:T.reply?T.reply.to:null,text:'',voice:{sec},at:Date.now(),ate:0,ated:false,mentions:[],removed:false});
+    track('comment_created',{post_id:pid,type:'voice',mode:mode==='anon'?'anonymous':'identity',is_reply:!!T.reply,replying_to_anonymous:!!(T.reply&&T.reply.to.anon),mentions_count:0});T.reply=null;render();toast(L('ส่งคอมเมนต์เสียงแล้ว (ถอดความให้ AI ตรวจ)','Voice comment sent (transcribed for AI check)'));},
+  playVoice(a){T.playing=T.playing===a?null:a;render();if(T.playing){const c=S.comments.find(x=>x.id===a);clearTimeout(T.playT);T.playT=setTimeout(()=>{T.playing=null;render();},Math.min(c.voice.sec,6)*1000);}},
+  /* compose */
+  compose(){openCompose({src:'tab'});},
+  composeIn(a){const [id,src]=a.split(':');track('bubble_selected',{bubble_id:id,source:src});openCompose({bubble:id,uni:true,src});},
+  composeCancel(){const d=S.draft;if(d.editing||(!d.text.trim()&&!d.images.length&&!d.poll)){S.draft=null;pop();return;}openOv({t:'keepDraft'});},
+  draftKeep(){S.savedDraft=S.draft;S.draft=null;closeOv();pop();toast(L('เก็บร่างแล้ว','Draft saved'));},
+  draftDiscard(){S.savedDraft=null;S.draft=null;closeOv();pop();},
+  dmode(a){S.draft.mode=a;syncDraftText();render();},
+  cmpIdentity(){S.draft.mode='identity';syncDraftText();render();const t=$('#cmpText');t.focus();t.setSelectionRange(t.value.length,t.value.length);H.cmpText(t);},
+  dcat(a){S.draft.cat=a;syncDraftText();$('#cmpCats').innerHTML=composeCats();refreshCompose();},
+  dUni(){S.draft.uni=!S.draft.uni;syncDraftText();render();},
+  pickBubble(){syncDraftText();openOv({t:'bubblePicker',q:''});},
+  setBubble(a){S.draft.bubble=a;track('bubble_selected',{bubble_id:a,source:'picker'});closeOv();render();},
+  clearBubble(){S.draft.bubble=null;syncDraftText();render();},
+  addPoll(){syncDraftText();if(S.draft.poll)return;if(S.draft.images.length){toast(L('โพสต์ที่มีรูปใส่โพลไม่ได้','Polls can’t be combined with photos'));return;}S.draft.poll={opts:['',''],days:1};render();},
+  rmPoll(){S.draft.poll=null;syncDraftText();render();},
+  addOpt(){syncDraftText();S.draft.poll.opts.push('');render();},
+  rmOpt(a){syncDraftText();S.draft.poll.opts.splice(+a,1);render();},
+  pollDays(a){syncDraftText();S.draft.poll.days=+a;render();},
+  rmImg(a){syncDraftText();S.draft.images.splice(+a,1);render();},
+  retryImg(a){syncDraftText();S.draft.images[+a].failed=false;render();toast(L('อัปโหลดสำเร็จ','Uploaded'));},
+  insert(a){const t=$('#cmpText');const pos=t.selectionStart??t.value.length;const pre=t.value.slice(0,pos);const ins=(pre&&!/\s$/.test(pre)?' ':'')+a;t.value=pre+ins+t.value.slice(pos);t.focus();t.setSelectionRange(pos+ins.length,pos+ins.length);t.dispatchEvent(new Event('input',{bubbles:true}));},
+  publish(){publish();},
+  /* activity */
+  atab(a){T.atab=a;render();},
+  openNotif(a){const n=S.notifs.find(x=>x.id===a);n.read=true;track('notification_opened',{type:n.type,channel:n.channel});if(n.type==='removed'){push('removal',n.id);return;}if(n.type==='reverify'){push('account');return;}if(n.post){push('post',n.post);return;}render();},
+  appeal(a){S.appealed.push(a);track('appeal_submitted',{target_type:'comment'});render();toast(L('ส่งอุทธรณ์แล้ว','Appeal sent'));},
+  /* profile/settings */
+  saveProfile(){S.me.name=$('#epName').value.trim()||S.me.name;S.me.bio=$('#epBio').value.trim();S.me.ini=[...S.me.name][0];pop();toast(L('บันทึกแล้ว','Saved'));},
+  meInterest(a){const name=$('#epName').value,bio=$('#epBio').value;const s=S.me.interests;const i=s.indexOf(a);i<0?s.push(a):s.splice(i,1);render();$('#epName').value=name;$('#epBio').value=bio;},
+  setMode(a){S.settings.mode=a;render();},
+  toggleShow(){S.me.show=!S.me.show;render();},
+  toggleLoc(){if(locOn()){S.settings.loc=false;}else{S.settings.loc=true;S.ob.perm.loc='granted';}render();},
+  setMentions(a){S.me.mentions=a;render();toast(a==='none'?L('ไม่มีใครแท็กคุณได้แล้ว','No one can mention you now'):L('ทุกคนในจุฬาฯ แท็กคุณได้','Everyone at Chula can mention you'));},
+  reverify(){track('sso_verified',{university_id:'chula',provider:'microsoft',reverify:true});S.me.verifiedAt=Date.now();S.notifs=S.notifs.filter(n=>n.type!=='reverify');render();toast(L('ยืนยันตัวตนแล้ว อีก 12 เดือนค่อยเจอกัน','Verified. See you in 12 months'));},
+  downloadData(){toast(L('รับคำขอแล้ว เราจะเตรียมไฟล์ให้ภายใน 7 วัน','Request received. Your file will be ready within 7 days'));track('support_ticket_sent',{type:'data_download'});},
+  logout(){S.done=false;S.ob.step='welcome';S.ob.slide=0;S.nav=[{s:'home'}];S.tab='home';render();toast(L('ออกจากระบบแล้ว','Logged out'));},
+  deleteAccount(){track('account_deletion_requested',{});const lang=S.lang;S=seed();S.lang=lang;render();toast(L('ปิดบัญชีแล้ว ลบถาวรใน 30 วัน','Account closed. Permanently deleted in 30 days'));track('email_sent',{type:'account_recovery'});},
+  sendSupport(a){const v=$('#supText').value.trim();if(!v){toast(L('เขียนรายละเอียดก่อนนะ','Add some details first'));return;}track('support_ticket_sent',{type:a});pop();toast(L('ส่งแล้ว ทีมงานจะตอบในแอป','Sent. We’ll reply in the app'));},
+  /* panel */
+  jump(a){closeOv();S.draft=null;A.panelClose();
+    if(a==='home'){S.home.feed='university';setTab('home');}
+    else if(a==='bubbleMap'){S.home.feed='bubble';setTab('home');}
+    else if(a==='search'){setTab('home');A.openSearch();}
+    else if(a==='compose'){setTab('home');openCompose({src:'tab'});}
+    else if(a==='post'){setTab('home');push('post','p1');}
+    else if(a==='other'){setTab('home');push('profile','u1');}
+    else if(a==='settings'){setTab('profile');push('settings');}
+    else setTab(a);},
+  resetAll(){try{localStorage.removeItem(KEY);}catch(e){}S=seed();T.ov=null;render();},
+  simComment(){const mine=S.posts.filter(p=>p.by==='me'&&!p.removed);if(!mine.length){toast(L('โพสต์อะไรสักอย่างก่อน','Make a post first'));return;}const p=mine[0];
+    S.comments.push({id:uid('c'),post:p.id,by:'u6',anon:true,parent:null,replyTo:null,text:'เห็นด้วยมากก 👍',at:Date.now(),ate:0,ated:false,voice:null,mentions:[],removed:false});
+    addNotif({type:'comment',post:p.id,html:L('<b>มีคนคอมเมนต์โพสต์ของคุณ</b>','<b>Someone commented on your post</b>'),prev:'“เห็นด้วยมากก 👍”'});render();toast(L('มีแจ้งเตือนใหม่','New notification'),{act:'tab',arg:'activity',label:L('ดู','View')});},
+  simRemoved(){addNotif({type:'removed',removedText:'ใครเชื่อโพสต์นี้ก็โง่แล้ว',html:L('<b>คอมเมนต์ของคุณถูกนำออก · คำเตือนครั้งที่ 1</b>','<b>Your comment was removed · Warning 1</b>'),prev:L('แตะเพื่อดูเหตุผลและยื่นอุทธรณ์','Tap to see why and appeal')});render();toast(L('มีแจ้งเตือนใหม่','New notification'),{act:'tab',arg:'activity',label:L('ดู','View')});},
+  simReverify(){S.me.verifiedAt=Date.now()-358*DAY;addNotif({type:'reverify',channel:'in_app',html:L('ถึงเวลายืนยันตัวตนประจำปี ยืนยันภายใน 7 วันเพื่อโพสต์ต่อได้','Time for your yearly re-verification. Re-verify within 7 days to keep posting.')});render();},
+  simOffline(){S.sim.offline=!S.sim.offline;render();},
+  simUpload(){S.sim.uploadFail=!S.sim.uploadFail;render();},
+  simShared(){push('shared');},
+  simRestart(){S.done=false;S.ob.started=true;S.ob.resumeTo='profile';S.ob.step='resume';render();},
+};
+
+/* ============ input handlers ============ */
+const H={
+  ssoEmail(el){const e=$('#ssoErr');if(e)e.textContent='';el.classList.remove('err');},
+  dob(el){S.ob.dob[el.dataset.k]=el.value;S.ob.dobErr=false;const d=S.ob.dob;const b=$('#dobNext');if(b)b.disabled=!(d.d&&d.m&&d.y);save();},
+  pfName(el){S.me.name=el.value;$('#avPrev').innerHTML=avatar(Object.assign({},S.me,{ini:S.me.name?[...S.me.name][0]:'?'}),72);pfValidate();},
+  pfUser(el){el.value=el.value.toLowerCase();S.me.user=el.value;pfValidate();},
+  pfBio(el){S.me.bio=el.value;save();},
+  avatarFile(el){const f=el.files[0];if(!f)return;const r=new FileReader();r.onload=()=>shrink(r.result,160,u=>{S.me.photo=u;render();});r.readAsDataURL(f);},
+  search(el){T.search.q=el.value;clearTimeout(T.st);T.st=setTimeout(()=>runSearch(false),250);$('#searchBody').innerHTML=searchBody();},
+  bpSearch(el){T.ov.q=el.value;const pos=el.selectionStart;renderOverlay();const n=$('#bpSearch');n.focus();n.setSelectionRange(pos,pos);},
+  cmpText(el){
+    const d=S.draft; d.text=el.value; el.style.height='auto'; el.style.height=Math.max(120,el.scrollHeight)+'px';
+    if(!d.editing){const sug=suggestCat(d.text); if(sug!==d.catAuto){d.catAuto=sug; if(!d.catTouched&&sug) d.cat=sug; $('#cmpCats').innerHTML=composeCats();}}
+    $('#cmpLink').innerHTML=composeLink();
+    $('#cmpSuggest').innerHTML=suggestHTML(activeToken(el),d.mode,'cmp');
+    refreshCompose();
+  },
+  cmpFiles(el){const files=[...el.files].slice(0,4-S.draft.images.length);syncDraftText();if(S.draft.poll){toast(L('โพสต์ที่มีโพลใส่รูปไม่ได้','Polls can’t be combined with photos'));return;}
+    if(!files.length){toast(L('ใส่รูปได้สูงสุด 4 รูป','Up to 4 photos'));return;}
+    let left=files.length;files.forEach(f=>{const r=new FileReader();r.onload=()=>shrink(r.result,900,u=>{S.draft.images.push({src:u,failed:S.sim.uploadFail});if(--left===0)render();});r.readAsDataURL(f);});},
+  pollOpt(el){S.draft.poll.opts[+el.dataset.i]=el.value;refreshCompose();},
+  cInput(el){
+    el.style.height='auto'; el.style.height=Math.min(120,el.scrollHeight)+'px';
+    const v=el.value; const hasUrl=URL_RE.test(v); const has=v.trim().length>0;
+    $('#cSend').style.display=has?'flex':'none'; $('#cMic').style.display=has?'none':'flex';
+    $('#cSend').disabled=hasUrl; $('#cSend').style.opacity=hasUrl?.35:1;
+    $('#cHint').innerHTML=hasUrl?`<div class="err-t" style="padding:6px 0">${I('link','xs')} ${L('ใส่ลิงก์ในคอมเมนต์ไม่ได้','Links can’t be added to comments')}</div>`:(mentionsIn(v).length>5&&(T.cmode||S.settings.mode)!=='anon'?`<div class="err-t" style="padding:6px 0">${L('แท็กได้ไม่เกิน 5 คน','Max 5 mentions')}</div>`:'');
+    $('#cSuggest').innerHTML=suggestHTML(activeToken(el),T.cmode||S.settings.mode,'c');
+  },
+};
+function pfValidate(){const v=validUsername(S.me.user);const m=$('#pfUserMsg');if(m){m.className=v.ok?'ok-t':'err-t';m.textContent=S.me.user?v.msg:L('3–20 ตัว a–z 0–9 . _','3–20 characters: a–z 0–9 . _');}
+  $('#pfUser').classList.toggle('err',!!S.me.user&&!v.ok);const b=$('#pfNext');if(b)b.disabled=!(S.me.name.trim()&&v.ok);save();}
+function runSearch(force){const q=T.search.q.trim();if(!q)return;const r=searchResults(q);track('search_performed',{query_length:q.length,results_tab:T.search.tab,results_count:r.posts.length+r.tags.length+r.people.length});if(force)saveRecent(q);}
+function saveRecent(q){S.recent=[q].concat(S.recent.filter(x=>x!==q)).slice(0,5);}
+function syncDraftText(){const t=$('#cmpText');if(t&&S.draft)S.draft.text=t.value;S.draft&&document.querySelectorAll('[data-on="pollOpt"]').forEach(i=>{S.draft.poll&&(S.draft.poll.opts[+i.dataset.i]=i.value);});}
+function shrink(dataUrl,max,cb){const img=new Image();img.onload=()=>{const s=Math.min(1,max/Math.max(img.width,img.height));const c=document.createElement('canvas');c.width=img.width*s;c.height=img.height*s;c.getContext('2d').drawImage(img,0,0,c.width,c.height);cb(c.toDataURL('image/jpeg',.8));};img.onerror=()=>cb(dataUrl);img.src=dataUrl;}
+
+/* ============ flows ============ */
+function finishOnboarding(){
+  S.done=true; S.nav=[{s:'home'}]; S.tab='home'; S.home.feed='university'; S.home.firstPrompt=true;
+  if(S.ob.perm.loc!=='granted') S.settings.loc=false;
+  S.me.verifiedAt=Date.now();
+  track('email_sent',{type:'welcome'});
+  // seeded activity that involves the new user
+  const c={id:uid('c'),post:'p14',by:'u1',anon:false,parent:null,replyTo:null,text:'@'+S.me.user+' ชั้น 4 ที่บอกอยู่ตรงนี้นะ มาอ่านด้วยกันได้',at:Date.now()-3*MIN,ate:2,ated:false,voice:null,mentions:['me'],removed:false};
+  S.comments.push(c);
+  addNotif({type:'mention',post:'p14',at:Date.now()-3*MIN,avs:['u1'],html:L('<b>ณัฐณิชา</b> พูดถึงคุณ','<b>ณัฐณิชา</b> mentioned you'),prev:c.text});
+  addNotif({type:'welcome',channel:'in_app',html:L('ยินดีต้อนรับสู่ EIGHT TEEN! เราส่งอีเมลต้อนรับไปที่ '+S.me.email+' แล้ว','Welcome to EIGHT TEEN! We sent a welcome email to '+S.me.email)});
+  track('feed_viewed',{feed:'university',sort:'hot',category:'all'});
+  render();
+}
+function openCompose(o){
+  if(S.savedDraft&&!o.bubble){S.draft=S.savedDraft;S.savedDraft=null;toast(L('เปิดร่างที่เก็บไว้','Draft restored'));}
+  else S.draft=newDraft(o);
+  push('compose'); setTimeout(()=>{const t=$('#cmpText');if(t){t.focus();t.setSelectionRange(t.value.length,t.value.length);H.cmpText(t);}},30);
+}
+function moderate(text){
+  const t=text.toLowerCase();
+  if(MOD.self.some(w=>t.includes(w))) return {level:'self'};
+  const h=MOD.high.find(([w])=>t.includes(w.toLowerCase())); if(h) return {level:'high',reason:h[1]};
+  if(MOD.medium.some(w=>t.includes(w))) return {level:'medium'};
+  return {level:'low'};
+}
+function publish(){
+  syncDraftText(); const d=S.draft; if(composeValid().length) return;
+  if(!d.editing){const recent=S.posts.filter(p=>p.by==='me'&&Date.now()-p.at<HOUR).sort((a,b)=>a.at-b.at); if(recent.length>=10){openOv({t:'rateLimit',wait:Math.ceil((recent[0].at+HOUR-Date.now())/MIN)});return;}}
+  openOv({t:'aicheck'});
+  setTimeout(()=>{
+    const mod=moderate(d.text);
+    if(mod.level==='self'){openOv({t:'support'});track('post_blocked',{reason:'self_harm',risk_level:'high'});return;}
+    if(mod.level==='high'){openOv({t:'blocked',reason:mod.reason});track('post_blocked',{reason:mod.reason,risk_level:'high'});return;}
+    closeOv();
+    if(d.editing){const p=S.posts.find(x=>x.id===d.editing);p.text=d.text;p.cat=d.cat;p.tags=tagsOf(d.text);p.images=d.images;p.edited=true;track('post_edited',{post_id:p.id});S.draft=null;pop();toast(L('บันทึกการแก้ไขแล้ว','Changes saved'));return;}
+    const ments=d.mode==='anon'?[]:mentionsIn(d.text).map(u=>Object.values(USERS).find(x=>x.user===u)).filter(u=>u&&u.mentions!=='none'&&!isBlocked(u.id)).map(u=>u.id);
+    const p={id:uid('p'),by:'me',anon:d.mode==='anon',text:d.text.trim(),cat:d.cat,uni:d.uni,bubble:d.bubble,images:d.images.map(i=>({src:i.src,h:i.h})),poll:d.poll?{opts:d.poll.opts.filter(o=>o.trim()),votes:d.poll.opts.filter(o=>o.trim()).map(()=>0),mine:null,ends:Date.now()+d.poll.days*DAY}:null,ate:0,ated:false,tags:tagsOf(d.text),mentions:ments,edited:false,removed:false,pinned:false,reach:mod.level==='medium'?'reduced':'normal',at:Date.now()};
+    S.posts.unshift(p);
+    track('post_created',{post_id:p.id,mode:p.anon?'anonymous':'identity',category:p.cat,has_image:p.images.length>0,has_poll:!!p.poll,hashtags_count:p.tags.length,mentions_count:ments.length,audience:p.uni&&p.bubble?'both':p.bubble?'bubble':'university',bubble_id:p.bubble});
+    if(mod.level==='medium') track('moderation_queued (internal)',{post_id:p.id,risk_level:'medium',reach:'reduced'});
+    S.draft=null; S.savedDraft=null; S.home.firstPrompt=false; pop();
+    toast(L('โพสต์แล้ว','Posted'),{act:'openPost',arg:p.id,label:L('ดูโพสต์','View')});
+    setTimeout(()=>{if(!S.posts.includes(p)||p.removed)return;p.ate+=3;addNotif({type:'ate',post:p.id,avs:['u2','u1','u6'],html:L('<b>3 คน</b> ATE โพสต์ของคุณ','<b>3 people</b> gave your post ATE'),prev:p.text});render();},6000);
+  },900);
+}
+
+/* ============ events ============ */
+document.addEventListener('click',e=>{
+  const el=e.target.closest('[data-act]'); if(!el) return;
+  if(el.tagName==='LABEL') return;
+  const fn=A[el.dataset.act]; if(!fn) return;
+  e.preventDefault(); e.stopPropagation();
+  fn(el.dataset.arg,el,e);
+  if(el.closest('#panel')&&!['panelClose','lang','setTheme','simOffline','simUpload','resetAll','skipOnboarding'].includes(el.dataset.act))A.panelClose();
+});
+document.addEventListener('input',e=>{const el=e.target;if(el.dataset&&el.dataset.on&&H[el.dataset.on]&&el.type!=='file'&&el.tagName!=='SELECT')H[el.dataset.on](el,e);});
+document.addEventListener('change',e=>{const el=e.target;if(el.dataset&&el.dataset.on&&H[el.dataset.on]&&(el.type==='file'||el.tagName==='SELECT'))H[el.dataset.on](el,e);});
+document.addEventListener('keydown',e=>{
+  if(e.target.id==='searchInput'&&e.key==='Enter'){runSearch(true);}
+  if(e.target.id==='ssoEmail'&&e.key==='Enter'){e.preventDefault();A.ssoSubmit();}
+  if(e.target.id==='cInput'&&e.key==='Enter'&&!e.shiftKey){e.preventDefault();A.sendComment();}
+  if(e.key==='Escape'&&T.ov&&T.ov.t!=='aicheck')closeOv();
+});
+document.addEventListener('selectionchange',()=>{const a=document.activeElement;if(a&&a.id==='cmpText'&&S.draft)$('#cmpSuggest').innerHTML=suggestHTML(activeToken(a),S.draft.mode,'cmp');});
+/* the prompt asks for a fresh feed each load */
+if(!S.done&&S.ob.started&&S.ob.step!=='welcome'&&S.ob.step!=='resume'){S.ob.resumeTo=S.ob.step;S.ob.step='resume';}
+if(S.done&&top().s==='compose'&&!S.draft) S.nav=[{s:S.tab}];
+render();
+if(!S.events.length) track('onboarding_step_viewed',{step_name:'welcome',step_index:0});
+})();
+</script>
