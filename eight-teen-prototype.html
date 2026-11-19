@@ -312,6 +312,84 @@ img.pimg{display:block;width:100%;height:auto;object-fit:cover}
 .mapwrap{--peek:310px}
 .bsheet.peek{padding-bottom:94px}
 @media (max-width:520px){.bsheet.peek{padding-bottom:84px}.mapwrap{--peek:300px}}
+
+/* ===== v1.5 comfort refresh: more air, fewer competing accents, calmer motion ===== */
+:root{--ease-out:cubic-bezier(.23,1,.32,1);--ease-drawer:cubic-bezier(.32,.72,0,1)}
+body{font-size:calc(16px*var(--ts,1));line-height:1.6}
+.pad{padding:0 22px}
+.cap{font-size:calc(13px*var(--ts,1));line-height:calc(19px*var(--ts,1))}
+.h1{font-size:calc(25px*var(--ts,1));line-height:calc(33px*var(--ts,1));letter-spacing:-.3px}
+.h2{font-size:calc(19px*var(--ts,1));line-height:calc(27px*var(--ts,1))}
+/* header: lighter title, tabs without a hard rule */
+.hdr-home{padding:10px 22px 0}
+.uni{font-size:calc(26px*var(--ts,1));line-height:calc(34px*var(--ts,1));letter-spacing:-.3px}
+.feedtabs{gap:24px;margin-top:10px;border-bottom:0;align-items:center}
+.feedtab{position:relative;padding:8px 0 12px;border-bottom:0;margin-bottom:0;color:var(--tert)}
+.feedtab.on{color:var(--ink)}
+.feedtab.on::after{content:"";position:absolute;left:0;right:0;bottom:4px;height:3px;border-radius:9px;background:var(--brand)}
+.hdr-sort{margin-left:auto;display:flex;gap:2px;padding:3px;border-radius:999px;background:var(--surface)}
+.hdr-sort button{min-height:32px;padding:0 12px;border-radius:999px;font-size:calc(13px*var(--ts,1));font-weight:600;color:var(--muted);transition:background-color .2s var(--ease-out),color .2s var(--ease-out)}
+.hdr-sort button.on{background:var(--canvas);color:var(--ink);box-shadow:0 1px 3px rgba(11,16,38,.10)}
+/* chips: soft fills instead of outlined boxes and black selection */
+.chips{gap:8px;padding:4px 22px}
+.chip{border:0;background:var(--surface);color:var(--ink2);font-weight:500;min-height:38px;padding:4px 16px}
+.chip.on{background:var(--ink);color:var(--canvas);border-color:transparent;font-weight:600}
+.chip.ai{border:1px dashed var(--brand);background:var(--info)}
+/* segmented control: lifted thumb, not an inverted block */
+.seg{background:var(--surface)}
+.seg button{font-weight:600;color:var(--muted);transition:background-color .2s var(--ease-out),color .2s var(--ease-out)}
+.seg button.on{background:var(--canvas);color:var(--ink);box-shadow:0 1px 3px rgba(11,16,38,.10)}
+/* buttons: drop the sticker offset outside the hero, keep a soft lift */
+.btn{font-weight:650;transition:transform 160ms var(--ease-out),opacity 160ms var(--ease-out)}
+.btn.primary{box-shadow:0 6px 18px color-mix(in srgb,var(--brand) 28%,transparent)}
+.btn.primary:active,.btn:active{transform:scale(.97);box-shadow:0 3px 10px color-mix(in srgb,var(--brand) 22%,transparent)}
+.fab-float{border-radius:999px;width:56px;height:56px;box-shadow:0 10px 26px color-mix(in srgb,var(--brand) 38%,transparent)}
+.fab-float:active{transform:scale(.95);box-shadow:0 6px 16px color-mix(in srgb,var(--brand) 30%,transparent)}
+.iconbtn{background:transparent}
+.hdr-row .iconbtn,.topbar .iconbtn{background:var(--surface)}
+/* post card: more breathing room, one quiet hairline, softer meta */
+.post{padding:20px 22px 12px;border-bottom:0;position:relative}
+.post::after{content:"";position:absolute;left:22px;right:22px;bottom:0;height:1px;background:var(--divider)}
+.post.pinned{background:color-mix(in srgb,var(--info) 70%,var(--canvas));}
+.phead{gap:12px;align-items:center}
+.pname{font-size:calc(15px*var(--ts,1));font-weight:650}
+.pmeta{font-size:calc(13px*var(--ts,1));color:var(--tert);line-height:calc(19px*var(--ts,1))}
+.ptext{word-break:normal;overflow-wrap:break-word;margin-top:12px;font-size:calc(16px*var(--ts,1));line-height:calc(26px*var(--ts,1));color:var(--ink)}
+.pimgs{margin-top:14px;border-radius:18px;gap:3px}
+.ptags{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;align-items:center}
+.ptag{font-size:calc(13px*var(--ts,1));color:var(--tert);font-weight:500}
+.ptags .pill.brand{background:transparent;padding:0;min-height:24px;color:var(--brand-ink);font-weight:600}
+.pacts{margin-top:6px;gap:8px}
+.pact{color:var(--tert);font-weight:600}
+.pact .ate-l{font-weight:700;letter-spacing:.02em}
+.pill{min-height:26px;padding:2px 10px;font-weight:600}
+/* rows, sections, banners */
+.row{padding:16px 22px;min-height:60px;gap:16px}
+.row + .row{border-top:0;box-shadow:inset 22px 0 0 var(--canvas),inset 0 1px 0 var(--divider)}
+.section-t{padding:26px 22px 8px;letter-spacing:.04em;color:var(--tert)}
+.banner{margin:14px 22px;padding:16px 18px;border-radius:20px;gap:14px}
+.card{border-radius:20px}
+/* bubble sheet cards: borderless, softer */
+.bcard{border:0;background:var(--surface);border-radius:20px;padding:14px;gap:10px}
+.bcards{gap:12px;padding:4px 18px 14px}
+/* sheets and toasts: calmer, iOS-like motion */
+.sheet{animation:up .3s var(--ease-drawer);border-radius:30px 30px 0 0}
+@keyframes up{from{transform:translateY(100%)}}
+.scrim{animation:fade .2s var(--ease-out)}
+.screen.fwd{animation:slideIn .26s var(--ease-out)}
+.screen.back{animation:slideBack .22s var(--ease-out)}
+@keyframes slideIn{from{transform:translateX(24px);opacity:0}}
+@keyframes slideBack{from{transform:translateX(-18px);opacity:0}}
+.toast{padding:12px 20px;box-shadow:0 12px 32px rgba(11,16,38,.18)}
+.chip,.iconbtn,.pact,.tab,.bcard,.unirow,.seg button,.hdr-sort button{transition:transform 160ms var(--ease-out),background-color .2s var(--ease-out),color .2s var(--ease-out)}
+.chip:active,.iconbtn:active,.pact:active,.seg button:active,.tab:active,.bcard:active,.unirow:active,.hdr-sort button:active{transform:scale(.97)}
+.pill.live::before{animation-duration:1.6s}
+/* avatar photo picker */
+.avpick{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-top:4px}
+.avpick button{aspect-ratio:1;border-radius:999px;background-size:cover;background-position:center;box-shadow:0 0 0 2px var(--canvas),0 0 0 2px var(--border);transition:transform 160ms var(--ease-out),box-shadow .2s var(--ease-out)}
+.avpick button.on{box-shadow:0 0 0 2px var(--canvas),0 0 0 4px var(--brand)}
+.avpick button:active{transform:scale(.94)}
+@media (prefers-reduced-motion:reduce){.screen.fwd,.screen.back,.sheet{animation:fade .2s ease}}
 /* phone pass */
 .kb .tabbar,.kb .fab-float{display:none}
 .kb .cbar{padding-bottom:10px}
@@ -363,11 +441,11 @@ const MOD={
   blockedDomains:['free-iphone.xyz','bit.ly','cutt.ly']
 };
 const USERS={
-  u1:{id:'u1',name:'ณัฐณิชา ศรีสุวรรณวงศ์',user:'natnicha',fac:['อักษรศาสตร์','Arts'],year:2,bg:'var(--peach-bg)',fg:'var(--peach-fg)',ini:'ณ',show:true,mentions:'all',bio:'ชอบกิน ชอบเที่ยว 🍜',interests:['food','travel']},
-  u2:{id:'u2',name:'ภูมิ ธนากร',user:'phum.eng',fac:['วิศวกรรมศาสตร์','Engineering'],year:3,bg:'#e3ecff',fg:'#2556c7',ini:'ภ',show:true,mentions:'all',bio:'ICE 🛠️ รับติวแคลฯ',interests:['class','tech']},
-  u3:{id:'u3',name:'ปาล์ม',user:'palm_cu',fac:['พาณิชยศาสตร์และการบัญชี','Commerce & Accountancy'],year:1,bg:'#e4f7ec',fg:'#14805a',ini:'ป',show:false,mentions:'all',bio:'',interests:['music']},
-  u4:{id:'u4',name:'มิ้นท์ อารยา',user:'mint.arch',fac:['สถาปัตยกรรมศาสตร์','Architecture'],year:4,bg:'#ffe8f1',fg:'#c22a6a',ini:'ม',show:true,mentions:'none',bio:'thesis mode 🫠',interests:['fashion','event']},
-  u6:{id:'u6',name:'ก้อง วรเมธ',user:'kong.sci',fac:['วิทยาศาสตร์','Science'],year:2,bg:'#fff6d6',fg:'#8a6400',ini:'ก',show:true,mentions:'all',bio:'แบดทุกเย็น 🏸',interests:['sports','games']},
+  u1:{id:'u1',photo:'img/av/golden-hour.jpg',name:'ณัฐณิชา ศรีสุวรรณวงศ์',user:'natnicha',fac:['อักษรศาสตร์','Arts'],year:2,bg:'var(--peach-bg)',fg:'var(--peach-fg)',ini:'ณ',show:true,mentions:'all',bio:'ชอบกิน ชอบเที่ยว 🍜',interests:['food','travel']},
+  u2:{id:'u2',photo:'img/av/concert.jpg',name:'ภูมิ ธนากร',user:'phum.eng',fac:['วิศวกรรมศาสตร์','Engineering'],year:3,bg:'#e3ecff',fg:'#2556c7',ini:'ภ',show:true,mentions:'all',bio:'ICE 🛠️ รับติวแคลฯ',interests:['class','tech']},
+  u3:{id:'u3',photo:'img/av/sneakers.jpg',name:'ปาล์ม',user:'palm_cu',fac:['พาณิชยศาสตร์และการบัญชี','Commerce & Accountancy'],year:1,bg:'#e4f7ec',fg:'#14805a',ini:'ป',show:false,mentions:'all',bio:'',interests:['music']},
+  u4:{id:'u4',photo:'img/av/petals.jpg',name:'มิ้นท์ อารยา',user:'mint.arch',fac:['สถาปัตยกรรมศาสตร์','Architecture'],year:4,bg:'#ffe8f1',fg:'#c22a6a',ini:'ม',show:true,mentions:'none',bio:'thesis mode 🫠',interests:['fashion','event']},
+  u6:{id:'u6',photo:'img/av/dog.jpg',name:'ก้อง วรเมธ',user:'kong.sci',fac:['วิทยาศาสตร์','Science'],year:2,bg:'#fff6d6',fg:'#8a6400',ini:'ก',show:true,mentions:'all',bio:'แบดทุกเย็น 🏸',interests:['sports','games']},
   u5:{id:'u5',name:'EIGHT TEEN',user:'eightteen',official:true,fac:['ทีมงาน','Team'],year:0,bg:'#7c3aed',fg:'#ffffff',ini:'18',show:false,mentions:'none',bio:'',interests:[]},
 };
 const DSTR=o=>{const d=new Date(Date.now()+o*864e5);return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');};
@@ -424,7 +502,7 @@ function seed(){
   return {
     v:5, lang:'th', done:false,
     ob:{step:'welcome',slide:0,consent:{terms:false,mkt:false},wl:null,dob:{d:'',m:'',y:''},interests:[],perm:{loc:null,push:null},started:false},
-    me:{id:'me',name:'',user:'',fac:['วิศวกรรมศาสตร์','Engineering'],year:1,bg:'#ede4ff',fg:'#5b21b6',ini:'',photo:null,bio:'',interests:[],show:true,mentions:'all',email:'6930012321@student.chula.ac.th',verifiedAt:now},
+    me:{id:'me',name:'',user:'',fac:['วิศวกรรมศาสตร์','Engineering'],year:1,bg:'#ede4ff',fg:'#5b21b6',ini:'',photo:'img/av/'+['cat','bokeh','sky','tea','camera','dandelion','blossom'][Math.floor(Math.random()*7)]+'.jpg',bio:'',interests:[],show:true,mentions:'all',email:'6930012321@student.chula.ac.th',verifiedAt:now},
     settings:{mode:'identity',loc:true,theme:'system',text:'system'},
     posts, comments, notifs:[], blocked:[], mutedTags:[], hidden:[], reported:[], appealed:[], removedMentions:[],
     nav:[{s:'home'}], tab:'home',
@@ -664,7 +742,7 @@ function postCard(p,ctx={}){
    </div><button class="iconbtn plain" data-act="postMenu" data-arg="${p.id}" aria-label="${L('เพิ่มเติม','More')}">${I('more')}</button></div>
    <div class="ptext">${rich(p.text,p)}</div>
    ${imgs}${p.poll?pollHTML(p):''}${url&&!p.images.length?linkPreview(url):''}
-   <div style="display:flex;gap:6px;margin-top:10px;flex-wrap:wrap">${p.cat?`<span class="pill">${esc(catName(p.cat))}</span>`:''}${stamp?spotPill():''}${b&&!ctx.inBubble?`<button class="pill brand" data-act="openBubble" data-arg="${b.id}">${I(BTYPES[b.type][2],'xs')} ${esc(bname(b))}</button>`:''}${mine&&p.reach==='reduced'?`<span class="pill warn">${L('กำลังตรวจสอบ','Under review')}</span>`:''}</div>
+   <div class="ptags">${p.cat?`<span class="ptag">${esc(catName(p.cat))}</span>`:''}${stamp?spotPill():''}${b&&!ctx.inBubble?`<button class="pill brand" data-act="openBubble" data-arg="${b.id}">${I(BTYPES[b.type][2],'xs')} ${esc(bname(b))}</button>`:''}${mine&&p.reach==='reduced'?`<span class="pill warn">${L('กำลังตรวจสอบ','Under review')}</span>`:''}</div>
    <div class="pacts">
      <button class="pact" data-act="openPost" data-arg="${p.id}" aria-label="${L('คอมเมนต์','Comments')}">${I('comment','sm')} ${n||''}</button>
      <button class="pact ate ${p.ated?'on':''}" data-act="ate" data-arg="post:${p.id}" aria-pressed="${p.ated}">${I('flame','sm')} <span>${nf(p.ate)}</span> <span class="ate-l">ATE</span></button>
@@ -818,6 +896,7 @@ function vOnboarding(){
         <div style="display:flex;flex-direction:column;gap:8px"><div style="display:flex;gap:6px">${presets.map(p=>`<button aria-label="color" data-act="avPreset" data-arg="${p[0]}|${p[1]}" style="width:28px;height:28px;border-radius:99px;background:${p[0]};border:2px solid ${m.bg===p[0]&&!m.photo?'var(--brand)':'var(--border)'}"></button>`).join('')}</div>
         <label class="link" style="font-size:calc(14px*var(--ts,1));cursor:pointer">${I('camera','xs')} ${L('อัปโหลดรูป','Upload photo')}<input type="file" accept="image/*" hidden data-on="avatarFile"></label></div>
       </div>
+      <div class="cap" style="margin:-4px 0 8px">${L('หรือเลือกรูปไวบ์ ๆ ที่ไม่ต้องโชว์หน้า','Or pick a vibe pic. No face needed.')}</div>${avPicker(m.photo)}<div style="height:18px"></div>
       <div style="display:flex;flex-direction:column;gap:14px">
         <div class="field"><label for="pfName">${L('ชื่อที่แสดง','Display name')}</label><input class="input" id="pfName" maxlength="40" value="${esc(m.name)}" placeholder="${L('เช่น วิน','e.g. Win')}" data-on="pfName"></div>
         <div class="field"><label for="pfUser">${L('ชื่อผู้ใช้','Username')}</label><input class="input ${m.user&&!v.ok?'err':''}" id="pfUser" maxlength="20" value="${esc(m.user)}" placeholder="win.cu" autocapitalize="off" data-on="pfUser"><span id="pfUserMsg" aria-live="polite" class="${v.ok?'ok-t':'err-t'}">${m.user?v.msg:L('3–20 ตัว a–z 0–9 . _','3–20 characters: a–z 0–9 . _')}</span></div>
@@ -863,7 +942,7 @@ function vHome(){
     <div class="hdr-home"><div class="hdr-row"><div class="uni">${L('จุฬาฯ','Chula')} ${VERIFIED}</div><div style="flex:1"></div>
       <button class="iconbtn" data-act="openSearch" aria-label="${L('ค้นหา','Search')}">${I('search')}</button>
       <button data-act="tab" data-arg="profile" style="width:44px;height:44px;display:flex;align-items:center;justify-content:center" aria-label="${L('โปรไฟล์','Profile')}">${avatar(S.me,40)}</button></div>
-      <div class="feedtabs"><button class="feedtab ${h.feed==='university'?'on':''}" data-act="feed" data-arg="university">${L('มหาลัย','University')}</button><button class="feedtab ${h.feed==='bubble'?'on':''}" data-act="feed" data-arg="bubble">${L('บับเบิล','Bubble')}</button><div style="flex:1"></div><span class="cap" style="padding-bottom:10px;display:flex;align-items:center;gap:4px">${I('shield','xs')} ${L('นิสิตจุฬาฯ เท่านั้น','Chula students only')}</span></div>
+      <div class="feedtabs"><button class="feedtab ${h.feed==='university'?'on':''}" data-act="feed" data-arg="university">${L('มหาลัย','University')}</button><button class="feedtab ${h.feed==='bubble'?'on':''}" data-act="feed" data-arg="bubble">${L('บับเบิล','Bubble')}</button>${h.feed==='university'?`<div class="hdr-sort" role="group" aria-label="${L('เรียงโพสต์','Sort posts')}"><button class="${h.sort==='hot'?'on':''}" data-act="sort" data-arg="hot" aria-pressed="${h.sort==='hot'}">${L('มาแรง','Hot')}</button><button class="${h.sort==='new'?'on':''}" data-act="sort" data-arg="new" aria-pressed="${h.sort==='new'}">${L('ล่าสุด','New')}</button></div>`:''}</div>
     </div>
     ${h.feed==='university'?vUniFeed():vBubbleMap()}
     ${tabbar()}</div>`;
@@ -886,8 +965,7 @@ function vUniFeed(){
     body=(h.cat==='all'&&pinned?postCard(pinned):'')+(list.length?list.map(p=>postCard(p)).join(''):`<div class="empty"><div class="ill">${I('sparkle','lg')}</div><div class="h2">${L('ยังไม่มีโพสต์ในหมวดนี้','No posts in this category yet')}</div><button class="btn primary sm" data-act="compose">${L('โพสต์เป็นคนแรก','Be the first to post')}</button></div>`);
   }
   const prompt=h.firstPrompt?firstPostPrompt():'';
-  return `<div class="scroll tabpad">${catChips(h.cat,'cat',[['all','ทั้งหมด','All']].concat(CATS))}
-    <div style="display:flex;align-items:center;gap:8px;padding:2px 20px 8px"><div class="seg"><button class="${h.sort==='hot'?'on':''}" data-act="sort" data-arg="hot">${L('มาแรง','Hot')}</button><button class="${h.sort==='new'?'on':''}" data-act="sort" data-arg="new">${L('ล่าสุด','New')}</button></div></div>
+  return `<div class="scroll tabpad">${catChips(h.cat,'cat',[['all','ทั้งหมด','All']].concat(CATS))}<div style="height:6px"></div>
     ${prompt}${body}</div>`;
 }
 function firstPostPrompt(){
@@ -1228,6 +1306,7 @@ function vEditProfile(){
   const m=S.me;
   return `<div class="screen">${topbar(L('แก้ไขโปรไฟล์','Edit profile'),{right:`<button class="link" data-act="saveProfile">${L('บันทึก','Save')}</button>`})}<div class="scroll pad" style="padding-bottom:40px;display:flex;flex-direction:column;gap:14px">
     <div style="display:flex;justify-content:center;padding:8px 0"><label style="cursor:pointer;position:relative">${avatar(m,96)}<span style="position:absolute;right:0;bottom:0;width:32px;height:32px;border-radius:99px;background:var(--brand);color:#fff;display:flex;align-items:center;justify-content:center">${I('camera','sm')}</span><input type="file" accept="image/*" hidden data-on="avatarFile"></label></div>
+    <div class="field"><label>${L('หรือเลือกรูปไวบ์ ๆ','Or pick a vibe pic')}</label>${avPicker(m.photo)}</div>
     <div class="field"><label for="epName">${L('ชื่อที่แสดง','Display name')}</label><input class="input" id="epName" value="${esc(m.name)}" maxlength="40"></div>
     <div class="field"><label>${L('ชื่อผู้ใช้','Username')}</label><div class="input" style="display:flex;align-items:center;background:var(--surface)">@${esc(m.user)}</div></div>
     <div class="field"><label for="epBio">${L('แนะนำตัว','Bio')}</label><textarea class="input" id="epBio" rows="3" maxlength="150">${esc(m.bio)}</textarea></div>
@@ -1277,8 +1356,11 @@ function vTheme(){const tx=S.settings.text||'system';return `<div class="screen"
   <div class="section-t">${L('ขนาดตัวอักษร','Text size')}</div><div class="card" style="margin:0 16px">${[['system',L('ตามโทรศัพท์','Match my phone')],['0.9',L('เล็ก','Small')],['1',L('ปกติ','Default')],['1.15',L('ใหญ่','Large')],['1.3',L('ใหญ่มาก','Extra large')]].map(o=>`<button class="row" data-act="setText" data-arg="${o[0]}" role="radio" aria-checked="${tx===o[0]}"><span class="rt lbl">${o[1]}</span><span class="radio ${tx===o[0]?'on':''}"></span></button>`).join('')}</div>
   <div class="card pad" style="margin:12px 16px 0;padding:14px 16px"><div class="cap">${L('ตัวอย่าง','Preview')}</div><div style="font-size:calc(15px*var(--ts,1));line-height:1.6">ข้าวมันไก่ร้านใหม่หลังสามย่านฯ ATE มาก #สามย่าน</div></div></div></div>`;}
 function vHelp(){return `<div class="screen">${topbar(L('ช่วยเหลือ','Help'))}<div class="card" style="margin:6px 16px">${sRow('shield',L('กติกาชุมชน','Community Rules'),'','go','rules')}${sRow('lock',L('นโยบายความเป็นส่วนตัว','Privacy Policy'),'','go','privacyPolicy')}${sRow('mail',L('ติดต่อทีมงาน','Contact support'),'','go','support:contact')}${sRow('flag',L('แจ้งปัญหาการใช้งาน','Report a problem'),'','go','support:problem')}${sRow('image',L('เครดิตภาพตัวอย่าง','Sample photo credits'),'','go','credits')}</div></div>`;}
+const AV_PHOTOS=[['cat','Ryan Mcguire','N-1XGL54pQg'],['dog','André Spieker','8wTPqxlnKM4'],['golden-hour','Alexander Shustov','2FrX56QL7P8'],['sneakers','Ilham Rahmansyah','DwTZwZYi9Ww'],['concert','Daniel Robert','MRxD-J9-4ps'],['petals','Steven Spassov','tVIqMgGlAG0'],['bokeh','Sebastian Muller','VLdaxYyXJvw'],['dandelion','Coley Christine','GyvMk5pPDXI'],['blossom','Rula Sibai','-vq7mi4oF0s'],['camera','Nicola Perantoni','irUQaBK3ydI'],['tea','Sonja Langford','RQHzRELE2Ss'],['sky','J Duclos','6qORI5j_6n8']];
+const avSrc=n=>'img/av/'+n+'.jpg';
+function avPicker(cur){return `<div class="avpick">${AV_PHOTOS.map(a=>`<button aria-label="${L('ใช้รูปนี้','Use this picture')}: ${a[0]}" data-act="avPhoto" data-arg="${a[0]}" class="${cur===avSrc(a[0])?'on':''}" style="background-image:url('${avSrc(a[0])}')"></button>`).join('')}</div>`;}
 const CREDITS=[['chicken-rice.jpg','Hainanese chicken rice','Misaochan','CC BY 4.0','Hainanese_chicken_rice.jpg'],['library.jpg','Chula UltimateX Library','Apiwat K.','CC BY 4.0','Chula_UltimateX_Library_20201124_182323.jpg'],['arts-library.jpg','Faculty of Arts Library, Chulalongkorn University','Geonuch','CC BY-SA 4.0','Faculty_of_Arts_Library,_Chulalongkorn_University.jpg'],['auditorium.jpg','Chulalongkorn University Auditorium','Supanut Arunoprayote','CC BY-SA 4.0','Chulalongkorn_University_Auditorium.jpg'],['sala.jpg','Entrance of Sala Phra Kiao','Supanut Arunoprayote','CC BY 4.0','Entrance_of_Sala_Phra_Kiao.jpg'],['sala-night.jpg','Event in Sala Phra Kiao at night','Supanut Arunoprayote','CC BY 4.0','Event_in_Sala_Phra_Kiao_at_night.jpg'],['samyan.jpg','Samyan Mitrtown (back)','Chainwit.','CC BY-SA 4.0','Samyan_Mitrtown_Back.jpg']];
-function vCredits(){return `<div class="screen">${topbar(L('เครดิตภาพตัวอย่าง','Sample photo credits'))}<div class="scroll" style="padding-bottom:40px"><p class="pad cap" style="margin-top:0">${L('ภาพในโพสต์ตัวอย่างมาจาก Wikimedia Commons ปรับขนาดและลบข้อมูล EXIF แล้ว','Sample post photos come from Wikimedia Commons, resized with EXIF removed.')}</p>${CREDITS.map(c=>`<a class="row" href="https://commons.wikimedia.org/wiki/File:${c[4]}" target="_blank" rel="noopener" style="color:inherit;text-decoration:none"><span class="av" style="width:56px;height:42px;border-radius:10px;background-image:url('img/${c[0]}')"></span><span class="rt"><span class="lbl">${c[1]}</span><br><span class="cap">${c[2]} · ${c[3]}</span></span></a>`).join('')}</div></div>`;}
+function vCredits(){return `<div class="screen">${topbar(L('เครดิตภาพตัวอย่าง','Sample photo credits'))}<div class="scroll" style="padding-bottom:40px"><p class="pad cap" style="margin-top:0">${L('ภาพในโพสต์ตัวอย่างมาจาก Wikimedia Commons ปรับขนาดและลบข้อมูล EXIF แล้ว','Sample post photos come from Wikimedia Commons, resized with EXIF removed.')}</p>${CREDITS.map(c=>`<a class="row" href="https://commons.wikimedia.org/wiki/File:${c[4]}" target="_blank" rel="noopener" style="color:inherit;text-decoration:none"><span class="av" style="width:56px;height:42px;border-radius:10px;background-image:url('img/${c[0]}')"></span><span class="rt"><span class="lbl">${c[1]}</span><br><span class="cap">${c[2]} · ${c[3]}</span></span></a>`).join('')}<div class="section-t">${L('รูปโปรไฟล์ตัวอย่าง','Sample profile pictures')}</div><p class="pad cap" style="margin-top:0">${L('จาก Unsplash ผ่าน Picsum ใช้ได้ฟรีตาม Unsplash License ครอปและลบข้อมูล EXIF แล้ว','From Unsplash via Picsum, free under the Unsplash License. Cropped with EXIF removed.')}</p>${AV_PHOTOS.map(a=>`<a class="row" href="https://unsplash.com/photos/${a[2]}" target="_blank" rel="noopener" style="color:inherit;text-decoration:none"><span class="av" style="width:44px;height:44px;background-image:url('${avSrc(a[0])}')"></span><span class="rt"><span class="lbl">${esc(a[1])}</span><br><span class="cap">Unsplash License</span></span>${I('link','sm')}</a>`).join('')}</div></div>`;}
 function vDoc(kind){
   const rules=kind==='rules';
   const body=rules?L(`<h3 class="h3">1. เคารพกัน</h3><p>ไม่กลั่นแกล้ง ด่าทอ เหยียดเพศ เชื้อชาติ ศาสนา หรือความพิการ</p><h3 class="h3">2. ไม่หลอกลวง</h3><p>ห้ามโกง ขายของผิดกฎหมาย หรือชวนโอนเงินก่อน</p><h3 class="h3">3. ปกป้องข้อมูลส่วนตัว</h3><p>ห้ามเปิดเผยเบอร์ ที่อยู่ หรือรูปของคนอื่นโดยไม่ได้รับอนุญาต</p><h3 class="h3">4. นิรนามแต่รับผิดชอบ</h3><p>ทุกบัญชียืนยันตัวตนแล้ว ระบบเก็บบัญชีจริงไว้เสมอ</p><h3 class="h3">บทลงโทษ</h3><p>เตือน → จำกัดการโพสต์ 7 วัน → ระงับ 14 วัน → แบนถาวร</p>`,`<h3 class="h3">1. Respect each other</h3><p>No bullying, harassment or hate based on gender, race, religion or disability.</p><h3 class="h3">2. No scams</h3><p>No cheating, illegal sales or asking people to transfer money first.</p><h3 class="h3">3. Protect personal info</h3><p>Never share someone’s phone, address or photos without permission.</p><h3 class="h3">4. Anonymous, still accountable</h3><p>Every account is verified, and we always keep the real account behind a post.</p><h3 class="h3">Penalties</h3><p>Warning → 7-day posting limit → 14-day suspension → permanent ban.</p>`)
@@ -1481,6 +1563,7 @@ const A={
     if(r.k==='waitlist'){const base=r.uni?r.uni[4]:3+(hashStr(r.d)%40);const first=!S.waitlist[r.key];S.waitlist[r.key]=email;S.ob.wl={email,d:r.d,uni:r.uni,count:base+1};if(first)track('waitlist_joined',{university_id:r.key});S.ob.step='waitlist';track('onboarding_step_viewed',{step_name:'waitlist',step_index:1});render();return;}
     S.ob.err=r.k;S.ob.step='ssoerr';render();},
   dobNext(){const d=S.ob.dob;const bd=new Date(+d.y,+d.m-1,+d.d);const now=new Date();let age=now.getFullYear()-bd.getFullYear();const m=now.getMonth()-bd.getMonth();if(m<0||(m===0&&now.getDate()<bd.getDate()))age--;if(age<MIN_AGE){S.ob.dobErr=true;render();return;}S.ob.dobErr=false;goStep('profile');},
+  avPhoto(a){S.me.photo=avSrc(a);haptic();render();},
   avPreset(a){const [bg,fg]=a.split('|');S.me.bg=bg;S.me.fg=fg;S.me.photo=null;render();},
   profileNext(){S.me.ini=[...S.me.name.trim()][0];goStep('interests');},
   interest(a){const s=S.ob.interests;const i=s.indexOf(a);i<0?s.push(a):s.splice(i,1);render();},

@@ -40,3 +40,7 @@ Phone support: works from 320px (iPhone SE) up to large phones, keeps inputs abo
 | sala.jpg | [Entrance of Sala Phra Kiao](https://commons.wikimedia.org/wiki/File:Entrance_of_Sala_Phra_Kiao.jpg) | Supanut Arunoprayote | CC BY 4.0 |
 | sala-night.jpg | [Event in Sala Phra Kiao at night](https://commons.wikimedia.org/wiki/File:Event_in_Sala_Phra_Kiao_at_night.jpg) | Supanut Arunoprayote | CC BY 4.0 |
 | samyan.jpg | [Samyan Mitrtown (back)](https://commons.wikimedia.org/wiki/File:Samyan_Mitrtown_Back.jpg) | Chainwit. | CC BY-SA 4.0 |
+
+### Profile pictures (v1.5)
+
+The 12 sample profile pictures in `img/av/` are Unsplash photos served by Picsum. They are free to use under the [Unsplash License](https://unsplash.com/license). They were cropped to 256×256 with EXIF removed. Photographers: Ryan Mcguire (cat), André Spieker (dog), Alexander Shustov (golden hour), Ilham Rahmansyah (sneakers), Daniel Robert (concert), Steven Spassov (petals), Sebastian Muller (bokeh), Coley Christine (dandelion), Rula Sibai (blossom), Nicola Perantoni (camera), Sonja Langford (tea), J Duclos (sky). The in-app credits screen has the links.
