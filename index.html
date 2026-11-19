@@ -163,6 +163,15 @@ svg.i.sm{width:18px;height:18px} svg.i.xs{width:15px;height:15px} svg.i.lg{width
 .pill.brand{background:var(--info);color:var(--brand-ink)}
 .pill.op{background:var(--info);color:var(--brand-ink);height:20px}
 .pill.lime{background:var(--lime);color:#0b1026}
+.pill.spot{background:var(--lime);color:#0b1026;font-weight:700}
+.pill.live{background:#d1242f;color:#fff;font-weight:800;letter-spacing:.3px}
+.pill.live::before{content:"";width:7px;height:7px;border-radius:9px;background:#fff;animation:lv 1.2s ease-in-out infinite}
+@keyframes lv{50%{opacity:.25}}
+.livering{animation:lring 1.8s ease-out infinite;transform-box:fill-box;transform-origin:center}
+@keyframes lring{0%{transform:scale(.7);opacity:.7}100%{transform:scale(1.9);opacity:0}}
+.row[disabled]{opacity:.55;cursor:not-allowed}
+.drop{display:flex;gap:12px;align-items:center;margin:12px 20px 0;padding:14px;border-radius:18px;border:2px dashed var(--brand);background:var(--info);color:var(--ink);text-align:left;width:calc(100% - 40px)}
+.drop.open{border-style:solid;background:var(--canvas)}
 .pill.warn{background:var(--warn-bg);color:var(--warn)}
 .pill.danger{background:var(--danger-bg);color:var(--danger)}
 .pill.oq{background:transparent;border:1px dashed var(--tert);color:var(--muted)}
@@ -357,7 +366,7 @@ img.pimg{display:block;width:100%;height:auto;object-fit:cover}
 /* ============ constants ============ */
 const MIN=60000, HOUR=60*MIN, DAY=24*HOUR;
 const MIN_AGE=18; // PRD open question: minimum age to confirm with legal
-const KEY='eightteen-proto-v4';
+const KEY='eightteen-proto-v5';
 const SESSION_ID=Math.random().toString(36).slice(2,10);
 const UNIS=[
   {id:'chula',th:'จุฬาลงกรณ์มหาวิทยาลัย',en:'Chulalongkorn University',short_th:'จุฬาฯ',short_en:'Chula',open:true,color:'#e0559a',abbr:'CU',domain:'student.chula.ac.th',sso:'Microsoft 365'},
@@ -385,19 +394,20 @@ const USERS={
   u6:{id:'u6',name:'ก้อง วรเมธ',user:'kong.sci',fac:['วิทยาศาสตร์','Science'],year:2,bg:'#fff6d6',fg:'#8a6400',ini:'ก',show:true,mentions:'all',bio:'แบดทุกเย็น 🏸',interests:['sports','games']},
   u5:{id:'u5',name:'EIGHT TEEN',user:'eightteen',official:true,fac:['ทีมงาน','Team'],year:0,bg:'#7c3aed',fg:'#ffffff',ini:'18',show:false,mentions:'none',bio:'',interests:[]},
 };
+const DSTR=o=>{const d=new Date(Date.now()+o*864e5);return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');};
 const BUBBLES=[
-  {id:'lib',th:'หอสมุดกลาง',en:'Central Library',type:'study',x:118,y:196,status:'active'},
-  {id:'cafe',th:'CU Café',en:'CU Café',type:'food',x:258,y:162,status:'active'},
-  {id:'arts',th:'คณะอักษรศาสตร์',en:'Faculty of Arts',type:'faculty',x:150,y:104,status:'active'},
-  {id:'eng',th:'คณะวิศวฯ',en:'Engineering',type:'faculty',x:278,y:300,status:'active'},
-  {id:'lawn',th:'สนามจุ๊บ',en:'Main Lawn',type:'life',x:196,y:250,status:'active'},
-  {id:'sports',th:'ศูนย์กีฬา',en:'Sports Complex',type:'sports',x:92,y:430,status:'active'},
-  {id:'icanteen',th:'โรงอาหาร iCanteen',en:'iCanteen',type:'food',x:212,y:392,status:'active'},
-  {id:'samyan',th:'สามย่านมิตรทาวน์',en:'Samyan Mitrtown',type:'food',x:286,y:486,status:'active'},
-  {id:'openhouse',th:'Chula Open House',en:'Chula Open House',type:'event',x:128,y:318,status:'active',start:'2026-11-18',end:'2026-11-22'},
-  {id:'freshy',th:'Freshy Night',en:'Freshy Night',type:'event',x:300,y:92,status:'ended',start:'2026-11-14',end:'2026-11-15'},
-  {id:'sala',th:'ศาลาพระเกี้ยว',en:'Sala Phra Kieo',type:'life',x:62,y:262,status:'paused',reason_th:'ทีมงานปิดโพสต์ชั่วคราวระหว่างตรวจสอบรายงาน',reason_en:'Read-only while the team reviews reports'},
-  {id:'lang',th:'สถาบันภาษา',en:'Language Institute',type:'study',x:338,y:226,status:'active'},
+  {id:'lib',th:'หอสมุดกลาง',en:'Central Library',type:'study',x:118,y:196,status:'active',r:80},
+  {id:'cafe',th:'CU Café',en:'CU Café',type:'food',x:258,y:162,status:'active',r:80},
+  {id:'arts',th:'คณะอักษรศาสตร์',en:'Faculty of Arts',type:'faculty',x:150,y:104,status:'active',r:100},
+  {id:'eng',th:'คณะวิศวฯ',en:'Engineering',type:'faculty',x:278,y:300,status:'active',r:120},
+  {id:'lawn',th:'สนามจุ๊บ',en:'Main Lawn',type:'life',x:196,y:250,status:'active',r:200},
+  {id:'sports',th:'ศูนย์กีฬา',en:'Sports Complex',type:'sports',x:92,y:430,status:'active',r:200},
+  {id:'icanteen',th:'โรงอาหาร iCanteen',en:'iCanteen',type:'food',x:212,y:392,status:'active',r:80},
+  {id:'samyan',th:'สามย่านมิตรทาวน์',en:'Samyan Mitrtown',type:'food',x:286,y:486,status:'active',r:120},
+  {id:'openhouse',th:'Chula Open House',en:'Chula Open House',type:'event',x:128,y:318,status:'active',start:DSTR(-2),end:DSTR(2),r:250},
+  {id:'freshy',th:'Freshy Night',en:'Freshy Night',type:'event',x:300,y:92,status:'ended',start:DSTR(-6),end:DSTR(-5),r:250},
+  {id:'sala',th:'ศาลาพระเกี้ยว',en:'Sala Phra Kieo',type:'life',x:62,y:262,status:'paused',reason_th:'ทีมงานปิดโพสต์ชั่วคราวระหว่างตรวจสอบรายงาน',reason_en:'Read-only while the team reviews reports',r:100},
+  {id:'lang',th:'สถาบันภาษา',en:'Language Institute',type:'study',x:338,y:226,status:'active',r:80},
 ];
 const ME_XY={x:206,y:350}; const MY=y=>20+y*.75; const M_PER_UNIT=3.2;
 
@@ -405,24 +415,24 @@ const ME_XY={x:206,y:350}; const MY=y=>20+y*.75; const M_PER_UNIT=3.2;
 let S;
 function seed(){
   const now=Date.now();
-  const P=(o)=>Object.assign({anon:false,uni:true,bubble:null,images:[],poll:null,ate:0,ated:false,tags:[],mentions:[],edited:false,removed:false,pinned:false,reach:'normal'},o,{at:now-(o.ago||0)*MIN});
+  const P=(o)=>Object.assign({anon:false,uni:true,spot:false,bubble:null,images:[],poll:null,ate:0,ated:false,tags:[],mentions:[],edited:false,removed:false,pinned:false,reach:'normal'},o,{at:now-(o.ago||0)*MIN});
   const posts=[
     P({id:'p3',by:'u5',cat:'other',pinned:true,ago:600,text:'ยินดีต้อนรับสู่ EIGHT TEEN เบต้า 🎉 ทุกคนในนี้เป็นนิสิตจุฬาฯ ตัวจริง ยืนยันตัวตนแล้วทุกบัญชี อ่านกติกาชุมชนก่อนโพสต์นะ #EIGHTTEEN',ate:356}),
     P({id:'p1',by:'u1',cat:'food',bubble:'samyan',ago:52,text:'ข้าวมันไก่ร้านใหม่หลังสามย่านฯ ATE มาก ไก่นุ่ม น้ำจิ้มถึง ไปบ่ายสองคิวไม่ยาว #สามย่าน',images:[{src:'img/chicken-rice.jpg',alt:'ข้าวมันไก่ไหหลำพร้อมน้ำจิ้ม'}],ate:1284}),
     P({id:'p2',by:'u2',anon:true,cat:'question',ago:25,text:'ใครมีชีทแคลคูลัส 2 บทที่ 4 บ้างคะ สอบวันศุกร์นี้แล้ว 😭 #มิดเทอม',ate:88}),
     P({id:'p5',by:'u4',cat:'event',bubble:'openhouse',ago:180,text:'Open House ปีนี้อยากให้มีบูธอะไรเพิ่ม? #OpenHouse',poll:{opts:['Workshop AI','ดนตรีสด','ตลาดนัดนิสิต','ฟู้ดทรัค'],votes:[42,31,57,64],mine:null,ends:now+2*DAY},ate:203}),
-    P({id:'p6',by:'u6',anon:true,cat:'other',bubble:'lawn',ago:95,text:'ใครนั่งเล่นกีตาร์ที่สนามจุ๊บตอนเย็นเมื่อวาน เพราะมากกก อยากรู้จัก 🎸',ate:412}),
-    P({id:'p4',by:'u3',cat:'lost',bubble:'lib',ago:40,text:'ใครเก็บบัตรนิสิตชื่อ "ปาล์ม" ได้ที่ชั้น 3 หอสมุดกลาง ทักหน่อยครับ 🙏 #ของหาย',ate:27}),
+    P({id:'p6',by:'u6',anon:true,cat:'other',bubble:'lawn',spot:true,ago:95,text:'ใครนั่งเล่นกีตาร์ที่สนามจุ๊บตอนเย็นเมื่อวาน เพราะมากกก อยากรู้จัก 🎸',ate:412}),
+    P({id:'p4',by:'u3',cat:'lost',bubble:'lib',spot:true,ago:40,text:'ใครเก็บบัตรนิสิตชื่อ "ปาล์ม" ได้ที่ชั้น 3 หอสมุดกลาง ทักหน่อยครับ 🙏 #ของหาย',ate:27}),
     P({id:'p7',by:'u2',cat:'class',bubble:'eng',ago:130,text:'แล็บ Circuits วันนี้ย้ายไปห้อง 3-304 นะครับ ฝากบอกเพื่อน ๆ ปี 3 ด้วย #วิศวะ',ate:64}),
     P({id:'p14',by:'u1',cat:'class',bubble:'lib',ago:300,text:'หอสมุดกลางชั้น 4 เงียบสุด ปลั๊กเยอะ แอร์เย็น แนะนำช่วงสอบ #ที่อ่านหนังสือ',ate:530,images:[{src:'img/library.jpg',alt:'โต๊ะอ่านหนังสือในหอสมุดกลาง'},{src:'img/arts-library.jpg',alt:'ชั้นหนังสือในห้องสมุดคณะอักษรศาสตร์'}]}),
     P({id:'p10',by:'u4',cat:'class',ago:420,text:'สรุปตารางสอบปลายภาค 2/2569 อยู่ในลิงก์นี้ https://www.reg.chula.ac.th/exam-schedule #ตารางสอบ',ate:941,edited:true}),
-    P({id:'p9',by:'u6',cat:'other',bubble:'sports',ago:70,text:'ใครว่างตีแบดเย็นนี้ 5 โมงที่ศูนย์กีฬาบ้าง ขาด 2 คน 🏸 #แบดมินตัน',ate:19}),
-    P({id:'p15',by:'u6',cat:'food',bubble:'cafe',uni:false,ago:15,text:'CU Café มีเมนูใหม่ ชาไทยโอ๊ตมิลค์ 45 บาท ลองแล้วโอเคเลย',ate:12}),
+    P({id:'p9',by:'u6',cat:'other',bubble:'sports',spot:true,ago:70,text:'ใครว่างตีแบดเย็นนี้ 5 โมงที่ศูนย์กีฬาบ้าง ขาด 2 คน 🏸 #แบดมินตัน',ate:19}),
+    P({id:'p15',by:'u6',cat:'food',bubble:'cafe',spot:true,ago:15,text:'CU Café มีเมนูใหม่ ชาไทยโอ๊ตมิลค์ 45 บาท ลองแล้วโอเคเลย',ate:12}),
     P({id:'p8',by:'u1',cat:'housing',ago:900,text:'หารูมเมทคอนโดแถวสามย่าน ผู้หญิง ไม่สูบบุหรี่ งบ 6,500/เดือน เดินไปสามย่านมิตรทาวน์ 5 นาที #หารูมเมท',ate:45,images:[{src:'img/samyan.jpg',alt:'ด้านหลังสามย่านมิตรทาวน์'}]}),
     P({id:'p11',by:'u3',anon:true,cat:'other',ago:210,text:'เครียดกับโปรเจกต์จบมากเลย ใครเป็นเหมือนกันบ้าง ขอกำลังใจหน่อย #ปี4',ate:301}),
     P({id:'p12',by:'u2',cat:'event',bubble:'freshy',ago:4*24*60,text:'ขอบคุณทุกคนที่มา Freshy Night! รูปทั้งหมดจะลงเพจคณะพรุ่งนี้',ate:388,images:[{src:'img/sala-night.jpg',alt:'งานกลางคืนที่ศาลาพระเกี้ยว'}]}),
-    P({id:'p16',by:'u4',cat:'food',bubble:'icanteen',uni:false,ago:200,text:'iCanteen ร้านข้าวแกงเปิดถึง 2 ทุ่มแล้วนะ',ate:33}),
-    P({id:'p17',by:'u3',cat:'event',bubble:'openhouse',ago:35,text:'บูธคณะบัญชีแจกสติกเกอร์ฟรี มาก่อนได้ก่อน #OpenHouse',ate:76,images:[{src:'img/auditorium.jpg',alt:'หอประชุมจุฬาฯ'}]}),
+    P({id:'p16',by:'u4',cat:'food',bubble:'icanteen',ago:200,text:'iCanteen ร้านข้าวแกงเปิดถึง 2 ทุ่มแล้วนะ',ate:33}),
+    P({id:'p17',by:'u3',cat:'event',bubble:'openhouse',spot:true,ago:35,text:'บูธคณะบัญชีแจกสติกเกอร์ฟรี มาก่อนได้ก่อน #OpenHouse',ate:76,images:[{src:'img/auditorium.jpg',alt:'หอประชุมจุฬาฯ'}]}),
     P({id:'p18',by:'u1',cat:'other',bubble:'sala',ago:500,text:'ศาลาพระเกี้ยวตอนเย็นสวยมาก',ate:58,images:[{src:'img/sala.jpg',alt:'ทางเข้าศาลาพระเกี้ยว'}]}),
   ];
   const C=(o)=>Object.assign({anon:false,parent:null,replyTo:null,ate:0,ated:false,voice:null,mentions:[],removed:false},o,{at:now-(o.ago||0)*MIN});
@@ -436,7 +446,7 @@ function seed(){
     C({id:'c7',post:'p6',by:'u4',ago:60,text:'น่าจะชมรมดนตรีสากลนะ เล่นทุกวันพุธ',ate:22}),
   ];
   return {
-    v:4, lang:'th', done:false,
+    v:5, lang:'th', done:false,
     ob:{step:'welcome',slide:0,consent:{terms:false,mkt:false},wl:null,dob:{d:'',m:'',y:''},interests:[],perm:{loc:null,push:null},started:false},
     me:{id:'me',name:'',user:'',fac:['วิศวกรรมศาสตร์','Engineering'],year:1,bg:'#ede4ff',fg:'#5b21b6',ini:'',photo:null,bio:'',interests:[],show:true,mentions:'all',email:'6930012321@student.chula.ac.th',verifiedAt:now},
     settings:{mode:'identity',loc:true,theme:'system',text:'system'},
@@ -444,11 +454,15 @@ function seed(){
     nav:[{s:'home'}], tab:'home',
     home:{feed:'university',sort:'hot',cat:'all',bcat:'all',sheet:'peek',firstPrompt:true},
     draft:null, savedDraft:null, recent:[], waitlist:{},
-    sim:{offline:false,uploadFail:false},
+    sim:{offline:false,uploadFail:false,here:'lib'},
+    drops:[
+      {id:'d1',bubble:'lawn',by:'u5',th:'🎁 ดรอปแรกของ EIGHT TEEN! โชว์หน้าจอนี้ที่บูธ EIGHT TEEN ข้างสนามจุ๊บ รับสติกเกอร์ฟรี 1 แผ่น (50 คนแรก)',en:'🎁 EIGHT TEEN’s first drop! Show this screen at the EIGHT TEEN booth by the Main Lawn for a free sticker (first 50 people).',opens:31,max:50},
+      {id:'d2',bubble:'openhouse',by:'u5',th:'🎁 รหัสลับ OPENHOUSE18 ใช้ที่บูธคณะบัญชีรับเครื่องดื่มฟรี',en:'🎁 Secret code OPENHOUSE18 gets you a free drink at the Accountancy booth.',opens:12,max:100}
+    ], dropsOpened:[],
     events:[], seq:100
   };
 }
-function load(){ try{ const raw=localStorage.getItem(KEY); if(raw){ const s=JSON.parse(raw); if(s&&s.v===4) return s; } }catch(e){} return seed(); }
+function load(){ try{ const raw=localStorage.getItem(KEY); if(raw){ const s=JSON.parse(raw); if(s&&s.v===5) return s; } }catch(e){} return seed(); }
 function save(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} }
 S=load();
 const T={ov:null,toast:null,loadingUntil:0,scroll:{},search:{q:'',tab:'posts'},rec:null,playing:null,cmode:null,reply:null};
@@ -589,7 +603,15 @@ function postsIn(bid){return S.posts.filter(p=>p.bubble===bid && viewerCanSee(p)
 function count24(bid){return S.posts.filter(p=>p.bubble===bid && !p.removed && !S.hidden.includes(p.id) && Date.now()-p.at<DAY).length;}
 function hot(p){const h=(Date.now()-p.at)/HOUR;return (p.ate+3*commentsOf(p.id).length+1)/Math.pow(h+2,1.4);}
 function sortPosts(list,sort){return list.slice().sort(sort==='new'?(a,b)=>b.at-a.at:(a,b)=>hot(b)-hot(a));}
-function distance(b){const dx=b.x-ME_XY.x,dy=b.y-ME_XY.y;return Math.round(Math.hypot(dx,dy)*M_PER_UNIT/10)*10;}
+function meXY(){const h=S.sim.here&&bubble(S.sim.here);return h?{x:h.x+8,y:h.y+10}:ME_XY;}
+function distance(b){const m=meXY();const dx=b.x-m.x,dy=b.y-m.y;return Math.round(Math.hypot(dx,dy)*M_PER_UNIT/10)*10;}
+function onSpot(b){b=typeof b==='string'?bubble(b):b;return !!b&&locOn()&&distance(b)<=(b.r||80);}
+function isLive(b){b=typeof b==='string'?bubble(b):b;return !!b&&b.type==='event'&&bubbleOpen(b)&&!!b.start&&new Date(b.start+'T00:00:00')<=new Date();}
+function canTag(b){return bubbleOpen(b)&&(!isLive(b)||onSpot(b));}
+function spotPill(){return `<span class="pill spot">${I('pin','xs')} ${L('อยู่ที่นี่จริง','On the spot')}</span>`;}
+function livePill(){return `<span class="pill live">LIVE</span>`;}
+function hereTag(){return `<span class="pill lime">${L('คุณอยู่ที่นี่','You’re here')}</span>`;}
+function dropsIn(bid){return (S.drops||[]).filter(d=>d.bubble===bid);}
 function locOn(){return S.settings.loc && S.ob.perm.loc==='granted';}
 function fmtDist(m){return m<1000?m+L(' ม.',' m'):(m/1000).toFixed(1)+L(' กม.',' km');}
 function bubbleOpen(b){if(b.status!=='active')return false;if(b.end&&new Date(b.end+'T23:59:59')<new Date())return false;return true;}
@@ -655,7 +677,7 @@ function postCard(p,ctx={}){
   const a=authorView(p,p.id); const mine=p.by==='me';
   const b=p.bubble&&bubble(p.bubble);
   const n=commentsOf(p.id).length;
-  const where=[p.uni?L('มหาลัย','University'):null,b?bname(b):null].filter(Boolean).join(' + ');
+  const where=b?bname(b):L('มหาลัย','University'); const stamp=p.spot&&b&&!p.anon;
   const imgs=p.images.length?`<div class="pimgs n${p.images.length}">${p.images.map(im=>imgTile(im)).join('')}</div>`:'';
   const url=findUrl(p.text);
   return `<article class="post ${p.pinned?'pinned':''}" data-act="openPost" data-arg="${p.id}">
@@ -666,7 +688,7 @@ function postCard(p,ctx={}){
    </div><button class="iconbtn plain" data-act="postMenu" data-arg="${p.id}" aria-label="${L('เพิ่มเติม','More')}">${I('more')}</button></div>
    <div class="ptext">${rich(p.text,p)}</div>
    ${imgs}${p.poll?pollHTML(p):''}${url&&!p.images.length?linkPreview(url):''}
-   <div style="display:flex;gap:6px;margin-top:10px;flex-wrap:wrap">${p.cat?`<span class="pill">${esc(catName(p.cat))}</span>`:''}${b&&!ctx.inBubble?`<button class="pill brand" data-act="openBubble" data-arg="${b.id}">${I(BTYPES[b.type][2],'xs')} ${esc(bname(b))}</button>`:''}${mine&&p.reach==='reduced'?`<span class="pill warn">${L('กำลังตรวจสอบ','Under review')}</span>`:''}</div>
+   <div style="display:flex;gap:6px;margin-top:10px;flex-wrap:wrap">${p.cat?`<span class="pill">${esc(catName(p.cat))}</span>`:''}${stamp?spotPill():''}${b&&!ctx.inBubble?`<button class="pill brand" data-act="openBubble" data-arg="${b.id}">${I(BTYPES[b.type][2],'xs')} ${esc(bname(b))}</button>`:''}${mine&&p.reach==='reduced'?`<span class="pill warn">${L('กำลังตรวจสอบ','Under review')}</span>`:''}</div>
    <div class="pacts">
      <button class="pact" data-act="openPost" data-arg="${p.id}" aria-label="${L('คอมเมนต์','Comments')}">${I('comment','sm')} ${n||''}</button>
      <button class="pact ate ${p.ated?'on':''}" data-act="ate" data-arg="post:${p.id}" aria-pressed="${p.ated}">${I('flame','sm')} <span>${nf(p.ate)}</span> <span class="ate-l">ATE</span></button>
@@ -844,7 +866,7 @@ function vOnboarding(){
     return `<div class="ob">${obTop(loc?'interests':'location',st)}<div class="ob-body" style="display:flex;flex-direction:column;justify-content:center;gap:14px">
       <div class="empty" style="padding:0"><div class="ill">${I(loc?'pin':'bell','lg')}</div></div>
       <div class="h1" style="text-align:center">${loc?L('โชว์ตำแหน่งคุณบนแผนที่บับเบิล','Show you on the Bubble map'):L('ไม่พลาดเมื่อมีคนตอบ','Know when people reply')}</div>
-      <p class="ink2" style="text-align:center;margin:0">${loc?L('ใช้แค่จัดกึ่งกลางแผนที่และบอกระยะทางไปแต่ละบับเบิล ตำแหน่งอยู่ในเครื่องคุณเท่านั้น ไม่ติดไปกับโพสต์','Only used to centre the map and show distances to bubbles. Your location stays on your phone and is never attached to posts.'):L('แจ้งเตือนเมื่อมีคน ATE คอมเมนต์ หรือพูดถึงคุณ ไม่ส่งช่วง 00:00–07:00','Get notified about ATE, comments and mentions. Nothing is sent between 00:00 and 07:00.')}</p>
+      <p class="ink2" style="text-align:center;margin:0">${loc?L('ใช้จัดแผนที่ บอกระยะทาง ให้โพสต์ได้ตรา “อยู่ที่นี่จริง” และโพสต์ในอีเวนต์ LIVE ตำแหน่งอยู่ในเครื่องคุณเท่านั้น ส่งแค่ว่าใช่/ไม่ใช่','Used to centre the map, show distances, stamp your posts On the spot and join LIVE events. Your location stays on your phone; only a yes/no is ever sent.'):L('แจ้งเตือนเมื่อมีคน ATE คอมเมนต์ หรือพูดถึงคุณ ไม่ส่งช่วง 00:00–07:00','Get notified about ATE, comments and mentions. Nothing is sent between 00:00 and 07:00.')}</p>
     </div><div class="ob-foot"><button class="btn primary block" data-act="perm" data-arg="${st}:granted">${loc?L('เปิดตำแหน่ง','Turn on location'):L('เปิดการแจ้งเตือน','Turn on notifications')}</button><button class="btn ghost" data-act="perm" data-arg="${st}:denied">${L('ไว้ทีหลัง','Not now')}</button></div></div>`;
   }
   return '';
@@ -881,7 +903,7 @@ function vUniFeed(){
   if(S.sim.offline) body=`<div class="empty"><div class="ill">${I('wifi','lg')}</div><div class="h2">${L('โหลดฟีดไม่ได้','Couldn’t load the feed')}</div><p class="ink2" style="margin:0">${L('เช็กอินเทอร์เน็ตแล้วลองใหม่','Check your connection and try again.')}</p><button class="btn dark sm" data-act="retryFeed">${I('refresh','sm')} ${L('ลองใหม่','Try again')}</button></div>`;
   else if(loading) body=skeleton();
   else{
-    let list=S.posts.filter(p=>p.uni&&viewerCanSee(p)&&!p.pinned);
+    let list=S.posts.filter(p=>viewerCanSee(p)&&!p.pinned);
     if(h.cat!=='all') list=list.filter(p=>p.cat===h.cat);
     list=sortPosts(list,h.sort);
     const pinned=S.posts.find(p=>p.pinned&&viewerCanSee(p));
@@ -893,8 +915,8 @@ function vUniFeed(){
     ${prompt}${body}</div>`;
 }
 function firstPostPrompt(){
-  const top3=BUBBLES.filter(bubbleOpen).sort((a,b)=>count24(b.id)-count24(a.id)).slice(0,3);
-  return `<div class="banner" style="flex-direction:column;gap:10px;margin-top:4px"><div style="display:flex;gap:10px;width:100%"><div style="flex:1"><div class="h3">${L('ทักทายเพื่อนในรั้วกัน 👋','Say hi to campus 👋')}</div><div class="cap" style="color:var(--ink2)">${L('บับเบิลที่คึกคักตอนนี้ โพสต์แรกของคุณรอเลย','These bubbles are busy right now. Make your first post.')}</div></div><button class="iconbtn plain" data-act="dismissPrompt" aria-label="${L('ปิด','Dismiss')}">${I('x','sm')}</button></div>
+  const top3=BUBBLES.filter(canTag).sort((a,b)=>count24(b.id)-count24(a.id)).slice(0,3);
+  return `<div class="banner" style="flex-direction:column;gap:10px;margin-top:4px"><div style="display:flex;gap:10px;width:100%"><div style="flex:1"><div class="h3">${L('ทักทายเพื่อนในรั้วกัน 👋','Say hi to campus 👋')}</div><div class="cap" style="color:var(--ink2)">${L('โพสต์แรกของคุณ ใส่สถานที่ที่คึกคักตอนนี้ได้เลย','Make your first post, and add one of these busy places to it.')}</div></div><button class="iconbtn plain" data-act="dismissPrompt" aria-label="${L('ปิด','Dismiss')}">${I('x','sm')}</button></div>
     <div style="display:flex;gap:8px;flex-wrap:wrap">${top3.map(b=>`<button class="chip" data-act="composeIn" data-arg="${b.id}:first_post_prompt">${I(BTYPES[b.type][2],'xs')} ${esc(bname(b))} <span class="num muted" style="font-size:calc(12px*var(--ts,1))">${count24(b.id)}</span></button>`).join('')}</div></div>`;
 }
 
@@ -902,14 +924,17 @@ function firstPostPrompt(){
 function vBubbleMap(){
   const h=S.home; const on=locOn();
   const vis=BUBBLES.filter(b=>b.status!=='ended'||(Date.now()-new Date(b.end+'T23:59:59')<7*DAY)).filter(b=>h.bcat==='all'||b.type===h.bcat);
-  const sorted=vis.slice().sort((a,b)=>{const A=count24(a.id)>0,B=count24(b.id)>0;if(A!==B)return B-A;return on?distance(a)-distance(b):count24(b.id)-count24(a.id);});
+  const sorted=vis.slice().sort((a,b)=>{const la=isLive(a),lb=isLive(b);if(la!==lb)return lb-la;const A=count24(a.id)>0,B=count24(b.id)>0;if(A!==B)return B-A;return on?distance(a)-distance(b):count24(b.id)-count24(a.id);});
   const sheetH=h.sheet==='full'?'calc(100% - 4px)':'var(--peek)';
   const pins=vis.map(b=>{const n=count24(b.id);const ty=BTYPES[b.type];const dim=b.status!=='active'||!bubbleOpen(b);
-    return `<g class="pinb" data-act="openBubble" data-arg="${b.id}:pin" transform="translate(${b.x},${MY(b.y)})" opacity="${dim?.55:1}" role="button" aria-label="${esc(bname(b))}">
+    const lv=isLive(b);
+    return `<g class="pinb" data-act="openBubble" data-arg="${b.id}:pin" transform="translate(${b.x},${MY(b.y)})" opacity="${dim?.55:1}" role="button" aria-label="${esc(bname(b))}${lv?' LIVE':''}">
+      ${lv?`<circle class="livering" r="19" fill="#d1242f" opacity=".5"/>`:''}${on&&onSpot(b)?`<circle r="26" fill="none" stroke="#7c3aed" stroke-width="2" stroke-dasharray="4 3"/>`:''}
       <circle r="19" fill="var(--canvas)" stroke="${b.type==='event'?'#7c3aed':'var(--ink)'}" stroke-width="2.5"/>
       <g transform="translate(-10,-10) scale(.84)" fill="none" stroke="${b.type==='event'?'#7c3aed':'var(--ink)'}" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">${IP[ty[2]]}</g>
       ${n?`<g transform="translate(14,-16)"><rect x="-2" y="-9" width="${String(n).length*7+12}" height="18" rx="9" fill="#c42b31"/><text x="${(String(n).length*7+8)/2}" y="4.5" text-anchor="middle" font-family="Plus Jakarta Sans" font-weight="800" font-size="11" fill="#fff">${n}</text></g>`:''}
-      <text y="34" text-anchor="middle" font-family="Noto Sans Thai" font-weight="700" font-size="11" fill="var(--ink)" stroke="var(--map-ground)" stroke-width="3" paint-order="stroke">${esc(bname(b))}</text></g>`;}).join('');
+      <text y="34" text-anchor="middle" font-family="Noto Sans Thai" font-weight="700" font-size="11" fill="var(--ink)" stroke="var(--map-ground)" stroke-width="3" paint-order="stroke">${esc(bname(b))}</text>
+      ${lv?`<g transform="translate(-36,-30)"><rect width="32" height="15" rx="7.5" fill="#d1242f"/><text x="16" y="11" text-anchor="middle" font-family="Plus Jakarta Sans" font-weight="800" font-size="9.5" fill="#fff">LIVE</text></g>`:''}</g>`;}).join('');
   const map=`<svg class="map" viewBox="0 0 390 440" preserveAspectRatio="xMidYMin meet" role="img" aria-label="${L('แผนที่แคมปัส','Campus map')}">
     <rect width="390" height="440" fill="var(--map-ground)"/><g transform="translate(0,20) scale(1,.75)">
     <rect x="0" y="0" width="390" height="26" fill="var(--map-road)"/><text x="195" y="17" text-anchor="middle" font-size="9" fill="var(--map-label)" font-family="Plus Jakarta Sans" font-weight="700">RAMA I RD</text>
@@ -922,12 +947,12 @@ function vBubbleMap(){
     <ellipse cx="80" cy="140" rx="30" ry="18" fill="var(--map-water)"/>
     <g fill="var(--map-bldg)"><rect x="60" y="60" width="60" height="40" rx="6"/><rect x="130" y="60" width="80" height="30" rx="6"/><rect x="260" y="50" width="80" height="60" rx="6"/><rect x="70" y="170" width="50" height="60" rx="6"/><rect x="256" y="130" width="70" height="40" rx="6"/><rect x="256" y="240" width="90" height="90" rx="6"/><rect x="60" y="380" width="110" height="80" rx="10"/><rect x="190" y="380" width="60" height="40" rx="6"/><rect x="270" y="440" width="70" height="80" rx="6"/><rect x="300" y="200" width="45" height="40" rx="6"/></g>
     <rect x="60" y="390" width="90" height="56" rx="20" fill="var(--map-green)" opacity=".7"/></g>
-    ${on?`<g transform="translate(${ME_XY.x},${MY(ME_XY.y)})"><circle r="22" fill="#7c3aed" opacity=".15"/><circle r="8" fill="#7c3aed" stroke="#fff" stroke-width="3"/></g>`:''}
+    ${on?`<g transform="translate(${meXY().x},${MY(meXY().y)})"><circle r="22" fill="#7c3aed" opacity=".15"/><circle r="8" fill="#7c3aed" stroke="#fff" stroke-width="3"/></g>`:''}
     ${pins}</svg>`;
   const card=b=>{const tp=postsIn(b.id).filter(p=>Date.now()-p.at<DAY).sort((a,c)=>c.ate-a.ate)[0];const a=tp&&authorView(tp,tp.id);
-    return `<button class="bcard" data-act="openBubble" data-arg="${b.id}:card"><div style="display:flex;gap:10px;align-items:center;width:100%"><span class="btype t-${b.type}">${I(BTYPES[b.type][2],'sm')}</span><div style="flex:1;min-width:0"><div class="lbl" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(bname(b))}</div><div class="cap">${[L(BTYPES[b.type][0],BTYPES[b.type][1]),on?fmtDist(distance(b)):null,b.status==='paused'?L('ปิดชั่วคราว','Paused'):null,b.status==='ended'?L('จบแล้ว','Ended'):null].filter(Boolean).join(' · ')}</div></div>${count24(b.id)?`<span class="pill danger num">${count24(b.id)}</span>`:''}</div>
+    return `<button class="bcard" data-act="openBubble" data-arg="${b.id}:card"><div style="display:flex;gap:10px;align-items:center;width:100%"><span class="btype t-${b.type}">${I(BTYPES[b.type][2],'sm')}</span><div style="flex:1;min-width:0"><div class="lbl" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(bname(b))}</div><div class="cap" style="display:flex;gap:4px;align-items:center;white-space:nowrap;overflow:hidden">${isLive(b)?livePill():''}${onSpot(b)?hereTag():''}<span style="overflow:hidden;text-overflow:ellipsis">${[L(BTYPES[b.type][0],BTYPES[b.type][1]),on?fmtDist(distance(b)):null,b.status==='paused'?L('ปิดชั่วคราว','Paused'):null,b.status==='ended'?L('จบแล้ว','Ended'):null].filter(Boolean).join(' · ')}</span></div></div>${count24(b.id)?`<span class="pill danger num">${count24(b.id)}</span>`:''}</div>
     ${tp?`<div style="display:flex;gap:8px;align-items:flex-start;width:100%">${a.av(22)}<div style="min-width:0;flex:1"><div class="cap" style="color:var(--ink);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">${esc(tp.text)}</div><div class="cap">${esc(a.name)} · ${rel(tp.at)} · <span style="color:#ff5a1f">${I('flame','xs')}</span> ${nf(tp.ate)}</div></div></div>`:`<div class="cap">${L('เงียบ ๆ อยู่ เป็นคนแรกที่โพสต์สิ','It’s quiet here. Be the first to post')}</div>`}</button>`;};
-  const listRow=b=>`<button class="row" data-act="openBubble" data-arg="${b.id}:list"><span class="btype t-${b.type}">${I(BTYPES[b.type][2],'sm')}</span><span class="rt"><span class="lbl">${esc(bname(b))}</span><br><span class="cap">${[L(BTYPES[b.type][0],BTYPES[b.type][1]),count24(b.id)?count24(b.id)+L(' โพสต์ใน 24 ชม.',' posts in 24h'):L('ยังไม่มีโพสต์วันนี้','No posts today'),on?fmtDist(distance(b)):null,b.status==='paused'?L('ปิดชั่วคราว','Paused'):null,b.status==='ended'?L('จบแล้ว','Ended'):null].filter(Boolean).join(' · ')}</span></span>${I('chev','sm')}</button>`;
+  const listRow=b=>`<button class="row" data-act="openBubble" data-arg="${b.id}:list"><span class="btype t-${b.type}">${I(BTYPES[b.type][2],'sm')}</span><span class="rt"><span class="lbl">${esc(bname(b))}</span> ${isLive(b)?livePill():''} ${onSpot(b)?hereTag():''}<br><span class="cap">${[L(BTYPES[b.type][0],BTYPES[b.type][1]),count24(b.id)?count24(b.id)+L(' โพสต์ใน 24 ชม.',' posts in 24h'):L('ยังไม่มีโพสต์วันนี้','No posts today'),on?fmtDist(distance(b)):null,b.status==='paused'?L('ปิดชั่วคราว','Paused'):null,b.status==='ended'?L('จบแล้ว','Ended'):null].filter(Boolean).join(' · ')}</span></span>${I('chev','sm')}</button>`;
   return `<div class="mapwrap">${map}
     <div class="mapchips">${catChips(h.bcat,'bcat',[['all','ทั้งหมด','All'],['food','ของกิน','Food'],['event','อีเวนต์','Event'],['study','อ่านหนังสือ','Study'],['faculty','คณะ','Faculty'],['life','ไลฟ์','Life']]).replace('padding-top:12px;padding-bottom:8px','padding:0 16px')}</div>
     ${!on?`<div class="banner" style="position:absolute;top:52px;left:0;right:0;z-index:6;margin:0 16px;padding:10px 12px;align-items:center">${I('pin','sm')}<div style="flex:1" class="cap"><span style="color:var(--ink);font-weight:600">${L('ตำแหน่งปิดอยู่','Location is off')}</span> · ${L('แผนที่ยังใช้ได้ แค่ไม่มีระยะทาง','The map still works, without distances')}</div><button class="link" style="font-size:calc(13px*var(--ts,1))" data-act="enableLoc">${L('เปิด','Turn on')}</button></div>`:''}
@@ -943,16 +968,22 @@ function vBubbleMap(){
 function vBubble(id){
   const b=bubble(id); const ty=BTYPES[b.type]; const open=bubbleOpen(b);
   const sort=T.bsort||'hot'; const list=sortPosts(postsIn(id),sort);
+  if(sort==='hot'){const sc=p=>hot(p)*(p.spot?1.5:1);list.sort((a,c)=>sc(c)-sc(a));}
+  const live=isLive(b), here=onSpot(b), lockedLive=live&&!here;
+  const drops=dropsIn(id);
   let banner='';
   if(b.status==='paused') banner=`<div class="banner warn">${I('lock')}<div><div class="lbl">${L('ปิดโพสต์ชั่วคราว','Read-only for now')}</div><div class="cap" style="color:var(--ink2)">${L(b.reason_th,b.reason_en)}</div></div></div>`;
   else if(b.status==='ended'||(b.end&&!open)) banner=`<div class="banner">${I('clock')}<div><div class="lbl">${L('งานจบแล้ว','This event has ended')}</div><div class="cap" style="color:var(--ink2)">${L('อ่านได้อย่างเดียว 7 วัน แล้วจะหายจากแผนที่','Read-only for 7 days, then hidden from the map')}</div></div></div>`;
   return `<div class="screen">${topbar('',{right:`<button class="iconbtn" data-act="share" data-arg="bubble:${id}" aria-label="share">${I('send')}</button>`})}
    <div class="scroll" style="padding-bottom:40px">
-    <div class="pad" style="display:flex;gap:14px;align-items:center"><span class="btype t-${b.type}" style="width:60px;height:60px;border-radius:20px">${I(ty[2],'lg')}</span><div style="flex:1;min-width:0"><div class="h1">${esc(bname(b))}</div><div class="cap">${[L(ty[0],ty[1]),count24(id)+L(' โพสต์วันนี้',' posts today'),locOn()?fmtDist(distance(b)):null].filter(Boolean).join(' · ')}</div>${b.start?`<div class="pill brand" style="margin-top:6px">${I('star','xs')} ${fmtDay(b.start)} – ${fmtDay(b.end)}</div>`:''}</div></div>
-    <div class="pad" style="margin-top:14px"><button class="btn primary block" ${open?'':'disabled'} data-act="composeIn" data-arg="${id}:bubble_page">${I('plus','sm')} ${L('โพสต์ในบับเบิลนี้','Post in this bubble')}</button></div>
+    <div class="pad" style="display:flex;gap:14px;align-items:center"><span class="btype t-${b.type}" style="width:60px;height:60px;border-radius:20px">${I(ty[2],'lg')}</span><div style="flex:1;min-width:0"><div class="h1">${esc(bname(b))}</div><div class="cap">${[L(ty[0],ty[1]),count24(id)+L(' โพสต์วันนี้',' posts today'),locOn()?fmtDist(distance(b)):null].filter(Boolean).join(' · ')}</div><div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px">${live?livePill():''}${here?hereTag():''}${b.start?`<span class="pill brand">${I('star','xs')} ${fmtDay(b.start)} – ${fmtDay(b.end)}</span>`:''}</div></div></div>
+    <div class="pad" style="margin-top:14px"><button class="btn primary block" ${open&&!lockedLive?'':'disabled'} data-act="composeIn" data-arg="${id}:post_here">${I('plus','sm')} ${L('โพสต์ที่นี่','Post here')}</button>
+      <div class="cap" style="margin-top:8px;text-align:center">${lockedLive?'':here?L('คุณอยู่ที่นี่ โพสต์จะได้ตรา “อยู่ที่นี่จริง”','You’re here, so your post gets the On the spot stamp'):L('โพสต์จะขึ้นในฟีดมหาลัย และอยู่ที่บับเบิลนี้ 72 ชม.','Your post goes to University and shows here for 72 hours')}</div></div>
+    ${lockedLive&&open?`<div class="banner">${I('pin')}<div><div class="lbl">${L('โพสต์สดสำหรับคนที่อยู่ในงาน','Live posts are for people at the event')}</div><div class="cap" style="color:var(--ink2)">${locOn()?L('คุณยังอ่าน ATE และคอมเมนต์ได้ ไปที่งานเพื่อโพสต์','You can still read, ATE and comment. Go to the event to post.'):L('เปิดตำแหน่งเพื่อเช็กว่าคุณอยู่ในงาน คุณยังอ่าน ATE และคอมเมนต์ได้','Turn on location to check you’re at the event. You can still read, ATE and comment.')}</div></div></div>`:''}
     ${banner}
-    <div style="display:flex;align-items:center;gap:8px;padding:16px 20px 4px;border-bottom:1px solid var(--divider)"><div class="seg"><button class="${sort==='hot'?'on':''}" data-act="bsort" data-arg="hot">${L('มาแรง','Hot')}</button><button class="${sort==='new'?'on':''}" data-act="bsort" data-arg="new">${L('ล่าสุด','New')}</button></div><span class="cap" style="margin-left:auto">${L('โพสต์อยู่ในบับเบิล 72 ชม.','Posts stay 72h')}</span></div>
-    ${list.length?list.map(p=>postCard(p,{inBubble:true})).join(''):`<div class="empty"><div class="ill">${I(ty[2],'lg')}</div><div class="h2">${L('เงียบ ๆ อยู่','It’s quiet here')}</div><p class="ink2" style="margin:0">${L('เป็นคนแรกที่โพสต์ในบับเบิลนี้','Be the first to post in this bubble.')}</p>${open?`<button class="btn primary sm" data-act="composeIn" data-arg="${id}:bubble_page">${L('โพสต์','Post')}</button>`:''}</div>`}
+    ${drops.map(dr=>{const opened=S.dropsOpened.includes(dr.id);return here||opened?`<button class="drop open" data-act="openDrop" data-arg="${dr.id}"><span class="btype t-event">${I('sparkle','sm')}</span><span style="flex:1;min-width:0"><span class="lbl">${L('ดรอป','Drop')} · ${opened?L('เปิดแล้ว','Opened'):L('แตะเพื่อเปิด','Tap to open')}</span> <span class="pill">MVP 1.5</span><br><span class="cap">${opened?esc(L(dr.th,dr.en)):L('คุณอยู่ที่นี่ เปิดได้เลย','You’re here, so you can open it')} · ${dr.opens}/${dr.max}</span></span></button>`:`<div class="drop" role="note"><span class="btype t-event">${I('lock','sm')}</span><span style="flex:1;min-width:0"><span class="lbl">${L('มี 1 ดรอปซ่อนอยู่ที่นี่','1 drop here')}</span> <span class="pill">MVP 1.5</span><br><span class="cap">${L('ไปที่นี่เพื่อเปิด','Go there to open it')} · ${dr.opens}/${dr.max} ${L('คนเปิดแล้ว','opened')}</span></span></div>`;}).join('')}
+    <div style="display:flex;align-items:center;gap:8px;padding:16px 20px 4px;border-bottom:1px solid var(--divider)"><div class="seg"><button class="${sort==='hot'?'on':''}" data-act="bsort" data-arg="hot">${L('มาแรง','Hot')}</button><button class="${sort==='new'?'on':''}" data-act="bsort" data-arg="new">${L('ล่าสุด','New')}</button></div><span class="cap" style="margin-left:auto">${L('อยู่ที่นี่ 72 ชม. · ตรา “อยู่ที่นี่จริง” ขึ้นก่อน','Shown 72h · On the spot first')}</span></div>
+    ${list.length?list.map(p=>postCard(p,{inBubble:true})).join(''):`<div class="empty"><div class="ill">${I(ty[2],'lg')}</div><div class="h2">${L('เงียบ ๆ อยู่','It’s quiet here')}</div><p class="ink2" style="margin:0">${L('เป็นคนแรกที่โพสต์ในบับเบิลนี้','Be the first to post in this bubble.')}</p>${open&&!lockedLive?`<button class="btn primary sm" data-act="composeIn" data-arg="${id}:post_here">${L('โพสต์','Post')}</button>`:''}</div>`}
    </div></div>`;
 }
 
@@ -1073,11 +1104,10 @@ function vCompose(){
         <div id="cmpPoll">${ed?'':composePoll()}</div>
         <div id="cmpLink">${composeLink()}</div>
       </div></div>
-    ${ed?'':`<div class="section-t" style="padding-top:18px">${L('โพสต์ไปที่','Post to')}</div>
-    <div class="chips"><button class="chip ${d.uni?'on':''}" data-act="dUni">${d.uni?I('check','xs'):''} ${L('มหาลัย','University')}</button>
-      <button class="chip ${b?'on':''}" data-act="pickBubble">${I('pin','xs')} ${b?esc(bname(b)):L('เลือกบับเบิล','Pick a bubble')} ${I('down','xs')}</button>
-      ${b?`<button class="chip" data-act="clearBubble" aria-label="remove bubble">${I('x','xs')}</button>`:''}</div>
-    <div class="pad cap" id="whereErr" style="margin-top:6px">${!d.uni&&!b?`<span class="err-t">${L('เลือกอย่างน้อย 1 ที่','Pick at least one place')}</span>`:L('โพสต์มีแค่บับเบิลที่คุณเลือก ไม่มีตำแหน่งของคุณ','Your post carries the bubble you pick, never your location.')}</div>`}
+    ${ed?'':`<div class="section-t" style="padding-top:18px">${L('สถานที่','Place')} <span class="cap" style="font-weight:500">${L('(ไม่บังคับ)','(optional)')}</span></div>
+    <div class="chips"><button class="chip ${b?'on':''}" data-act="pickBubble">${I('pin','xs')} ${b?esc(bname(b)):L('เพิ่มสถานที่','Add place')} ${I('down','xs')}</button>
+      ${b?`<button class="chip" data-act="clearBubble" aria-label="${L('เอาสถานที่ออก','Remove place')}">${I('x','xs')}</button>`:''}${b&&isLive(b)?livePill():''}${b&&onSpot(b)&&d.mode!=='anon'?spotPill():''}</div>
+    <div class="pad cap" id="whereErr" style="margin-top:6px">${placeHelp(d,b)}</div>`}
    </div>
    <div id="cmpSuggest"></div>
    <div id="cmpCats">${composeCats()}</div>
@@ -1089,6 +1119,12 @@ function vCompose(){
      <span id="cmpCount" class="num cap" style="margin-left:auto"></span>
    </div><div style="height:28px;flex:none"></div>
   </div>`;
+}
+function placeHelp(d,b){
+  if(!b) return L('ทุกโพสต์ขึ้นฟีดมหาลัย ใส่สถานที่เพื่อให้ขึ้นบนแผนที่บับเบิลด้วย 72 ชม.','Every post goes to University. Add a place to also show it on the Bubble map for 72 hours.');
+  if(isLive(b)&&!onSpot(b)) return `<span class="err-t">${L('โพสต์สดในงานนี้ได้เฉพาะคนที่อยู่ในงาน ลบสถานที่เพื่อโพสต์ในฟีดมหาลัย','Only people at this live event can post with it. Remove the place to post to University.')}</span>`;
+  if(onSpot(b)) return d.mode==='anon'?L('คุณอยู่ที่นี่ แต่โพสต์นิรนามจะไม่แสดงตรา “อยู่ที่นี่จริง” เพื่อไม่ให้ใครเดาได้ว่าเป็นคุณ','You’re here, but anonymous posts don’t show the On the spot stamp, so nobody can work out it’s you.'):L('คุณอยู่ที่นี่ โพสต์จะได้ตรา “อยู่ที่นี่จริง” · ส่งแค่ว่าใช่/ไม่ใช่ ไม่ส่งตำแหน่ง','You’re here, so your post gets the On the spot stamp. Only yes/no is sent, never your location.');
+  return locOn()?L('คุณไม่ได้อยู่ที่นี่ จึงไม่มีตรา “อยู่ที่นี่จริง” แต่โพสต์ได้ตามปกติ','You’re not there, so no On the spot stamp. Posting still works.'):L('ตำแหน่งปิดอยู่ จึงไม่มีตรา “อยู่ที่นี่จริง” แต่โพสต์ได้ตามปกติ','Location is off, so no On the spot stamp. Posting still works.');
 }
 function composeImgs(){
   const d=S.draft; if(!d.images.length) return '';
@@ -1125,7 +1161,7 @@ function composeValid(){
   const d=S.draft; const t=d.text.trim(); const errs=[];
   if(!t) errs.push('text');
   if(!d.cat) errs.push('cat');
-  if(!d.editing&&!d.uni&&!d.bubble) errs.push('where');
+  if(!d.editing&&d.bubble&&isLive(d.bubble)&&!onSpot(d.bubble)) errs.push('where');
   if(d.poll&&d.poll.opts.filter(o=>o.trim()).length<2) errs.push('poll');
   if(d.images.some(i=>i.failed)) errs.push('img');
   if(tagsOf(d.text).length>5) errs.push('tags');
@@ -1353,10 +1389,10 @@ function renderOverlay(){
   }
   if(o.t==='bubblePicker'){
     const q=(o.q||'').toLowerCase();
-    const list=BUBBLES.filter(bubbleOpen).filter(b=>!q||bname(b).toLowerCase().includes(q)||b.th.includes(q)).sort((a,b)=>(count24(b.id)>0)-(count24(a.id)>0)||(locOn()?distance(a)-distance(b):0));
-    h=sheet(L('เลือกบับเบิล','Pick a bubble'),`<div class="pad" style="margin-bottom:8px"><input class="input" id="bpSearch" style="height:42px;border-radius:999px;background:var(--surface);border-color:transparent" placeholder="${L('ค้นหาบับเบิล','Search bubbles')}" value="${esc(o.q||'')}" data-on="bpSearch"></div>
-      <div id="bpList">${list.map(b=>`<button class="row" data-act="setBubble" data-arg="${b.id}"><span class="btype t-${b.type}">${I(BTYPES[b.type][2],'sm')}</span><span class="rt"><span class="lbl">${esc(bname(b))}</span><br><span class="cap">${[count24(b.id)?count24(b.id)+L(' โพสต์วันนี้',' posts today'):L('ยังเงียบ','Quiet'),locOn()?fmtDist(distance(b)):null].filter(Boolean).join(' · ')}</span></span><span class="radio ${S.draft.bubble===b.id?'on':''}"></span></button>`).join('')}</div>
-      <div class="pad cap" style="margin-top:8px">${L('บับเบิลที่ปิดชั่วคราวหรือจบแล้วจะไม่แสดงที่นี่','Paused and ended bubbles aren’t listed.')}</div>`);
+    const list=BUBBLES.filter(bubbleOpen).filter(b=>!q||bname(b).toLowerCase().includes(q)||b.th.includes(q)).sort((a,b)=>(isLive(b)-isLive(a))||(onSpot(b)-onSpot(a))||(count24(b.id)>0)-(count24(a.id)>0)||(locOn()?distance(a)-distance(b):0));
+    h=sheet(L('เพิ่มสถานที่','Add a place'),`<div class="pad" style="margin-bottom:8px"><input class="input" id="bpSearch" style="height:42px;border-radius:999px;background:var(--surface);border-color:transparent" placeholder="${L('ค้นหาสถานที่','Search places')}" value="${esc(o.q||'')}" data-on="bpSearch"></div>
+      <div id="bpList">${list.map(b=>{const lock=!canTag(b);return `<button class="row" ${lock?'disabled aria-disabled="true"':''} data-act="${lock?'liveBlocked':'setBubble'}" data-arg="${b.id}"><span class="btype t-${b.type}">${I(BTYPES[b.type][2],'sm')}</span><span class="rt"><span class="lbl">${esc(bname(b))}</span> ${isLive(b)?livePill():''} ${onSpot(b)?hereTag():''}<br><span class="cap">${lock?L('เฉพาะคนที่อยู่ในงาน','Only for people at the event'):[count24(b.id)?count24(b.id)+L(' โพสต์วันนี้',' posts today'):L('ยังเงียบ','Quiet'),locOn()?fmtDist(distance(b)):null].filter(Boolean).join(' · ')}</span></span><span class="radio ${S.draft.bubble===b.id?'on':''}"></span></button>`;}).join('')}</div>
+      <div class="pad cap" style="margin-top:8px">${L('บับเบิลที่ปิดชั่วคราวหรือจบแล้วจะไม่แสดง · อีเวนต์ที่กำลังจัด (LIVE) ใส่ได้เฉพาะคนที่อยู่ในงาน','Paused and ended bubbles aren’t listed. LIVE events can only be added by people at the event.')}</div>`);
   }
   if(o.t==='sso'){
     const names={google:'Google',microsoft:'Microsoft',other:L('ระบบของมหาวิทยาลัย','University sign-in')};
@@ -1383,10 +1419,11 @@ function renderOverlay(){
 function renderPanel(){
   const p=$('#panel'); if(!p) return;
   const jump=[['home','Home · University'],['bubbleMap','Bubble map'],['search','Search'],['compose','Compose'],['post','Post detail'],['activity','Activity'],['profile','My profile'],['other','Classmate profile'],['settings','Settings']];
-  p.innerHTML=`<div style="display:flex;gap:10px;align-items:flex-start"><div style="flex:1"><h2>EIGHT TEEN · MVP 1</h2><div class="cap">Clickable prototype of PRD v1.3 (Jira KAN-4…KAN-64). No backend: data lives in this browser and resets with the button below.</div></div><button class="iconbtn pclose" data-act="panelClose" aria-label="Close">${I('x')}</button></div>
+  p.innerHTML=`<div style="display:flex;gap:10px;align-items:flex-start"><div style="flex:1"><h2>EIGHT TEEN · MVP 1</h2><div class="cap">Clickable prototype of PRD v1.4 (Jira KAN). New in v1.4: posts go to University, with an optional place; On the spot stamp, LIVE events and Drops on the Bubble map. No backend: data lives in this browser and resets with the button below.</div></div><button class="iconbtn pclose" data-act="panelClose" aria-label="Close">${I('x')}</button></div>
    <div><h3>Jump to</h3><div class="pbtns">${S.done?jump.map(j=>`<button class="pbtn" data-act="jump" data-arg="${j[0]}">${j[1]}</button>`).join(''):`<button class="pbtn" data-act="skipOnboarding">Skip onboarding</button>`}<button class="pbtn" data-act="resetAll">Reset demo</button></div></div>
    <div><h3>App</h3><div class="pbtns"><button class="pbtn ${S.lang==='th'?'on':''}" data-act="lang" data-arg="th">ไทย</button><button class="pbtn ${S.lang==='en'?'on':''}" data-act="lang" data-arg="en">English</button>${['system','light','dark'].map(t=>`<button class="pbtn ${S.settings.theme===t?'on':''}" data-act="setTheme" data-arg="${t}">${t}</button>`).join('')}</div></div>
-   ${S.done?`<div><h3>Simulate</h3><div class="pbtns">
+   ${S.done?`<div><h3>Pretend I’m at…</h3><div class="pbtns">${[['none','Off campus'],['lib','Central Library'],['lawn','Main Lawn'],['openhouse','Open House (LIVE)'],['cafe','CU Café']].map(x=>`<button class="pbtn ${(S.sim.here||'none')===x[0]?'on':''}" data-act="simHere" data-arg="${x[0]}">${x[1]}</button>`).join('')}</div><div class="cap" style="margin-top:6px">Location ${locOn()?'on':'off'}. Being inside a bubble’s radius gives the On the spot stamp, unlocks posting into a LIVE event, and opens Drops.</div></div>
+   <div><h3>Simulate</h3><div class="pbtns">
      <button class="pbtn" data-act="simComment">Someone comments on my post</button>
      <button class="pbtn" data-act="simRemoved">My comment gets removed</button>
      <button class="pbtn" data-act="simReverify">Re-verify due</button>
@@ -1544,7 +1581,10 @@ const A={
   playVoice(a){T.playing=T.playing===a?null:a;render();if(T.playing){const c=S.comments.find(x=>x.id===a);clearTimeout(T.playT);T.playT=setTimeout(()=>{T.playing=null;render();},Math.min(c.voice.sec,6)*1000);}},
   /* compose */
   compose(){openCompose({src:'tab'});},
-  composeIn(a){const [id,src]=a.split(':');track('bubble_selected',{bubble_id:id,source:src});openCompose({bubble:id,uni:true,src});},
+  composeIn(a){const [id,src]=a.split(':');const b=bubble(id);if(!canTag(b)){A.liveBlocked(id);return;}tagPlace(id,src);openCompose({bubble:id,uni:true,src});},
+  liveBlocked(a){track('live_post_blocked',{bubble_id:a});toast(L('โพสต์สดได้เฉพาะคนที่อยู่ในงาน คุณยังอ่าน ATE และคอมเมนต์ได้','Live posts are for people at the event. You can still read, ATE and comment.'));},
+  openDrop(a){const dr=S.drops.find(x=>x.id===a);if(!dr)return;if(!S.dropsOpened.includes(a)){if(!onSpot(dr.bubble)){toast(L('ไปที่นี่เพื่อเปิดดรอป','Go there to open this drop'));return;}S.dropsOpened.push(a);dr.opens++;track('drop_opened',{drop_id:a,bubble_id:dr.bubble});haptic();}render();},
+  simHere(a){S.sim.here=a==='none'?null:a;if(a!=='none'&&!locOn()){S.settings.loc=true;S.ob.perm.loc='granted';}render();toast(a==='none'?L('จำลอง: ไม่ได้อยู่ในแคมปัส','Simulated: off campus'):L('จำลอง: อยู่ที่ ','Simulated: at ')+bname(bubble(a)));},
   composeCancel(){const d=S.draft;if(d.editing||(!d.text.trim()&&!d.images.length&&!d.poll)){S.draft=null;pop();return;}openOv({t:'keepDraft'});},
   draftKeep(){S.savedDraft=S.draft;S.draft=null;closeOv();pop();toast(L('เก็บร่างแล้ว','Draft saved'));},
   draftDiscard(){S.savedDraft=null;S.draft=null;closeOv();pop();},
@@ -1553,7 +1593,7 @@ const A={
   dcat(a){S.draft.cat=a;syncDraftText();$('#cmpCats').innerHTML=composeCats();refreshCompose();},
   dUni(){S.draft.uni=!S.draft.uni;syncDraftText();render();},
   pickBubble(){syncDraftText();openOv({t:'bubblePicker',q:''});},
-  setBubble(a){S.draft.bubble=a;track('bubble_selected',{bubble_id:a,source:'picker'});closeOv();render();},
+  setBubble(a){S.draft.bubble=a;tagPlace(a,'picker');closeOv();render();},
   clearBubble(){S.draft.bubble=null;syncDraftText();render();},
   addPoll(){syncDraftText();if(S.draft.poll)return;if(S.draft.images.length){toast(L('โพสต์ที่มีรูปใส่โพลไม่ได้','Polls can’t be combined with photos'));return;}S.draft.poll={opts:['',''],days:1};render();},
   rmPoll(){S.draft.poll=null;syncDraftText();render();},
@@ -1653,6 +1693,7 @@ function finishOnboarding(){
   track('feed_viewed',{feed:'university',sort:'hot',category:'all'});
   render();
 }
+function tagPlace(id,src){const b=bubble(id);track('place_tag_added',{bubble_id:id,source:src,is_live:isLive(b)});track('on_the_spot_checked',{bubble_id:id,result:!locOn()?'no_permission':onSpot(b)?'in':'out'});}
 function openCompose(o){
   if(S.savedDraft&&!o.bubble){S.draft=S.savedDraft;S.savedDraft=null;toast(L('เปิดร่างที่เก็บไว้','Draft restored'));}
   else S.draft=newDraft(o);
@@ -1676,9 +1717,9 @@ function publish(){
     closeOv();
     if(d.editing){const p=S.posts.find(x=>x.id===d.editing);p.text=d.text;p.cat=d.cat;p.tags=tagsOf(d.text);p.images=d.images;p.edited=true;track('post_edited',{post_id:p.id});S.draft=null;pop();toast(L('บันทึกการแก้ไขแล้ว','Changes saved'));return;}
     const ments=d.mode==='anon'?[]:mentionsIn(d.text).map(u=>Object.values(USERS).find(x=>x.user===u)).filter(u=>u&&u.mentions!=='none'&&!isBlocked(u.id)).map(u=>u.id);
-    const p={id:uid('p'),by:'me',anon:d.mode==='anon',text:d.text.trim(),cat:d.cat,uni:d.uni,bubble:d.bubble,images:d.images.map(i=>({src:i.src,h:i.h,alt:L('รูปที่ผู้โพสต์แนบ','Photo attached by the author')})),poll:d.poll?{opts:d.poll.opts.filter(o=>o.trim()),votes:d.poll.opts.filter(o=>o.trim()).map(()=>0),mine:null,ends:Date.now()+d.poll.days*DAY}:null,ate:0,ated:false,tags:tagsOf(d.text),mentions:ments,edited:false,removed:false,pinned:false,reach:mod.level==='medium'?'reduced':'normal',at:Date.now()};
+    const p={id:uid('p'),by:'me',anon:d.mode==='anon',text:d.text.trim(),cat:d.cat,uni:true,bubble:d.bubble,spot:!!(d.bubble&&onSpot(d.bubble)),images:d.images.map(i=>({src:i.src,h:i.h,alt:L('รูปที่ผู้โพสต์แนบ','Photo attached by the author')})),poll:d.poll?{opts:d.poll.opts.filter(o=>o.trim()),votes:d.poll.opts.filter(o=>o.trim()).map(()=>0),mine:null,ends:Date.now()+d.poll.days*DAY}:null,ate:0,ated:false,tags:tagsOf(d.text),mentions:ments,edited:false,removed:false,pinned:false,reach:mod.level==='medium'?'reduced':'normal',at:Date.now()};
     S.posts.unshift(p);haptic();
-    track('post_created',{post_id:p.id,mode:p.anon?'anonymous':'identity',category:p.cat,has_image:p.images.length>0,has_poll:!!p.poll,hashtags_count:p.tags.length,mentions_count:ments.length,audience:p.uni&&p.bubble?'both':p.bubble?'bubble':'university',bubble_id:p.bubble});
+    track('post_created',{post_id:p.id,mode:p.anon?'anonymous':'identity',category:p.cat,has_image:p.images.length>0,has_poll:!!p.poll,hashtags_count:p.tags.length,mentions_count:ments.length,place_bubble_id:p.bubble,on_the_spot:p.spot,is_live:!!(p.bubble&&isLive(p.bubble))});
     if(mod.level==='medium') track('moderation_queued (internal)',{post_id:p.id,risk_level:'medium',reach:'reduced'});
     S.draft=null; S.savedDraft=null; S.home.firstPrompt=false; pop();
     toast(L('โพสต์แล้ว','Posted'),{act:'openPost',arg:p.id,label:L('ดูโพสต์','View')});
@@ -1693,7 +1734,7 @@ document.addEventListener('click',e=>{
   const fn=A[el.dataset.act]; if(!fn) return;
   e.preventDefault(); e.stopPropagation();
   fn(el.dataset.arg,el,e);
-  if(el.closest('#panel')&&!['panelClose','lang','setTheme','simOffline','simUpload','resetAll','skipOnboarding'].includes(el.dataset.act))A.panelClose();
+  if(el.closest('#panel')&&!['panelClose','lang','setTheme','simHere','simOffline','simUpload','resetAll','skipOnboarding'].includes(el.dataset.act))A.panelClose();
 });
 document.addEventListener('input',e=>{const el=e.target;if(el.dataset&&el.dataset.on&&H[el.dataset.on]&&el.type!=='file'&&el.tagName!=='SELECT')H[el.dataset.on](el,e);});
 document.addEventListener('change',e=>{const el=e.target;if(el.dataset&&el.dataset.on&&H[el.dataset.on]&&(el.type==='file'||el.tagName==='SELECT'))H[el.dataset.on](el,e);});
@@ -1730,7 +1771,7 @@ if(!S.events.length) track('onboarding_step_viewed',{step_name:'welcome',step_in
 
 <script>
 if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => navigator.serviceWorker.register('sw.js?v=57a3ea2f').catch(() => {}));
+  window.addEventListener('load', () => navigator.serviceWorker.register('sw.js?v=c849735a').catch(() => {}));
 }
 </script>
 </body>
