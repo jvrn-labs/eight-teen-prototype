@@ -138,8 +138,6 @@ svg.i.sm{width:18px;height:18px} svg.i.xs{width:15px;height:15px} svg.i.lg{width
 .tab .dot{position:absolute;top:3px;left:calc(50% + 4px);min-width:18px;height:18px;border-radius:9px;background:#d1242f;color:#fff;font-family:var(--f-num);font-size:calc(11px*var(--ts,1));font-weight:800;display:flex;align-items:center;justify-content:center;padding:0 5px}
 .fab{width:54px;height:54px;border-radius:999px;background:var(--brand);color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:3px 3px 0 var(--lime)}
 .fab-float{position:absolute;right:20px;bottom:102px;z-index:31;width:58px;height:58px;border-radius:20px;box-shadow:4px 4px 0 var(--lime),0 10px 24px rgba(124,58,237,.35)}
-.onmap .fab-float{bottom:268px}
-.onmap .recentre{right:auto;left:14px}
 .fab-float:active{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--lime)}
 @media (max-width:520px){.fab-float{bottom:92px}}
 /* post card */
@@ -324,6 +322,11 @@ button,[data-act]{cursor:pointer;-webkit-tap-highlight-color:transparent}
 @keyframes fadeout{to{opacity:0}}
 img.pimg{display:block;width:100%;height:auto;object-fit:cover}
 
+
+/* bubble sheet: keep its cards clear of the floating nav bar */
+.mapwrap{--peek:310px}
+.bsheet.peek{padding-bottom:94px}
+@media (max-width:520px){.bsheet.peek{padding-bottom:84px}.mapwrap{--peek:300px}}
 /* phone pass */
 .kb .tabbar,.kb .fab-float{display:none}
 .kb .cbar{padding-bottom:10px}
@@ -900,7 +903,7 @@ function vBubbleMap(){
   const h=S.home; const on=locOn();
   const vis=BUBBLES.filter(b=>b.status!=='ended'||(Date.now()-new Date(b.end+'T23:59:59')<7*DAY)).filter(b=>h.bcat==='all'||b.type===h.bcat);
   const sorted=vis.slice().sort((a,b)=>{const A=count24(a.id)>0,B=count24(b.id)>0;if(A!==B)return B-A;return on?distance(a)-distance(b):count24(b.id)-count24(a.id);});
-  const sheetH=h.sheet==='full'?'calc(100% - 4px)':'252px';
+  const sheetH=h.sheet==='full'?'calc(100% - 4px)':'var(--peek)';
   const pins=vis.map(b=>{const n=count24(b.id);const ty=BTYPES[b.type];const dim=b.status!=='active'||!bubbleOpen(b);
     return `<g class="pinb" data-act="openBubble" data-arg="${b.id}:pin" transform="translate(${b.x},${MY(b.y)})" opacity="${dim?.55:1}" role="button" aria-label="${esc(bname(b))}">
       <circle r="19" fill="var(--canvas)" stroke="${b.type==='event'?'#7c3aed':'var(--ink)'}" stroke-width="2.5"/>
@@ -928,9 +931,9 @@ function vBubbleMap(){
   return `<div class="mapwrap">${map}
     <div class="mapchips">${catChips(h.bcat,'bcat',[['all','ทั้งหมด','All'],['food','ของกิน','Food'],['event','อีเวนต์','Event'],['study','อ่านหนังสือ','Study'],['faculty','คณะ','Faculty'],['life','ไลฟ์','Life']]).replace('padding-top:12px;padding-bottom:8px','padding:0 16px')}</div>
     ${!on?`<div class="banner" style="position:absolute;top:52px;left:0;right:0;z-index:6;margin:0 16px;padding:10px 12px;align-items:center">${I('pin','sm')}<div style="flex:1" class="cap"><span style="color:var(--ink);font-weight:600">${L('ตำแหน่งปิดอยู่','Location is off')}</span> · ${L('แผนที่ยังใช้ได้ แค่ไม่มีระยะทาง','The map still works, without distances')}</div><button class="link" style="font-size:calc(13px*var(--ts,1))" data-act="enableLoc">${L('เปิด','Turn on')}</button></div>`:''}
-    ${on?`<button class="recentre" style="bottom:${h.sheet==='full'?'-100px':'266px'}" data-act="toastMsg" data-arg="${L('จัดแผนที่ให้อยู่ตรงกลางแล้ว','Map recentred')}" aria-label="${L('กลับมาตรงกลาง','Recentre')}">${I('target')}</button>`:''}
-    <span class="gattr" style="bottom:260px">Google · ${L('แผนที่จำลอง','map mock')}</span>
-    <div class="bsheet" style="height:${sheetH}"><button class="grabb" data-act="sheet" aria-label="${L('ขยายรายการ','Expand list')}"><i></i></button>
+    ${on?`<button class="recentre" style="bottom:${h.sheet==='full'?'-100px':'calc(var(--peek) + 12px)'}" data-act="toastMsg" data-arg="${L('จัดแผนที่ให้อยู่ตรงกลางแล้ว','Map recentred')}" aria-label="${L('กลับมาตรงกลาง','Recentre')}">${I('target')}</button>`:''}
+    <span class="gattr" style="bottom:calc(var(--peek) + 8px)">Google · ${L('แผนที่จำลอง','map mock')}</span>
+    <div class="bsheet ${h.sheet==='full'?'':'peek'}" style="height:${sheetH}"><button class="grabb" data-act="sheet" aria-label="${L('ขยายรายการ','Expand list')}"><i></i></button>
       <div style="display:flex;align-items:center;padding:0 20px 8px"><div class="h3" style="flex:1">${h.sheet==='full'?L('บับเบิลทั้งหมด','All bubbles'):L('บับเบิลใกล้คุณ','Nearby bubbles')}</div><button class="link" style="font-size:calc(13px*var(--ts,1))" data-act="sheet">${h.sheet==='full'?L('ดูแผนที่','Show map'):L('ดูทั้งหมด','See all')}</button></div>
       ${h.sheet==='full'?`<div class="scroll tabpad">${sorted.map(listRow).join('')}</div>`:`<div class="bcards">${sorted.map(card).join('')}</div>`}
     </div></div>`;
@@ -1727,7 +1730,7 @@ if(!S.events.length) track('onboarding_step_viewed',{step_name:'welcome',step_in
 
 <script>
 if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => navigator.serviceWorker.register('sw.js?v=8c60a223').catch(() => {}));
+  window.addEventListener('load', () => navigator.serviceWorker.register('sw.js?v=57a3ea2f').catch(() => {}));
 }
 </script>
 </body>
