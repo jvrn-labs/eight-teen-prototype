@@ -6,6 +6,7 @@
 <style>
 /* Layout: phone frame (390×844, Figma v0.2) beside a prototype control panel; phone fills the screen on mobile. */
 :root{
+  --ts:1;
   --f-display:'Anuphan','Noto Sans Thai',system-ui,sans-serif;
   --f-body:'Noto Sans Thai','Plus Jakarta Sans',system-ui,sans-serif;
   --f-num:'Plus Jakarta Sans','Noto Sans Thai',system-ui,sans-serif;
@@ -39,13 +40,13 @@
   color-scheme:dark}
 *{box-sizing:border-box}
 html,body{height:100%}
-body{touch-action:manipulation;background:var(--page-bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
+body{touch-action:manipulation;background:var(--page-bg);color:var(--ink);font-family:var(--f-body);font-size:calc(15px*var(--ts,1));line-height:1.55;-webkit-font-smoothing:antialiased}
 button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
 input,textarea,select{font:inherit;color:inherit}
 :focus-visible{outline:2px solid var(--brand);outline-offset:2px}
 .stage{min-height:100%;display:flex;gap:32px;justify-content:center;align-items:flex-start;flex-wrap:wrap;padding-block:24px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
 .phone{width:390px;max-width:100%;height:min(844px,calc(100vh - 48px));min-height:640px;border-radius:54px;background:var(--canvas);color:var(--ink);position:relative;overflow:hidden;box-shadow:0 0 0 11px var(--frame),0 30px 80px rgba(11,16,38,.3);display:flex;flex-direction:column;flex-shrink:0;margin:11px}
-.statusbar{height:50px;flex:none;display:flex;align-items:flex-end;justify-content:space-between;padding:0 30px 6px 40px;font-family:var(--f-num);font-weight:700;font-size:16px}
+.statusbar{height:50px;flex:none;display:flex;align-items:flex-end;justify-content:space-between;padding:0 30px 6px 40px;font-family:var(--f-num);font-weight:700;font-size:calc(16px*var(--ts,1))}
 .statusbar .sb{display:flex;gap:6px;align-items:center}
 .homebar{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);width:134px;height:5px;border-radius:9px;background:var(--ink);z-index:60;pointer-events:none}
 #app{flex:1;min-height:0;display:flex;flex-direction:column;position:relative}
@@ -61,17 +62,17 @@ input,textarea,select{font:inherit;color:inherit}
   .statusbar,.homebar{display:none}
 }
 /* type */
-.display{font-family:var(--f-display);font-weight:700;font-size:30px;line-height:38px;letter-spacing:-.6px;text-wrap:balance}
-.h1{font-family:var(--f-display);font-weight:700;font-size:24px;line-height:32px;text-wrap:balance}
-.h2{font-family:var(--f-display);font-weight:700;font-size:18px;line-height:26px}
-.h3{font-family:var(--f-display);font-weight:700;font-size:16px;line-height:22px}
-.lbl{font-weight:600;font-size:14px;line-height:20px}
-.cap{font-size:12px;line-height:18px;color:var(--muted)}
+.display{font-family:var(--f-display);font-weight:700;font-size:calc(30px*var(--ts,1));line-height:calc(38px*var(--ts,1));letter-spacing:-.6px;text-wrap:balance}
+.h1{font-family:var(--f-display);font-weight:700;font-size:calc(24px*var(--ts,1));line-height:calc(32px*var(--ts,1));text-wrap:balance}
+.h2{font-family:var(--f-display);font-weight:700;font-size:calc(18px*var(--ts,1));line-height:calc(26px*var(--ts,1))}
+.h3{font-family:var(--f-display);font-weight:700;font-size:calc(16px*var(--ts,1));line-height:calc(22px*var(--ts,1))}
+.lbl{font-weight:600;font-size:calc(14px*var(--ts,1));line-height:calc(20px*var(--ts,1))}
+.cap{font-size:calc(12px*var(--ts,1));line-height:calc(18px*var(--ts,1));color:var(--muted)}
 .muted{color:var(--muted)} .ink2{color:var(--ink2)}
 .num{font-family:var(--f-num);font-weight:700;font-variant-numeric:tabular-nums}
 .hl{background:var(--lime);color:#0b1026;padding:0 10px;border-radius:10px;box-decoration-break:clone;-webkit-box-decoration-break:clone}
 /* buttons */
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:52px;padding:0 24px;border-radius:999px;font-family:var(--f-display);font-weight:700;font-size:17px;transition:transform .12s,box-shadow .12s,opacity .12s}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:52px;padding:0 24px;border-radius:999px;font-family:var(--f-display);font-weight:700;font-size:calc(17px*var(--ts,1));transition:transform .12s,box-shadow .12s,opacity .12s}
 .btn.block{width:100%}
 .btn.primary{background:var(--brand);color:var(--on-brand);box-shadow:4px 4px 0 var(--lime)}
 .btn.primary:active{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--lime)}
@@ -79,7 +80,7 @@ input,textarea,select{font:inherit;color:inherit}
 .btn.soft{background:var(--surface);color:var(--ink)}
 .btn.ghost{color:var(--brand-ink)}
 .btn.danger{background:var(--danger);color:#fff}
-.btn.sm{height:44px;padding:0 18px;font-size:14px}
+.btn.sm{min-height:44px;padding:0 18px;font-size:calc(14px*var(--ts,1))}
 .btn[disabled],.btn.disabled{opacity:.38;box-shadow:none;pointer-events:none}
 .iconbtn{width:44px;height:44px;border-radius:999px;display:inline-flex;align-items:center;justify-content:center;background:var(--surface);color:var(--ink);flex:none}
 .iconbtn.plain{background:none}
@@ -89,28 +90,28 @@ svg.i.sm{width:18px;height:18px} svg.i.xs{width:15px;height:15px} svg.i.lg{width
 /* chips */
 .chips{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding:2px 20px}
 .chips::-webkit-scrollbar{display:none}
-.chip{position:relative;flex:none;height:36px;padding:0 15px;border-radius:999px;border:1px solid var(--border);background:var(--canvas);font-weight:600;font-size:14px;display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.chip{position:relative;flex:none;min-height:36px;padding:4px 15px;border-radius:999px;border:1px solid var(--border);background:var(--canvas);font-weight:600;font-size:calc(14px*var(--ts,1));display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
 .chip.on{background:var(--ink);color:var(--canvas);border-color:var(--ink)}
 .chip.brand.on{background:var(--brand);border-color:var(--brand);color:#fff}
 .chip.ai{border-style:dashed;border-color:var(--brand)}
 .chip[disabled]{opacity:.4}
 /* header */
 .topbar{display:flex;align-items:center;gap:10px;height:56px;padding:0 16px;flex:none}
-.topbar .t{flex:1;text-align:center;font-family:var(--f-display);font-weight:700;font-size:17px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.topbar .t{flex:1;text-align:center;font-family:var(--f-display);font-weight:700;font-size:calc(17px*var(--ts,1));white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .topbar .sp{width:40px;flex:none}
 .hdr-home{padding:6px 20px 0;flex:none}
 .hdr-row{display:flex;align-items:center;gap:10px}
-.uni{font-family:var(--f-display);font-weight:700;font-size:30px;line-height:38px;display:flex;align-items:center;gap:6px}
+.uni{font-family:var(--f-display);font-weight:700;font-size:calc(30px*var(--ts,1));line-height:calc(38px*var(--ts,1));display:flex;align-items:center;gap:6px}
 .feedtabs{display:flex;gap:22px;margin-top:6px;border-bottom:1px solid var(--divider);align-items:flex-end}
-.feedtab{font-family:var(--f-display);font-weight:700;font-size:17px;color:var(--tert);padding:8px 0 10px;border-bottom:2.5px solid transparent;margin-bottom:-1px}
+.feedtab{font-family:var(--f-display);font-weight:700;font-size:calc(17px*var(--ts,1));color:var(--tert);padding:8px 0 10px;border-bottom:2.5px solid transparent;margin-bottom:-1px}
 .feedtab.on{color:var(--ink);border-color:var(--ink)}
 .verified{display:inline-flex;color:var(--brand)}
 /* tabbar */
 .tabbar{position:absolute;left:16px;right:16px;bottom:22px;height:64px;border-radius:999px;background:var(--nav);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);box-shadow:0 0 0 1px rgba(11,16,38,.06),0 12px 32px rgba(11,16,38,.14);display:grid;grid-template-columns:repeat(3,1fr);align-items:center;z-index:30;padding:0 8px}
 @media (max-width:520px){.tabbar{bottom:12px}}
-.tab{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;font-size:12px;font-weight:600;color:var(--ink2);height:52px;margin:0 6px;border-radius:999px;position:relative}
+.tab{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;font-size:calc(12px*min(var(--ts,1),1.2));font-weight:600;color:var(--ink2);min-height:52px;margin:0 6px;border-radius:999px;position:relative}
 .tab.on{color:var(--ink);background:var(--surface)}
-.tab .dot{position:absolute;top:3px;left:calc(50% + 4px);min-width:18px;height:18px;border-radius:9px;background:#d1242f;color:#fff;font-family:var(--f-num);font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;padding:0 5px}
+.tab .dot{position:absolute;top:3px;left:calc(50% + 4px);min-width:18px;height:18px;border-radius:9px;background:#d1242f;color:#fff;font-family:var(--f-num);font-size:calc(11px*var(--ts,1));font-weight:800;display:flex;align-items:center;justify-content:center;padding:0 5px}
 .fab{width:54px;height:54px;border-radius:999px;background:var(--brand);color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:3px 3px 0 var(--lime)}
 .fab-float{position:absolute;right:20px;bottom:102px;z-index:31;width:58px;height:58px;border-radius:20px;box-shadow:4px 4px 0 var(--lime),0 10px 24px rgba(124,58,237,.35)}
 .onmap .fab-float{bottom:268px}
@@ -121,10 +122,10 @@ svg.i.sm{width:18px;height:18px} svg.i.xs{width:15px;height:15px} svg.i.lg{width
 .post{padding:16px 20px;border-bottom:1px solid var(--divider);display:block;width:100%;text-align:left}
 .post.pinned{background:var(--info)}
 .phead{display:flex;gap:10px;align-items:flex-start}
-.pname{font-weight:700;font-size:15px;display:flex;align-items:center;gap:4px;flex-wrap:wrap;line-height:20px}
-.pmeta{font-size:12px;color:var(--muted);line-height:18px}
+.pname{font-weight:700;font-size:calc(15px*var(--ts,1));display:flex;align-items:center;gap:4px;flex-wrap:wrap;line-height:calc(20px*var(--ts,1))}
+.pmeta{font-size:calc(12px*var(--ts,1));color:var(--muted);line-height:calc(18px*var(--ts,1))}
 .av{border-radius:999px;display:inline-flex;align-items:center;justify-content:center;font-family:var(--f-display);font-weight:700;flex:none;overflow:hidden;background-size:cover;background-position:center}
-.ptext{margin-top:8px;font-size:15px;line-height:24px;white-space:pre-wrap;word-break:break-word}
+.ptext{margin-top:8px;font-size:calc(15px*var(--ts,1));line-height:calc(24px*var(--ts,1));white-space:pre-wrap;word-break:break-word}
 .tag{color:var(--brand-ink);font-weight:600}
 .mention{color:var(--brand-ink);font-weight:700}
 .pimgs{display:grid;gap:4px;margin-top:10px;border-radius:14px;overflow:hidden}
@@ -132,11 +133,11 @@ svg.i.sm{width:18px;height:18px} svg.i.xs{width:15px;height:15px} svg.i.lg{width
 .pimg{aspect-ratio:4/3;max-width:100%;background:var(--sunken);display:flex;align-items:center;justify-content:center;color:var(--tert);background-size:cover;background-position:center}
 .pimgs.n1 .pimg{aspect-ratio:16/10}
 .pacts{display:flex;align-items:center;gap:4px;margin-top:10px;margin-left:-8px}
-.pact{display:inline-flex;align-items:center;justify-content:center;gap:5px;min-height:44px;min-width:44px;padding:0 10px;border-radius:999px;color:var(--ink2);font-family:var(--f-num);font-weight:600;font-size:13px}
+.pact{display:inline-flex;align-items:center;justify-content:center;gap:5px;min-height:44px;min-width:44px;padding:0 10px;border-radius:999px;color:var(--ink2);font-family:var(--f-num);font-weight:600;font-size:calc(13px*var(--ts,1))}
 .pact.ate.on{color:#ff5a1f}
 .pact.ate.on svg{fill:#ff5a1f;stroke:#ff5a1f}
-.pact .ate-l{font-size:12px;font-weight:800;letter-spacing:.04em}
-.pill{display:inline-flex;align-items:center;gap:4px;height:24px;padding:0 9px;border-radius:999px;font-size:12px;font-weight:600;background:var(--surface);color:var(--ink2);white-space:nowrap}
+.pact .ate-l{font-size:calc(12px*var(--ts,1));font-weight:800;letter-spacing:.04em}
+.pill{display:inline-flex;align-items:center;gap:4px;min-height:24px;padding:1px 9px;border-radius:999px;font-size:calc(12px*var(--ts,1));font-weight:600;background:var(--surface);color:var(--ink2);white-space:nowrap}
 .pill.brand{background:var(--info);color:var(--brand-ink)}
 .pill.op{background:var(--info);color:var(--brand-ink);height:20px}
 .pill.lime{background:var(--lime);color:#0b1026}
@@ -147,7 +148,7 @@ svg.i.sm{width:18px;height:18px} svg.i.xs{width:15px;height:15px} svg.i.lg{width
 .lp .lpi{width:84px;flex:none;background:linear-gradient(135deg,var(--info),var(--sunken));display:flex;align-items:center;justify-content:center;color:var(--brand-ink)}
 .lp .lpb{padding:10px 12px;min-width:0}
 .poll{margin-top:10px;display:flex;flex-direction:column;gap:8px}
-.popt{position:relative;height:44px;border-radius:12px;border:1px solid var(--border);display:flex;align-items:center;padding:0 14px;overflow:hidden;font-weight:600;font-size:14px;width:100%;text-align:left}
+.popt{position:relative;height:44px;border-radius:12px;border:1px solid var(--border);display:flex;align-items:center;padding:0 14px;overflow:hidden;font-weight:600;font-size:calc(14px*var(--ts,1));width:100%;text-align:left}
 .popt .bar{position:absolute;inset:0 auto 0 0;background:var(--info);z-index:0;transition:width .4s}
 .popt.mine .bar{background:color-mix(in srgb,var(--brand) 22%,var(--canvas))}
 .popt span{position:relative;z-index:1}
@@ -156,19 +157,19 @@ svg.i.sm{width:18px;height:18px} svg.i.xs{width:15px;height:15px} svg.i.lg{width
 .row{display:flex;align-items:center;gap:14px;padding:14px 20px;width:100%;text-align:left;min-height:56px}
 .row + .row{border-top:1px solid var(--divider)}
 .row .rt{flex:1;min-width:0}
-.row .rv{color:var(--muted);font-size:14px}
-.section-t{padding:20px 20px 6px;font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
+.row .rv{color:var(--muted);font-size:calc(14px*var(--ts,1))}
+.section-t{padding:20px 20px 6px;font-size:calc(12px*var(--ts,1));font-weight:700;color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
 .card{background:var(--surface);border-radius:16px}
 .banner{margin:12px 20px;padding:14px 16px;border-radius:16px;background:var(--info);display:flex;gap:12px;align-items:flex-start}
 .banner.warn{background:var(--warn-bg)} .banner.danger{background:var(--danger-bg)} .banner.ok{background:var(--ok-bg)}
 .field{display:flex;flex-direction:column;gap:6px}
-.field label{font-size:13px;font-weight:600;color:var(--ink2)}
-.input{height:50px;border-radius:14px;border:1.5px solid var(--border);background:var(--canvas);padding:0 14px;font-size:16px;width:100%}
+.field label{font-size:calc(13px*var(--ts,1));font-weight:600;color:var(--ink2)}
+.input{min-height:50px;border-radius:14px;border:1.5px solid var(--border);background:var(--canvas);padding:0 14px;font-size:calc(16px*var(--ts,1));width:100%}
 .input:focus{outline:none;border-color:var(--brand)}
 .input.err{border-color:var(--danger)}
-textarea.input{height:auto;padding:12px 14px;resize:none;line-height:24px}
-.err-t{color:var(--danger);font-size:13px;font-weight:600}
-.ok-t{color:var(--ok);font-size:13px;font-weight:600}
+textarea.input{height:auto;padding:12px 14px;resize:none;line-height:calc(24px*var(--ts,1))}
+.err-t{color:var(--danger);font-size:calc(13px*var(--ts,1));font-weight:600}
+.ok-t{color:var(--ok);font-size:calc(13px*var(--ts,1));font-weight:600}
 .check{display:flex;gap:12px;align-items:flex-start;padding:14px 0;text-align:left;width:100%}
 .box{width:24px;height:24px;border-radius:8px;border:2px solid var(--border);flex:none;display:flex;align-items:center;justify-content:center;color:#fff;margin-top:1px}
 .box.on{background:var(--brand);border-color:var(--brand)}
@@ -177,7 +178,7 @@ textarea.input{height:auto;padding:12px 14px;resize:none;line-height:24px}
 .toggle.on{background:var(--brand)} .toggle.on::after{left:23px}
 .seg{display:flex;background:var(--surface);border-radius:999px;padding:3px;gap:2px}
 .seg{padding:4px!important}
-.seg button{position:relative;height:36px;padding:0 14px;border-radius:999px;font-weight:700;font-size:13px;color:var(--ink2)}
+.seg button{position:relative;min-height:36px;padding:0 14px;border-radius:999px;font-weight:700;font-size:calc(13px*var(--ts,1));color:var(--ink2)}
 .seg button.on{background:var(--ink);color:var(--canvas)}
 .radio{width:22px;height:22px;border-radius:999px;border:2px solid var(--border);flex:none;display:flex;align-items:center;justify-content:center}
 .radio.on{border-color:var(--brand)} .radio.on::after{content:"";width:12px;height:12px;border-radius:9px;background:var(--brand)}
@@ -190,13 +191,13 @@ textarea.input{height:auto;padding:12px 14px;resize:none;line-height:24px}
 .scrim{position:absolute;inset:0;background:var(--scrim);pointer-events:auto;animation:fade .18s}
 .sheet{position:absolute;left:0;right:0;bottom:0;background:var(--canvas);border-radius:28px 28px 0 0;padding:10px 0 34px;pointer-events:auto;max-height:88%;display:flex;flex-direction:column;animation:up .22s cubic-bezier(.2,.8,.2,1)}
 .sheet .grab{width:40px;height:5px;border-radius:9px;background:var(--border);margin:0 auto 8px}
-.sheet .sh-t{padding:6px 20px 10px;font-family:var(--f-display);font-weight:700;font-size:19px}
+.sheet .sh-t{padding:6px 20px 10px;font-family:var(--f-display);font-weight:700;font-size:calc(19px*var(--ts,1))}
 .sheet .sh-b{overflow-y:auto;min-height:0}
 .dialog{position:absolute;left:24px;right:24px;top:50%;transform:translateY(-50%);background:var(--canvas);border-radius:24px;padding:22px;pointer-events:auto;animation:fade .18s}
 @keyframes up{from{transform:translateY(40px);opacity:.4}}
 @keyframes fade{from{opacity:0}}
 #toast{position:absolute;left:50%;bottom:104px;transform:translateX(-50%);z-index:70;pointer-events:none}
-.toast{background:var(--ink);color:var(--canvas);padding:11px 18px;border-radius:999px;font-weight:600;font-size:14px;box-shadow:0 10px 30px rgba(0,0,0,.2);display:flex;gap:10px;align-items:center;white-space:nowrap;animation:up .2s;pointer-events:auto}
+.toast{background:var(--ink);color:var(--canvas);padding:11px 18px;border-radius:999px;font-weight:600;font-size:calc(14px*var(--ts,1));box-shadow:0 10px 30px rgba(0,0,0,.2);display:flex;gap:10px;align-items:center;white-space:nowrap;animation:up .2s;pointer-events:auto}
 .toast button{color:var(--lime);font-weight:700}
 .spinner{width:22px;height:22px;border-radius:999px;border:3px solid var(--info);border-top-color:var(--brand);animation:spin .8s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
@@ -206,7 +207,7 @@ textarea.input{height:auto;padding:12px 14px;resize:none;line-height:24px}
 .ob-foot{padding:12px 24px 34px;display:flex;flex-direction:column;gap:12px;align-items:center;flex:none}
 .hero{position:relative;height:300px;margin:8px 0 18px}
 .hero .card1{position:absolute;inset:20px 18px 30px 22px;background:var(--brand);border-radius:30px;box-shadow:12px 12px 0 var(--lime);transform:rotate(-3deg);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px}
-.logo{background:#fff;color:#0b1026;font-family:var(--f-num);font-weight:800;font-size:44px;line-height:.92;letter-spacing:-1px;padding:10px 18px;border-radius:18px;border:4px solid #0b1026;box-shadow:6px 6px 0 #0b1026;transform:rotate(-5deg);text-align:center}
+.logo{background:#fff;color:#0b1026;font-family:var(--f-num);font-weight:800;font-size:calc(44px*var(--ts,1));line-height:.92;letter-spacing:-1px;padding:10px 18px;border-radius:18px;border:4px solid #0b1026;box-shadow:6px 6px 0 #0b1026;transform:rotate(-5deg);text-align:center}
 .dots{display:flex;gap:6px}
 .dots i{width:8px;height:8px;border-radius:9px;background:var(--border)}
 .dots i.on{width:24px;background:var(--ink)}
@@ -215,7 +216,7 @@ textarea.input{height:auto;padding:12px 14px;resize:none;line-height:24px}
 .progress i{display:block;height:100%;background:var(--brand);border-radius:9px;transition:width .3s}
 .unirow{display:flex;align-items:center;gap:14px;padding:14px;border:1.5px solid var(--border);border-radius:16px;width:100%;text-align:left}
 .unirow.on{border-color:var(--brand);background:var(--info)}
-.unilogo{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-family:var(--f-num);font-weight:800;font-size:13px;color:#fff;flex:none}
+.unilogo{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-family:var(--f-num);font-weight:800;font-size:calc(13px*var(--ts,1));color:#fff;flex:none}
 /* map */
 .mapwrap{flex:1;min-height:0;position:relative;overflow:hidden;background:var(--map-ground)}
 .mapwrap svg.map{position:absolute;inset:0;width:100%;height:100%}
@@ -223,7 +224,7 @@ textarea.input{height:auto;padding:12px 14px;resize:none;line-height:24px}
 .mapchips .chip{box-shadow:0 2px 8px rgba(11,16,38,.08)}
 .pinb{cursor:pointer}
 .recentre{position:absolute;right:14px;z-index:6;width:44px;height:44px;border-radius:999px;background:var(--canvas);display:flex;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(11,16,38,.15);color:var(--brand)}
-.gattr{position:absolute;left:10px;z-index:6;font-size:11px;font-weight:700;color:var(--map-label);font-family:var(--f-num)}
+.gattr{position:absolute;left:10px;z-index:6;font-size:calc(11px*var(--ts,1));font-weight:700;color:var(--map-label);font-family:var(--f-num)}
 .bsheet{position:absolute;left:0;right:0;bottom:0;z-index:8;background:var(--canvas);border-radius:26px 26px 0 0;box-shadow:0 -8px 30px rgba(11,16,38,.12);display:flex;flex-direction:column;transition:height .25s cubic-bezier(.2,.8,.2,1)}
 .bsheet .grabb{padding:20px 0 19px;margin-bottom:-12px;display:flex;justify-content:center;width:100%;flex:none}
 .bsheet .grabb i{width:40px;height:5px;border-radius:9px;background:var(--border)}
@@ -236,14 +237,14 @@ textarea.input{height:auto;padding:12px 14px;resize:none;line-height:24px}
 .pbanner{height:118px;background:#0b1026;position:relative;overflow:hidden;flex:none}
 .pbanner svg{position:absolute;inset:0;width:100%;height:100%}
 .pav{position:relative;z-index:2;border-radius:999px;box-shadow:0 0 0 4px var(--canvas),6px 6px 0 4px var(--lime);display:inline-flex}
-.composer-ta{width:100%;border:0;background:transparent;resize:none;font-size:17px;line-height:27px;min-height:120px;outline:none}
+.composer-ta{width:100%;border:0;background:transparent;resize:none;font-size:calc(17px*var(--ts,1));line-height:calc(27px*var(--ts,1));min-height:120px;outline:none}
 .tb{display:flex;align-items:center;gap:4px;padding:8px 12px;border-top:1px solid var(--divider);flex:none}
 .tb .iconbtn{background:none;color:var(--brand)}
 .ring{width:24px;height:24px;margin-left:auto}
 .suggest{border-top:1px solid var(--divider);max-height:220px;overflow-y:auto;flex:none;background:var(--canvas)}
 .cbar{display:flex;gap:10px;align-items:flex-end;padding:10px 14px 30px;border-top:1px solid var(--divider);background:var(--canvas);flex:none}
 @media (max-width:520px){.cbar{padding-bottom:12px}}
-.cinput{flex:1;min-height:44px;max-height:120px;border-radius:22px;background:var(--surface);border:0;padding:10px 16px;resize:none;line-height:24px;outline:none;font-size:16px}
+.cinput{flex:1;min-height:44px;max-height:120px;border-radius:22px;background:var(--surface);border:0;padding:10px 16px;resize:none;line-height:calc(24px*var(--ts,1));outline:none;font-size:calc(16px*var(--ts,1))}
 .cmt{display:flex;gap:10px;padding:12px 20px}
 .cmt.reply{padding-left:62px}
 .cmt .cb{flex:1;min-width:0}
@@ -256,26 +257,26 @@ textarea.input{height:auto;padding:12px 14px;resize:none;line-height:24px}
 .notif.unread{background:var(--info)}
 .nicon{width:44px;height:44px;border-radius:999px;display:flex;align-items:center;justify-content:center;flex:none}
 /* panel */
-.panel{width:360px;max-width:100%;background:var(--panel);border:1px solid var(--panel-line);border-radius:22px;padding:20px;display:flex;flex-direction:column;gap:18px;color:var(--ink);font-size:13px;position:sticky;top:24px;max-height:calc(100vh - 48px);overflow-y:auto}
+.panel{width:360px;max-width:100%;background:var(--panel);border:1px solid var(--panel-line);border-radius:22px;padding:20px;display:flex;flex-direction:column;gap:18px;color:var(--ink);font-size:calc(13px*var(--ts,1));position:sticky;top:24px;max-height:calc(100vh - 48px);overflow-y:auto}
 @media (max-width:520px){.panel{display:none;position:fixed;inset:0;max-height:none;border-radius:0;border:0;width:100%;z-index:200;padding-top:calc(20px + env(safe-area-inset-top,0px));padding-bottom:calc(20px + env(safe-area-inset-bottom,0px))}.panel.open{display:flex}.panel .pclose{display:inline-flex!important}}
 .pclose{display:none}
-.panel h2{font-family:var(--f-display);font-size:18px;line-height:24px;margin:0}
-.panel h3{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 0 8px}
+.panel h2{font-family:var(--f-display);font-size:calc(18px*var(--ts,1));line-height:calc(24px*var(--ts,1));margin:0}
+.panel h3{font-size:calc(11px*var(--ts,1));letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 0 8px}
 .pbtns{display:flex;flex-wrap:wrap;gap:6px}
-.pbtn{height:30px;padding:0 11px;border-radius:999px;border:1px solid var(--panel-line);font-size:12px;font-weight:600;background:var(--canvas)}
+.pbtn{height:30px;padding:0 11px;border-radius:999px;border:1px solid var(--panel-line);font-size:calc(12px*var(--ts,1));font-weight:600;background:var(--canvas)}
 .pbtn:hover{border-color:var(--brand);color:var(--brand-ink)}
 .pbtn.on{background:var(--ink);color:var(--canvas);border-color:var(--ink)}
-.evlog{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;line-height:16px;display:flex;flex-direction:column;gap:6px;max-height:300px;overflow-y:auto}
+.evlog{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:calc(11px*var(--ts,1));line-height:calc(16px*var(--ts,1));display:flex;flex-direction:column;gap:6px;max-height:300px;overflow-y:auto}
 .ev{padding:6px 8px;border-radius:8px;background:var(--surface);word-break:break-word}
 .ev b{color:var(--brand-ink)}
 .ev .t{color:var(--muted)}
-.kbd{font-family:ui-monospace,Menlo,monospace;background:var(--surface);padding:1px 6px;border-radius:6px;font-size:12px}
+.kbd{font-family:ui-monospace,Menlo,monospace;background:var(--surface);padding:1px 6px;border-radius:6px;font-size:calc(12px*var(--ts,1))}
 
 /* ui-ux-pro-max pass: hit areas, press feedback, motion */
 button,[data-act]{cursor:pointer;-webkit-tap-highlight-color:transparent}
 [disabled],.disabled{cursor:not-allowed}
 .chip::after,.seg button::after,.pill[data-act]::after,.voice .play::after{content:"";position:absolute;inset:-4px -2px}
-.pill[data-act]{position:relative;height:30px;padding:0 11px}
+.pill[data-act]{position:relative;min-height:30px;padding:0 11px}
 .pill[data-act]::after{inset:-7px -2px}
 .lbl[data-act],.link[data-act],button.link{min-height:44px;min-width:44px;display:inline-flex;align-items:center;justify-content:center}
 .chip,.iconbtn,.pact,.seg button,.tab,.pill[data-act],.fab,.btn,.play,.bcard,.unirow{transition:transform .16s cubic-bezier(.2,.8,.2,1),background-color .15s,color .15s,border-color .15s,box-shadow .15s}
@@ -298,6 +299,16 @@ button,[data-act]{cursor:pointer;-webkit-tap-highlight-color:transparent}
 @keyframes down{to{transform:translateY(100%)}}
 @keyframes fadeout{to{opacity:0}}
 img.pimg{display:block;width:100%;height:auto;object-fit:cover}
+
+/* phone pass */
+.kb .tabbar,.kb .fab-float{display:none}
+.kb .cbar{padding-bottom:10px}
+.mobile-only{display:none!important}
+@media (max-width:520px){.mobile-only{display:inline-flex!important}}
+#rotate{display:none;position:fixed;inset:0;z-index:300;background:#0b1026;color:#fff;flex-direction:column;align-items:center;justify-content:center;gap:10px;text-align:center;padding:24px;font-family:var(--f-display)}
+#rotate svg{width:48px;height:48px;stroke:#c6f43b}
+@media (orientation:landscape) and (max-height:500px) and (pointer:coarse){#rotate{display:flex}}
+@media (max-width:359px){.pad{padding:0 16px}.chips{padding:2px 16px}.hdr-home{padding-left:16px;padding-right:16px}.uni{font-size:calc(26px*var(--ts,1))}.display{font-size:calc(26px*var(--ts,1));line-height:calc(34px*var(--ts,1))}.ob-body{padding-left:18px;padding-right:18px}.ob-foot{padding-left:18px;padding-right:18px}.post{padding-left:16px;padding-right:16px}.fab-float{right:14px}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 
@@ -309,6 +320,7 @@ img.pimg{display:block;width:100%;height:auto;object-fit:cover}
     <div id="toast" role="status" aria-live="polite"></div>
     <div class="homebar"></div>
   </div>
+  <div id="rotate" role="alert"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2" width="10" height="20" rx="2.5"/><path d="M11 18h2"/></svg><div style="font-size:20px;font-weight:700">หมุนโทรศัพท์เป็นแนวตั้ง</div><div style="opacity:.8">Turn your phone upright to use EIGHT TEEN</div></div>
   <aside class="panel" id="panel" aria-label="Prototype controls"></aside>
 </div>
 
@@ -400,7 +412,7 @@ function seed(){
     v:4, lang:'th', done:false,
     ob:{step:'welcome',slide:0,consent:{terms:false,mkt:false},wl:null,dob:{d:'',m:'',y:''},interests:[],perm:{loc:null,push:null},started:false},
     me:{id:'me',name:'',user:'',fac:['วิศวกรรมศาสตร์','Engineering'],year:1,bg:'#ede4ff',fg:'#5b21b6',ini:'',photo:null,bio:'',interests:[],show:true,mentions:'all',email:'6930012321@student.chula.ac.th',verifiedAt:now},
-    settings:{mode:'identity',loc:true,theme:'system'},
+    settings:{mode:'identity',loc:true,theme:'system',text:'system'},
     posts, comments, notifs:[], blocked:[], mutedTags:[], hidden:[], reported:[], appealed:[], removedMentions:[],
     nav:[{s:'home'}], tab:'home',
     home:{feed:'university',sort:'hot',cat:'all',bcat:'all',sheet:'peek',firstPrompt:true},
@@ -589,8 +601,12 @@ function closeOv(){
 /* ============ theme ============ */
 const DARK_VARS={'--canvas':'#0b1026','--surface':'#151a35','--sunken':'#1c2242','--ink':'#f3f2fa','--ink2':'#c3c5d6','--muted':'#9a9db3','--tert':'#7b7e96','--border':'#283050','--divider':'#1f2544','--brand':'#9b6bff','--brand-ink':'#c9b0ff','--info':'#1d1840','--danger':'#ff7a7f','--danger-bg':'#3a1518','--ok':'#5fd393','--ok-bg':'#12301f','--warn-bg':'#3a2e0e','--warn':'#ffd36b','--nav':'rgba(16,21,48,.86)','--scrim':'rgba(0,0,0,.6)','--peach-bg':'#3a2416','--peach-fg':'#ffb98a','--map-ground':'#121733','--map-road':'#212849','--map-green':'#1d3a2b','--map-bldg':'#262c50','--map-water':'#173a52','--map-label':'#8f93ad'};
 const LIGHT_VARS={'--canvas':'#ffffff','--surface':'#f3f3f6','--sunken':'#eaeaef','--ink':'#0b1026','--ink2':'#545871','--muted':'#5f6378','--tert':'#8b8ea3','--border':'#e3e1ea','--divider':'#eceaf2','--brand':'#7c3aed','--brand-ink':'#5b21b6','--info':'#f4f1fd','--danger':'#c42b31','--danger-bg':'#fdecec','--ok':'#1f8a4c','--ok-bg':'#e6f6ec','--warn-bg':'#fff4d6','--warn':'#8a5a00','--nav':'rgba(255,255,255,.86)','--scrim':'rgba(11,16,38,.45)','--peach-bg':'#ffe7d6','--peach-fg':'#8a3410','--map-ground':'#eef0e7','--map-road':'#ffffff','--map-green':'#cfe6b4','--map-bldg':'#dedbe8','--map-water':'#c3e2f2','--map-label':'#5f6378'};
+const SYS_TS=(()=>{try{if(!CSS.supports('font','-apple-system-body'))return 1;const p=document.createElement('span');p.style.cssText='font:-apple-system-body;position:absolute;visibility:hidden';p.textContent='a';document.body.appendChild(p);const fs=parseFloat(getComputedStyle(p).fontSize);p.remove();return fs?fs/17:1;}catch(e){return 1;}})();
+function textScale(){const v=S.settings.text||'system';const t=v==='system'?SYS_TS:+v;return Math.min(1.4,Math.max(.85,t||1));}
+function applyTextSize(){document.documentElement.style.setProperty('--ts',textScale().toFixed(3));}
 function applyTheme(){
-  const ph=$('#phone');ph.removeAttribute('style');
+  const ph=$('#phone');for(const k in LIGHT_VARS)ph.style.removeProperty(k);ph.style.removeProperty('color-scheme');
+  applyTextSize();
   const t=S.settings.theme; if(t==='system') return;
   const v=t==='dark'?DARK_VARS:LIGHT_VARS; for(const k in v) ph.style.setProperty(k,v[k]);
   ph.style.colorScheme=t;
@@ -688,12 +704,12 @@ function vOnboarding(){
     const s=slides[S.ob.slide];
     return `<div class="ob"><div class="topbar" style="padding:0 20px"><div class="seg"><button class="${S.lang==='th'?'on':''}" data-act="lang" data-arg="th">ไทย</button><button class="${S.lang==='en'?'on':''}" data-act="lang" data-arg="en">EN</button></div><div style="flex:1"></div><button class="lbl" data-act="obGo" data-arg="consent">${L('ข้าม','Skip')}</button></div>
     <div class="ob-body" data-act="slideNext" style="cursor:pointer">
-      <div class="hero"><div class="card1"><div class="logo">EIGHT<br>TEEN</div><span class="pill" style="background:#fff;color:#0b1026;height:32px;padding:0 14px;font-size:13px">${VERIFIED} ${L('นิสิตนักศึกษาตัวจริงเท่านั้น','Verified students only')}</span></div></div>
+      <div class="hero"><div class="card1"><div class="logo">EIGHT<br>TEEN</div><span class="pill" style="background:#fff;color:#0b1026;height:32px;padding:0 14px;font-size:calc(13px*var(--ts,1))">${VERIFIED} ${L('นิสิตนักศึกษาตัวจริงเท่านั้น','Verified students only')}</span></div></div>
       <div class="display">${s[0]}<span class="hl">${s[1]}</span></div>
       <p class="ink2" style="margin:10px 0 14px">${s[2]}</p>
       <div class="dots">${[0,1,2].map(i=>`<i class="${i===S.ob.slide?'on':''}"></i>`).join('')}</div>
     </div>
-    <div class="ob-foot"><button class="btn primary block" data-act="obGo" data-arg="consent">${L('เริ่มเลย','Get started')}</button><button class="lbl" data-act="obReturning">${L('มีบัญชีอยู่แล้ว? เข้าสู่ระบบ','Have an account? Sign in')}</button></div></div>`;
+    <div class="ob-foot"><button class="btn primary block" data-act="obGo" data-arg="consent">${L('เริ่มเลย','Get started')}</button><button class="lbl" data-act="obReturning">${L('มีบัญชีอยู่แล้ว? เข้าสู่ระบบ','Have an account? Sign in')}</button><button class="cap mobile-only" style="min-height:44px;align-items:center;gap:6px" data-act="panelOpen">${I('sparkle','xs')} ${L('เครื่องมือทดสอบ (ต้นแบบ)','Prototype test tools')}</button></div></div>`;
   }
   if(st==='consent'){
     const c=S.ob.consent;
@@ -708,7 +724,7 @@ function vOnboarding(){
     </div><div class="ob-foot"><button class="btn primary block" ${c.terms?'':'disabled'} data-act="consentNext">${L('ยอมรับและไปต่อ','Accept and continue')}</button></div></div>`;
   }
   if(st==='sso'){
-    const prov=(id,label,logo)=>`<button class="unirow" style="justify-content:center;position:relative;height:56px;border-radius:999px;padding:0 20px" data-act="ssoOpen" data-arg="${id}"><span style="position:absolute;left:20px;display:flex">${logo}</span><span class="lbl" style="font-size:15px">${label}</span></button>`;
+    const prov=(id,label,logo)=>`<button class="unirow" style="justify-content:center;position:relative;height:56px;border-radius:999px;padding:0 20px" data-act="ssoOpen" data-arg="${id}"><span style="position:absolute;left:20px;display:flex">${logo}</span><span class="lbl" style="font-size:calc(15px*var(--ts,1))">${label}</span></button>`;
     const G='<svg width="22" height="22" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 13 4 4 13 4 24s9 20 20 20 20-9 20-20c0-1.3-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.5z"/></svg>';
     const M='<svg width="20" height="20" viewBox="0 0 22 22"><rect width="10" height="10" fill="#f25022"/><rect x="12" width="10" height="10" fill="#7fba00"/><rect y="12" width="10" height="10" fill="#00a4ef"/><rect x="12" y="12" width="10" height="10" fill="#ffb900"/></svg>';
     const tip=(ic,col,html)=>`<div style="display:flex;gap:10px;align-items:flex-start"><span style="color:${col};display:flex;margin-top:2px">${I(ic,'sm')}</span><span>${html}</span></div>`;
@@ -716,7 +732,7 @@ function vOnboarding(){
       <div class="h1" style="margin-top:8px">${L('เข้าสู่ระบบด้วย<br>บัญชีมหาวิทยาลัย','Sign in with your<br>university account')}</div>
       <p class="ink2" style="margin:6px 0 16px">${L('เลือกระบบที่มหาวิทยาลัยของคุณใช้ เราดูจากอีเมลที่ได้กลับมาว่าคุณเรียนที่ไหน ไม่ต้องรอรหัสทางอีเมล','Pick the sign-in your university uses. We work out where you study from your email. No codes to wait for.')}</p>
       <div style="display:flex;flex-direction:column;gap:10px">${prov('google',L('ดำเนินการต่อด้วย Google','Continue with Google'),G)}${prov('microsoft',L('ดำเนินการต่อด้วย Microsoft','Continue with Microsoft'),M)}${prov('other',L('ระบบอื่นของมหาวิทยาลัย','Other university sign-in'),I('building'))}</div>
-      <div class="card" style="padding:14px 16px;margin-top:16px;display:flex;flex-direction:column;gap:10px;font-size:14px;line-height:21px">
+      <div class="card" style="padding:14px 16px;margin-top:16px;display:flex;flex-direction:column;gap:10px;font-size:calc(14px*var(--ts,1));line-height:calc(21px*var(--ts,1))">
         ${tip('check','var(--ok)',L('ใช้บัญชีที่มหาวิทยาลัยออกให้ (อีเมลมหาวิทยาลัย)','Use the account your university gave you (your university email)'))}
         ${tip('x','var(--danger)',L('บัญชี Gmail หรือ Outlook ส่วนตัวใช้สมัครไม่ได้','Personal Gmail or Outlook accounts can’t sign up'))}
         ${tip('clock','var(--warn)',L('มหาวิทยาลัยที่ยังไม่เปิด เราลงชื่อรอให้อัตโนมัติ','If your university isn’t open yet, we add you to its waitlist'))}
@@ -730,7 +746,7 @@ function vOnboarding(){
     return `<div class="ob">${obTop('sso')}<div class="ob-body">
       <div class="h1" style="margin-top:8px">${L('ยังไม่เปิดที่'+name+'<br>แต่ใกล้แล้ว','Not open at '+name+' yet,<br>but close')}</div>
       <p class="ink2" style="margin:6px 0 16px">${L('คุณเข้าสู่ระบบด้วยบัญชี @'+esc(w.d)+' เรายังไม่เปิดที่นี่ เลยลงชื่อรอให้แล้ว และจะส่งอีเมลไปบอกทันทีที่เปิด','You signed in with an @'+esc(w.d)+' account. We’re not open there yet, so we’ve added you to the waitlist and will email you the moment it opens.')}</p>
-      <div class="card" style="padding:16px 18px"><div style="display:flex;align-items:baseline;gap:8px"><span class="num" style="font-size:30px">${n} / 500</span><span class="cap">${L('คนลงชื่อรอแล้ว','students waiting')}</span></div><div class="progress" style="margin:10px 0 8px;background:var(--canvas)"><i style="width:${Math.min(100,n/5)}%"></i></div><div class="cap">${L('ยิ่งเพื่อนร่วมมหาลัยลงชื่อเยอะ ยิ่งเปิดเร็วขึ้น','The more classmates sign up, the sooner we open.')}</div></div>
+      <div class="card" style="padding:16px 18px"><div style="display:flex;align-items:baseline;gap:8px"><span class="num" style="font-size:calc(30px*var(--ts,1))">${n} / 500</span><span class="cap">${L('คนลงชื่อรอแล้ว','students waiting')}</span></div><div class="progress" style="margin:10px 0 8px;background:var(--canvas)"><i style="width:${Math.min(100,n/5)}%"></i></div><div class="cap">${L('ยิ่งเพื่อนร่วมมหาลัยลงชื่อเยอะ ยิ่งเปิดเร็วขึ้น','The more classmates sign up, the sooner we open.')}</div></div>
       <div class="banner ok" style="margin:14px 0 0">${I('check')}<div><div class="lbl">${L('คุณอยู่ในรายชื่อรอแล้ว','You’re on the waitlist')}</div><div class="cap" style="color:var(--ink2);word-break:break-all">${L('จะแจ้งที่ ','We’ll email ')}${esc(w.email)}${L(' ครั้งเดียวตอนเปิด ไม่ส่งสแปม',' once, when it opens. No spam.')}</div></div></div>
     </div><div class="ob-foot"><button class="btn primary block" data-act="share" data-arg="waitlist">${L('ชวนเพื่อนมาลงชื่อ','Invite classmates')}</button><button class="lbl link" data-act="obGo" data-arg="sso">${L('ใช้บัญชีอื่น','Use another account')}</button></div></div>`;
   }
@@ -775,7 +791,7 @@ function vOnboarding(){
       <div style="display:flex;gap:14px;align-items:center;margin:14px 0 18px">
         <span id="avPrev">${avatar(Object.assign({},m,{ini:m.name?[...m.name][0]:'?'}),72)}</span>
         <div style="display:flex;flex-direction:column;gap:8px"><div style="display:flex;gap:6px">${presets.map(p=>`<button aria-label="color" data-act="avPreset" data-arg="${p[0]}|${p[1]}" style="width:28px;height:28px;border-radius:99px;background:${p[0]};border:2px solid ${m.bg===p[0]&&!m.photo?'var(--brand)':'var(--border)'}"></button>`).join('')}</div>
-        <label class="link" style="font-size:14px;cursor:pointer">${I('camera','xs')} ${L('อัปโหลดรูป','Upload photo')}<input type="file" accept="image/*" hidden data-on="avatarFile"></label></div>
+        <label class="link" style="font-size:calc(14px*var(--ts,1));cursor:pointer">${I('camera','xs')} ${L('อัปโหลดรูป','Upload photo')}<input type="file" accept="image/*" hidden data-on="avatarFile"></label></div>
       </div>
       <div style="display:flex;flex-direction:column;gap:14px">
         <div class="field"><label for="pfName">${L('ชื่อที่แสดง','Display name')}</label><input class="input" id="pfName" maxlength="40" value="${esc(m.name)}" placeholder="${L('เช่น วิน','e.g. Win')}" data-on="pfName"></div>
@@ -852,7 +868,7 @@ function vUniFeed(){
 function firstPostPrompt(){
   const top3=BUBBLES.filter(bubbleOpen).sort((a,b)=>count24(b.id)-count24(a.id)).slice(0,3);
   return `<div class="banner" style="flex-direction:column;gap:10px;margin-top:4px"><div style="display:flex;gap:10px;width:100%"><div style="flex:1"><div class="h3">${L('ทักทายเพื่อนในรั้วกัน 👋','Say hi to campus 👋')}</div><div class="cap" style="color:var(--ink2)">${L('บับเบิลที่คึกคักตอนนี้ โพสต์แรกของคุณรอเลย','These bubbles are busy right now. Make your first post.')}</div></div><button class="iconbtn plain" data-act="dismissPrompt" aria-label="${L('ปิด','Dismiss')}">${I('x','sm')}</button></div>
-    <div style="display:flex;gap:8px;flex-wrap:wrap">${top3.map(b=>`<button class="chip" data-act="composeIn" data-arg="${b.id}:first_post_prompt">${I(BTYPES[b.type][2],'xs')} ${esc(bname(b))} <span class="num muted" style="font-size:12px">${count24(b.id)}</span></button>`).join('')}</div></div>`;
+    <div style="display:flex;gap:8px;flex-wrap:wrap">${top3.map(b=>`<button class="chip" data-act="composeIn" data-arg="${b.id}:first_post_prompt">${I(BTYPES[b.type][2],'xs')} ${esc(bname(b))} <span class="num muted" style="font-size:calc(12px*var(--ts,1))">${count24(b.id)}</span></button>`).join('')}</div></div>`;
 }
 
 /* ============ BUBBLE MAP ============ */
@@ -887,11 +903,11 @@ function vBubbleMap(){
   const listRow=b=>`<button class="row" data-act="openBubble" data-arg="${b.id}:list"><span class="btype t-${b.type}">${I(BTYPES[b.type][2],'sm')}</span><span class="rt"><span class="lbl">${esc(bname(b))}</span><br><span class="cap">${[L(BTYPES[b.type][0],BTYPES[b.type][1]),count24(b.id)?count24(b.id)+L(' โพสต์ใน 24 ชม.',' posts in 24h'):L('ยังไม่มีโพสต์วันนี้','No posts today'),on?fmtDist(distance(b)):null,b.status==='paused'?L('ปิดชั่วคราว','Paused'):null,b.status==='ended'?L('จบแล้ว','Ended'):null].filter(Boolean).join(' · ')}</span></span>${I('chev','sm')}</button>`;
   return `<div class="mapwrap">${map}
     <div class="mapchips">${catChips(h.bcat,'bcat',[['all','ทั้งหมด','All'],['food','ของกิน','Food'],['event','อีเวนต์','Event'],['study','อ่านหนังสือ','Study'],['faculty','คณะ','Faculty'],['life','ไลฟ์','Life']]).replace('padding-top:12px;padding-bottom:8px','padding:0 16px')}</div>
-    ${!on?`<div class="banner" style="position:absolute;top:52px;left:0;right:0;z-index:6;margin:0 16px;padding:10px 12px;align-items:center">${I('pin','sm')}<div style="flex:1" class="cap"><span style="color:var(--ink);font-weight:600">${L('ตำแหน่งปิดอยู่','Location is off')}</span> · ${L('แผนที่ยังใช้ได้ แค่ไม่มีระยะทาง','The map still works, without distances')}</div><button class="link" style="font-size:13px" data-act="enableLoc">${L('เปิด','Turn on')}</button></div>`:''}
+    ${!on?`<div class="banner" style="position:absolute;top:52px;left:0;right:0;z-index:6;margin:0 16px;padding:10px 12px;align-items:center">${I('pin','sm')}<div style="flex:1" class="cap"><span style="color:var(--ink);font-weight:600">${L('ตำแหน่งปิดอยู่','Location is off')}</span> · ${L('แผนที่ยังใช้ได้ แค่ไม่มีระยะทาง','The map still works, without distances')}</div><button class="link" style="font-size:calc(13px*var(--ts,1))" data-act="enableLoc">${L('เปิด','Turn on')}</button></div>`:''}
     ${on?`<button class="recentre" style="bottom:${h.sheet==='full'?'-100px':'266px'}" data-act="toastMsg" data-arg="${L('จัดแผนที่ให้อยู่ตรงกลางแล้ว','Map recentred')}" aria-label="${L('กลับมาตรงกลาง','Recentre')}">${I('target')}</button>`:''}
     <span class="gattr" style="bottom:260px">Google · ${L('แผนที่จำลอง','map mock')}</span>
     <div class="bsheet" style="height:${sheetH}"><button class="grabb" data-act="sheet" aria-label="${L('ขยายรายการ','Expand list')}"><i></i></button>
-      <div style="display:flex;align-items:center;padding:0 20px 8px"><div class="h3" style="flex:1">${h.sheet==='full'?L('บับเบิลทั้งหมด','All bubbles'):L('บับเบิลใกล้คุณ','Nearby bubbles')}</div><button class="link" style="font-size:13px" data-act="sheet">${h.sheet==='full'?L('ดูแผนที่','Show map'):L('ดูทั้งหมด','See all')}</button></div>
+      <div style="display:flex;align-items:center;padding:0 20px 8px"><div class="h3" style="flex:1">${h.sheet==='full'?L('บับเบิลทั้งหมด','All bubbles'):L('บับเบิลใกล้คุณ','Nearby bubbles')}</div><button class="link" style="font-size:calc(13px*var(--ts,1))" data-act="sheet">${h.sheet==='full'?L('ดูแผนที่','Show map'):L('ดูทั้งหมด','See all')}</button></div>
       ${h.sheet==='full'?`<div class="scroll tabpad">${sorted.map(listRow).join('')}</div>`:`<div class="bcards">${sorted.map(card).join('')}</div>`}
     </div></div>`;
 }
@@ -947,7 +963,7 @@ function searchBody(){
   if(!q) return `<div class="section-t">${L('ค้นหาล่าสุด','Recent')}</div>${S.recent.length?S.recent.map(r=>`<button class="row" data-act="searchFill" data-arg="${esc(r)}">${I('clock','sm')}<span class="rt">${esc(r)}</span></button>`).join(''):`<div class="pad cap">${L('ยังไม่มีประวัติค้นหา','No recent searches')}</div>`}
     <div class="section-t">${L('กำลังมาแรงในจุฬาฯ','Trending at Chula')}</div><div style="display:flex;flex-wrap:wrap;gap:8px;padding:0 20px">${TRENDING.slice(0,8).map(t=>`<button class="chip" data-act="openTag" data-arg="${t}" data-src="search">#${t}</button>`).join('')}</div>`;
   const r=searchResults(q); const tab=T.search.tab;
-  const tb=(id,label,n)=>`<button class="feedtab ${tab===id?'on':''}" data-act="searchTab" data-arg="${id}">${label} <span class="num" style="font-size:12px">${n}</span></button>`;
+  const tb=(id,label,n)=>`<button class="feedtab ${tab===id?'on':''}" data-act="searchTab" data-arg="${id}">${label} <span class="num" style="font-size:calc(12px*var(--ts,1))">${n}</span></button>`;
   let list='';
   if(tab==='posts') list=r.posts.map(p=>postCard(p,{showWhere:true})).join('');
   if(tab==='tags') list=r.tags.map(([t,n])=>`<button class="row" data-act="openTag" data-arg="${esc(t)}" data-src="search"><span class="btype" style="background:var(--info);color:var(--brand-ink)">${I('hash','sm')}</span><span class="rt"><span class="lbl">#${esc(t)}</span><br><span class="cap">${n} ${L('โพสต์','posts')}</span></span>${I('chev','sm')}</button>`).join('');
@@ -970,8 +986,8 @@ function vPost(id){
   const cAuthor=cm==='anon'?{av:s=>anonAv(aliasOf(p.id,'me'),s)}:{av:s=>avatar(S.me,s)};
   return `<div class="screen">${topbar(L('โพสต์','Post'))}
    <div class="scroll" id="postScroll">
-    <div class="pad"><div class="phead">${a.av(48)}<div style="flex:1;min-width:0"><div class="pname" style="font-size:16px">${esc(a.name)}${a.anon?'':VERIFIED}${p.by==='me'&&p.anon?`<span class="pill lime">${I('lock','xs')} ${L('มีแค่คุณที่เห็น','Only you can see this')}</span>`:''}</div><div class="pmeta">${esc(a.sub)}</div></div><button class="iconbtn" data-act="postMenu" data-arg="${p.id}" aria-label="more">${I('more')}</button></div>
-    <div class="ptext" style="font-size:16px;line-height:26px">${rich(p.text,p)}</div>
+    <div class="pad"><div class="phead">${a.av(48)}<div style="flex:1;min-width:0"><div class="pname" style="font-size:calc(16px*var(--ts,1))">${esc(a.name)}${a.anon?'':VERIFIED}${p.by==='me'&&p.anon?`<span class="pill lime">${I('lock','xs')} ${L('มีแค่คุณที่เห็น','Only you can see this')}</span>`:''}</div><div class="pmeta">${esc(a.sub)}</div></div><button class="iconbtn" data-act="postMenu" data-arg="${p.id}" aria-label="more">${I('more')}</button></div>
+    <div class="ptext" style="font-size:calc(16px*var(--ts,1));line-height:calc(26px*var(--ts,1))">${rich(p.text,p)}</div>
     ${p.images.length?`<div class="pimgs n${p.images.length}">${p.images.map(imgTile).join('')}</div>`:''}${p.poll?pollHTML(p):''}${url&&!p.images.length?linkPreview(url):''}
     <div class="cap" style="margin-top:10px">${fmtDate(p.at)} · ${esc(catName(p.cat))} · ${esc(where)}${p.edited?' · '+L('แก้ไขแล้ว','edited'):''}</div>
     <div style="display:flex;gap:18px;padding:12px 0;border-bottom:1px solid var(--divider)"><span><b class="num">${nf(p.ate)}</b> <span class="muted">ATE</span></span><span><b class="num">${cs.length}</b> <span class="muted">${L('คอมเมนต์','comments')}</span></span></div>
@@ -983,7 +999,7 @@ function vPost(id){
     <div style="padding:6px 0 24px">${tops.length?tops.map(c=>commentHTML(c,p)+cs.filter(r=>r.parent===c.id).map(r=>commentHTML(r,p,true)).join('')).join(''):`<div class="empty" style="padding:28px"><div class="cap">${L('ยังไม่มีคอมเมนต์ เริ่มคุยเลย','No comments yet. Start the conversation.')}</div></div>`}</div>
    </div>
    <div id="cSuggest"></div>
-   ${T.reply?`<div style="display:flex;align-items:center;gap:8px;padding:8px 16px;background:var(--surface);font-size:13px;flex:none"><span style="flex:1">${L('ตอบกลับ ','Replying to ')}<b>${esc(T.reply.label)}</b></span><button class="iconbtn plain" style="width:28px;height:28px" data-act="cancelReply" aria-label="cancel">${I('x','sm')}</button></div>`:''}
+   ${T.reply?`<div style="display:flex;align-items:center;gap:8px;padding:8px 16px;background:var(--surface);font-size:calc(13px*var(--ts,1));flex:none"><span style="flex:1">${L('ตอบกลับ ','Replying to ')}<b>${esc(T.reply.label)}</b></span><button class="iconbtn plain" style="width:28px;height:28px" data-act="cancelReply" aria-label="cancel">${I('x','sm')}</button></div>`:''}
    <div id="cHint" class="cap" style="padding:0 16px;flex:none"></div>
    <div class="cbar">${T.rec?`<div style="flex:1;display:flex;align-items:center;gap:10px;height:44px;border-radius:22px;background:var(--danger-bg);padding:0 16px;color:var(--danger);font-weight:700"><span style="width:10px;height:10px;border-radius:9px;background:var(--danger)"></span> ${L('กำลังอัด','Recording')} <span class="num" id="recT">0:00</span><span class="cap" style="margin-left:auto">${L('สูงสุด 60 วิ','max 60s')}</span></div><button class="iconbtn" data-act="recCancel" aria-label="cancel">${I('x')}</button><button class="fab" style="width:44px;height:44px;box-shadow:none" data-act="recStop" aria-label="send">${I('send','sm')}</button>`:
      `<button data-act="cmode" style="min-width:44px;min-height:44px;display:flex;align-items:center;justify-content:center" aria-label="${L('สลับโหมด','Switch mode')}" style="position:relative">${cAuthor.av(36)}<span style="position:absolute;right:-3px;bottom:-3px;width:18px;height:18px;border-radius:99px;background:var(--ink);color:var(--canvas);display:flex;align-items:center;justify-content:center">${I('swap','xs')}</span></button>
@@ -998,7 +1014,7 @@ function commentHTML(c,p,isReply){
   if(c.replyTo){const r=c.replyTo; const lab=r.anon?aliasOf(p.id,r.uid).name:user(r.uid).name; replyLbl=`<span class="cap" style="color:var(--brand-ink)">${L('ตอบกลับ ','Replying to ')}${esc(lab)}</span><br>`;}
   return `<div class="cmt ${isReply?'reply':''}">${a.av(isReply?30:36)}<div class="cb">
     <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap"><span class="lbl">${esc(a.name)}</span>${a.anon?'':VERIFIED}${op?`<span class="pill op">${L('ผู้โพสต์','OP')}</span>`:''}<span class="cap">· ${rel(c.at)}</span></div>
-    ${replyLbl}${c.voice?voiceHTML(c):`<div style="font-size:14px;line-height:22px;white-space:pre-wrap;word-break:break-word">${rich(c.text,c)}</div>`}
+    ${replyLbl}${c.voice?voiceHTML(c):`<div style="font-size:calc(14px*var(--ts,1));line-height:calc(22px*var(--ts,1));white-space:pre-wrap;word-break:break-word">${rich(c.text,c)}</div>`}
     <div style="display:flex;gap:4px;margin-left:-8px;margin-top:2px">
       <button class="pact" data-act="reply" data-arg="${c.id}">${I('comment','xs')} ${L('ตอบ','Reply')}</button>
       <button class="pact ate ${c.ated?'on':''}" data-act="ate" data-arg="comment:${c.id}">${I('flame','xs')} ${c.ate||''}</button>
@@ -1022,8 +1038,8 @@ function vCompose(){
       <div style="display:flex;flex-direction:column;align-items:center;gap:6px">${me.av(40)}</div>
       <div style="flex:1;min-width:0">
         ${ed?'':`<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:6px">
-          <button class="chip ${d.mode==='identity'?'on':''}" style="font-size:13px" data-act="dmode" data-arg="identity">${I('user','xs')} ${esc(S.me.name||L('ชื่อจริง','Identity'))}</button>
-          <button class="chip ${d.mode==='anon'?'on':''}" style="font-size:13px" data-act="dmode" data-arg="anon">${I('mask','xs')} ${L('นิรนาม','Anonymous')}</button></div>
+          <button class="chip ${d.mode==='identity'?'on':''}" style="font-size:calc(13px*var(--ts,1))" data-act="dmode" data-arg="identity">${I('user','xs')} ${esc(S.me.name||L('ชื่อจริง','Identity'))}</button>
+          <button class="chip ${d.mode==='anon'?'on':''}" style="font-size:calc(13px*var(--ts,1))" data-act="dmode" data-arg="anon">${I('mask','xs')} ${L('นิรนาม','Anonymous')}</button></div>
           ${d.mode==='anon'?`<div class="cap" style="margin-bottom:6px">${I('shield','xs')} ${L('คนอื่นเห็นแค่ชื่อแฝง แต่ระบบเก็บบัญชีจริงไว้ ถ้าผิดกติกาก็โดนลงโทษได้','Others only see an alias. We keep your real account, so the rules still apply.')}</div>`:''}`}
         <textarea id="cmpText" class="composer-ta" maxlength="1000" placeholder="${L('มีอะไรเกิดขึ้นในรั้วบ้าง?','What’s happening on campus?')}" data-on="cmpText">${esc(d.text)}</textarea>
         <div id="cmpImgs">${composeImgs()}</div>
@@ -1049,7 +1065,7 @@ function vCompose(){
 }
 function composeImgs(){
   const d=S.draft; if(!d.images.length) return '';
-  return `<div style="display:grid;grid-template-columns:repeat(${Math.min(d.images.length,2)},1fr);gap:8px;margin-top:10px">${d.images.map((im,i)=>`<div style="position:relative;border-radius:14px;overflow:hidden">${imgTile(im)}${im.failed?`<div style="position:absolute;inset:0;background:rgba(11,16,38,.6);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;font-size:12px;font-weight:600">${L('อัปโหลดไม่สำเร็จ','Upload failed')}<button class="btn sm" style="background:#fff;color:#0b1026;height:30px" data-act="retryImg" data-arg="${i}">${L('ลองใหม่','Retry')}</button></div>`:''}<button aria-label="remove" data-act="rmImg" data-arg="${i}" style="position:absolute;top:6px;right:6px;width:26px;height:26px;border-radius:99px;background:rgba(11,16,38,.6);color:#fff;display:flex;align-items:center;justify-content:center">${I('x','xs')}</button></div>`).join('')}</div>
+  return `<div style="display:grid;grid-template-columns:repeat(${Math.min(d.images.length,2)},1fr);gap:8px;margin-top:10px">${d.images.map((im,i)=>`<div style="position:relative;border-radius:14px;overflow:hidden">${imgTile(im)}${im.failed?`<div style="position:absolute;inset:0;background:rgba(11,16,38,.6);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;font-size:calc(12px*var(--ts,1));font-weight:600">${L('อัปโหลดไม่สำเร็จ','Upload failed')}<button class="btn sm" style="background:#fff;color:#0b1026;height:30px" data-act="retryImg" data-arg="${i}">${L('ลองใหม่','Retry')}</button></div>`:''}<button aria-label="remove" data-act="rmImg" data-arg="${i}" style="position:absolute;top:6px;right:6px;width:26px;height:26px;border-radius:99px;background:rgba(11,16,38,.6);color:#fff;display:flex;align-items:center;justify-content:center">${I('x','xs')}</button></div>`).join('')}</div>
   <div class="cap" style="margin-top:6px">${I('lock','xs')} ${L('ลบข้อมูลตำแหน่ง (EXIF/GPS) ในรูปออกแล้ว','Location data (EXIF/GPS) removed from photos')} · ${d.images.length}/4</div>`;
 }
 function composePoll(){
@@ -1057,7 +1073,7 @@ function composePoll(){
   return `<div class="card" style="padding:12px;margin-top:10px;display:flex;flex-direction:column;gap:8px">
    <div style="display:flex;align-items:center"><span class="lbl" style="flex:1">${I('poll','xs')} ${L('โพล','Poll')}</span><button class="iconbtn plain" style="width:28px;height:28px" data-act="rmPoll" aria-label="remove poll">${I('x','sm')}</button></div>
    ${po.opts.map((o,i)=>`<div style="display:flex;gap:6px"><input class="input" style="height:42px" maxlength="40" placeholder="${L('ตัวเลือก ','Option ')}${i+1}" value="${esc(o)}" data-on="pollOpt" data-i="${i}">${po.opts.length>2?`<button class="iconbtn plain" data-act="rmOpt" data-arg="${i}" aria-label="remove">${I('x','sm')}</button>`:''}</div>`).join('')}
-   ${po.opts.length<4?`<button class="link" style="text-align:left;font-size:14px" data-act="addOpt">+ ${L('เพิ่มตัวเลือก','Add option')}</button>`:''}
+   ${po.opts.length<4?`<button class="link" style="text-align:left;font-size:calc(14px*var(--ts,1))" data-act="addOpt">+ ${L('เพิ่มตัวเลือก','Add option')}</button>`:''}
    <div style="display:flex;align-items:center;gap:8px"><span class="cap">${L('ระยะเวลา','Length')}</span><div class="seg">${[1,3,7].map(n=>`<button class="${po.days===n?'on':''}" data-act="pollDays" data-arg="${n}">${n} ${L('วัน','d')}</button>`).join('')}</div></div>
    <div class="cap">${L('โหวตไม่ระบุตัวตน · เห็นผลหลังโหวต','Votes are anonymous · results show after voting')}</div></div>`;
 }
@@ -1075,8 +1091,8 @@ function suggestCat(t){
 function composeCats(){
   const d=S.draft; const sug=d.catAuto;
   const order=sug?[CATS.find(c=>c[0]===sug)].concat(CATS.filter(c=>c[0]!==sug)):CATS;
-  return `<div style="border-top:1px solid var(--divider);padding:10px 0 4px"><div style="display:flex;align-items:center;gap:6px;padding:0 20px 6px"><span class="cap" style="font-weight:700;color:var(--ink2)">${L('หมวด','Category')} <span class="err-t" style="font-size:12px">*</span></span>${sug?`<span class="cap" style="color:var(--brand-ink)">${I('sparkle','xs')} ${L('AI แนะนำ','AI suggestion')}</span>`:''}</div>
-    <div class="chips">${order.map(c=>`<button class="chip ${d.cat===c[0]?'on':''} ${sug===c[0]&&d.cat!==c[0]?'ai':''}" style="font-size:13px" data-act="dcat" data-arg="${c[0]}">${sug===c[0]?I('sparkle','xs'):''}${L(c[1],c[2])}</button>`).join('')}</div></div>`;
+  return `<div style="border-top:1px solid var(--divider);padding:10px 0 4px"><div style="display:flex;align-items:center;gap:6px;padding:0 20px 6px"><span class="cap" style="font-weight:700;color:var(--ink2)">${L('หมวด','Category')} <span class="err-t" style="font-size:calc(12px*var(--ts,1))">*</span></span>${sug?`<span class="cap" style="color:var(--brand-ink)">${I('sparkle','xs')} ${L('AI แนะนำ','AI suggestion')}</span>`:''}</div>
+    <div class="chips">${order.map(c=>`<button class="chip ${d.cat===c[0]?'on':''} ${sug===c[0]&&d.cat!==c[0]?'ai':''}" style="font-size:calc(13px*var(--ts,1))" data-act="dcat" data-arg="${c[0]}">${sug===c[0]?I('sparkle','xs'):''}${L(c[1],c[2])}</button>`).join('')}</div></div>`;
 }
 function composeValid(){
   const d=S.draft; const t=d.text.trim(); const errs=[];
@@ -1130,7 +1146,7 @@ function replaceToken(el,tok,text){
 /* ============ ACTIVITY ============ */
 function vActivity(){
   const tab=T.atab||'all'; const list=S.notifs.filter(n=>tab==='all'||n.type==='mention');
-  return `<div class="screen"><div class="hdr-home"><div class="uni" style="font-size:26px">${L('แจ้งเตือน','Activity')}</div>
+  return `<div class="screen"><div class="hdr-home"><div class="uni" style="font-size:calc(26px*var(--ts,1))">${L('แจ้งเตือน','Activity')}</div>
     <div class="feedtabs"><button class="feedtab ${tab==='all'?'on':''}" data-act="atab" data-arg="all">${L('ทั้งหมด','All')}</button><button class="feedtab ${tab==='mention'?'on':''}" data-act="atab" data-arg="mention">${L('พูดถึงคุณ','Mentions')}</button></div></div>
     <div class="scroll tabpad">
     ${quietHours()?`<div class="banner">${I('moon')}<div class="cap" style="color:var(--ink2)">${L('ช่วงพักการแจ้งเตือน 00:00–07:00 ไม่ส่งพุช รายการรออยู่ที่นี่','Quiet hours 00:00–07:00: no push. Items wait here.')}</div></div>`:''}
@@ -1141,7 +1157,7 @@ function vActivity(){
 function notifHTML(n){
   const ic={ate:['flame','#fff1ea','#ff5a1f'],comment:['comment','var(--info)','var(--brand)'],mention:['at','var(--info)','var(--brand)'],poll:['poll','#e8f0ff','#2556c7'],removed:['shield','var(--danger-bg)','var(--danger)'],report:['check','var(--ok-bg)','var(--ok)'],reverify:['refresh','var(--warn-bg)','var(--warn)'],welcome:['sparkle','var(--info)','var(--brand)']}[n.type];
   const avs=(n.avs||[]).map((id,i)=>`<span style="margin-left:${i?-6:0}px;border-radius:99px;box-shadow:0 0 0 2px var(--canvas);display:inline-flex">${avatar(user(id),26)}</span>`).join('');
-  return `<button class="notif ${n.read&&!(T.fresh&&T.fresh.has(n.id))?'':'unread'}" data-act="openNotif" data-arg="${n.id}"><span style="color:${ic[2]};width:28px;display:flex;justify-content:center;padding-top:${avs?34:2}px">${I(ic[0])}</span><span style="flex:1;min-width:0">${avs?`<span style="display:flex;margin-bottom:6px">${avs}</span>`:''}<span style="font-size:14px;line-height:21px;display:block">${n.html} <span class="muted">· ${rel(n.at)}</span></span>${n.prev?`<span class="cap" style="display:block;color:var(--ink2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(n.prev)}</span>`:''}<span class="cap">${n.channel==='push'?L('พุช + ในแอป','Push + in-app'):L('ในแอป','In-app')}</span></span></button>`;
+  return `<button class="notif ${n.read&&!(T.fresh&&T.fresh.has(n.id))?'':'unread'}" data-act="openNotif" data-arg="${n.id}"><span style="color:${ic[2]};width:28px;display:flex;justify-content:center;padding-top:${avs?34:2}px">${I(ic[0])}</span><span style="flex:1;min-width:0">${avs?`<span style="display:flex;margin-bottom:6px">${avs}</span>`:''}<span style="font-size:calc(14px*var(--ts,1));line-height:calc(21px*var(--ts,1));display:block">${n.html} <span class="muted">· ${rel(n.at)}</span></span>${n.prev?`<span class="cap" style="display:block;color:var(--ink2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(n.prev)}</span>`:''}<span class="cap">${n.channel==='push'?L('พุช + ในแอป','Push + in-app'):L('ในแอป','In-app')}</span></span></button>`;
 }
 function addNotif(o){const n=Object.assign({id:uid('n'),at:Date.now(),read:false,channel:'push'},o);if(quietHours()&&n.channel==='push')n.channel='in_app';S.notifs.unshift(n);return n;}
 
@@ -1161,8 +1177,8 @@ function vProfile(id){
     </div>
     <div class="h1" style="margin-top:10px;display:flex;gap:6px;align-items:center">${esc(u.name)} ${VERIFIED}</div>
     <div class="cap">@${esc(u.user)}${facYear(u)?' · '+facYear(u):''} · ${L('จุฬาฯ','Chula')}</div>
-    <div style="margin-top:8px;font-size:14px"><b class="num">${posts.length}</b> ${L('โพสต์','posts')} · <b class="num">${kfmt(ateRecv)}</b> ${L('ATE ที่ได้','ATE received')} · <b class="num">${cmts}</b> ${L('คอมเมนต์','comments')}</div>
-    ${u.bio?`<p style="margin:6px 0 0;font-size:14px">${esc(u.bio)}</p>`:''}
+    <div style="margin-top:8px;font-size:calc(14px*var(--ts,1))"><b class="num">${posts.length}</b> ${L('โพสต์','posts')} · <b class="num">${kfmt(ateRecv)}</b> ${L('ATE ที่ได้','ATE received')} · <b class="num">${cmts}</b> ${L('คอมเมนต์','comments')}</div>
+    ${u.bio?`<p style="margin:6px 0 0;font-size:calc(14px*var(--ts,1))">${esc(u.bio)}</p>`:''}
     ${u.interests&&u.interests.length?`<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:10px">${u.interests.map(i=>{const x=INTERESTS.find(y=>y[0]===i);return x?`<span class="pill">${L(x[1],x[2])}</span>`:'';}).join('')}</div>`:''}
     </div>
     <div class="feedtabs" style="padding:0 20px;margin-top:14px"><span class="feedtab on">${own?L('โพสต์ของฉัน','My Posts'):L('โพสต์','Posts')}</span></div>
@@ -1186,7 +1202,7 @@ function tRow(label,sub,on,act,arg){return `<button class="row" data-act="${act}
 function vSettings(){
   const th={system:L('ตามระบบ','System'),light:L('สว่าง','Light'),dark:L('มืด','Dark')}[S.settings.theme];
   return `<div class="screen">${topbar(L('ตั้งค่า','Settings'))}<div class="scroll" style="padding-bottom:40px">
-   <div class="card" style="margin:6px 16px">${sRow('user',L('บัญชี','Account'),'','go','account')}${sRow('lock',L('ความเป็นส่วนตัว','Privacy'),'','go','privacy')}${sRow('globe',L('ภาษา','Language'),S.lang==='th'?'ไทย':'English','go','language')}${sRow('moon',L('ธีม','Theme'),th,'go','theme')}${sRow('help',L('ช่วยเหลือ','Help'),'','go','help')}</div>
+   <div class="card" style="margin:6px 16px">${sRow('user',L('บัญชี','Account'),'','go','account')}${sRow('lock',L('ความเป็นส่วนตัว','Privacy'),'','go','privacy')}${sRow('globe',L('ภาษา','Language'),S.lang==='th'?'ไทย':'English','go','language')}${sRow('moon',L('ธีมและตัวอักษร','Theme & text'),th,'go','theme')}${sRow('help',L('ช่วยเหลือ','Help'),'','go','help')}</div>
    <div class="pad cap" style="margin-top:14px">${L('การแจ้งเตือน ช่วงพักแจ้งเตือน และรายการที่บล็อก/ปิดเสียง จะมาใน MVP 2','Notification settings, quiet hours and the Blocked & muted list come in MVP 2.')}</div>
    <div class="card" style="margin:14px 16px 0">${sRow('sparkle',L('เครื่องมือทดสอบ (ต้นแบบ)','Prototype test tools'),'','panelOpen')}</div><div class="pad cap" style="margin-top:6px">EIGHT TEEN 0.4.0 · ${L('ต้นแบบ','prototype')}</div></div></div>`;
 }
@@ -1201,7 +1217,7 @@ function vDeleteAccount(){
   return `<div class="screen">${topbar(L('ลบบัญชี','Delete account'))}<div class="scroll pad" style="padding-bottom:20px">
    <div class="h1" style="margin-top:8px">${L('ลบบัญชีของคุณ?','Delete your account?')}</div>
    <p class="ink2">${L('บัญชีจะถูกปิดทันที และลบถาวรหลัง 30 วันตาม PDPA ถ้าเปลี่ยนใจ เข้าสู่ระบบภายใน 30 วันเพื่อกู้คืน เราจะส่งอีเมลกู้บัญชีให้','Your account closes now and is permanently deleted after 30 days under PDPA. Change your mind? Sign in within 30 days and we’ll email you a recovery link.')}</p>
-   <div class="card" style="padding:14px 16px;display:flex;flex-direction:column;gap:8px;font-size:14px"><div>• ${L('โพสต์ คอมเมนต์ และ ATE ทั้งหมดจะถูกลบ','All posts, comments and ATE are deleted')}</div><div>• ${L('อีเมลมหาวิทยาลัยนี้จะสมัครใหม่ได้หลังลบถาวร','This university email can sign up again after deletion')}</div></div>
+   <div class="card" style="padding:14px 16px;display:flex;flex-direction:column;gap:8px;font-size:calc(14px*var(--ts,1))"><div>• ${L('โพสต์ คอมเมนต์ และ ATE ทั้งหมดจะถูกลบ','All posts, comments and ATE are deleted')}</div><div>• ${L('อีเมลมหาวิทยาลัยนี้จะสมัครใหม่ได้หลังลบถาวร','This university email can sign up again after deletion')}</div></div>
    </div><div class="ob-foot"><button class="btn danger block" data-act="deleteAccount">${L('ลบบัญชี','Delete account')}</button><button class="btn ghost" data-act="back">${L('ยกเลิก','Cancel')}</button></div></div>`;
 }
 function vPrivacy(){
@@ -1218,7 +1234,9 @@ function vPrivacy(){
    <div class="pad cap" style="margin-top:8px">${L('โหมดนิรนามแท็กใครไม่ได้ และคนที่คุณบล็อกจะแท็กคุณไม่ได้','Anonymous mode can’t mention anyone, and people you block can’t mention you.')}</div></div></div>`;
 }
 function vLanguage(){return `<div class="screen">${topbar(L('ภาษา','Language'))}<div class="card" style="margin:6px 16px">${[['th','ไทย'],['en','English']].map(o=>`<button class="row" data-act="lang" data-arg="${o[0]}"><span class="rt lbl">${o[1]}</span><span class="radio ${S.lang===o[0]?'on':''}"></span></button>`).join('')}</div><div class="pad cap" style="margin-top:8px">${L('วันที่แสดงเป็นพุทธศักราชในภาษาไทย','Dates use the Buddhist Era in Thai')}</div></div>`;}
-function vTheme(){return `<div class="screen">${topbar(L('ธีม','Theme'))}<div class="card" style="margin:6px 16px">${[['system',L('ตามระบบ','System')],['light',L('สว่าง','Light')],['dark',L('มืด','Dark')]].map(o=>`<button class="row" data-act="setTheme" data-arg="${o[0]}"><span class="rt lbl">${o[1]}</span><span class="radio ${S.settings.theme===o[0]?'on':''}"></span></button>`).join('')}</div></div>`;}
+function vTheme(){const tx=S.settings.text||'system';return `<div class="screen">${topbar(L('ธีมและตัวอักษร','Theme & text'))}<div class="scroll" style="padding-bottom:40px"><div class="section-t">${L('ธีม','Theme')}</div><div class="card" style="margin:0 16px">${[['system',L('ตามระบบ','System')],['light',L('สว่าง','Light')],['dark',L('มืด','Dark')]].map(o=>`<button class="row" data-act="setTheme" data-arg="${o[0]}" role="radio" aria-checked="${S.settings.theme===o[0]}"><span class="rt lbl">${o[1]}</span><span class="radio ${S.settings.theme===o[0]?'on':''}"></span></button>`).join('')}</div>
+  <div class="section-t">${L('ขนาดตัวอักษร','Text size')}</div><div class="card" style="margin:0 16px">${[['system',L('ตามโทรศัพท์','Match my phone')],['0.9',L('เล็ก','Small')],['1',L('ปกติ','Default')],['1.15',L('ใหญ่','Large')],['1.3',L('ใหญ่มาก','Extra large')]].map(o=>`<button class="row" data-act="setText" data-arg="${o[0]}" role="radio" aria-checked="${tx===o[0]}"><span class="rt lbl">${o[1]}</span><span class="radio ${tx===o[0]?'on':''}"></span></button>`).join('')}</div>
+  <div class="card pad" style="margin:12px 16px 0;padding:14px 16px"><div class="cap">${L('ตัวอย่าง','Preview')}</div><div style="font-size:calc(15px*var(--ts,1));line-height:1.6">ข้าวมันไก่ร้านใหม่หลังสามย่านฯ ATE มาก #สามย่าน</div></div></div></div>`;}
 function vHelp(){return `<div class="screen">${topbar(L('ช่วยเหลือ','Help'))}<div class="card" style="margin:6px 16px">${sRow('shield',L('กติกาชุมชน','Community Rules'),'','go','rules')}${sRow('lock',L('นโยบายความเป็นส่วนตัว','Privacy Policy'),'','go','privacyPolicy')}${sRow('mail',L('ติดต่อทีมงาน','Contact support'),'','go','support:contact')}${sRow('flag',L('แจ้งปัญหาการใช้งาน','Report a problem'),'','go','support:problem')}${sRow('image',L('เครดิตภาพตัวอย่าง','Sample photo credits'),'','go','credits')}</div></div>`;}
 const CREDITS=[['chicken-rice.jpg','Hainanese chicken rice','Misaochan','CC BY 4.0','Hainanese_chicken_rice.jpg'],['library.jpg','Chula UltimateX Library','Apiwat K.','CC BY 4.0','Chula_UltimateX_Library_20201124_182323.jpg'],['arts-library.jpg','Faculty of Arts Library, Chulalongkorn University','Geonuch','CC BY-SA 4.0','Faculty_of_Arts_Library,_Chulalongkorn_University.jpg'],['auditorium.jpg','Chulalongkorn University Auditorium','Supanut Arunoprayote','CC BY-SA 4.0','Chulalongkorn_University_Auditorium.jpg'],['sala.jpg','Entrance of Sala Phra Kiao','Supanut Arunoprayote','CC BY 4.0','Entrance_of_Sala_Phra_Kiao.jpg'],['sala-night.jpg','Event in Sala Phra Kiao at night','Supanut Arunoprayote','CC BY 4.0','Event_in_Sala_Phra_Kiao_at_night.jpg'],['samyan.jpg','Samyan Mitrtown (back)','Chainwit.','CC BY-SA 4.0','Samyan_Mitrtown_Back.jpg']];
 function vCredits(){return `<div class="screen">${topbar(L('เครดิตภาพตัวอย่าง','Sample photo credits'))}<div class="scroll" style="padding-bottom:40px"><p class="pad cap" style="margin-top:0">${L('ภาพในโพสต์ตัวอย่างมาจาก Wikimedia Commons ปรับขนาดและลบข้อมูล EXIF แล้ว','Sample post photos come from Wikimedia Commons, resized with EXIF removed.')}</p>${CREDITS.map(c=>`<a class="row" href="https://commons.wikimedia.org/wiki/File:${c[4]}" target="_blank" rel="noopener" style="color:inherit;text-decoration:none"><span class="av" style="width:56px;height:42px;border-radius:10px;background-image:url('img/${c[0]}')"></span><span class="rt"><span class="lbl">${c[1]}</span><br><span class="cap">${c[2]} · ${c[3]}</span></span></a>`).join('')}</div></div>`;}
@@ -1226,7 +1244,7 @@ function vDoc(kind){
   const rules=kind==='rules';
   const body=rules?L(`<h3 class="h3">1. เคารพกัน</h3><p>ไม่กลั่นแกล้ง ด่าทอ เหยียดเพศ เชื้อชาติ ศาสนา หรือความพิการ</p><h3 class="h3">2. ไม่หลอกลวง</h3><p>ห้ามโกง ขายของผิดกฎหมาย หรือชวนโอนเงินก่อน</p><h3 class="h3">3. ปกป้องข้อมูลส่วนตัว</h3><p>ห้ามเปิดเผยเบอร์ ที่อยู่ หรือรูปของคนอื่นโดยไม่ได้รับอนุญาต</p><h3 class="h3">4. นิรนามแต่รับผิดชอบ</h3><p>ทุกบัญชียืนยันตัวตนแล้ว ระบบเก็บบัญชีจริงไว้เสมอ</p><h3 class="h3">บทลงโทษ</h3><p>เตือน → จำกัดการโพสต์ 7 วัน → ระงับ 14 วัน → แบนถาวร</p>`,`<h3 class="h3">1. Respect each other</h3><p>No bullying, harassment or hate based on gender, race, religion or disability.</p><h3 class="h3">2. No scams</h3><p>No cheating, illegal sales or asking people to transfer money first.</p><h3 class="h3">3. Protect personal info</h3><p>Never share someone’s phone, address or photos without permission.</p><h3 class="h3">4. Anonymous, still accountable</h3><p>Every account is verified, and we always keep the real account behind a post.</p><h3 class="h3">Penalties</h3><p>Warning → 7-day posting limit → 14-day suspension → permanent ban.</p>`)
    :L(`<p>เราเก็บอีเมลมหาวิทยาลัย คณะ ชั้นปี และวันเกิดเพื่อยืนยันนิสิตและตรวจอายุ ไม่ส่งข้อมูลส่วนตัวหรือวันเกิดไปยังเครื่องมือวิเคราะห์ภายนอก ตำแหน่งของคุณอยู่ในเครื่องเท่านั้น</p><p>คุณดาวน์โหลดหรือลบข้อมูลได้ในตั้งค่า › บัญชี</p><p>ผู้ติดต่อด้านข้อมูลส่วนบุคคล: dpo@eightteen.app</p>`,`<p>We store your university email, faculty, year and date of birth to verify you and apply age rules. Personal data and date of birth are never sent to third-party analytics. Your location stays on your phone.</p><p>Download or delete your data in Settings › Account.</p><p>Data protection contact: dpo@eightteen.app</p>`);
-  return `<div class="screen">${topbar(rules?L('กติกาชุมชน','Community Rules'):L('นโยบายความเป็นส่วนตัว','Privacy Policy'))}<div class="scroll pad" style="padding-bottom:40px;font-size:15px">${body}</div></div>`;
+  return `<div class="screen">${topbar(rules?L('กติกาชุมชน','Community Rules'):L('นโยบายความเป็นส่วนตัว','Privacy Policy'))}<div class="scroll pad" style="padding-bottom:40px;font-size:calc(15px*var(--ts,1))">${body}</div></div>`;
 }
 function vSupport(kind){
   const contact=kind==='contact';
@@ -1304,7 +1322,7 @@ function renderOverlay(){
     const chans=[['line','LINE','#06c755'],['instagram','Instagram','#d62976'],['copy',L('คัดลอกลิงก์','Copy link'),'var(--ink)'],['more',L('อื่น ๆ','More'),'var(--tert)']];
     const p=o.id&&S.posts.find(x=>x.id===o.id);
     h=sheet(L('แชร์','Share'),`${p?`<div class="card" style="margin:0 16px 14px;padding:12px;display:flex;gap:10px;align-items:center">${authorView(p,p.id).av(32)}<div class="cap" style="flex:1;min-width:0;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(p.text)}</div></div><div class="pad cap" style="margin-bottom:10px">${p.anon?L('โพสต์นิรนามแชร์ออกไปโดยไม่มีตัวตนของผู้โพสต์','Anonymous posts share without the author’s identity.'):''} ${p.uni?L('คนนอกจุฬาฯ จะเห็นหน้า "เฉพาะนิสิตที่ยืนยันแล้ว"','Non-Chula viewers see a "verified students only" page.'):''}</div>`:''}
-      <div style="display:flex;justify-content:space-around;padding:4px 16px 10px">${chans.map(c=>`<button data-act="doShare" data-arg="${c[0]}" style="display:flex;flex-direction:column;align-items:center;gap:6px;font-size:12px;font-weight:600"><span style="width:56px;height:56px;border-radius:18px;background:${c[2]};color:#fff;display:flex;align-items:center;justify-content:center">${c[0]==='copy'?I('copy'):c[0]==='more'?I('more'):`<span class="num" style="font-size:13px">${c[1].slice(0,2)}</span>`}</span>${c[1]}</button>`).join('')}</div>`);
+      <div style="display:flex;justify-content:space-around;padding:4px 16px 10px">${chans.map(c=>`<button data-act="doShare" data-arg="${c[0]}" style="display:flex;flex-direction:column;align-items:center;gap:6px;font-size:calc(12px*var(--ts,1));font-weight:600"><span style="width:56px;height:56px;border-radius:18px;background:${c[2]};color:#fff;display:flex;align-items:center;justify-content:center">${c[0]==='copy'?I('copy'):c[0]==='more'?I('more'):`<span class="num" style="font-size:calc(13px*var(--ts,1))">${c[1].slice(0,2)}</span>`}</span>${c[1]}</button>`).join('')}</div>`);
   }
   if(o.t==='bubblePicker'){
     const q=(o.q||'').toLowerCase();
@@ -1322,13 +1340,13 @@ function renderOverlay(){
       <div class="field"><label for="ssoEmail">${L('อีเมลมหาวิทยาลัย','University email')}</label><input class="input ${o.err?'err':''}" id="ssoEmail" type="email" inputmode="email" autocomplete="off" autocapitalize="off" placeholder="name@university.ac.th" data-on="ssoEmail" enterkeyhint="go"><span class="err-t" id="ssoErr" role="alert">${o.err||''}</span></div>
       <button class="btn primary block" style="margin-top:12px" data-act="ssoSubmit">${L('ถัดไป','Next')}</button>
       <div class="section-t" style="padding:18px 0 8px">${L('บัญชีทดสอบ','Test accounts')}</div>
-      <div style="display:flex;flex-direction:column;gap:6px">${tests.map(t=>`<button class="row" style="padding:10px 12px;min-height:0;border:1px solid var(--border);border-radius:12px" data-act="ssoPick" data-arg="${t[0]}"><span class="rt" style="word-break:break-all;font-size:14px">${t[0]}</span><span class="pill">${t[1]}</span></button>`).join('')}</div></div></div></div>`;
+      <div style="display:flex;flex-direction:column;gap:6px">${tests.map(t=>`<button class="row" style="padding:10px 12px;min-height:0;border:1px solid var(--border);border-radius:12px" data-act="ssoPick" data-arg="${t[0]}"><span class="rt" style="word-break:break-all;font-size:calc(14px*var(--ts,1))">${t[0]}</span><span class="pill">${t[1]}</span></button>`).join('')}</div></div></div></div>`;
   }
   if(o.t==='keepDraft') h=sheet(L('เก็บร่างไว้ไหม?','Keep this draft?'),`<div class="pad" style="display:flex;flex-direction:column;gap:10px"><p class="ink2" style="margin:0">${L('ร่างจะเก็บไว้ในเครื่องนี้ เปิดหน้าโพสต์ครั้งหน้าจะกลับมา','Drafts are saved on this phone and come back next time you post.')}</p><button class="btn primary block" data-act="draftKeep">${L('เก็บร่าง','Keep draft')}</button><button class="btn soft block" data-act="draftDiscard" style="color:var(--danger)">${L('ทิ้ง','Discard')}</button></div>`);
   if(o.t==='aicheck') h=`<div class="scrim"></div><div class="dialog" style="text-align:center;display:flex;flex-direction:column;align-items:center;gap:12px"><div class="spinner"></div><div class="h3">${L('AI กำลังตรวจโพสต์…','AI is checking your post…')}</div><div class="cap">${L('ใช้เวลาไม่ถึง 1 วินาที','Takes under a second')}</div></div>`;
   if(o.t==='blocked') h=sheet('',`<div class="empty" style="padding:8px 28px"><div class="ill" style="background:var(--danger-bg);color:var(--danger)">${I('shield','lg')}</div><div class="h2">${L('โพสต์นี้ยังโพสต์ไม่ได้','This post can’t go up')}</div><p class="ink2" style="margin:0">${o.reason==='scam'?L('ข้อความดูเหมือนการหลอกลวง เช่น ขอให้โอนเงินก่อน (กติกาข้อ 2)','It looks like a scam, such as asking for money upfront (Rule 2).'):L('ข้อความมีถ้อยคำคุกคามหรือด่าทอ (กติกาข้อ 1)','It contains harassment or insults (Rule 1).')}</p><button class="btn dark block" style="margin-top:8px" data-act="closeOv">${L('แก้ไขโพสต์','Edit post')}</button><button class="link" data-act="go" data-arg="rules">${L('อ่านกติกาชุมชน','Read the Community Rules')}</button></div>`);
   if(o.t==='support') h=sheet('',`<div class="empty" style="padding:8px 28px"><div class="ill" style="background:#ffe8f1;color:#c22a6a">${I('heart','lg')}</div><div class="h2">${L('เราอยู่ตรงนี้นะ','You’re not alone')}</div><p class="ink2" style="margin:0">${L('ดูเหมือนคุณกำลังผ่านช่วงที่หนักอยู่ คุยกับคนที่พร้อมรับฟังได้ตลอด 24 ชั่วโมง','It sounds like things are heavy right now. Someone is ready to listen, 24 hours a day.')}</p>
-     <div class="card" style="width:100%;padding:14px;text-align:left;display:flex;flex-direction:column;gap:10px"><div style="display:flex;align-items:center;gap:10px"><span class="num" style="font-size:26px;color:var(--brand)">1323</span><span class="cap" style="color:var(--ink2)">${L('สายด่วนสุขภาพจิต กรมสุขภาพจิต (ฟรี 24 ชม.)','Department of Mental Health hotline (free, 24h)')}</span></div><div style="display:flex;align-items:center;gap:10px"><span class="num" style="font-size:18px">02-218-0540</span><span class="cap" style="color:var(--ink2)">${L('ศูนย์ให้คำปรึกษา จุฬาฯ (Chula Student Wellness)','Chula Student Wellness')}</span></div></div>
+     <div class="card" style="width:100%;padding:14px;text-align:left;display:flex;flex-direction:column;gap:10px"><div style="display:flex;align-items:center;gap:10px"><span class="num" style="font-size:calc(26px*var(--ts,1));color:var(--brand)">1323</span><span class="cap" style="color:var(--ink2)">${L('สายด่วนสุขภาพจิต กรมสุขภาพจิต (ฟรี 24 ชม.)','Department of Mental Health hotline (free, 24h)')}</span></div><div style="display:flex;align-items:center;gap:10px"><span class="num" style="font-size:calc(18px*var(--ts,1))">02-218-0540</span><span class="cap" style="color:var(--ink2)">${L('ศูนย์ให้คำปรึกษา จุฬาฯ (Chula Student Wellness)','Chula Student Wellness')}</span></div></div>
      <button class="btn primary block" data-act="closeOv">${L('ขอบคุณ กลับไปที่โพสต์','Thanks, back to my post')}</button><div class="cap">${L('โพสต์นี้ยังไม่ได้เผยแพร่','This post hasn’t been published')}</div></div>`);
   if(o.t==='rateLimit') h=sheet('',`<div class="empty" style="padding:8px 28px"><div class="ill">${I('clock','lg')}</div><div class="h2">${L('โพสต์ครบ 10 ครั้งใน 1 ชั่วโมงแล้ว','You’ve posted 10 times this hour')}</div><p class="ink2" style="margin:0">${L('พักแป๊บนึง แล้วลองใหม่ใน ','Take a short break and try again in ')}${o.wait} ${L('นาที','min')}. ${L('ร่างของคุณยังอยู่','Your draft is saved.')}</p><button class="btn dark block" data-act="closeOv">${L('โอเค','OK')}</button></div>`);
   el.innerHTML=h;
@@ -1349,7 +1367,7 @@ function renderPanel(){
      <button class="pbtn ${S.sim.uploadFail?'on':''}" data-act="simUpload">Image upload fails</button>
      <button class="pbtn" data-act="simShared">Link opened by another campus</button>
      <button class="pbtn" data-act="simRestart">Kill app mid-onboarding</button></div></div>
-   <div><h3>AI moderation test phrases</h3><div class="cap" style="line-height:20px">Type in a post: <span class="kbd">โอนเงินก่อน</span> → blocked (scam) · <span class="kbd">ไอ้โง่</span> → blocked (harassment) · <span class="kbd">อยากตาย</span> → support sheet with 1323 · <span class="kbd">ขายต่อ</span> → published with reduced reach · link <span class="kbd">bit.ly/x</span> → blocked domain. In comments any link is blocked.</div></div>`:`<div class="cap">Onboarding tips: on the sign-in step use the test accounts, or type any email. Chula addresses (@student.chula.ac.th) get in; other university domains (.ac.th, .edu) are put on that university's waitlist; Gmail/Outlook are refused; a birth year after ${new Date().getFullYear()-MIN_AGE} is under the minimum age; usernames <span class="kbd">natnicha</span>, <span class="kbd">win</span> are taken.</div>`}
+   <div><h3>AI moderation test phrases</h3><div class="cap" style="line-height:calc(20px*var(--ts,1))">Type in a post: <span class="kbd">โอนเงินก่อน</span> → blocked (scam) · <span class="kbd">ไอ้โง่</span> → blocked (harassment) · <span class="kbd">อยากตาย</span> → support sheet with 1323 · <span class="kbd">ขายต่อ</span> → published with reduced reach · link <span class="kbd">bit.ly/x</span> → blocked domain. In comments any link is blocked.</div></div>`:`<div class="cap">Onboarding tips: on the sign-in step use the test accounts, or type any email. Chula addresses (@student.chula.ac.th) get in; other university domains (.ac.th, .edu) are put on that university's waitlist; Gmail/Outlook are refused; a birth year after ${new Date().getFullYear()-MIN_AGE} is under the minimum age; usernames <span class="kbd">natnicha</span>, <span class="kbd">win</span> are taken.</div>`}
    <div><h3>Analytics events (${S.events.length})</h3><div class="evlog">${S.events.slice(0,30).map(e=>`<div class="ev"><b>${e.name}</b> <span class="t">${new Date(e.at).toLocaleTimeString('en-GB')}</span><br>${esc(JSON.stringify(e.props))}</div>`).join('')||'<span class="cap">Events appear here as you use the app. Every event also carries user_id_hash, university_id, platform, app_version and session_id.</span>'}</div></div>`;
 }
 
@@ -1405,6 +1423,7 @@ const A={
   go(a){closeOv();const [s,arg]=a.split(':');push(s,arg);},
   lang(a){S.lang=a;render();},
   setTheme(a){S.settings.theme=a;render();},
+  setText(a){S.settings.text=a;render();toast(L('เปลี่ยนขนาดตัวอักษรแล้ว','Text size updated'));},
   /* onboarding */
   slideNext(){S.ob.slide=(S.ob.slide+1)%3;render();},
   obGo(a){if(OB_PREV[S.ob.step]===a)T.anim='back';else{T.anim='fwd';hpush({ob:a});}goStep(a);},
@@ -1658,6 +1677,14 @@ document.addEventListener('keydown',e=>{
   if(e.key==='Escape'&&T.ov&&T.ov.t!=='aicheck')closeOv();
 });
 document.addEventListener('selectionchange',()=>{const a=document.activeElement;if(a&&a.id==='cmpText'&&S.draft)$('#cmpSuggest').innerHTML=suggestHTML(activeToken(a),S.draft.mode,'cmp');});
+/* on-screen keyboard: shrink the app to the visible area so inputs stay visible */
+(function(){const vv=window.visualViewport;if(!vv)return;const ph=$('#phone');
+  const fit=()=>{if(innerWidth>520){ph.classList.remove('kb');ph.style.removeProperty('height');ph.style.removeProperty('transform');return;}
+    const kb=innerHeight-vv.height>120;ph.classList.toggle('kb',kb);
+    if(kb){ph.style.height=vv.height+'px';ph.style.transform=`translateY(${vv.offsetTop}px)`;}else{ph.style.removeProperty('height');ph.style.removeProperty('transform');}};
+  vv.addEventListener('resize',fit);vv.addEventListener('scroll',fit);
+  document.addEventListener('focusin',e=>{const el=e.target;if(!el.matches('input,textarea,select'))return;setTimeout(()=>{try{el.scrollIntoView({block:'nearest'});}catch(_){}} ,320);});
+})();
 /* swipe down on a sheet's handle to dismiss it */
 (function(){let drag=null;
   document.addEventListener('pointerdown',e=>{const z=e.target.closest('#overlay .grabzone');if(!z)return;const sh=z.closest('.sheet');drag={sh,y0:e.clientY,dy:0};sh.style.transition='none';z.setPointerCapture&&z.setPointerCapture(e.pointerId);});

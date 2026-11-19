@@ -11,13 +11,15 @@ A clickable prototype of the EIGHT TEEN app (PRD v1.3): a verified, campus-only 
 
 It then opens full screen from its own icon and keeps working offline.
 
+Phone support: works from 320px (iPhone SE) up to large phones, keeps inputs above the keyboard, follows the iPhone text-size setting (or Settings › Theme & text › Text size), and asks you to turn the phone upright in landscape.
+
 ## Testing
 
 - On the sign-in step, use one of the test accounts, or type any email:
   - `@student.chula.ac.th` gets in.
   - Another university's domain (`.ac.th`, `.edu`) puts you on that university's waitlist.
   - Gmail or Outlook is refused.
-- Test tools on a phone: **Me → ⚙ → Prototype test tools**. On a desktop they show beside the phone. You can jump to any screen, simulate events, reset the demo and watch the analytics event log there.
+- Test tools on a phone: **Prototype test tools** on the welcome screen, or **Me → ⚙ → Prototype test tools** after sign-up. On a desktop they show beside the phone. You can jump to any screen, simulate events, reset the demo and watch the analytics event log there.
 - To try the AI moderation, type one of these in a post: `โอนเงินก่อน` (blocked as a scam), `อยากตาย` (shows the support sheet), `ขายต่อ` (published with reduced reach).
 
 ## Files
