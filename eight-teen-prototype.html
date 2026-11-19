@@ -390,6 +390,14 @@ body{font-size:calc(16px*var(--ts,1));line-height:1.6}
 .avpick button.on{box-shadow:0 0 0 2px var(--canvas),0 0 0 4px var(--brand)}
 .avpick button:active{transform:scale(.94)}
 @media (prefers-reduced-motion:reduce){.screen.fwd,.screen.back,.sheet{animation:fade .2s ease}}
+.bcards{flex:none;align-items:stretch}
+.bcard{width:268px;min-width:0}
+.bcard .cap{white-space:normal}
+.bcard .bmeta{display:flex;flex-wrap:wrap;gap:4px 6px;align-items:center;margin-top:2px}
+.gattr{background:color-mix(in srgb,var(--canvas) 75%,transparent);padding:1px 6px;border-radius:6px}
+.mapwrap svg.map{top:44px;height:calc(100% - var(--peek) - 58px);transition:height .25s var(--ease-out)}
+@media (max-height:720px){.bcard .cap[style*="line-clamp"]{-webkit-line-clamp:1!important}.bcard{gap:8px;padding:12px}.bsheet .grabb{padding:14px 0 15px}}
+.no-tr *,.no-tr *::before,.no-tr *::after{transition:none!important}
 /* phone pass */
 .kb .tabbar,.kb .fab-float{display:none}
 .kb .cbar{padding-bottom:10px}
@@ -453,14 +461,14 @@ const BUBBLES=[
   {id:'lib',th:'หอสมุดกลาง',en:'Central Library',type:'study',x:118,y:196,status:'active',r:80},
   {id:'cafe',th:'CU Café',en:'CU Café',type:'food',x:258,y:162,status:'active',r:80},
   {id:'arts',th:'คณะอักษรศาสตร์',en:'Faculty of Arts',type:'faculty',x:150,y:104,status:'active',r:100},
-  {id:'eng',th:'คณะวิศวฯ',en:'Engineering',type:'faculty',x:278,y:300,status:'active',r:120},
+  {id:'eng',th:'คณะวิศวฯ',en:'Engineering',type:'faculty',x:282,y:322,status:'active',r:120},
   {id:'lawn',th:'สนามจุ๊บ',en:'Main Lawn',type:'life',x:196,y:250,status:'active',r:200},
   {id:'sports',th:'ศูนย์กีฬา',en:'Sports Complex',type:'sports',x:92,y:430,status:'active',r:200},
   {id:'icanteen',th:'โรงอาหาร iCanteen',en:'iCanteen',type:'food',x:212,y:392,status:'active',r:80},
   {id:'samyan',th:'สามย่านมิตรทาวน์',en:'Samyan Mitrtown',type:'food',x:286,y:486,status:'active',r:120},
   {id:'openhouse',th:'Chula Open House',en:'Chula Open House',type:'event',x:128,y:318,status:'active',start:DSTR(-2),end:DSTR(2),r:250},
-  {id:'freshy',th:'Freshy Night',en:'Freshy Night',type:'event',x:300,y:92,status:'ended',start:DSTR(-6),end:DSTR(-5),r:250},
-  {id:'sala',th:'ศาลาพระเกี้ยว',en:'Sala Phra Kieo',type:'life',x:62,y:262,status:'paused',reason_th:'ทีมงานปิดโพสต์ชั่วคราวระหว่างตรวจสอบรายงาน',reason_en:'Read-only while the team reviews reports',r:100},
+  {id:'freshy',th:'Freshy Night',en:'Freshy Night',type:'event',x:322,y:66,status:'ended',start:DSTR(-6),end:DSTR(-5),r:250},
+  {id:'sala',th:'ศาลาพระเกี้ยว',en:'Sala Phra Kieo',type:'life',x:50,y:286,status:'paused',reason_th:'ทีมงานปิดโพสต์ชั่วคราวระหว่างตรวจสอบรายงาน',reason_en:'Read-only while the team reviews reports',r:100},
   {id:'lang',th:'สถาบันภาษา',en:'Language Institute',type:'study',x:338,y:226,status:'active',r:80},
 ];
 const ME_XY={x:206,y:350}; const MY=y=>20+y*.75; const M_PER_UNIT=3.2;
@@ -518,7 +526,7 @@ function seed(){
 }
 function load(){ try{ const raw=localStorage.getItem(KEY); if(raw){ const s=JSON.parse(raw); if(s&&s.v===5) return s; } }catch(e){} return seed(); }
 function save(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} }
-S=load();
+S=load(); if(S.me&&!S.me.photo&&!S.me.photoSet) S.me.photo='img/av/'+['cat','bokeh','sky','tea','camera','dandelion','blossom'][Math.floor(Math.random()*7)]+'.jpg';
 const T={ov:null,toast:null,loadingUntil:0,scroll:{},search:{q:'',tab:'posts'},rec:null,playing:null,cmode:null,reply:null};
 
 /* ============ helpers ============ */
@@ -1004,7 +1012,7 @@ function vBubbleMap(){
     ${on?`<g transform="translate(${meXY().x},${MY(meXY().y)})"><circle r="22" fill="#7c3aed" opacity=".15"/><circle r="8" fill="#7c3aed" stroke="#fff" stroke-width="3"/></g>`:''}
     ${pins}</svg>`;
   const card=b=>{const tp=postsIn(b.id).filter(p=>Date.now()-p.at<DAY).sort((a,c)=>c.ate-a.ate)[0];const a=tp&&authorView(tp,tp.id);
-    return `<button class="bcard" data-act="openBubble" data-arg="${b.id}:card"><div style="display:flex;gap:10px;align-items:center;width:100%"><span class="btype t-${b.type}">${I(BTYPES[b.type][2],'sm')}</span><div style="flex:1;min-width:0"><div class="lbl" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(bname(b))}</div><div class="cap" style="display:flex;gap:4px;align-items:center;white-space:nowrap;overflow:hidden">${isLive(b)?livePill():''}${onSpot(b)?hereTag():''}<span style="overflow:hidden;text-overflow:ellipsis">${[L(BTYPES[b.type][0],BTYPES[b.type][1]),on?fmtDist(distance(b)):null,b.status==='paused'?L('ปิดชั่วคราว','Paused'):null,b.status==='ended'?L('จบแล้ว','Ended'):null].filter(Boolean).join(' · ')}</span></div></div>${count24(b.id)?`<span class="pill danger num">${count24(b.id)}</span>`:''}</div>
+    return `<button class="bcard" data-act="openBubble" data-arg="${b.id}:card"><div style="display:flex;gap:10px;align-items:center;width:100%"><span class="btype t-${b.type}">${I(BTYPES[b.type][2],'sm')}</span><div style="flex:1;min-width:0"><div class="lbl" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(bname(b))}</div><div class="cap bmeta">${isLive(b)?livePill():''}${onSpot(b)?hereTag():''}<span>${[L(BTYPES[b.type][0],BTYPES[b.type][1]),on?fmtDist(distance(b)):null,b.status==='paused'?L('ปิดชั่วคราว','Paused'):null,b.status==='ended'?L('จบแล้ว','Ended'):null].filter(Boolean).join(' · ')}</span></div></div>${count24(b.id)?`<span class="pill danger num">${count24(b.id)}</span>`:''}</div>
     ${tp?`<div style="display:flex;gap:8px;align-items:flex-start;width:100%">${a.av(22)}<div style="min-width:0;flex:1"><div class="cap" style="color:var(--ink);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">${esc(tp.text)}</div><div class="cap">${esc(a.name)} · ${rel(tp.at)} · <span style="color:#ff5a1f">${I('flame','xs')}</span> ${nf(tp.ate)}</div></div></div>`:`<div class="cap">${L('เงียบ ๆ อยู่ เป็นคนแรกที่โพสต์สิ','It’s quiet here. Be the first to post')}</div>`}</button>`;};
   const listRow=b=>`<button class="row" data-act="openBubble" data-arg="${b.id}:list"><span class="btype t-${b.type}">${I(BTYPES[b.type][2],'sm')}</span><span class="rt"><span class="lbl">${esc(bname(b))}</span> ${isLive(b)?livePill():''} ${onSpot(b)?hereTag():''}<br><span class="cap">${[L(BTYPES[b.type][0],BTYPES[b.type][1]),count24(b.id)?count24(b.id)+L(' โพสต์ใน 24 ชม.',' posts in 24h'):L('ยังไม่มีโพสต์วันนี้','No posts today'),on?fmtDist(distance(b)):null,b.status==='paused'?L('ปิดชั่วคราว','Paused'):null,b.status==='ended'?L('จบแล้ว','Ended'):null].filter(Boolean).join(' · ')}</span></span>${I('chev','sm')}</button>`;
   return `<div class="mapwrap">${map}
@@ -1523,12 +1531,15 @@ function view(){
   }
   return vHome();
 }
+function fitPeek(){const sh=document.querySelector('#app .bsheet.peek'),mw=sh&&sh.closest('.mapwrap');if(!sh||!mw)return;
+  const prev=sh.style.transition;sh.style.transition='none';sh.style.height='auto';const h=Math.min(sh.offsetHeight,Math.round(mw.offsetHeight*.62));sh.style.height='';sh.offsetHeight;sh.style.transition=prev;mw.style.setProperty('--peek',h+'px');}
+window.addEventListener('resize',()=>{if(window.S&&S.done)fitPeek();});
 function render(){
   $('#app').innerHTML=view();
   const scr=$('#app').firstElementChild; if(scr&&T.anim){scr.classList.add(T.anim);} T.anim=null;
   $('#app').querySelectorAll('.topbar .t,.h1,.uni,.display').forEach(h=>{if(h.textContent.trim()){h.setAttribute('role','heading');h.setAttribute('aria-level','1');}});
   $('#app').querySelectorAll('.h2,.section-t').forEach(h=>{h.setAttribute('role','heading');h.setAttribute('aria-level','2');});
-  restoreScroll();
+  restoreScroll(); fitPeek();
   renderOverlay(); applyTheme(); renderPanel(); save();
   document.documentElement.lang=S.lang;
   if(S.done&&top().s==='compose') refreshCompose();
@@ -1823,7 +1834,9 @@ document.addEventListener('selectionchange',()=>{const a=document.activeElement;
 /* the prompt asks for a fresh feed each load */
 if(!S.done&&S.ob.started&&S.ob.step!=='welcome'&&S.ob.step!=='resume'){S.ob.resumeTo=S.ob.step;S.ob.step='resume';}
 if(S.done&&top().s==='compose'&&!S.draft) S.nav=[{s:S.tab}];
+document.documentElement.classList.add('no-tr');
 render();
+requestAnimationFrame(()=>requestAnimationFrame(()=>setTimeout(()=>document.documentElement.classList.remove('no-tr'),120)));
 if(!S.events.length) track('onboarding_step_viewed',{step_name:'welcome',step_index:0});
 })();
 </script>
