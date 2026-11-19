@@ -10,7 +10,10 @@ import hashlib
 
 root = Path(__file__).parent
 frag = (root / "eight-teen-prototype.html").read_text(encoding="utf-8")
-version = hashlib.sha1(frag.encode()).hexdigest()[:8]
+_h = hashlib.sha1(frag.encode())
+for _p in sorted(list((root / "icons").glob("*")) + list((root / "img").rglob("*.jpg")) + [root / "build.py", root / "sw.template.js", root / "manifest.webmanifest"]):
+    _h.update(_p.read_bytes())
+version = _h.hexdigest()[:8]
 
 head = """<!doctype html>
 <html lang="th">
@@ -25,7 +28,9 @@ head = """<!doctype html>
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="EIGHT TEEN">
 <link rel="manifest" href="manifest.webmanifest">
-<link rel="icon" type="image/png" href="icons/icon-192.png">
+<link rel="icon" href="icons/favicon.ico" sizes="48x48">
+<link rel="icon" type="image/svg+xml" href="icons/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <style>
 :root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
