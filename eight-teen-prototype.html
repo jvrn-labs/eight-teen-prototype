@@ -58,8 +58,8 @@ input,textarea,select{font:inherit;color:inherit}
 @media (max-width:520px){
   .stage{padding:0;gap:0}
   body{background:var(--canvas)}
-  .phone{position:fixed;left:0;right:0;top:env(safe-area-inset-top,0px);bottom:0;width:auto;height:auto;min-height:0;border-radius:0;box-shadow:none;margin:0}
-  body::before{content:"";position:fixed;left:0;right:0;top:0;height:env(safe-area-inset-top,0px);background:var(--canvas);z-index:9999;pointer-events:none}
+  .phone{position:fixed;left:0;right:0;top:0;bottom:0;height:var(--appH,auto);box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);width:auto;min-height:0;border-radius:0;box-shadow:none;margin:0}
+  html.standalone .phone{bottom:auto}
   .statusbar,.homebar{display:none}
 }
 /* type */
@@ -371,7 +371,8 @@ body{font-size:calc(16px*var(--ts,1));line-height:1.6}
 .pill{min-height:26px;padding:2px 10px;font-weight:600}
 /* rows, sections, banners */
 .row{padding:16px 22px;min-height:60px;gap:16px}
-.row + .row{border-top:0;box-shadow:inset 22px 0 0 var(--canvas),inset 0 1px 0 var(--divider)}
+.row + .row{border-top:0;box-shadow:none;position:relative}
+.row + .row::before{content:"";position:absolute;top:0;left:62px;right:0;height:1px;background:var(--divider);pointer-events:none}
 .section-t{padding:26px 22px 8px;letter-spacing:.04em;color:var(--tert)}
 .banner{margin:14px 22px;padding:16px 18px;border-radius:20px;gap:14px}
 .card{border-radius:20px}
@@ -734,6 +735,14 @@ const LIGHT_VARS={'--canvas':'#ffffff','--surface':'#f3f3f6','--sunken':'#eaeaef
 const SYS_TS=(()=>{try{if(!CSS.supports('font','-apple-system-body'))return 1;const p=document.createElement('span');p.style.cssText='font:-apple-system-body;position:absolute;visibility:hidden';p.textContent='a';document.body.appendChild(p);const fs=parseFloat(getComputedStyle(p).fontSize);p.remove();return fs?fs/17:1;}catch(e){return 1;}})();
 function textScale(){const v=S.settings.text||'system';const t=v==='system'?SYS_TS:+v;return Math.min(1.4,Math.max(.85,t||1));}
 function applyTextSize(){document.documentElement.style.setProperty('--ts',textScale().toFixed(3));}
+(function(){
+  const sa=navigator.standalone===true||matchMedia('(display-mode: standalone)').matches; if(!sa) return;
+  const rt=document.documentElement; rt.classList.add('standalone'); let gap=null;
+  const size=()=>{const land=Math.abs(window.orientation||0)===90; const full=land?Math.min(screen.width,screen.height):Math.max(screen.width,screen.height);
+    const d=full-innerHeight; if(d>=0&&d<120) gap=d; /* no keyboard: remember the missing strip */
+    rt.style.setProperty('--appH',(innerHeight+(gap||0))+'px');};
+  size(); addEventListener('resize',size); addEventListener('orientationchange',()=>setTimeout(size,250));
+})();
 function syncThemeColor(){const c=getComputedStyle($('#phone')).getPropertyValue('--canvas').trim();if(!c)return;document.querySelectorAll('meta[name="theme-color"]').forEach(m=>m.setAttribute('content',c));}
 try{matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>syncThemeColor());}catch(_){}
 function applyTheme(){
