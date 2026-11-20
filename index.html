@@ -582,7 +582,7 @@ function seed(){
   return {
     v:5, lang:'th', done:false,
     ob:{step:'welcome',slide:0,consent:{terms:false,mkt:false},wl:null,dob:{d:'',m:'',y:''},interests:[],perm:{loc:null,push:null},started:false},
-    me:{id:'me',name:'',user:'',fac:['วิศวกรรมศาสตร์','Engineering'],year:1,bg:'#ede4ff',fg:'#5b21b6',ini:'',photo:'img/av/'+['cat','bokeh','sky','tea','camera','dandelion','blossom'][Math.floor(Math.random()*7)]+'.jpg',bio:'',interests:[],show:true,mentions:'all',email:'6930012321@student.chula.ac.th',verifiedAt:now},
+    me:{id:'me',name:'',user:'',fac:null,major:'',year:null,bg:'#ede4ff',fg:'#5b21b6',ini:'',photo:'img/av/'+['cat','bokeh','sky','tea','camera','dandelion','blossom'][Math.floor(Math.random()*7)]+'.jpg',bio:'',interests:[],show:true,mentions:'all',email:'6930012321@student.chula.ac.th',verifiedAt:now},
     settings:{mode:'identity',loc:true,theme:'system',text:'system'},
     posts, comments, notifs:[], blocked:[], mutedTags:[], hidden:[], reported:[], appealed:[], removedMentions:[],
     nav:[{s:'home'}], tab:'home',
@@ -617,7 +617,16 @@ function rel(t){const d=Math.max(0,Date.now()-t);const m=Math.floor(d/MIN);if(m<
 function fmtDate(t){return new Date(t).toLocaleString(S.lang==='th'?'th-TH':'en-GB',{day:'numeric',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'});}
 function fmtDay(iso){return new Date(iso+'T00:00:00').toLocaleDateString(S.lang==='th'?'th-TH':'en-GB',{day:'numeric',month:'short'});}
 const nf=n=>n.toLocaleString('en-US');
-function facYear(u){if(u.official)return L('บัญชีทางการ','Official');if(!u.show)return '';return L(u.fac[0],u.fac[1])+(u.year?' · '+L('ปี ','Year ')+u.year:'');}
+const FACULTIES=[['ครุศาสตร์','Education'],['จิตวิทยา','Psychology'],['ทันตแพทยศาสตร์','Dentistry'],['นิติศาสตร์','Law'],['นิเทศศาสตร์','Communication Arts'],['พยาบาลศาสตร์','Nursing'],['พาณิชยศาสตร์และการบัญชี','Commerce & Accountancy'],['แพทยศาสตร์','Medicine'],['เภสัชศาสตร์','Pharmaceutical Sciences'],['รัฐศาสตร์','Political Science'],['วิทยาศาสตร์','Science'],['วิทยาศาสตร์การกีฬา','Sports Science'],['วิศวกรรมศาสตร์','Engineering'],['ศิลปกรรมศาสตร์','Fine & Applied Arts'],['เศรษฐศาสตร์','Economics'],['สถาปัตยกรรมศาสตร์','Architecture'],['สหเวชศาสตร์','Allied Health Sciences'],['สัตวแพทยศาสตร์','Veterinary Science'],['อักษรศาสตร์','Arts'],['สำนักวิชาทรัพยากรการเกษตร','Agricultural Resources'],['สถาบันนวัตกรรมบูรณาการ','Integrated Innovation'],['บัณฑิตวิทยาลัย','Graduate School']];
+const YEARS=[[1,'ปี 1','Year 1'],[2,'ปี 2','Year 2'],[3,'ปี 3','Year 3'],[4,'ปี 4','Year 4'],[5,'ปี 5','Year 5'],[6,'ปี 6','Year 6'],['ms','ป.โท','Master’s'],['phd','ป.เอก','PhD']];
+function yearLbl(y){const x=YEARS.find(v=>String(v[0])===String(y));return x?L(x[1],x[2]):'';}
+function facYear(u,withMajor){if(u.official)return L('บัญชีทางการ','Official');if(!u.show||!u.fac)return '';return L(u.fac[0],u.fac[1])+(withMajor&&u.major?' · '+u.major:'')+(u.year?' · '+yearLbl(u.year):'');}
+function facFields(m,pre){
+  const fi=m.fac?FACULTIES.findIndex(f=>f[0]===m.fac[0]):-1;
+  return `<div class="field"><label for="${pre}Fac">${L('คณะ','Faculty')}</label><select class="input" id="${pre}Fac" data-on="${pre}Fac"><option value="" ${fi<0?'selected':''} disabled>${L('เลือกคณะ','Choose your faculty')}</option>${FACULTIES.map((f,i)=>`<option value="${i}" ${i===fi?'selected':''}>${L(f[0],f[1])}</option>`).join('')}</select></div>
+    <div class="field"><label for="${pre}Major">${L('สาขาวิชา (ไม่บังคับ)','Major (optional)')}</label><input class="input" id="${pre}Major" maxlength="60" value="${esc(m.major||'')}" placeholder="${L('เช่น วิศวกรรมคอมพิวเตอร์ · ยังไม่เลือกก็เว้นไว้','e.g. Computer Engineering · leave blank if not chosen yet')}" data-on="${pre}Major"></div>
+    <div class="field"><label for="${pre}Year">${L('ชั้นปี','Year')}</label><select class="input" id="${pre}Year" data-on="${pre}Year"><option value="" ${m.year?'':'selected'} disabled>${L('เลือกชั้นปี','Choose your year')}</option>${YEARS.map(y=>`<option value="${y[0]}" ${String(m.year)===String(y[0])?'selected':''}>${L(y[1],y[2])}</option>`).join('')}</select></div>`;
+}
 function isBlocked(uid){return S.blocked.some(b=>b.uid===uid);}
 function quietHours(){const h=new Date().getHours();return h<7;}
 
@@ -759,7 +768,8 @@ function setTab(t){saveScroll();S.tab=t;S.nav=[{s:t}];T.anim='tabfade';render();
 function focusTitle(){if(!T.kb)return;const h=document.querySelector('#app [role="heading"]');if(h){h.setAttribute('tabindex','-1');h.focus({preventScroll:true});}}
 function haptic(){try{navigator.vibrate&&navigator.vibrate(8);}catch(e){}}
 const OB_PREV={consent:'welcome',sso:'consent',waitlist:'sso',ssoerr:'sso',dob:'sso',profile:'dob',interests:'profile',location:'interests',push:'location'};
-window.addEventListener('popstate',()=>{
+window.addEventListener('popstate',e=>{
+  if(!(e.state&&e.state.et)&&location.hash&&window.routeOf&&location.hash!=='#'+routeOf()){ if(applyRoute(location.hash)){T.anim='tabfade';render();} return; }
   if(T.ov){ if(T.ov.t!=='aicheck'){ T.ov.t==='sso'?A.ssoCancel():closeOv(); } hpush({d:S.nav.length}); return; }
   if(!S.done){ const prev=OB_PREV[S.ob.step]; if(prev){S.ob.step=prev;T.anim='back';render();} return; }
   if(S.nav.length>1){ if(top().s==='compose'&&S.draft){hpush({d:S.nav.length});A.composeCancel();return;} pop(); }
@@ -1012,13 +1022,11 @@ function vOnboarding(){
       <div style="display:flex;flex-direction:column;gap:14px">
         <div class="field"><label for="pfName">${L('ชื่อที่แสดง','Display name')}</label><input class="input" id="pfName" maxlength="40" value="${esc(m.name)}" placeholder="${L('เช่น วิน','e.g. Win')}" data-on="pfName"></div>
         <div class="field"><label for="pfUser">${L('ชื่อผู้ใช้','Username')}</label><input class="input ${m.user&&!v.ok?'err':''}" id="pfUser" maxlength="20" value="${esc(m.user)}" placeholder="win.cu" autocapitalize="off" data-on="pfUser"><span id="pfUserMsg" aria-live="polite" class="${v.ok?'ok-t':'err-t'}">${m.user?v.msg:L('3–20 ตัว a–z 0–9 . _','3–20 characters: a–z 0–9 . _')}</span></div>
-        <div style="display:grid;grid-template-columns:1.6fr 1fr;gap:8px">
-          <div class="field"><label>${L('คณะ (จาก SSO)','Faculty (from SSO)')}</label><div class="input" style="display:flex;align-items:center;background:var(--surface)">${L(m.fac[0],m.fac[1])}</div></div>
-          <div class="field"><label>${L('ชั้นปี','Year')}</label><div class="input" style="display:flex;align-items:center;background:var(--surface)">${L('ปี ','Year ')}${m.year}</div></div>
-        </div>
+        ${facFields(m,'pf')}
+        <div class="cap" style="margin-top:-6px">${L('คนอื่นเห็นคณะ สาขา และชั้นปีบนโปรไฟล์ของคุณ แก้ทีหลังได้','Others see your faculty, major and year on your profile. You can change them later.')}</div>
         <div class="field"><label for="pfBio">${L('แนะนำตัว (ไม่บังคับ)','Bio (optional)')}</label><textarea class="input" id="pfBio" rows="2" maxlength="150" data-on="pfBio">${esc(m.bio)}</textarea></div>
       </div>
-    </div><div class="ob-foot"><button class="btn primary block" id="pfNext" ${m.name.trim()&&v.ok?'':'disabled'} data-act="profileNext">${L('ไปต่อ','Continue')}</button></div></div>`;
+    </div><div class="ob-foot"><button class="btn primary block" id="pfNext" data-act="profileNext" ${m.name.trim()&&v.ok&&m.fac&&m.year?'':'disabled'}>${L('ไปต่อ','Continue')}</button></div></div>`;
   }
   if(st==='interests'){
     const sel=S.ob.interests;
@@ -1359,7 +1367,7 @@ function mentionCandidates(q,postId){
   const pool=Object.values(USERS).filter(u=>!u.official&&u.mentions!=='none'&&!isBlocked(u.id));
   const inThread=postId?new Set([S.posts.find(p=>p.id===postId)?.by].concat(S.comments.filter(c=>c.post===postId&&!c.anon).map(c=>c.by))):new Set();
   const interacted=new Set(['u1','u6']);
-  const score=u=>(inThread.has(u.id)?0:interacted.has(u.id)?1:u.fac[1]===S.me.fac[1]?2:3);
+  const score=u=>(inThread.has(u.id)?0:interacted.has(u.id)?1:(S.me.fac&&u.fac[1]===S.me.fac[1])?2:3);
   const group=s=>['thread','interacted','faculty','university'][s];
   return pool.filter(u=>!q||u.user.startsWith(q)||u.name.toLowerCase().includes(q)).sort((a,b)=>score(a)-score(b)).slice(0,5).map(u=>({u,group:group(score(u))}));
 }
@@ -1417,7 +1425,7 @@ function vProfile(id){
       ${own?`<button class="btn sm" style="border:1.5px solid var(--ink)" data-act="go" data-arg="editProfile">${L('แก้ไขโปรไฟล์','Edit profile')}</button><button class="iconbtn" style="background:var(--canvas);border:1.5px solid var(--border)" data-act="go" data-arg="settings" aria-label="${L('ตั้งค่า','Settings')}">${I('gear')}</button>`:''}
     </div>
     <div class="h1" style="margin-top:10px;display:flex;gap:6px;align-items:center">${esc(u.name)} ${VERIFIED}</div>
-    <div class="cap">@${esc(u.user)}${facYear(u)?' · '+facYear(u):''} · ${L('จุฬาฯ','Chula')}</div>
+    <div class="cap">@${esc(u.user)}${facYear(u,true)?' · '+facYear(u,true):''} · ${L('จุฬาฯ','Chula')}</div>
     <div style="margin-top:8px;font-size:calc(14px*var(--ts,1))"><b class="num">${posts.length}</b> ${L('โพสต์','posts')} · <b class="num">${kfmt(ateRecv)}</b> ${L('ATE ที่ได้','ATE received')}</div>
     ${u.bio?`<p style="margin:6px 0 0;font-size:calc(14px*var(--ts,1))">${esc(u.bio)}</p>`:''}
     ${u.interests&&u.interests.length?`<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:10px">${u.interests.map(i=>{const x=INTERESTS.find(y=>y[0]===i);return x?`<span class="pill">${L(x[1],x[2])}</span>`:'';}).join('')}</div>`:''}
@@ -1433,6 +1441,7 @@ function vEditProfile(){
     <div class="field"><label>${L('หรือเลือกรูปไวบ์ ๆ','Or pick a vibe pic')}</label>${avPicker(m.photo)}</div>
     <div class="field"><label for="epName">${L('ชื่อที่แสดง','Display name')}</label><input class="input" id="epName" value="${esc(m.name)}" maxlength="40"></div>
     <div class="field"><label>${L('ชื่อผู้ใช้','Username')}</label><div class="input" style="display:flex;align-items:center;background:var(--surface)">@${esc(m.user)}</div></div>
+    ${facFields(Object.assign({},m,T.ep||{}),'ep')}
     <div class="field"><label for="epBio">${L('แนะนำตัว','Bio')}</label><textarea class="input" id="epBio" rows="3" maxlength="150">${esc(m.bio)}</textarea></div>
     <div class="field"><label>${L('ความสนใจ','Interests')}</label><div style="display:flex;flex-wrap:wrap;gap:6px">${INTERESTS.map(i=>`<button class="chip brand ${m.interests.includes(i[0])?'on':''}" data-act="meInterest" data-arg="${i[0]}">${L(i[1],i[2])}</button>`).join('')}</div></div>
   </div></div>`;
@@ -1613,6 +1622,7 @@ function renderPanel(){
   const p=$('#panel'); if(!p) return;
   const jump=[['home','Home · University'],['bubbleMap','Bubble map'],['search','Search'],['compose','Compose'],['post','Post detail'],['activity','Activity'],['profile','My profile'],['other','Classmate profile'],['settings','Settings']];
   p.innerHTML=`<div style="display:flex;gap:10px;align-items:flex-start"><div style="flex:1"><h2>EIGHT TEEN · MVP 1</h2><div class="cap">Clickable prototype of PRD v1.4 (Jira KAN). New in v1.4: posts go to University, with an optional place; On the spot stamp, LIVE events and Drops on the Bubble map. New in v1.7 (20 Nov): GIF and voice posts, photos and GIFs in comments, two ad slots in the University feed (sponsored and network), Delete account moved to Help › Report a problem, the comment count removed from profiles, and Re-verify and Download my data removed from Account. No backend: data lives in this browser and resets with the button below.</div></div><button class="iconbtn pclose" data-act="panelClose" aria-label="Close">${I('x')}</button></div>
+   <div><h3>Link to this screen</h3><div class="cap" style="word-break:break-all;margin-bottom:6px">${esc(location.origin+location.pathname)}#${window.routeOf?routeOf():''}</div><div class="pbtns"><button class="pbtn" data-act="copyLink">Copy link</button></div><div class="cap" style="margin-top:6px">Every screen has its own link, for example <span class="kbd">#/post/p1</span>, <span class="kbd">#/home/bubble</span>, <span class="kbd">#/account</span>, <span class="kbd">#/onboarding/profile</span>. Opening an app link skips onboarding with a test account.</div></div>
    <div><h3>Jump to</h3><div class="pbtns">${S.done?jump.map(j=>`<button class="pbtn" data-act="jump" data-arg="${j[0]}">${j[1]}</button>`).join(''):`<button class="pbtn" data-act="skipOnboarding">Skip onboarding</button>`}<button class="pbtn" data-act="resetAll">Reset demo</button></div></div>
    <div><h3>App</h3><div class="pbtns"><button class="pbtn ${S.lang==='th'?'on':''}" data-act="lang" data-arg="th">ไทย</button><button class="pbtn ${S.lang==='en'?'on':''}" data-act="lang" data-arg="en">English</button>${['system','light','dark'].map(t=>`<button class="pbtn ${S.settings.theme===t?'on':''}" data-act="setTheme" data-arg="${t}">${t}</button>`).join('')}</div></div>
    ${S.done?`<div><h3>Pretend I’m at…</h3><div class="pbtns">${[['none','Off campus'],['lib','Central Library'],['lawn','Main Lawn'],['openhouse','Open House (LIVE)'],['cafe','CU Café']].map(x=>`<button class="pbtn ${(S.sim.here||'none')===x[0]?'on':''}" data-act="simHere" data-arg="${x[0]}">${x[1]}</button>`).join('')}</div><div class="cap" style="margin-top:6px">Location ${locOn()?'on':'off'}. Being inside a bubble’s radius gives the On the spot stamp, unlocks posting into a LIVE event, and opens Drops.</div></div>
@@ -1668,6 +1678,7 @@ function render(){
   $('#app').querySelectorAll('.topbar .t,.h1,.uni,.display').forEach(h=>{if(h.textContent.trim()){h.setAttribute('role','heading');h.setAttribute('aria-level','1');}});
   $('#app').querySelectorAll('.h2,.section-t').forEach(h=>{h.setAttribute('role','heading');h.setAttribute('aria-level','2');});
   restoreScroll(); fitPeek();
+  if(window.syncUrl) syncUrl();
   renderOverlay(); applyTheme(); renderPanel(); save();
   document.documentElement.lang=S.lang;
   if(S.done&&top().s==='compose') refreshCompose();
@@ -1704,11 +1715,11 @@ const A={
   dobNext(){const d=S.ob.dob;const bd=new Date(+d.y,+d.m-1,+d.d);const now=new Date();let age=now.getFullYear()-bd.getFullYear();const m=now.getMonth()-bd.getMonth();if(m<0||(m===0&&now.getDate()<bd.getDate()))age--;if(age<MIN_AGE){S.ob.dobErr=true;render();return;}S.ob.dobErr=false;goStep('profile');},
   avPhoto(a){S.me.photo=avSrc(a);haptic();render();},
   avPreset(a){const [bg,fg]=a.split('|');S.me.bg=bg;S.me.fg=fg;S.me.photo=null;render();},
-  profileNext(){S.me.ini=[...S.me.name.trim()][0];goStep('interests');},
+  profileNext(){if(!S.me.fac||!S.me.year){toast(L('เลือกคณะและชั้นปีก่อน','Choose your faculty and year first'));return;}S.me.ini=[...S.me.name.trim()][0];track('profile_details_set',{faculty_set:true,major_set:!!S.me.major,year:String(S.me.year)});goStep('interests');},
   interest(a){const s=S.ob.interests;const i=s.indexOf(a);i<0?s.push(a):s.splice(i,1);render();},
   interestsNext(){S.me.interests=S.ob.interests.slice();track('profile_completed',{has_avatar:!!S.me.photo,interests_count:S.me.interests.length});goStep('location');},
   perm(a){const [k,v]=a.split(':');S.ob.perm[k==='location'?'loc':'push']=v;track('permission_result',{permission:k==='location'?'location':'push',granted:v==='granted'});if(k==='location')goStep('push');else finishOnboarding();},
-  skipOnboarding(){S.ob.consent={terms:true,mkt:false};S.me.name=S.me.name||'วิน';S.me.user=S.me.user||'win.cu';S.me.ini='ว';S.me.interests=['food','class','music'];S.ob.perm={loc:'granted',push:'granted'};finishOnboarding();},
+  skipOnboarding(){S.ob.consent={terms:true,mkt:false};S.me.name=S.me.name||'วิน';S.me.user=S.me.user||'win.cu';S.me.ini='ว';S.me.fac=S.me.fac||['วิศวกรรมศาสตร์','Engineering'];S.me.major=S.me.major||'วิศวกรรมคอมพิวเตอร์';S.me.year=S.me.year||1;S.me.interests=['food','class','music'];S.ob.perm={loc:'granted',push:'granted'};finishOnboarding();},
   /* home */
   feed(a){S.home.feed=a;T.loadingUntil=Date.now()+350;setTimeout(render,360);if(a==='bubble')track('bubble_map_viewed',{pins_visible:BUBBLES.length,location_granted:locOn(),category_filter:S.home.bcat});else track('feed_viewed',{feed:'university',sort:S.home.sort,category:S.home.cat});render();},
   sort(a){S.home.sort=a;T.loadingUntil=Date.now()+300;setTimeout(render,310);track('feed_viewed',{feed:'university',sort:a,category:S.home.cat});render();},
@@ -1813,7 +1824,7 @@ const A={
   openNotif(a){const n=S.notifs.find(x=>x.id===a);n.read=true;track('notification_opened',{type:n.type,channel:n.channel});if(n.type==='removed'){push('removal',n.id);return;}if(n.type==='reverify'){push('account');return;}if(n.post){push('post',n.post);return;}render();},
   appeal(a){S.appealed.push(a);track('appeal_submitted',{target_type:'comment'});render();toast(L('ส่งอุทธรณ์แล้ว','Appeal sent'));},
   /* profile/settings */
-  saveProfile(){S.me.name=$('#epName').value.trim()||S.me.name;S.me.bio=$('#epBio').value.trim();S.me.ini=[...S.me.name][0];pop();toast(L('บันทึกแล้ว','Saved'));},
+  saveProfile(){S.me.name=$('#epName').value.trim()||S.me.name;S.me.bio=$('#epBio').value.trim();if(T.ep){Object.assign(S.me,T.ep);T.ep=null;}S.me.ini=[...S.me.name][0];pop();toast(L('บันทึกแล้ว','Saved'));},
   meInterest(a){const name=$('#epName').value,bio=$('#epBio').value;const s=S.me.interests;const i=s.indexOf(a);i<0?s.push(a):s.splice(i,1);render();$('#epName').value=name;$('#epBio').value=bio;},
   setMode(a){S.settings.mode=a;render();},
   toggleShow(){S.me.show=!S.me.show;render();},
@@ -1834,6 +1845,7 @@ const A={
     else if(a==='other'){setTab('home');push('profile','u1');}
     else if(a==='settings'){setTab('profile');push('settings');}
     else setTab(a);},
+  copyLink(){const u=location.origin+location.pathname+'#'+routeOf();try{navigator.clipboard.writeText(u).then(()=>toast('Link copied'),()=>toast(u));}catch(e){toast(u);}},
   resetAll(){try{localStorage.removeItem(KEY);}catch(e){}S=seed();T.ov=null;render();},
   simComment(){const mine=S.posts.filter(p=>p.by==='me'&&!p.removed);if(!mine.length){toast(L('โพสต์อะไรสักอย่างก่อน','Make a post first'));return;}const p=mine[0];
     S.comments.push({id:uid('c'),post:p.id,by:'u6',anon:true,parent:null,replyTo:null,text:'เห็นด้วยมากก 👍',at:Date.now(),ate:0,ated:false,voice:null,mentions:[],removed:false});
@@ -1862,6 +1874,12 @@ const H={
   pfName(el){S.me.name=el.value;$('#avPrev').innerHTML=avatar(Object.assign({},S.me,{ini:S.me.name?[...S.me.name][0]:'?'}),72);pfValidate();},
   pfUser(el){el.value=el.value.toLowerCase();S.me.user=el.value;pfValidate();},
   pfBio(el){S.me.bio=el.value;save();},
+  pfFac(el){S.me.fac=FACULTIES[+el.value].slice();pfValidate();},
+  pfMajor(el){S.me.major=el.value.trim();save();},
+  pfYear(el){const y=el.value;S.me.year=/^\d+$/.test(y)?+y:y;pfValidate();},
+  epFac(el){T.ep=T.ep||{};T.ep.fac=FACULTIES[+el.value].slice();},
+  epMajor(el){T.ep=T.ep||{};T.ep.major=el.value.trim();},
+  epYear(el){T.ep=T.ep||{};const y=el.value;T.ep.year=/^\d+$/.test(y)?+y:y;},
   avatarFile(el){const f=el.files[0];if(!f)return;const r=new FileReader();r.onload=()=>shrink(r.result,160,u=>{S.me.photo=u;render();});r.readAsDataURL(f);},
   search(el){T.search.q=el.value;clearTimeout(T.st);T.st=setTimeout(()=>runSearch(false),250);$('#searchBody').innerHTML=searchBody();},
   bpSearch(el){T.ov.q=el.value;const pos=el.selectionStart;renderOverlay();const n=$('#bpSearch');n.focus();n.setSelectionRange(pos,pos);},
@@ -1887,7 +1905,7 @@ const H={
   },
 };
 function pfValidate(){const v=validUsername(S.me.user);const m=$('#pfUserMsg');if(m){m.className=v.ok?'ok-t':'err-t';m.textContent=S.me.user?v.msg:L('3–20 ตัว a–z 0–9 . _','3–20 characters: a–z 0–9 . _');}
-  $('#pfUser').classList.toggle('err',!!S.me.user&&!v.ok);const b=$('#pfNext');if(b)b.disabled=!(S.me.name.trim()&&v.ok);save();}
+  $('#pfUser').classList.toggle('err',!!S.me.user&&!v.ok);const b=$('#pfNext');if(b)b.disabled=!(S.me.name.trim()&&v.ok&&S.me.fac&&S.me.year);save();}
 function runSearch(force){const q=T.search.q.trim();if(!q)return;const r=searchResults(q);track('search_performed',{query_length:q.length,results_tab:T.search.tab,results_count:r.posts.length+r.tags.length+r.people.length});if(force)saveRecent(q);}
 function saveRecent(q){S.recent=[q].concat(S.recent.filter(x=>x!==q)).slice(0,5);}
 function syncDraftText(){const t=$('#cmpText');if(t&&S.draft)S.draft.text=t.value;S.draft&&document.querySelectorAll('[data-on="pollOpt"]').forEach(i=>{S.draft.poll&&(S.draft.poll.opts[+i.dataset.i]=i.value);});}
@@ -1975,8 +1993,41 @@ document.addEventListener('selectionchange',()=>{const a=document.activeElement;
     if(dy>80&&T.ov){sh.style.transform='translateY(100%)';setTimeout(()=>{T.ov&&T.ov.t==='sso'?A.ssoCancel():(T.ov&&(T.ov=null,renderOverlay()));},160);}else sh.style.transform='';};
   document.addEventListener('pointerup',end);document.addEventListener('pointercancel',end);
 })();
+/* ============ URL ROUTES: one link per screen (hash links work on GitHub Pages) ============ */
+const ROUTE_PARENTS={settings:['profile'],editProfile:['profile'],account:['profile','settings'],privacy:['profile','settings'],language:['profile','settings'],theme:['profile','settings'],help:['profile','settings'],deleteAccount:['profile','settings','help'],rules:['profile','settings','help'],privacyPolicy:['profile','settings','help'],support:['profile','settings','help'],credits:['profile','settings','help'],removal:['activity']};
+const ROUTE_SCREENS=['activity','bubble','hashtag','search','post','profile','settings','account','deleteAccount','privacy','language','theme','help','rules','privacyPolicy','support','editProfile','removal','shared','credits'];
+const OB_STEPS=['welcome','consent','sso','dob','profile','interests','location','push'];
+window.routeOf=function(){
+  if(!S.done) return '/onboarding/'+(S.ob.step==='resume'?S.ob.resumeTo||'welcome':S.ob.step);
+  const t=top();
+  if(t.s==='compose') return '/compose';
+  if(t.s==='home') return S.home.feed==='bubble'?'/home/bubble':'/home';
+  if(t.s==='profile') return '/profile'+(t.a&&t.a!=='me'?'/'+t.a:'');
+  return '/'+t.s+(t.a?'/'+encodeURIComponent(t.a):'');
+};
+window.syncUrl=function(){try{const h='#'+routeOf();if(location.hash!==h)history.replaceState(history.state,'',h);}catch(e){}};
+function applyRoute(hash){
+  const parts=(hash||'').replace(/^#\/?/,'').split('/').filter(Boolean).map(x=>{try{return decodeURIComponent(x);}catch(e){return x;}});
+  if(!parts.length) return false;
+  const s=parts[0],a=parts[1];
+  T.ov=null;
+  if(s==='onboarding'){if(!OB_STEPS.includes(a||'welcome'))return false;S.done=false;S.ob.step=a||'welcome';S.ob.started=S.ob.step!=='welcome';if(S.ob.step==='profile'||S.ob.step==='interests'){S.ob.consent=S.ob.consent||{terms:true,mkt:false};}track('route_opened',{route:'/'+parts.join('/')});return true;}
+  const known=s==='home'||s==='compose'||ROUTE_SCREENS.includes(s);
+  if(!known) return false;
+  if(!S.done) A.skipOnboarding();
+  S.draft=null;
+  if(s==='home'){S.home.feed=a==='bubble'?'bubble':'university';S.tab='home';S.nav=[{s:'home'}];}
+  else if(s==='compose'){S.tab='home';S.nav=[{s:'home'}];openCompose({src:'link'});}
+  else if(s==='activity'){S.tab='activity';S.nav=[{s:'activity'}];}
+  else if(s==='profile'&&(!a||a==='me')){S.tab='profile';S.nav=[{s:'profile'}];}
+  else{const par=ROUTE_PARENTS[s]||['home'];S.tab=par[0];S.nav=par.map(x=>({s:x})).concat([{s,a}]);}
+  track('route_opened',{route:'/'+parts.join('/')});
+  return true;
+}
+window.addEventListener('hashchange',()=>{if(location.hash==='#'+routeOf())return;if(applyRoute(location.hash)){T.anim='tabfade';render();}});
+const routedAtLoad=applyRoute(location.hash);
 /* the prompt asks for a fresh feed each load */
-if(!S.done&&S.ob.started&&S.ob.step!=='welcome'&&S.ob.step!=='resume'){S.ob.resumeTo=S.ob.step;S.ob.step='resume';}
+if(!routedAtLoad&&!S.done&&S.ob.started&&S.ob.step!=='welcome'&&S.ob.step!=='resume'){S.ob.resumeTo=S.ob.step;S.ob.step='resume';}
 if(S.done&&top().s==='compose'&&!S.draft) S.nav=[{s:S.tab}];
 document.documentElement.classList.add('no-tr');
 render();
@@ -1987,7 +2038,7 @@ if(!S.events.length) track('onboarding_step_viewed',{step_name:'welcome',step_in
 
 <script>
 if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => navigator.serviceWorker.register('sw.js?v=c082c216').catch(() => {}));
+  window.addEventListener('load', () => navigator.serviceWorker.register('sw.js?v=8db9991b').catch(() => {}));
 }
 </script>
 </body>

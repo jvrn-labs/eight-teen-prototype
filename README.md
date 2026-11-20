@@ -13,6 +13,25 @@ It then opens full screen from its own icon and keeps working offline.
 
 Phone support: works from 320px (iPhone SE) up to large phones, keeps inputs above the keyboard, follows the iPhone text-size setting (or Settings › Theme & text › Text size), and asks you to turn the phone upright in landscape.
 
+## Links to each screen
+
+Every screen has its own link, so testers can open it directly or send it in a bug report. The link in the address bar updates as you move around the app, and **Prototype test tools → Copy link** copies it. Opening an app link skips onboarding with a test account.
+
+| Screen | Link |
+| --- | --- |
+| University feed | `#/home` |
+| Bubble map | `#/home/bubble` |
+| New post | `#/compose` |
+| Post detail | `#/post/p1` (any post id, e.g. `p8` voice post, `p9` GIF post) |
+| Search | `#/search` |
+| Activity | `#/activity` |
+| My profile / a classmate | `#/profile` / `#/profile/u2` |
+| Edit profile | `#/editProfile` |
+| Settings and its pages | `#/settings`, `#/account`, `#/privacy`, `#/language`, `#/theme`, `#/help` |
+| Help pages | `#/rules`, `#/privacyPolicy`, `#/support/contact`, `#/support/problem`, `#/deleteAccount`, `#/credits` |
+| A place / a hashtag | `#/bubble/lib`, `#/hashtag/สามย่าน` |
+| Onboarding steps | `#/onboarding/welcome`, `consent`, `sso`, `dob`, `profile`, `interests`, `location`, `push` |
+
 ## Testing
 
 - On the sign-in step, use one of the test accounts, or type any email:
