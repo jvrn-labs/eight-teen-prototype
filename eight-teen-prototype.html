@@ -245,9 +245,14 @@ textarea.input{height:auto;padding:12px 14px;resize:none;line-height:calc(24px*v
 .pbanner{height:118px;background:#0b1026;position:relative;overflow:hidden;flex:none}
 .pbanner svg{position:absolute;inset:0;width:100%;height:100%}
 .pav{position:relative;z-index:2;border-radius:999px;box-shadow:0 0 0 4px var(--canvas),6px 6px 0 4px var(--lime);display:inline-flex}
-.composer-ta{width:100%;border:0;background:transparent;resize:none;font-size:calc(17px*var(--ts,1));line-height:calc(27px*var(--ts,1));min-height:120px;outline:none}
+.composer-ta{width:100%;border:0;background:color-mix(in srgb,var(--ink) 4%,var(--canvas));border-radius:16px;padding:14px 16px;box-sizing:border-box;resize:none;font-size:calc(17px*var(--ts,1));line-height:calc(27px*var(--ts,1));min-height:120px;outline:none}
 .tb{display:flex;align-items:center;gap:4px;padding:8px 12px;border-top:1px solid var(--divider);flex:none}
 .tb .iconbtn{background:none;color:var(--brand)}
+.cplace{border-top:1px solid var(--divider);padding:10px 0 8px;flex:none}
+.cdock-l{padding:0 20px 6px}
+.tb .btn.cpost{height:46px;min-width:96px;padding:0 22px;border-radius:999px;flex:none;box-shadow:3px 3px 0 var(--lime)}
+.tb .btn.cpost:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--lime)}
+.tb .btn.cpost.disabled,.tb .btn.cpost:disabled{box-shadow:none;opacity:.45}
 .ring{width:24px;height:24px;margin-left:auto}
 .suggest{border-top:1px solid var(--divider);max-height:220px;overflow-y:auto;flex:none;background:var(--canvas)}
 .cbar{display:flex;gap:10px;align-items:flex-end;padding:10px 14px 30px;border-top:1px solid var(--divider);background:var(--canvas);flex:none}
@@ -1153,7 +1158,7 @@ function vCompose(){
   const me=d.mode==='anon'?{av:s=>anonAv({c:'#ffc53d',bg:'#ffe39a'},s),name:L('นิรนาม','Anonymous')}:{av:s=>avatar(S.me,s),name:S.me.name};
   const b=d.bubble&&bubble(d.bubble);
   return `<div class="screen" style="background:var(--canvas)">
-   <div class="topbar"><button class="lbl" data-act="composeCancel">${L('ยกเลิก','Cancel')}</button><div class="t">${ed?L('แก้ไขโพสต์','Edit post'):''}</div><button class="btn primary sm" style="box-shadow:2px 2px 0 var(--lime)" id="postBtn" data-act="publish">${ed?L('บันทึก','Save'):L('โพสต์','Post')}</button></div>
+   <div class="topbar"><button class="lbl" data-act="composeCancel">${L('ยกเลิก','Cancel')}</button><div class="t">${ed?L('แก้ไขโพสต์','Edit post'):L('โพสต์ใหม่','New post')}</div><span style="width:56px;flex:none"></span></div>
    <div class="scroll">
     <div class="pad" style="display:flex;gap:12px;align-items:flex-start">
       <div style="display:flex;flex-direction:column;align-items:center;gap:6px">${me.av(40)}</div>
@@ -1167,20 +1172,21 @@ function vCompose(){
         <div id="cmpPoll">${ed?'':composePoll()}</div>
         <div id="cmpLink">${composeLink()}</div>
       </div></div>
-    ${ed?'':`<div class="section-t" style="padding-top:18px">${L('สถานที่','Place')} <span class="cap" style="font-weight:500">${L('(ไม่บังคับ)','(optional)')}</span></div>
-    <div class="chips"><button class="chip ${b?'on':''}" data-act="pickBubble">${I('pin','xs')} ${b?esc(bname(b)):L('เพิ่มสถานที่','Add place')} ${I('down','xs')}</button>
-      ${b?`<button class="chip" data-act="clearBubble" aria-label="${L('เอาสถานที่ออก','Remove place')}">${I('x','xs')}</button>`:''}${b&&isLive(b)?livePill():''}${b&&onSpot(b)&&d.mode!=='anon'?spotPill():''}</div>
-    <div class="pad cap" id="whereErr" style="margin-top:6px">${placeHelp(d,b)}</div>`}
    </div>
    <div id="cmpSuggest"></div>
+   ${ed?'':`<div class="cplace"><div class="cdock-l"><span class="cap" style="font-weight:700;color:var(--ink2)">${L('สถานที่','Place')}</span> <span class="cap">${L('(ไม่บังคับ)','(optional)')}</span></div>
+    <div class="chips"><button class="chip ${b?'on':''}" data-act="pickBubble">${I('pin','xs')} ${b?esc(bname(b)):L('เพิ่มสถานที่','Add place')} ${I('down','xs')}</button>
+      ${b?`<button class="chip" data-act="clearBubble" aria-label="${L('เอาสถานที่ออก','Remove place')}">${I('x','xs')}</button>`:''}${b&&isLive(b)?livePill():''}${b&&onSpot(b)&&d.mode!=='anon'?spotPill():''}</div>
+    <div class="pad cap" id="whereErr" style="margin-top:4px">${placeHelp(d,b)}</div></div>`}
    <div id="cmpCats">${composeCats()}</div>
    <div class="tb">
      <label class="iconbtn" style="cursor:pointer" aria-label="${L('เพิ่มรูป','Add photos')}">${I('image')}<input type="file" accept="image/*" multiple hidden data-on="cmpFiles"></label>
      ${ed?'':`<button class="iconbtn" data-act="addPoll" aria-label="${L('โพล','Poll')}">${I('poll')}</button>`}
      <button class="iconbtn" data-act="insert" data-arg="#" aria-label="hashtag">${I('hash')}</button>
      <button class="iconbtn" data-act="insert" data-arg="@" aria-label="mention">${I('at')}</button>
-     <span id="cmpCount" class="num cap" style="margin-left:auto"></span>
-   </div><div style="height:28px;flex:none"></div>
+     <span id="cmpCount" class="num cap" style="margin-left:auto;margin-right:10px;text-align:right"></span>
+     <button class="btn primary cpost" id="postBtn" data-act="publish">${ed?L('บันทึก','Save'):L('โพสต์','Post')}</button>
+   </div><div style="height:12px;flex:none"></div>
   </div>`;
 }
 function placeHelp(d,b){
