@@ -83,7 +83,7 @@ input,textarea,select{font:inherit;color:inherit}
 @media (max-width:520px){
   .stage{padding:0;gap:0}
   body{background:var(--canvas)}
-  .phone{position:fixed;left:0;right:0;top:env(safe-area-inset-top,0px);bottom:env(safe-area-inset-bottom,0px);width:auto;height:auto;min-height:0;border-radius:0;box-shadow:none;margin:0}
+  .phone{position:fixed;left:0;right:0;top:env(safe-area-inset-top,0px);bottom:0;width:auto;height:auto;min-height:0;border-radius:0;box-shadow:none;margin:0}
   body::before{content:"";position:fixed;left:0;right:0;top:0;height:env(safe-area-inset-top,0px);background:var(--canvas);z-index:9999;pointer-events:none}
   .statusbar,.homebar{display:none}
 }
@@ -439,6 +439,19 @@ body{font-size:calc(16px*var(--ts,1));line-height:1.6}
 @media (orientation:landscape) and (max-height:500px) and (pointer:coarse){#rotate{display:flex}}
 @media (max-width:359px){.pad{padding:0 16px}.chips{padding:2px 16px}.hdr-home{padding-left:16px;padding-right:16px}.uni{font-size:calc(26px*var(--ts,1))}.display{font-size:calc(26px*var(--ts,1));line-height:calc(34px*var(--ts,1))}.ob-body{padding-left:18px;padding-right:18px}.ob-foot{padding-left:18px;padding-right:18px}.post{padding-left:16px;padding-right:16px}.fab-float{right:14px}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+/* full-bleed phone: content runs to the bottom edge, controls clear the home indicator */
+@media (max-width:520px){
+  :root{--sab:env(safe-area-inset-bottom,0px)}
+  .screen{padding-bottom:var(--sab)}
+  .screen:has(> .tabbar){padding-bottom:0}
+  .tabbar{bottom:calc(10px + var(--sab))}
+  .fab-float{bottom:calc(90px + var(--sab))}
+  .tabpad{padding-bottom:calc(120px + var(--sab))}
+  #toast{bottom:calc(104px + var(--sab))}
+  .sheet{padding-bottom:calc(20px + var(--sab))}
+  .bsheet.peek{padding-bottom:calc(84px + var(--sab))}
+  .kb .screen{padding-bottom:0}
+}
 </style>
 
 <div class="stage">
@@ -746,11 +759,16 @@ const LIGHT_VARS={'--canvas':'#ffffff','--surface':'#f3f3f6','--sunken':'#eaeaef
 const SYS_TS=(()=>{try{if(!CSS.supports('font','-apple-system-body'))return 1;const p=document.createElement('span');p.style.cssText='font:-apple-system-body;position:absolute;visibility:hidden';p.textContent='a';document.body.appendChild(p);const fs=parseFloat(getComputedStyle(p).fontSize);p.remove();return fs?fs/17:1;}catch(e){return 1;}})();
 function textScale(){const v=S.settings.text||'system';const t=v==='system'?SYS_TS:+v;return Math.min(1.4,Math.max(.85,t||1));}
 function applyTextSize(){document.documentElement.style.setProperty('--ts',textScale().toFixed(3));}
+function syncThemeColor(){const c=getComputedStyle($('#phone')).getPropertyValue('--canvas').trim();if(!c)return;document.querySelectorAll('meta[name="theme-color"]').forEach(m=>m.setAttribute('content',c));}
+try{matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>syncThemeColor());}catch(_){}
 function applyTheme(){
   const ph=$('#phone');for(const k in LIGHT_VARS)ph.style.removeProperty(k);ph.style.removeProperty('color-scheme');
   applyTextSize();
-  const t=S.settings.theme; if(t==='system') return;
-  const v=t==='dark'?DARK_VARS:LIGHT_VARS; for(const k in v) ph.style.setProperty(k,v[k]);
+  const t=S.settings.theme, rt=document.documentElement;
+  if(t==='system') delete rt.dataset.theme; else rt.dataset.theme=t;
+  rt.style.colorScheme=t==='system'?'':t;
+  if(t==='system'){syncThemeColor();return;}
+  const v=t==='dark'?DARK_VARS:LIGHT_VARS; for(const k in v) ph.style.setProperty(k,v[k]); syncThemeColor();
   ph.style.colorScheme=t;
 }
 
@@ -1874,7 +1892,7 @@ if(!S.events.length) track('onboarding_step_viewed',{step_name:'welcome',step_in
 
 <script>
 if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => navigator.serviceWorker.register('sw.js?v=b2e825db').catch(() => {}));
+  window.addEventListener('load', () => navigator.serviceWorker.register('sw.js?v=bc49fdd1').catch(() => {}));
 }
 </script>
 </body>
