@@ -247,7 +247,9 @@ textarea.input{height:auto;padding:12px 14px;resize:none;line-height:calc(24px*v
 .pav{position:relative;z-index:2;border-radius:999px;box-shadow:0 0 0 4px var(--canvas),6px 6px 0 4px var(--lime);display:inline-flex}
 .composer-ta{width:100%;border:0;background:color-mix(in srgb,var(--ink) 4%,var(--canvas));border-radius:16px;padding:14px 16px;box-sizing:border-box;resize:none;font-size:calc(17px*var(--ts,1));line-height:calc(27px*var(--ts,1));min-height:120px;outline:none}
 .tb{display:flex;align-items:center;gap:4px;padding:8px 12px;border-top:1px solid var(--divider);flex:none}
-.tb .iconbtn{background:none;color:var(--brand)}
+.tb .iconbtn{background:none;color:var(--brand);flex:none}
+.tbtools{display:flex;align-items:center;gap:0;flex:1;min-width:0;overflow-x:auto;scrollbar-width:none}.tbtools::-webkit-scrollbar{display:none}
+.cmpcount{display:flex;justify-content:flex-end;padding:0 16px;min-height:18px;flex:none}
 .cplace{border-top:1px solid var(--divider);padding:10px 0 8px;flex:none}
 .cdock-l{padding:0 20px 6px}
 .tb .btn.cpost{height:46px;min-width:96px;padding:0 22px;border-radius:999px;flex:none;box-shadow:3px 3px 0 var(--lime)}
@@ -428,7 +430,11 @@ body{font-size:calc(16px*var(--ts,1));line-height:1.6}
   .bsheet.peek{padding-bottom:calc(84px + var(--sab))}
   .kb .screen{padding-bottom:0}
 }
-/* v1.7: comment media, ad slots */
+/* v1.7: comment media, ad slots, GIF/voice posts */
+.gifbtn{font:800 12px/1 var(--f-num);letter-spacing:.02em}
+.pgif{margin-top:10px;width:min(300px,100%)}
+.precbar{display:flex;align-items:center;gap:8px;margin-top:10px;height:48px;border-radius:24px;background:var(--danger-bg);padding:0 6px 0 16px;color:var(--danger);font-weight:700}
+.precbar .dot{width:10px;height:10px;border-radius:9px;background:var(--danger)}
 .catt{display:flex;align-items:center;gap:10px;padding:8px 16px 0;flex:none}
 .catt-i{position:relative;width:64px;height:48px;border-radius:10px;overflow:hidden;background:var(--sunken)}
 .catt-i img{width:100%;height:100%;object-fit:cover;display:block}
@@ -516,10 +522,12 @@ const ME_XY={x:206,y:350}; const MY=y=>20+y*.75; const M_PER_UNIT=3.2;
 let S;
 function seed(){
   const now=Date.now();
-  const P=(o)=>Object.assign({anon:false,uni:true,spot:false,bubble:null,images:[],poll:null,ate:0,ated:false,tags:[],mentions:[],edited:false,removed:false,pinned:false,reach:'normal'},o,{at:now-(o.ago||0)*MIN});
+  const P=(o)=>Object.assign({anon:false,uni:true,spot:false,bubble:null,images:[],poll:null,gif:null,voice:null,ate:0,ated:false,tags:[],mentions:[],edited:false,removed:false,pinned:false,reach:'normal'},o,{at:now-(o.ago||0)*MIN});
   const posts=[
     P({id:'p3',by:'u5',cat:'other',pinned:true,ago:600,text:'ยินดีต้อนรับสู่ EIGHT TEEN เบต้า 🎉 ทุกคนในนี้เป็นนิสิตจุฬาฯ ตัวจริง ยืนยันตัวตนแล้วทุกบัญชี อ่านกติกาชุมชนก่อนโพสต์นะ #EIGHTTEEN',ate:356}),
     P({id:'p1',by:'u1',cat:'food',bubble:'samyan',ago:52,text:'ข้าวมันไก่ร้านใหม่หลังสามย่านฯ ATE มาก ไก่นุ่ม น้ำจิ้มถึง ไปบ่ายสองคิวไม่ยาว #สามย่าน',images:[{src:'img/chicken-rice.jpg',alt:'ข้าวมันไก่ไหหลำพร้อมน้ำจิ้ม'}],ate:1284}),
+    P({id:'p8',by:'u3',cat:'other',ago:12,text:'เล่าเรื่องผีหอในให้ฟัง ฟังตอนกลางคืนนะ 👻 #หอใน',voice:{sec:48},ate:142}),
+    P({id:'p9',by:'u6',cat:'other',ago:40,text:'สอบเสร็จแล้วววว',gif:'img/gif/fight.gif',ate:410}),
     P({id:'p2',by:'u2',anon:true,cat:'question',ago:25,text:'ใครมีชีทแคลคูลัส 2 บทที่ 4 บ้างคะ สอบวันศุกร์นี้แล้ว 😭 #มิดเทอม',ate:88}),
     P({id:'p5',by:'u4',cat:'event',bubble:'openhouse',ago:180,text:'Open House ปีนี้อยากให้มีบูธอะไรเพิ่ม? #OpenHouse',poll:{opts:['Workshop AI','ดนตรีสด','ตลาดนัดนิสิต','ฟู้ดทรัค'],votes:[42,31,57,64],mine:null,ends:now+2*DAY},ate:203}),
     P({id:'p6',by:'u6',anon:true,cat:'other',bubble:'lawn',spot:true,ago:95,text:'ใครนั่งเล่นกีตาร์ที่สนามจุ๊บตอนเย็นเมื่อวาน เพราะมากกก อยากรู้จัก 🎸',ate:412}),
@@ -815,7 +823,7 @@ function postCard(p,ctx={}){
      <div class="pmeta">${[a.sub,rel(p.at),p.edited?L('แก้ไขแล้ว','edited'):null].filter(Boolean).map(esc).join(' · ')}</div>
    </div><button class="iconbtn plain" data-act="postMenu" data-arg="${p.id}" aria-label="${L('เพิ่มเติม','More')}">${I('more')}</button></div>
    <div class="ptext">${rich(p.text,p)}</div>
-   ${imgs}${p.poll?pollHTML(p):''}${url&&!p.images.length?linkPreview(url):''}
+   ${imgs}${postMedia(p)}${p.poll?pollHTML(p):''}${url&&!p.images.length?linkPreview(url):''}
    <div class="ptags">${p.cat?`<span class="ptag">${esc(catName(p.cat))}</span>`:''}${stamp?spotPill():''}${b&&!ctx.inBubble?`<button class="pill brand" data-act="openBubble" data-arg="${b.id}">${I(BTYPES[b.type][2],'xs')} ${esc(bname(b))}</button>`:''}${mine&&p.reach==='reduced'?`<span class="pill warn">${L('กำลังตรวจสอบ','Under review')}</span>`:''}</div>
    <div class="pacts">
      <button class="pact" data-act="openPost" data-arg="${p.id}" aria-label="${L('คอมเมนต์','Comments')}">${I('comment','sm')} ${n||''}</button>
@@ -823,6 +831,11 @@ function postCard(p,ctx={}){
      <button class="pact" data-act="share" data-arg="${p.id}" aria-label="${L('แชร์','Share')}">${I('send','sm')}</button>
      ${ctx.showWhere?`<span class="cap" style="margin-left:auto">${esc(where)}</span>`:''}
    </div></article>`;
+}
+function postMedia(p){
+  if(p.gif) return `<div class="cmedia pgif"><img src="${p.gif}" alt="GIF" loading="lazy"><span class="gifb">GIF</span></div>`;
+  if(p.voice) return `<div style="margin-top:10px">${voiceHTML({id:p.id,voice:p.voice})}</div>`;
+  return '';
 }
 function imgTile(im){
   if(im.src) return `<img class="pimg" src="${im.src}" alt="${esc(im.alt||L('รูปประกอบโพสต์','Post photo'))}" loading="lazy" decoding="async">`;
@@ -1175,7 +1188,7 @@ function vPost(id){
    <div class="scroll" id="postScroll">
     <div class="pad"><div class="phead">${a.av(48)}<div style="flex:1;min-width:0"><div class="pname" style="font-size:calc(16px*var(--ts,1))">${esc(a.name)}${a.anon?'':VERIFIED}${p.by==='me'&&p.anon?`<span class="pill lime">${I('lock','xs')} ${L('มีแค่คุณที่เห็น','Only you can see this')}</span>`:''}</div><div class="pmeta">${esc(a.sub)}</div></div><button class="iconbtn" data-act="postMenu" data-arg="${p.id}" aria-label="more">${I('more')}</button></div>
     <div class="ptext" style="font-size:calc(16px*var(--ts,1));line-height:calc(26px*var(--ts,1))">${rich(p.text,p)}</div>
-    ${p.images.length?`<div class="pimgs n${p.images.length}">${p.images.map(imgTile).join('')}</div>`:''}${p.poll?pollHTML(p):''}${url&&!p.images.length?linkPreview(url):''}
+    ${p.images.length?`<div class="pimgs n${p.images.length}">${p.images.map(imgTile).join('')}</div>`:''}${postMedia(p)}${p.poll?pollHTML(p):''}${url&&!p.images.length?linkPreview(url):''}
     <div class="cap" style="margin-top:10px">${fmtDate(p.at)} · ${esc(catName(p.cat))} · ${esc(where)}${p.edited?' · '+L('แก้ไขแล้ว','edited'):''}</div>
     <div style="display:flex;gap:18px;padding:12px 0;border-bottom:1px solid var(--divider)"><span><b class="num">${nf(p.ate)}</b> <span class="muted">ATE</span></span><span><b class="num">${cs.length}</b> <span class="muted">${L('คอมเมนต์','comments')}</span></span></div>
     <div style="display:flex;justify-content:space-around;padding:4px 0;border-bottom:1px solid var(--divider)">
@@ -1215,7 +1228,7 @@ function voiceHTML(c){
 }
 
 /* ============ COMPOSE ============ */
-function newDraft(o){return Object.assign({text:'',mode:S.settings.mode,cat:null,catAuto:null,uni:true,bubble:null,images:[],poll:null,editing:null,src:null},o||{});}
+function newDraft(o){return Object.assign({text:'',mode:S.settings.mode,cat:null,catAuto:null,uni:true,bubble:null,images:[],poll:null,gif:null,voice:null,editing:null,src:null},o||{});}
 function vCompose(){
   const d=S.draft; const ed=!!d.editing;
   const me=d.mode==='anon'?{av:s=>anonAv({c:'#ffc53d',bg:'#ffe39a'},s),name:L('นิรนาม','Anonymous')}:{av:s=>avatar(S.me,s),name:S.me.name};
@@ -1231,6 +1244,7 @@ function vCompose(){
           ${d.mode==='anon'?`<div class="cap" style="margin-bottom:6px">${I('shield','xs')} ${L('คนอื่นเห็นแค่ชื่อแฝง แต่ระบบเก็บบัญชีจริงไว้ ถ้าผิดกติกาก็โดนลงโทษได้','Others only see an alias. We keep your real account, so the rules still apply.')}</div>`:''}`}
         <textarea id="cmpText" class="composer-ta" maxlength="1000" placeholder="${L('มีอะไรเกิดขึ้นในรั้วบ้าง?','What’s happening on campus?')}" data-on="cmpText">${esc(d.text)}</textarea>
         <div id="cmpImgs">${composeImgs()}</div>
+        ${composeMedia()}
         <div id="cmpPoll">${ed?'':composePoll()}</div>
         <div id="cmpLink">${composeLink()}</div>
       </div>
@@ -1241,15 +1255,23 @@ function vCompose(){
       ${b?`<button class="chip" data-act="clearBubble" aria-label="${L('เอาสถานที่ออก','Remove place')}">${I('x','xs')}</button>`:''}${b&&isLive(b)?livePill():''}${b&&onSpot(b)&&d.mode!=='anon'?spotPill():''}</div>
     <div class="pad cap" id="whereErr" style="margin-top:4px">${placeHelp(d,b)}</div></div>`}
    <div id="cmpCats">${composeCats()}</div>
-   <div class="tb">
+   <div class="cmpcount"><span id="cmpCount" class="num cap"></span></div>
+   <div class="tb"><div class="tbtools">
      <label class="iconbtn" style="cursor:pointer" aria-label="${L('เพิ่มรูป','Add photos')}">${I('image')}<input type="file" accept="image/*" multiple hidden data-on="cmpFiles"></label>
-     ${ed?'':`<button class="iconbtn" data-act="addPoll" aria-label="${L('โพล','Poll')}">${I('poll')}</button>`}
+     ${ed?'':`<button class="iconbtn" data-act="addPoll" aria-label="${L('โพล','Poll')}">${I('poll')}</button><button class="iconbtn gifbtn" data-act="addGif" aria-label="GIF">GIF</button><button class="iconbtn" data-act="pRecStart" aria-label="${L('โพสต์เสียง','Voice post')}">${I('mic')}</button>`}
      <button class="iconbtn" data-act="insert" data-arg="#" aria-label="hashtag">${I('hash')}</button>
      <button class="iconbtn" data-act="insert" data-arg="@" aria-label="mention">${I('at')}</button>
-     <span id="cmpCount" class="num cap" style="margin-left:auto;margin-right:10px;text-align:right"></span>
+     </div>
      <button class="btn primary cpost" id="postBtn" data-act="publish">${ed?L('บันทึก','Save'):L('โพสต์','Post')}</button>
    </div><div style="height:12px;flex:none"></div>
   </div>`;
+}
+function composeMedia(){
+  const d=S.draft;
+  if(T.prec) return `<div class="precbar"><span class="dot"></span> ${L('กำลังอัดเสียง','Recording')} <span class="num" id="pRecT">0:00</span><span class="cap" style="margin-left:auto">${L('สูงสุด 60 วิ','max 60s')}</span><button class="iconbtn plain" data-act="pRecCancel" aria-label="${L('ยกเลิก','Cancel')}">${I('x','sm')}</button><button class="btn sm primary" data-act="pRecStop">${L('เสร็จ','Done')}</button></div>`;
+  if(d.gif) return `<div class="cmedia" style="margin-top:10px;width:min(260px,100%)"><img src="${d.gif}" alt="GIF"><span class="gifb">GIF</span><button class="catt-x" data-act="rmGif" aria-label="${L('เอาออก','Remove')}">${I('x','xs')}</button></div>`;
+  if(d.voice) return `<div style="display:flex;align-items:center;gap:8px;margin-top:10px">${voiceHTML({id:'draftv',voice:d.voice},true)}<button class="iconbtn plain" data-act="rmVoice" aria-label="${L('ลบเสียง','Remove voice')}">${I('x','sm')}</button></div><div class="cap" style="margin-top:4px">${L('ถอดเสียงให้ AI ตรวจก่อนขึ้น ไม่แสดงคำถอดเสียง','Transcribed so AI can check it before it shows. The transcript isn’t shown.')}</div>`;
+  return '';
 }
 function placeHelp(d,b){
   if(!b) return L('ทุกโพสต์ขึ้นฟีดมหาลัย ใส่สถานที่เพื่อให้ขึ้นบนแผนที่บับเบิลด้วย 72 ชม.','Every post goes to University. Add a place to also show it on the Bubble map for 72 hours.');
@@ -1290,7 +1312,7 @@ function composeCats(){
 }
 function composeValid(){
   const d=S.draft; const t=d.text.trim(); const errs=[];
-  if(!t) errs.push('text');
+  if(!t&&!d.gif&&!d.voice) errs.push('text');
   if(!d.cat) errs.push('cat');
   if(!d.editing&&d.bubble&&isLive(d.bubble)&&!onSpot(d.bubble)) errs.push('where');
   if(d.poll&&d.poll.opts.filter(o=>o.trim()).length<2) errs.push('poll');
@@ -1404,8 +1426,8 @@ function vSettings(){
 function vAccount(){
   const days=Math.round((S.me.verifiedAt+365*DAY-Date.now())/DAY);
   return `<div class="screen">${topbar(L('บัญชี','Account'))}<div class="scroll" style="padding-bottom:40px">
-   <div class="card" style="margin:6px 16px;padding:16px"><div class="cap">${L('บัญชีมหาวิทยาลัย','University account')}</div><div class="lbl" style="word-break:break-all">${S.me.email}</div><div class="cap" style="margin-top:8px">${L('มหาวิทยาลัย','University')}</div><div class="lbl">${L(uni().th,uni().en)}</div><div class="cap" style="margin-top:8px">${L('ยืนยันตัวตนครั้งถัดไปใน ','Re-verify in ')}<b style="color:var(--ink)">${days} ${L('วัน','days')}</b></div></div>
-   <div class="card" style="margin:12px 16px">${sRow('refresh',L('ยืนยันตัวตนอีกครั้ง','Re-verify now'),'','reverify')}${sRow('download',L('ดาวน์โหลดข้อมูลของฉัน','Download my data'),'','downloadData')}${sRow('logout',L('ออกจากระบบ','Log out'),'','logout')}</div>
+   <div class="card" style="margin:6px 16px;padding:16px"><div class="cap">${L('บัญชีมหาวิทยาลัย','University account')}</div><div class="lbl" style="word-break:break-all">${S.me.email}</div><div class="cap" style="margin-top:8px">${L('มหาวิทยาลัย','University')}</div><div class="lbl">${L(uni().th,uni().en)}</div></div>
+   <div class="card" style="margin:12px 16px">${sRow('logout',L('ออกจากระบบ','Log out'),'','logout')}</div>
    <div class="pad cap" style="margin-top:6px">${L('ต้องการลบบัญชี? ไปที่ ช่วยเหลือ › แจ้งปัญหาการใช้งาน','Want to delete your account? Go to Help › Report a problem.')}</div></div></div>`;
 }
 function vDeleteAccount(){
@@ -1549,10 +1571,10 @@ function renderOverlay(){
      <button class="btn primary block" data-act="closeOv">${L('ขอบคุณ กลับไปที่โพสต์','Thanks, back to my post')}</button><div class="cap">${L('โพสต์นี้ยังไม่ได้เผยแพร่','This post hasn’t been published')}</div></div>`);
   if(o.t==='rateLimit') h=sheet('',`<div class="empty" style="padding:8px 28px"><div class="ill">${I('clock','lg')}</div><div class="h2">${L('โพสต์ครบ 10 ครั้งใน 1 ชั่วโมงแล้ว','You’ve posted 10 times this hour')}</div><p class="ink2" style="margin:0">${L('พักแป๊บนึง แล้วลองใหม่ใน ','Take a short break and try again in ')}${o.wait} ${L('นาที','min')}. ${L('ร่างของคุณยังอยู่','Your draft is saved.')}</p><button class="btn dark block" data-act="closeOv">${L('โอเค','OK')}</button></div>`);
   if(o.t==='cAttach'){
-    const tab=T.attTab||'photo'; const q=(T.gifQ||'').toLowerCase();
+    const tab=o.target==='post'?'gif':(T.attTab||'photo'); const q=(T.gifQ||'').toLowerCase();
     const gifs=GIFS.filter(g=>!q||g[0].includes(q)||g[1].includes(q));
-    h=sheet(L('แนบในคอมเมนต์','Add to comment'),`<div class="pad" style="padding-bottom:18px">
-      <div class="seg" role="tablist"><button class="${tab==='photo'?'on':''}" data-act="attTab" data-arg="photo" role="tab" aria-selected="${tab==='photo'}">${L('รูปภาพ','Photos')}</button><button class="${tab==='gif'?'on':''}" data-act="attTab" data-arg="gif" role="tab" aria-selected="${tab==='gif'}">GIF</button></div>
+    h=sheet(o.target==='post'?L('เพิ่ม GIF ในโพสต์','Add a GIF to your post'):L('แนบในคอมเมนต์','Add to comment'),`<div class="pad" style="padding-bottom:18px">
+      <div class="seg" role="tablist" ${o.target==='post'?'hidden':''}><button class="${tab==='photo'?'on':''}" data-act="attTab" data-arg="photo" role="tab" aria-selected="${tab==='photo'}">${L('รูปภาพ','Photos')}</button><button class="${tab==='gif'?'on':''}" data-act="attTab" data-arg="gif" role="tab" aria-selected="${tab==='gif'}">GIF</button></div>
       ${tab==='photo'?`<div class="attgrid">${CAMROLL.map(n=>`<button data-act="pickAtt" data-arg="photo|img/${n}.jpg" style="background-image:url('img/${n}.jpg')" aria-label="${L('เลือกรูปนี้','Pick this photo')}"></button>`).join('')}</div><div class="cap" style="margin-top:10px">${L('1 รูปต่อคอมเมนต์ · ลบตำแหน่งในรูปให้อัตโนมัติ · AI ตรวจก่อนขึ้น','1 photo per comment · location data removed · AI checks it before it shows')}</div>`
       :`<input class="input" id="gifQ" placeholder="${L('ค้นหา GIF','Search GIFs')}" value="${esc(T.gifQ||'')}" data-on="gifQ" style="margin-top:12px"><div class="attgrid gif">${gifs.map(g=>`<button data-act="pickAtt" data-arg="gif|img/gif/${g[0]}.gif" style="background-image:url('img/gif/${g[0]}.gif')" aria-label="GIF ${g[0]}"></button>`).join('')||`<div class="cap" style="grid-column:1/-1;padding:16px 0">${L('ไม่เจอ GIF','No GIFs found')}</div>`}</div><div class="cap" style="margin-top:10px">${L('GIF จากผู้ให้บริการ (รอเลือก) เปิดตัวกรองเนื้อหาปลอดภัย · สติกเกอร์และ GIF ที่บันทึกไว้มาทีหลัง','GIFs from a provider (to be chosen) with safe search on · Stickers and saved GIFs come later')}</div>`}
     </div>`);
@@ -1565,7 +1587,7 @@ function renderOverlay(){
 function renderPanel(){
   const p=$('#panel'); if(!p) return;
   const jump=[['home','Home · University'],['bubbleMap','Bubble map'],['search','Search'],['compose','Compose'],['post','Post detail'],['activity','Activity'],['profile','My profile'],['other','Classmate profile'],['settings','Settings']];
-  p.innerHTML=`<div style="display:flex;gap:10px;align-items:flex-start"><div style="flex:1"><h2>EIGHT TEEN · MVP 1</h2><div class="cap">Clickable prototype of PRD v1.4 (Jira KAN). New in v1.4: posts go to University, with an optional place; On the spot stamp, LIVE events and Drops on the Bubble map. New in v1.7 (20 Nov): photos and GIFs in comments, two ad slots in the University feed (sponsored and network), Delete account moved to Help › Report a problem, and the comment count removed from profiles. No backend: data lives in this browser and resets with the button below.</div></div><button class="iconbtn pclose" data-act="panelClose" aria-label="Close">${I('x')}</button></div>
+  p.innerHTML=`<div style="display:flex;gap:10px;align-items:flex-start"><div style="flex:1"><h2>EIGHT TEEN · MVP 1</h2><div class="cap">Clickable prototype of PRD v1.4 (Jira KAN). New in v1.4: posts go to University, with an optional place; On the spot stamp, LIVE events and Drops on the Bubble map. New in v1.7 (20 Nov): GIF and voice posts, photos and GIFs in comments, two ad slots in the University feed (sponsored and network), Delete account moved to Help › Report a problem, the comment count removed from profiles, and Re-verify and Download my data removed from Account. No backend: data lives in this browser and resets with the button below.</div></div><button class="iconbtn pclose" data-act="panelClose" aria-label="Close">${I('x')}</button></div>
    <div><h3>Jump to</h3><div class="pbtns">${S.done?jump.map(j=>`<button class="pbtn" data-act="jump" data-arg="${j[0]}">${j[1]}</button>`).join(''):`<button class="pbtn" data-act="skipOnboarding">Skip onboarding</button>`}<button class="pbtn" data-act="resetAll">Reset demo</button></div></div>
    <div><h3>App</h3><div class="pbtns"><button class="pbtn ${S.lang==='th'?'on':''}" data-act="lang" data-arg="th">ไทย</button><button class="pbtn ${S.lang==='en'?'on':''}" data-act="lang" data-arg="en">English</button>${['system','light','dark'].map(t=>`<button class="pbtn ${S.settings.theme===t?'on':''}" data-act="setTheme" data-arg="${t}">${t}</button>`).join('')}</div></div>
    ${S.done?`<div><h3>Pretend I’m at…</h3><div class="pbtns">${[['none','Off campus'],['lib','Central Library'],['lawn','Main Lawn'],['openhouse','Open House (LIVE)'],['cafe','CU Café']].map(x=>`<button class="pbtn ${(S.sim.here||'none')===x[0]?'on':''}" data-act="simHere" data-arg="${x[0]}">${x[1]}</button>`).join('')}</div><div class="cap" style="margin-top:6px">Location ${locOn()?'on':'off'}. Being inside a bubble’s radius gives the On the spot stamp, unlocks posting into a LIVE event, and opens Drops.</div></div>
@@ -1729,7 +1751,7 @@ const A={
   recStop(){clearInterval(T.recTimer);const sec=Math.max(1,Math.round((Date.now()-T.rec.start)/1000));T.rec=null;const pid=top().a;const mode=T.cmode||S.settings.mode;
     S.comments.push({id:uid('c'),post:pid,by:'me',anon:mode==='anon',parent:T.reply?T.reply.id:null,replyTo:T.reply?T.reply.to:null,text:'',voice:{sec},at:Date.now(),ate:0,ated:false,mentions:[],removed:false});
     track('comment_created',{post_id:pid,type:'voice',mode:mode==='anon'?'anonymous':'identity',is_reply:!!T.reply,replying_to_anonymous:!!(T.reply&&T.reply.to.anon),mentions_count:0});T.reply=null;render();toast(L('ส่งคอมเมนต์เสียงแล้ว (ถอดความให้ AI ตรวจ)','Voice comment sent (transcribed for AI check)'));},
-  playVoice(a){T.playing=T.playing===a?null:a;render();if(T.playing){const c=S.comments.find(x=>x.id===a);clearTimeout(T.playT);T.playT=setTimeout(()=>{T.playing=null;render();},Math.min(c.voice.sec,6)*1000);}},
+  playVoice(a){T.playing=T.playing===a?null:a;render();if(T.playing){const c=S.comments.find(x=>x.id===a)||S.posts.find(x=>x.id===a)||{voice:(S.draft&&S.draft.voice)||{sec:3}};clearTimeout(T.playT);T.playT=setTimeout(()=>{T.playing=null;render();},Math.min(c.voice.sec,6)*1000);}},
   /* compose */
   compose(){openCompose({src:'tab'});},
   composeIn(a){const [id,src]=a.split(':');const b=bubble(id);if(!canTag(b)){A.liveBlocked(id);return;}tagPlace(id,src);openCompose({bubble:id,uni:true,src});},
@@ -1746,7 +1768,13 @@ const A={
   pickBubble(){syncDraftText();openOv({t:'bubblePicker',q:''});},
   setBubble(a){S.draft.bubble=a;tagPlace(a,'picker');closeOv();render();},
   clearBubble(){S.draft.bubble=null;syncDraftText();render();},
-  addPoll(){syncDraftText();if(S.draft.poll)return;if(S.draft.images.length){toast(L('โพสต์ที่มีรูปใส่โพลไม่ได้','Polls can’t be combined with photos'));return;}S.draft.poll={opts:['',''],days:1};render();},
+  addPoll(){syncDraftText();if(S.draft.poll)return;if(S.draft.gif||S.draft.voice){toast(L('ใส่ได้ทีละอย่าง: รูป โพล GIF หรือเสียง','One at a time: photos, poll, GIF or voice'));return;}if(S.draft.images.length){toast(L('โพสต์ที่มีรูปใส่โพลไม่ได้','Polls can’t be combined with photos'));return;}S.draft.poll={opts:['',''],days:1};render();},
+  addGif(){syncDraftText();const d=S.draft;if(d.poll||d.images.length||d.voice){toast(L('ใส่ได้ทีละอย่าง: รูป โพล GIF หรือเสียง','One at a time: photos, poll, GIF or voice'));return;}T.attTab='gif';openOv({t:'cAttach',target:'post'});},
+  rmGif(){syncDraftText();S.draft.gif=null;render();},
+  pRecStart(){syncDraftText();const d=S.draft;if(d.poll||d.images.length||d.gif){toast(L('ใส่ได้ทีละอย่าง: รูป โพล GIF หรือเสียง','One at a time: photos, poll, GIF or voice'));return;}T.prec={start:Date.now()};render();T.precTimer=setInterval(()=>{const s=Math.floor((Date.now()-T.prec.start)/1000);const el=$('#pRecT');if(el)el.textContent='0:'+String(s).padStart(2,'0');if(s>=60)A.pRecStop();},250);},
+  pRecCancel(){clearInterval(T.precTimer);T.prec=null;syncDraftText();render();},
+  pRecStop(){clearInterval(T.precTimer);const sec=Math.max(1,Math.round((Date.now()-T.prec.start)/1000));T.prec=null;syncDraftText();S.draft.voice={sec};render();refreshCompose();},
+  rmVoice(){syncDraftText();S.draft.voice=null;render();refreshCompose();},
   rmPoll(){S.draft.poll=null;syncDraftText();render();},
   addOpt(){syncDraftText();S.draft.poll.opts.push('');render();},
   rmOpt(a){syncDraftText();S.draft.poll.opts.splice(+a,1);render();},
@@ -1791,7 +1819,7 @@ const A={
   simAds(){S.sim.ads=S.sim.ads===false;render();toast(S.sim.ads?'Ad slots shown':'Ad slots hidden');},
   cAttach(){T.attTab=T.attTab||'photo';openOv({t:'cAttach'});},
   attTab(a){T.attTab=a;renderOverlay();},
-  pickAtt(a){const [kind,src]=a.split('|');const v=($('#cInput')||{}).value||'';T.cAtt={kind,src};closeOv();render();const i=$('#cInput');if(i){i.value=v;i.focus();H.cInput(i);}track('comment_media_added',{type:kind});},
+  pickAtt(a){const [kind,src]=a.split('|');if(T.ov&&T.ov.target==='post'){closeOv();S.draft.gif=src;render();refreshCompose();track('post_media_added',{type:'gif'});return;}const v=($('#cInput')||{}).value||'';T.cAtt={kind,src};closeOv();render();const i=$('#cInput');if(i){i.value=v;i.focus();H.cInput(i);}track('comment_media_added',{type:kind});},
   cAttClear(){const v=($('#cInput')||{}).value||'';T.cAtt=null;render();const i=$('#cInput');if(i){i.value=v;H.cInput(i);}},
   adMenu(a){openOv({t:'adMenu',id:a});},
   adOpen(a){track('ad_clicked',{slot:a});toast(L('ตัวอย่าง: เปิดหน้าโปรโมชันของร้าน','Sample: opens the shop’s deal page'));},
@@ -1878,9 +1906,9 @@ function publish(){
     closeOv();
     if(d.editing){const p=S.posts.find(x=>x.id===d.editing);p.text=d.text;p.cat=d.cat;p.tags=tagsOf(d.text);p.images=d.images;p.edited=true;track('post_edited',{post_id:p.id});S.draft=null;pop();toast(L('บันทึกการแก้ไขแล้ว','Changes saved'));return;}
     const ments=d.mode==='anon'?[]:mentionsIn(d.text).map(u=>Object.values(USERS).find(x=>x.user===u)).filter(u=>u&&u.mentions!=='none'&&!isBlocked(u.id)).map(u=>u.id);
-    const p={id:uid('p'),by:'me',anon:d.mode==='anon',text:d.text.trim(),cat:d.cat,uni:true,bubble:d.bubble,spot:!!(d.bubble&&onSpot(d.bubble)),images:d.images.map(i=>({src:i.src,h:i.h,alt:L('รูปที่ผู้โพสต์แนบ','Photo attached by the author')})),poll:d.poll?{opts:d.poll.opts.filter(o=>o.trim()),votes:d.poll.opts.filter(o=>o.trim()).map(()=>0),mine:null,ends:Date.now()+d.poll.days*DAY}:null,ate:0,ated:false,tags:tagsOf(d.text),mentions:ments,edited:false,removed:false,pinned:false,reach:mod.level==='medium'?'reduced':'normal',at:Date.now()};
+    const p={id:uid('p'),by:'me',anon:d.mode==='anon',text:d.text.trim(),cat:d.cat,uni:true,bubble:d.bubble,spot:!!(d.bubble&&onSpot(d.bubble)),images:d.images.map(i=>({src:i.src,h:i.h,alt:L('รูปที่ผู้โพสต์แนบ','Photo attached by the author')})),gif:d.gif,voice:d.voice,poll:d.poll?{opts:d.poll.opts.filter(o=>o.trim()),votes:d.poll.opts.filter(o=>o.trim()).map(()=>0),mine:null,ends:Date.now()+d.poll.days*DAY}:null,ate:0,ated:false,tags:tagsOf(d.text),mentions:ments,edited:false,removed:false,pinned:false,reach:mod.level==='medium'?'reduced':'normal',at:Date.now()};
     S.posts.unshift(p);haptic();
-    track('post_created',{post_id:p.id,mode:p.anon?'anonymous':'identity',category:p.cat,has_image:p.images.length>0,has_poll:!!p.poll,hashtags_count:p.tags.length,mentions_count:ments.length,place_bubble_id:p.bubble,on_the_spot:p.spot,is_live:!!(p.bubble&&isLive(p.bubble))});
+    track('post_created',{post_id:p.id,mode:p.anon?'anonymous':'identity',category:p.cat,has_image:p.images.length>0,has_poll:!!p.poll,has_gif:!!p.gif,has_voice:!!p.voice,hashtags_count:p.tags.length,mentions_count:ments.length,place_bubble_id:p.bubble,on_the_spot:p.spot,is_live:!!(p.bubble&&isLive(p.bubble))});
     if(mod.level==='medium') track('moderation_queued (internal)',{post_id:p.id,risk_level:'medium',reach:'reduced'});
     S.draft=null; S.savedDraft=null; S.home.firstPrompt=false; pop();
     toast(L('โพสต์แล้ว','Posted'),{act:'openPost',arg:p.id,label:L('ดูโพสต์','View')});
