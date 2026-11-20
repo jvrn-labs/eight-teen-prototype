@@ -505,7 +505,7 @@ body{font-size:calc(16px*var(--ts,1));line-height:1.6}
 'use strict';
 /* ============ constants ============ */
 const MIN=60000, HOUR=60*MIN, DAY=24*HOUR;
-const MIN_AGE=18; // PRD open question: minimum age to confirm with legal
+const MIN_AGE=0; // Decided Nov 20, 2026: no minimum age (any enrolled student). Date of birth kept privately.
 const KEY='eightteen-proto-v5';
 const SESSION_ID=Math.random().toString(36).slice(2,10);
 const UNIS=[
@@ -963,14 +963,14 @@ function vOnboarding(){
     const tip=(ic,col,html)=>`<div style="display:flex;gap:10px;align-items:flex-start"><span style="color:${col};display:flex;margin-top:2px">${I(ic,'sm')}</span><span>${html}</span></div>`;
     return `<div class="ob">${obTop('consent','sso')}<div class="ob-body">
       <div class="h1" style="margin-top:8px">${L('เข้าสู่ระบบด้วย<br>บัญชีมหาวิทยาลัย','Sign in with your<br>university account')}</div>
-      <p class="ink2" style="margin:6px 0 16px">${L('เลือกระบบที่มหาวิทยาลัยของคุณใช้ เราดูจากอีเมลที่ได้กลับมาว่าคุณเรียนที่ไหน ไม่ต้องรอรหัสทางอีเมล','Pick the sign-in your university uses. We work out where you study from your email. No codes to wait for.')}</p>
-      <div style="display:flex;flex-direction:column;gap:10px">${prov('google',L('ดำเนินการต่อด้วย Google','Continue with Google'),G)}${prov('microsoft',L('ดำเนินการต่อด้วย Microsoft','Continue with Microsoft'),M)}${prov('other',L('ระบบอื่นของมหาวิทยาลัย','Other university sign-in'),I('building'))}</div>
+      <p class="ink2" style="margin:6px 0 16px">${L('ใช้ Google หรือ Microsoft ด้วยอีเมลมหาวิทยาลัยของคุณ เราดูจากโดเมนอีเมลว่าคุณเรียนที่ไหน ไม่ต้องรอรหัสทางอีเมล','Use Google or Microsoft with your university email. We work out where you study from your email domain. No codes to wait for.')}</p>
+      <div style="display:flex;flex-direction:column;gap:10px">${prov('google',L('ดำเนินการต่อด้วย Google','Continue with Google'),G)}${prov('microsoft',L('ดำเนินการต่อด้วย Microsoft','Continue with Microsoft'),M)}</div>
       <div class="card" style="padding:14px 16px;margin-top:16px;display:flex;flex-direction:column;gap:10px;font-size:calc(14px*var(--ts,1));line-height:calc(21px*var(--ts,1))">
         ${tip('check','var(--ok)',L('ใช้บัญชีที่มหาวิทยาลัยออกให้ (อีเมลมหาวิทยาลัย)','Use the account your university gave you (your university email)'))}
         ${tip('x','var(--danger)',L('บัญชี Gmail หรือ Outlook ส่วนตัวใช้สมัครไม่ได้','Personal Gmail or Outlook accounts can’t sign up'))}
         ${tip('clock','var(--warn)',L('มหาวิทยาลัยที่ยังไม่เปิด เราลงชื่อรอให้อัตโนมัติ','If your university isn’t open yet, we add you to its waitlist'))}
       </div>
-      <div class="cap" style="display:flex;gap:8px;margin-top:12px">${I('lock','xs')}<span>${L('เราได้รับแค่ชื่อ อีเมล และคณะจากมหาวิทยาลัย ไม่เห็นรหัสผ่าน และไม่โพสต์อะไรแทนคุณ','We only receive your name, email and faculty. We never see your password or post for you.')}</span></div>
+      <div class="cap" style="display:flex;gap:8px;margin-top:12px">${I('lock','xs')}<span>${L('เราได้รับแค่ชื่อและอีเมล ไม่เห็นรหัสผ่าน และไม่โพสต์อะไรแทนคุณ','We only receive your name and email. We never see your password or post for you.')}</span></div>
     </div></div>`;
   }
   if(st==='waitlist'){
@@ -1011,9 +1011,7 @@ function vOnboarding(){
         ${sel('dobM',L('เดือน','Month'),months.map((m,i)=>[i+1,m]),d.m)}
         ${sel('dobY',L('ปี','Year'),years.map(y=>[y,S.lang==='th'?y+543:y]),d.y)}
       </div>
-      <div class="cap" style="display:flex;gap:8px;margin-top:10px">${I('lock','xs')}<span>${L('เราเก็บแค่อีเมลและคณะจากมหาวิทยาลัยไว้ยืนยันตัวตน วันเกิดไม่แสดงให้ใครเห็น ใช้ตรวจอายุเท่านั้น · ทุก 12 เดือนจะให้เข้าสู่ระบบอีกครั้ง','We keep only your university email and faculty to verify you. Your birthday is never shown and is only used for age rules. We ask you to sign in again every 12 months.')}</span></div>
-      ${err?`<div class="banner danger" style="margin:14px 0 0">${I('x')}<div><div class="lbl">${L('ยังสมัครไม่ได้','You can’t sign up yet')}</div><div class="cap" style="color:var(--ink2)">${L('EIGHT TEEN สำหรับผู้ที่อายุ '+MIN_AGE+' ปีขึ้นไป','EIGHT TEEN is for people aged '+MIN_AGE+' and over.')}</div></div></div>`:''}
-      <div style="margin-top:14px">${oq(L('อายุขั้นต่ำ '+MIN_AGE+' เป็นค่าชั่วคราว รอฝ่ายกฎหมาย','Minimum age '+MIN_AGE+' is a placeholder until legal confirms'))}</div>
+      <div class="cap" style="display:flex;gap:8px;margin-top:10px">${I('lock','xs')}<span>${L('เราใช้อีเมลมหาวิทยาลัยเพื่อยืนยันตัวตน วันเกิดเก็บเป็นความลับ ไม่แสดงให้ใครเห็น · ทุก 12 เดือนจะให้เข้าสู่ระบบอีกครั้ง','We use your university email to verify you. Your birthday is kept private and never shown. We ask you to sign in again every 12 months.')}</span></div>
     </div><div class="ob-foot"><button class="btn primary block" id="dobNext" ${d.d&&d.m&&d.y?'':'disabled'} data-act="dobNext">${L('ไปต่อ','Continue')}</button></div></div>`;
   }
   if(st==='profile'){
@@ -1505,7 +1503,7 @@ function vCredits(){return `<div class="screen">${topbar(L('เครดิต�
 function vDoc(kind){
   const rules=kind==='rules';
   const body=rules?L(`<h3 class="h3">1. เคารพกัน</h3><p>ไม่กลั่นแกล้ง ด่าทอ เหยียดเพศ เชื้อชาติ ศาสนา หรือความพิการ</p><h3 class="h3">2. ไม่หลอกลวง</h3><p>ห้ามโกง ขายของผิดกฎหมาย หรือชวนโอนเงินก่อน</p><h3 class="h3">3. ปกป้องข้อมูลส่วนตัว</h3><p>ห้ามเปิดเผยเบอร์ ที่อยู่ หรือรูปของคนอื่นโดยไม่ได้รับอนุญาต</p><h3 class="h3">4. นิรนามแต่รับผิดชอบ</h3><p>ทุกบัญชียืนยันตัวตนแล้ว ระบบเก็บบัญชีจริงไว้เสมอ</p><h3 class="h3">บทลงโทษ</h3><p>เตือน → จำกัดการโพสต์ 7 วัน → ระงับ 14 วัน → แบนถาวร</p>`,`<h3 class="h3">1. Respect each other</h3><p>No bullying, harassment or hate based on gender, race, religion or disability.</p><h3 class="h3">2. No scams</h3><p>No cheating, illegal sales or asking people to transfer money first.</p><h3 class="h3">3. Protect personal info</h3><p>Never share someone’s phone, address or photos without permission.</p><h3 class="h3">4. Anonymous, still accountable</h3><p>Every account is verified, and we always keep the real account behind a post.</p><h3 class="h3">Penalties</h3><p>Warning → 7-day posting limit → 14-day suspension → permanent ban.</p>`)
-   :L(`<p>เราเก็บอีเมลมหาวิทยาลัย คณะ ชั้นปี และวันเกิดเพื่อยืนยันนิสิตและตรวจอายุ ไม่ส่งข้อมูลส่วนตัวหรือวันเกิดไปยังเครื่องมือวิเคราะห์ภายนอก ตำแหน่งของคุณอยู่ในเครื่องเท่านั้น</p><p>คุณดาวน์โหลดหรือลบข้อมูลได้ในตั้งค่า › บัญชี</p><p>ผู้ติดต่อด้านข้อมูลส่วนบุคคล: dpo@eightteen.app</p>`,`<p>We store your university email, faculty, year and date of birth to verify you and apply age rules. Personal data and date of birth are never sent to third-party analytics. Your location stays on your phone.</p><p>Download or delete your data in Settings › Account.</p><p>Data protection contact: dpo@eightteen.app</p>`);
+   :L(`<p>เราเก็บอีเมลมหาวิทยาลัย คณะ ชั้นปี และวันเกิดเพื่อยืนยันนิสิต (วันเกิดเก็บเป็นความลับ) ไม่ส่งข้อมูลส่วนตัวหรือวันเกิดไปยังเครื่องมือวิเคราะห์ภายนอก ตำแหน่งของคุณอยู่ในเครื่องเท่านั้น</p><p>คุณดาวน์โหลดหรือลบข้อมูลได้ในตั้งค่า › บัญชี</p><p>ผู้ติดต่อด้านข้อมูลส่วนบุคคล: dpo@eightteen.app</p>`,`<p>We store your university email, faculty, year and date of birth to verify you (your date of birth stays private). Personal data and date of birth are never sent to third-party analytics. Your location stays on your phone.</p><p>Download or delete your data in Settings › Account.</p><p>Data protection contact: dpo@eightteen.app</p>`);
   return `<div class="screen">${topbar(rules?L('กติกาชุมชน','Community Rules'):L('นโยบายความเป็นส่วนตัว','Privacy Policy'))}<div class="scroll pad" style="padding-bottom:40px;font-size:calc(15px*var(--ts,1))">${body}</div></div>`;
 }
 function vSupport(kind){
@@ -1643,7 +1641,7 @@ function renderPanel(){
      <button class="pbtn ${S.sim.uploadFail?'on':''}" data-act="simUpload">Image upload fails</button>
      <button class="pbtn" data-act="simShared">Link opened by another campus</button>
      <button class="pbtn" data-act="simRestart">Kill app mid-onboarding</button></div></div>
-   <div><h3>AI moderation test phrases</h3><div class="cap" style="line-height:calc(20px*var(--ts,1))">Type in a post: <span class="kbd">โอนเงินก่อน</span> → blocked (scam) · <span class="kbd">ไอ้โง่</span> → blocked (harassment) · <span class="kbd">อยากตาย</span> → support sheet with 1323 · <span class="kbd">ขายต่อ</span> → published with reduced reach · link <span class="kbd">bit.ly/x</span> → blocked domain. In comments any link is blocked.</div></div>`:`<div class="cap">Onboarding tips: on the sign-in step use the test accounts, or type any email. Chula addresses (@student.chula.ac.th) get in; other university domains (.ac.th, .edu) are put on that university's waitlist; Gmail/Outlook are refused; a birth year after ${new Date().getFullYear()-MIN_AGE} is under the minimum age; usernames <span class="kbd">natnicha</span>, <span class="kbd">win</span> are taken.</div>`}
+   <div><h3>AI moderation test phrases</h3><div class="cap" style="line-height:calc(20px*var(--ts,1))">Type in a post: <span class="kbd">โอนเงินก่อน</span> → blocked (scam) · <span class="kbd">ไอ้โง่</span> → blocked (harassment) · <span class="kbd">อยากตาย</span> → support sheet with 1323 · <span class="kbd">ขายต่อ</span> → published with reduced reach · link <span class="kbd">bit.ly/x</span> → blocked domain. In comments any link is blocked.</div></div>`:`<div class="cap">Onboarding tips: on the sign-in step use the test accounts, or type any email. Chula addresses (@student.chula.ac.th) get in; other university domains (.ac.th, .edu) are put on that university's waitlist; Gmail/Outlook are refused; there is no minimum age; usernames <span class="kbd">natnicha</span>, <span class="kbd">win</span> are taken.</div>`}
    <div><h3>Analytics events (${S.events.length})</h3><div class="evlog">${S.events.slice(0,30).map(e=>`<div class="ev"><b>${e.name}</b> <span class="t">${new Date(e.at).toLocaleTimeString('en-GB')}</span><br>${esc(JSON.stringify(e.props))}</div>`).join('')||'<span class="cap">Events appear here as you use the app. Every event also carries user_id_hash, university_id, platform, app_version and session_id.</span>'}</div></div>`;
 }
 
@@ -1720,7 +1718,7 @@ const A={
     if(r.k==='ok'){S.me.email=email;track('sso_verified',{university_id:'chula',provider:prov,reverify:false});goStep('dob');return;}
     if(r.k==='waitlist'){const base=r.uni?r.uni[4]:3+(hashStr(r.d)%40);const first=!S.waitlist[r.key];S.waitlist[r.key]=email;S.ob.wl={email,d:r.d,uni:r.uni,count:base+1};if(first)track('waitlist_joined',{university_id:r.key});S.ob.step='waitlist';track('onboarding_step_viewed',{step_name:'waitlist',step_index:1});render();return;}
     S.ob.err=r.k;S.ob.step='ssoerr';render();},
-  dobNext(){const d=S.ob.dob;const bd=new Date(+d.y,+d.m-1,+d.d);const now=new Date();let age=now.getFullYear()-bd.getFullYear();const m=now.getMonth()-bd.getMonth();if(m<0||(m===0&&now.getDate()<bd.getDate()))age--;if(age<MIN_AGE){S.ob.dobErr=true;render();return;}S.ob.dobErr=false;goStep('profile');},
+  dobNext(){const d=S.ob.dob;const bd=new Date(+d.y,+d.m-1,+d.d);const now=new Date();let age=now.getFullYear()-bd.getFullYear();const m=now.getMonth()-bd.getMonth();if(m<0||(m===0&&now.getDate()<bd.getDate()))age--;S.ob.dobErr=false;goStep('profile');},
   avPhoto(a){S.me.photo=avSrc(a);haptic();render();},
   avPreset(a){const [bg,fg]=a.split('|');S.me.bg=bg;S.me.fg=fg;S.me.photo=null;render();},
   profileNext(){if(!S.me.fac||!S.me.year){toast(L('เลือกคณะและชั้นปีก่อน','Choose your faculty and year first'));return;}S.me.ini=[...S.me.name.trim()][0];track('profile_details_set',{faculty_set:true,major_set:!!S.me.major,year:String(S.me.year)});goStep('interests');},
@@ -2047,7 +2045,7 @@ if(!S.events.length) track('onboarding_step_viewed',{step_name:'welcome',step_in
 
 <script>
 if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => navigator.serviceWorker.register('sw.js?v=4226718d').catch(() => {}));
+  window.addEventListener('load', () => navigator.serviceWorker.register('sw.js?v=a037e505').catch(() => {}));
 }
 </script>
 </body>
