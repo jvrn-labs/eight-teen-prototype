@@ -555,7 +555,7 @@ const ME_XY={x:206,y:350}; const MY=y=>20+y*.75; const M_PER_UNIT=3.2;
 let S;
 function seed(){
   const now=Date.now();
-  const P=(o)=>Object.assign({anon:false,uni:true,spot:false,bubble:null,images:[],poll:null,gif:null,voice:null,ate:0,ated:false,tags:[],mentions:[],edited:false,removed:false,pinned:false,reach:'normal'},o,{at:now-(o.ago||0)*MIN});
+  const P=(o)=>Object.assign({anon:false,uni:true,spot:false,bubble:null,images:[],poll:null,gif:null,voice:null,ate:0,ated:false,tags:[],mentions:[],edited:false,removed:false,pinned:false,reach:'normal'},o,{at:now-(o.ago||0)*MIN,tags:o.tags||tagsOf(o.text)});
   const posts=[
     P({id:'p3',by:'u5',cat:'other',pinned:true,ago:600,text:'ยินดีต้อนรับสู่ EIGHT TEEN เบต้า 🎉 ทุกคนในนี้เป็นนิสิตจุฬาฯ ตัวจริง ยืนยันตัวตนแล้วทุกบัญชี อ่านกติกาชุมชนก่อนโพสต์นะ #EIGHTTEEN',ate:356}),
     P({id:'p1',by:'u1',cat:'food',bubble:'samyan',ago:52,text:'ข้าวมันไก่ร้านใหม่หลังสามย่านฯ ATE มาก ไก่นุ่ม น้ำจิ้มถึง ไปบ่ายสองคิวไม่ยาว #สามย่าน',images:[{src:'img/chicken-rice.jpg',alt:'ข้าวมันไก่ไหหลำพร้อมน้ำจิ้ม'}],ate:1284}),
@@ -2037,6 +2037,7 @@ const routedAtLoad=applyRoute(location.hash);
 /* the prompt asks for a fresh feed each load */
 if(!routedAtLoad&&!S.done&&S.ob.started&&S.ob.step!=='welcome'&&S.ob.step!=='resume'){S.ob.resumeTo=S.ob.step;S.ob.step='resume';}
 if(S.done&&top().s==='compose'&&!S.draft) S.nav=[{s:S.tab}];
+S.posts.forEach(p=>{if(!p.tags||!p.tags.length)p.tags=tagsOf(p.text);});
 document.documentElement.classList.add('no-tr');
 render();
 requestAnimationFrame(()=>requestAnimationFrame(()=>setTimeout(()=>document.documentElement.classList.remove('no-tr'),120)));
@@ -2046,7 +2047,7 @@ if(!S.events.length) track('onboarding_step_viewed',{step_name:'welcome',step_in
 
 <script>
 if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => navigator.serviceWorker.register('sw.js?v=be652202').catch(() => {}));
+  window.addEventListener('load', () => navigator.serviceWorker.register('sw.js?v=4226718d').catch(() => {}));
 }
 </script>
 </body>
