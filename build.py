@@ -11,7 +11,7 @@ import hashlib
 root = Path(__file__).parent
 frag = (root / "eight-teen-prototype.html").read_text(encoding="utf-8")
 _h = hashlib.sha1(frag.encode())
-for _p in sorted(list((root / "icons").glob("*")) + list((root / "img").rglob("*.jpg")) + [root / "build.py", root / "sw.template.js", root / "manifest.webmanifest"]):
+for _p in sorted(list((root / "icons").glob("*")) + list((root / "img").rglob("*.jpg")) + list((root / "img").rglob("*.gif")) + [root / "build.py", root / "sw.template.js", root / "manifest.webmanifest"]):
     _h.update(_p.read_bytes())
 version = _h.hexdigest()[:8]
 

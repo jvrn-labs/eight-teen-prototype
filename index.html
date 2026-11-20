@@ -453,6 +453,25 @@ body{font-size:calc(16px*var(--ts,1));line-height:1.6}
   .bsheet.peek{padding-bottom:calc(84px + var(--sab))}
   .kb .screen{padding-bottom:0}
 }
+/* v1.7: comment media, ad slots */
+.catt{display:flex;align-items:center;gap:10px;padding:8px 16px 0;flex:none}
+.catt-i{position:relative;width:64px;height:48px;border-radius:10px;overflow:hidden;background:var(--sunken)}
+.catt-i img{width:100%;height:100%;object-fit:cover;display:block}
+.catt-x{position:absolute;top:2px;right:2px;width:22px;height:22px;border-radius:99px;background:rgba(11,16,38,.75);color:#fff;display:flex;align-items:center;justify-content:center}
+.gifb{position:absolute;left:6px;bottom:6px;font:700 10px/1 var(--f-num);letter-spacing:.04em;background:rgba(11,16,38,.75);color:#fff;padding:3px 5px;border-radius:5px}
+.cmedia{position:relative;margin-top:8px;width:min(220px,100%);border-radius:14px;overflow:hidden;background:var(--sunken)}
+.cmedia img{display:block;width:100%;height:auto;max-height:220px;object-fit:cover}
+.attgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:12px}
+.attgrid button{aspect-ratio:1;border-radius:10px;background-size:cover;background-position:center;background-color:var(--sunken)}
+.attgrid.gif button{aspect-ratio:4/3}
+.seg{display:flex;gap:4px;background:var(--surface);border-radius:999px;padding:4px}
+.seg button{flex:1;min-height:36px;border-radius:999px;font-weight:700;color:var(--ink2)}
+.seg button.on{background:var(--canvas);color:var(--ink);box-shadow:0 1px 3px rgba(11,16,38,.12)}
+.adcard{background:color-mix(in srgb,var(--surface) 60%,var(--canvas))}
+.adlbl{display:flex;align-items:center;gap:6px;font:700 calc(12px*var(--ts,1))/1 var(--f-num);color:var(--tert);margin:-6px 0 6px}
+.adav{width:40px;height:40px;border-radius:12px;background:#ff9f1c;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;flex:none}
+.adcta{display:flex;align-items:center;gap:8px;margin-top:10px;padding-bottom:6px}
+.adnet{border:1.5px dashed var(--border);border-radius:14px;padding:22px 16px;display:flex;flex-direction:column;gap:4px;align-items:center;text-align:center;color:var(--ink2)}
 </style>
 
 <div class="stage">
@@ -793,6 +812,20 @@ function tabbar(){
 function oq(txt){return `<span class="pill oq" title="PRD open question">${I('help','xs')} ${txt}</span>`;}
 
 /* ============ POST CARD ============ */
+/* v1.7 ad slots (switched on for review; go-live phase not decided). Rules: see Confluence "Feed ranking & ad rules". */
+const GIFS=[['ate','ate ปัง yes'],['lol','555 lol ขำ funny'],['wow','wow ว้าว omg'],['hungry','hungry หิว food'],['fight','go สู้ fighting'],['confused','งง confused ???'],['fire','slay ปัง fire'],['thanks','thanks ขอบคุณ thx']];
+const CAMROLL=['chicken-rice','library','arts-library','auditorium','sala','sala-night','samyan'];
+function adCard(kind){
+  if((S.hiddenAds||[]).includes(kind)) return '';
+  if(kind==='network') return `<article class="post adcard"><div class="adlbl">${L('โฆษณา','Ad')}<button class="iconbtn plain" style="margin-left:auto;width:32px;height:32px" data-act="adMenu" data-arg="network" aria-label="${L('ตัวเลือกโฆษณา','Ad options')}">${I('more','sm')}</button></div>
+   <div class="adnet"><div class="cap" style="font-weight:700">${L('ช่องโฆษณาจากเครือข่าย','Network ad slot')}</div><div class="cap">${L('โฆษณาแบบเนทีฟจากเครือข่าย เช่น AdMob · ตัวอย่างตำแหน่งเท่านั้น','Native ad from a network such as AdMob · placement preview only')}</div></div></article>`;
+  return `<article class="post adcard" data-act="adOpen" data-arg="sponsored">
+   <div class="adlbl">${I('sparkle','xs')} ${L('ได้รับการสนับสนุน','Sponsored')}<button class="iconbtn plain" style="margin-left:auto;width:32px;height:32px" data-act="adMenu" data-arg="sponsored" aria-label="${L('ตัวเลือกโฆษณา','Ad options')}">${I('more','sm')}</button></div>
+   <div class="phead"><span class="adav">ป</span><div style="flex:1;min-width:0"><div class="pname">${L('ข้าวมันไก่ป้าแดง สามย่าน','Pa Daeng Chicken Rice, Samyan')}</div><div class="pmeta">${L('ร้านใกล้แคมปัส · ตัวอย่าง','Near campus · sample')}</div></div></div>
+   <div class="ptext">${L('นิสิตจุฬาฯ โชว์แอป EIGHT TEEN ลด 15% ทุกเมนู ถึงสิ้นเดือนนี้ 🍗','Chula students: show EIGHT TEEN for 15% off every dish until the end of this month 🍗')}</div>
+   <div class="pimgs n1"><img class="pimg" src="img/chicken-rice.jpg" alt="${L('ข้าวมันไก่','Chicken rice')}" loading="lazy"></div>
+   <div class="adcta"><span class="cap">${L('ห่างไป 400 ม.','400 m away')}</span><span class="btn sm primary" style="margin-left:auto">${L('ดูโปรโมชัน','See the deal')}</span></div></article>`;
+}
 function postCard(p,ctx={}){
   const a=authorView(p,p.id); const mine=p.by==='me';
   const b=p.bubble&&bubble(p.bubble);
@@ -1028,7 +1061,8 @@ function vUniFeed(){
     if(h.cat!=='all') list=list.filter(p=>p.cat===h.cat);
     list=sortPosts(list,h.sort);
     const pinned=S.posts.find(p=>p.pinned&&viewerCanSee(p));
-    body=(h.cat==='all'&&pinned?postCard(pinned):'')+(list.length?list.map(p=>postCard(p)).join(''):`<div class="empty"><div class="ill">${I('sparkle','lg')}</div><div class="h2">${L('ยังไม่มีโพสต์ในหมวดนี้','No posts in this category yet')}</div><button class="btn primary sm" data-act="compose">${L('โพสต์เป็นคนแรก','Be the first to post')}</button></div>`);
+    const ads=S.sim.ads!==false&&h.cat==='all';
+    body=(h.cat==='all'&&pinned?postCard(pinned):'')+(list.length?list.map((p,i)=>postCard(p)+(ads&&i===3?adCard('sponsored'):'')+(ads&&i===9?adCard('network'):'')).join(''):`<div class="empty"><div class="ill">${I('sparkle','lg')}</div><div class="h2">${L('ยังไม่มีโพสต์ในหมวดนี้','No posts in this category yet')}</div><button class="btn primary sm" data-act="compose">${L('โพสต์เป็นคนแรก','Be the first to post')}</button></div>`);
   }
   const prompt=h.firstPrompt?firstPostPrompt():'';
   return `<div class="scroll tabpad">${catChips(h.cat,'cat',[['all','ทั้งหมด','All']].concat(CATS))}<div style="height:6px"></div>
@@ -1179,11 +1213,13 @@ function vPost(id){
    <div id="cSuggest"></div>
    ${T.reply?`<div style="display:flex;align-items:center;gap:8px;padding:8px 16px;background:var(--surface);font-size:calc(13px*var(--ts,1));flex:none"><span style="flex:1">${L('ตอบกลับ ','Replying to ')}<b>${esc(T.reply.label)}</b></span><button class="iconbtn plain" style="width:28px;height:28px" data-act="cancelReply" aria-label="cancel">${I('x','sm')}</button></div>`:''}
    <div id="cHint" class="cap" style="padding:0 16px;flex:none"></div>
+   ${T.cAtt&&!T.rec?`<div class="catt"><div class="catt-i"><img src="${T.cAtt.src}" alt="">${T.cAtt.kind==='gif'?'<span class="gifb">GIF</span>':''}<button class="catt-x" data-act="cAttClear" aria-label="${L('เอาออก','Remove')}">${I('x','xs')}</button></div><span class="cap">${T.cAtt.kind==='gif'?L('GIF 1 รายการ','1 GIF'):L('รูป 1 รูป · AI ตรวจก่อนขึ้น','1 photo · AI checks it before it shows')}</span></div>`:''}
    <div class="cbar">${T.rec?`<div style="flex:1;display:flex;align-items:center;gap:10px;height:44px;border-radius:22px;background:var(--danger-bg);padding:0 16px;color:var(--danger);font-weight:700"><span style="width:10px;height:10px;border-radius:9px;background:var(--danger)"></span> ${L('กำลังอัด','Recording')} <span class="num" id="recT">0:00</span><span class="cap" style="margin-left:auto">${L('สูงสุด 60 วิ','max 60s')}</span></div><button class="iconbtn" data-act="recCancel" aria-label="cancel">${I('x')}</button><button class="fab" style="width:44px;height:44px;box-shadow:none" data-act="recStop" aria-label="send">${I('send','sm')}</button>`:
      `<button data-act="cmode" style="min-width:44px;min-height:44px;display:flex;align-items:center;justify-content:center" aria-label="${L('สลับโหมด','Switch mode')}" style="position:relative">${cAuthor.av(36)}<span style="position:absolute;right:-3px;bottom:-3px;width:18px;height:18px;border-radius:99px;background:var(--ink);color:var(--canvas);display:flex;align-items:center;justify-content:center">${I('swap','xs')}</span></button>
       <textarea id="cInput" class="cinput" rows="1" maxlength="500" placeholder="${cm==='anon'?L('ตอบในนามนิรนาม…','Reply anonymously…'):L('ตอบในนาม ','Reply as ')+esc(S.me.name)+'…'}" data-on="cInput"></textarea>
-      <button class="iconbtn" id="cMic" data-act="recStart" aria-label="${L('คอมเมนต์เสียง','Voice comment')}">${I('mic')}</button>
-      <button class="fab" id="cSend" style="width:44px;height:44px;box-shadow:none;display:none" data-act="sendComment" aria-label="${L('ส่ง','Send')}">${I('send','sm')}</button>`}</div>
+      <button class="iconbtn" id="cAttach" data-act="cAttach" aria-label="${L('แนบรูปหรือ GIF','Add a photo or GIF')}">${I('image')}</button>
+      <button class="iconbtn" id="cMic" data-act="recStart" aria-label="${L('คอมเมนต์เสียง','Voice comment')}" style="${T.cAtt?'display:none':''}">${I('mic')}</button>
+      <button class="fab" id="cSend" style="width:44px;height:44px;box-shadow:none;display:${T.cAtt?'flex':'none'}" data-act="sendComment" aria-label="${L('ส่ง','Send')}">${I('send','sm')}</button>`}</div>
   </div>`;
 }
 function commentHTML(c,p,isReply){
@@ -1192,7 +1228,7 @@ function commentHTML(c,p,isReply){
   if(c.replyTo){const r=c.replyTo; const lab=r.anon?aliasOf(p.id,r.uid).name:user(r.uid).name; replyLbl=`<span class="cap" style="color:var(--brand-ink)">${L('ตอบกลับ ','Replying to ')}${esc(lab)}</span><br>`;}
   return `<div class="cmt ${isReply?'reply':''}">${a.av(isReply?30:36)}<div class="cb">
     <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap"><span class="lbl">${esc(a.name)}</span>${a.anon?'':VERIFIED}${op?`<span class="pill op">${L('ผู้โพสต์','OP')}</span>`:''}<span class="cap">· ${rel(c.at)}</span></div>
-    ${replyLbl}${c.voice?voiceHTML(c):`<div style="font-size:calc(14px*var(--ts,1));line-height:calc(22px*var(--ts,1));white-space:pre-wrap;word-break:break-word">${rich(c.text,c)}</div>`}
+    ${replyLbl}${c.voice?voiceHTML(c):(c.text?`<div style="font-size:calc(14px*var(--ts,1));line-height:calc(22px*var(--ts,1));white-space:pre-wrap;word-break:break-word">${rich(c.text,c)}</div>`:'')}${c.media?`<div class="cmedia"><img src="${c.media.src}" alt="${c.media.kind==='gif'?'GIF':L('รูปในคอมเมนต์','Comment photo')}" loading="lazy">${c.media.kind==='gif'?'<span class="gifb">GIF</span>':''}</div>`:''}
     <div style="display:flex;gap:4px;margin-left:-8px;margin-top:2px">
       <button class="pact" data-act="reply" data-arg="${c.id}">${I('comment','xs')} ${L('ตอบ','Reply')}</button>
       <button class="pact ate ${c.ated?'on':''}" data-act="ate" data-arg="comment:${c.id}">${I('flame','xs')} ${c.ate||''}</button>
@@ -1360,7 +1396,7 @@ function vProfile(id){
     </div>
     <div class="h1" style="margin-top:10px;display:flex;gap:6px;align-items:center">${esc(u.name)} ${VERIFIED}</div>
     <div class="cap">@${esc(u.user)}${facYear(u)?' · '+facYear(u):''} · ${L('จุฬาฯ','Chula')}</div>
-    <div style="margin-top:8px;font-size:calc(14px*var(--ts,1))"><b class="num">${posts.length}</b> ${L('โพสต์','posts')} · <b class="num">${kfmt(ateRecv)}</b> ${L('ATE ที่ได้','ATE received')} · <b class="num">${cmts}</b> ${L('คอมเมนต์','comments')}</div>
+    <div style="margin-top:8px;font-size:calc(14px*var(--ts,1))"><b class="num">${posts.length}</b> ${L('โพสต์','posts')} · <b class="num">${kfmt(ateRecv)}</b> ${L('ATE ที่ได้','ATE received')}</div>
     ${u.bio?`<p style="margin:6px 0 0;font-size:calc(14px*var(--ts,1))">${esc(u.bio)}</p>`:''}
     ${u.interests&&u.interests.length?`<div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:10px">${u.interests.map(i=>{const x=INTERESTS.find(y=>y[0]===i);return x?`<span class="pill">${L(x[1],x[2])}</span>`:'';}).join('')}</div>`:''}
     </div>
@@ -1388,14 +1424,14 @@ function vSettings(){
   return `<div class="screen">${topbar(L('ตั้งค่า','Settings'))}<div class="scroll" style="padding-bottom:40px">
    <div class="card" style="margin:6px 16px">${sRow('user',L('บัญชี','Account'),'','go','account')}${sRow('lock',L('ความเป็นส่วนตัว','Privacy'),'','go','privacy')}${sRow('globe',L('ภาษา','Language'),S.lang==='th'?'ไทย':'English','go','language')}${sRow('moon',L('ธีมและตัวอักษร','Theme & text'),th,'go','theme')}${sRow('help',L('ช่วยเหลือ','Help'),'','go','help')}</div>
    <div class="pad cap" style="margin-top:14px">${L('การแจ้งเตือน ช่วงพักแจ้งเตือน และรายการที่บล็อก/ปิดเสียง จะมาใน MVP 2','Notification settings, quiet hours and the Blocked & muted list come in MVP 2.')}</div>
-   <div class="card" style="margin:14px 16px 0">${sRow('sparkle',L('เครื่องมือทดสอบ (ต้นแบบ)','Prototype test tools'),'','panelOpen')}</div><div class="pad cap" style="margin-top:6px">EIGHT TEEN 0.4.0 · ${L('ต้นแบบ','prototype')}</div></div></div>`;
+   <div class="card" style="margin:14px 16px 0">${sRow('sparkle',L('เครื่องมือทดสอบ (ต้นแบบ)','Prototype test tools'),'','panelOpen')}</div><div class="pad cap" style="margin-top:6px">EIGHT TEEN 0.5.0 · ${L('ต้นแบบ','prototype')}</div></div></div>`;
 }
 function vAccount(){
   const days=Math.round((S.me.verifiedAt+365*DAY-Date.now())/DAY);
   return `<div class="screen">${topbar(L('บัญชี','Account'))}<div class="scroll" style="padding-bottom:40px">
    <div class="card" style="margin:6px 16px;padding:16px"><div class="cap">${L('บัญชีมหาวิทยาลัย','University account')}</div><div class="lbl" style="word-break:break-all">${S.me.email}</div><div class="cap" style="margin-top:8px">${L('มหาวิทยาลัย','University')}</div><div class="lbl">${L(uni().th,uni().en)}</div><div class="cap" style="margin-top:8px">${L('ยืนยันตัวตนครั้งถัดไปใน ','Re-verify in ')}<b style="color:var(--ink)">${days} ${L('วัน','days')}</b></div></div>
    <div class="card" style="margin:12px 16px">${sRow('refresh',L('ยืนยันตัวตนอีกครั้ง','Re-verify now'),'','reverify')}${sRow('download',L('ดาวน์โหลดข้อมูลของฉัน','Download my data'),'','downloadData')}${sRow('logout',L('ออกจากระบบ','Log out'),'','logout')}</div>
-   <div class="card" style="margin:12px 16px"><button class="row" data-act="go" data-arg="deleteAccount" style="color:var(--danger)">${I('trash')}<span class="rt lbl">${L('ลบบัญชี','Delete account')}</span>${I('chev','sm')}</button></div></div></div>`;
+   <div class="pad cap" style="margin-top:6px">${L('ต้องการลบบัญชี? ไปที่ ช่วยเหลือ › แจ้งปัญหาการใช้งาน','Want to delete your account? Go to Help › Report a problem.')}</div></div></div>`;
 }
 function vDeleteAccount(){
   return `<div class="screen">${topbar(L('ลบบัญชี','Delete account'))}<div class="scroll pad" style="padding-bottom:20px">
@@ -1438,7 +1474,8 @@ function vSupport(kind){
   return `<div class="screen">${topbar(contact?L('ติดต่อทีมงาน','Contact support'):L('แจ้งปัญหา','Report a problem'))}<div class="scroll pad" style="display:flex;flex-direction:column;gap:14px;padding-bottom:20px">
    <p class="ink2" style="margin:0">${contact?L('บอกเราว่าต้องการความช่วยเหลือเรื่องอะไร ทีมงานตอบกลับในแอป','Tell us what you need. We reply in the app.'):L('เจออะไรไม่ทำงาน? เล่าให้เราฟังหน่อย','Something not working? Tell us what happened.')}</p>
    <div class="field"><label for="supText">${L('รายละเอียด','Details')}</label><textarea class="input" id="supText" rows="6" maxlength="1000" placeholder="${L('เกิดอะไรขึ้น','What happened?')}"></textarea></div>
-   ${contact?'':`<label class="check" style="padding:0"><span class="box on">${I('check','xs')}</span><span class="cap" style="color:var(--ink2)">${L('แนบข้อมูลอุปกรณ์และเวอร์ชันแอป','Attach device info and app version')}</span></label>`}
+   ${contact?'':`<label class="check" style="padding:0"><span class="box on">${I('check','xs')}</span><span class="cap" style="color:var(--ink2)">${L('แนบข้อมูลอุปกรณ์และเวอร์ชันแอป','Attach device info and app version')}</span></label>
+   <div style="margin-top:10px"><div class="cap" style="margin-bottom:6px">${L('อยากเลิกใช้ EIGHT TEEN?','Want to leave EIGHT TEEN?')}</div><div class="card"><button class="row" data-act="go" data-arg="deleteAccount" style="color:var(--danger)">${I('trash')}<span class="rt lbl">${L('ลบบัญชี','Delete account')}</span>${I('chev','sm')}</button></div></div>`}
   </div><div class="ob-foot"><button class="btn primary block" data-act="sendSupport" data-arg="${kind}">${L('ส่ง','Send')}</button></div></div>`;
 }
 function vRemoval(nid){
@@ -1536,6 +1573,16 @@ function renderOverlay(){
      <div class="card" style="width:100%;padding:14px;text-align:left;display:flex;flex-direction:column;gap:10px"><div style="display:flex;align-items:center;gap:10px"><span class="num" style="font-size:calc(26px*var(--ts,1));color:var(--brand)">1323</span><span class="cap" style="color:var(--ink2)">${L('สายด่วนสุขภาพจิต กรมสุขภาพจิต (ฟรี 24 ชม.)','Department of Mental Health hotline (free, 24h)')}</span></div><div style="display:flex;align-items:center;gap:10px"><span class="num" style="font-size:calc(18px*var(--ts,1))">02-218-0540</span><span class="cap" style="color:var(--ink2)">${L('ศูนย์ให้คำปรึกษา จุฬาฯ (Chula Student Wellness)','Chula Student Wellness')}</span></div></div>
      <button class="btn primary block" data-act="closeOv">${L('ขอบคุณ กลับไปที่โพสต์','Thanks, back to my post')}</button><div class="cap">${L('โพสต์นี้ยังไม่ได้เผยแพร่','This post hasn’t been published')}</div></div>`);
   if(o.t==='rateLimit') h=sheet('',`<div class="empty" style="padding:8px 28px"><div class="ill">${I('clock','lg')}</div><div class="h2">${L('โพสต์ครบ 10 ครั้งใน 1 ชั่วโมงแล้ว','You’ve posted 10 times this hour')}</div><p class="ink2" style="margin:0">${L('พักแป๊บนึง แล้วลองใหม่ใน ','Take a short break and try again in ')}${o.wait} ${L('นาที','min')}. ${L('ร่างของคุณยังอยู่','Your draft is saved.')}</p><button class="btn dark block" data-act="closeOv">${L('โอเค','OK')}</button></div>`);
+  if(o.t==='cAttach'){
+    const tab=T.attTab||'photo'; const q=(T.gifQ||'').toLowerCase();
+    const gifs=GIFS.filter(g=>!q||g[0].includes(q)||g[1].includes(q));
+    h=sheet(L('แนบในคอมเมนต์','Add to comment'),`<div class="pad" style="padding-bottom:18px">
+      <div class="seg" role="tablist"><button class="${tab==='photo'?'on':''}" data-act="attTab" data-arg="photo" role="tab" aria-selected="${tab==='photo'}">${L('รูปภาพ','Photos')}</button><button class="${tab==='gif'?'on':''}" data-act="attTab" data-arg="gif" role="tab" aria-selected="${tab==='gif'}">GIF</button></div>
+      ${tab==='photo'?`<div class="attgrid">${CAMROLL.map(n=>`<button data-act="pickAtt" data-arg="photo|img/${n}.jpg" style="background-image:url('img/${n}.jpg')" aria-label="${L('เลือกรูปนี้','Pick this photo')}"></button>`).join('')}</div><div class="cap" style="margin-top:10px">${L('1 รูปต่อคอมเมนต์ · ลบตำแหน่งในรูปให้อัตโนมัติ · AI ตรวจก่อนขึ้น','1 photo per comment · location data removed · AI checks it before it shows')}</div>`
+      :`<input class="input" id="gifQ" placeholder="${L('ค้นหา GIF','Search GIFs')}" value="${esc(T.gifQ||'')}" data-on="gifQ" style="margin-top:12px"><div class="attgrid gif">${gifs.map(g=>`<button data-act="pickAtt" data-arg="gif|img/gif/${g[0]}.gif" style="background-image:url('img/gif/${g[0]}.gif')" aria-label="GIF ${g[0]}"></button>`).join('')||`<div class="cap" style="grid-column:1/-1;padding:16px 0">${L('ไม่เจอ GIF','No GIFs found')}</div>`}</div><div class="cap" style="margin-top:10px">${L('GIF จากผู้ให้บริการ (รอเลือก) เปิดตัวกรองเนื้อหาปลอดภัย · สติกเกอร์และ GIF ที่บันทึกไว้มาทีหลัง','GIFs from a provider (to be chosen) with safe search on · Stickers and saved GIFs come later')}</div>`}
+    </div>`);
+  }
+  if(o.t==='adMenu') h=sheet(L('โฆษณานี้','About this ad'),`<div class="pad" style="padding-bottom:6px"><p class="ink2" style="margin:0 0 6px">${o.id==='network'?L('โฆษณานี้มาจากเครือข่ายโฆษณา เราไม่ส่งชื่อ อีเมล หรือตำแหน่งของคุณให้ผู้ลงโฆษณา','This ad comes from an ad network. We never share your name, email or location with advertisers.'):L('คุณเห็นโฆษณานี้เพราะเป็นนิสิตจุฬาฯ ผู้ลงโฆษณาเลือกได้แค่มหาวิทยาลัยและหมวด ไม่เห็นข้อมูลของคุณ','You see this because you study at Chula. Advertisers can only pick a university and a topic. They never see who you are.')}</p></div>${mRow('eyeoff',L('ซ่อนโฆษณานี้','Hide this ad'),'hideAd',o.id)}${mRow('flag',L('รายงานโฆษณา','Report this ad'),'reportAd',o.id)}`);
   el.innerHTML=h;
 }
 
@@ -1543,7 +1590,7 @@ function renderOverlay(){
 function renderPanel(){
   const p=$('#panel'); if(!p) return;
   const jump=[['home','Home · University'],['bubbleMap','Bubble map'],['search','Search'],['compose','Compose'],['post','Post detail'],['activity','Activity'],['profile','My profile'],['other','Classmate profile'],['settings','Settings']];
-  p.innerHTML=`<div style="display:flex;gap:10px;align-items:flex-start"><div style="flex:1"><h2>EIGHT TEEN · MVP 1</h2><div class="cap">Clickable prototype of PRD v1.4 (Jira KAN). New in v1.4: posts go to University, with an optional place; On the spot stamp, LIVE events and Drops on the Bubble map. No backend: data lives in this browser and resets with the button below.</div></div><button class="iconbtn pclose" data-act="panelClose" aria-label="Close">${I('x')}</button></div>
+  p.innerHTML=`<div style="display:flex;gap:10px;align-items:flex-start"><div style="flex:1"><h2>EIGHT TEEN · MVP 1</h2><div class="cap">Clickable prototype of PRD v1.4 (Jira KAN). New in v1.4: posts go to University, with an optional place; On the spot stamp, LIVE events and Drops on the Bubble map. New in v1.7 (20 Nov): photos and GIFs in comments, two ad slots in the University feed (sponsored and network), Delete account moved to Help › Report a problem, and the comment count removed from profiles. No backend: data lives in this browser and resets with the button below.</div></div><button class="iconbtn pclose" data-act="panelClose" aria-label="Close">${I('x')}</button></div>
    <div><h3>Jump to</h3><div class="pbtns">${S.done?jump.map(j=>`<button class="pbtn" data-act="jump" data-arg="${j[0]}">${j[1]}</button>`).join(''):`<button class="pbtn" data-act="skipOnboarding">Skip onboarding</button>`}<button class="pbtn" data-act="resetAll">Reset demo</button></div></div>
    <div><h3>App</h3><div class="pbtns"><button class="pbtn ${S.lang==='th'?'on':''}" data-act="lang" data-arg="th">ไทย</button><button class="pbtn ${S.lang==='en'?'on':''}" data-act="lang" data-arg="en">English</button>${['system','light','dark'].map(t=>`<button class="pbtn ${S.settings.theme===t?'on':''}" data-act="setTheme" data-arg="${t}">${t}</button>`).join('')}</div></div>
    ${S.done?`<div><h3>Pretend I’m at…</h3><div class="pbtns">${[['none','Off campus'],['lib','Central Library'],['lawn','Main Lawn'],['openhouse','Open House (LIVE)'],['cafe','CU Café']].map(x=>`<button class="pbtn ${(S.sim.here||'none')===x[0]?'on':''}" data-act="simHere" data-arg="${x[0]}">${x[1]}</button>`).join('')}</div><div class="cap" style="margin-top:6px">Location ${locOn()?'on':'off'}. Being inside a bubble’s radius gives the On the spot stamp, unlocks posting into a LIVE event, and opens Drops.</div></div>
@@ -1552,6 +1599,7 @@ function renderPanel(){
      <button class="pbtn" data-act="simRemoved">My comment gets removed</button>
      <button class="pbtn" data-act="simReverify">Re-verify due</button>
      <button class="pbtn ${S.sim.offline?'on':''}" data-act="simOffline">Feed offline</button>
+     <button class="pbtn ${S.sim.ads!==false?'on':''}" data-act="simAds">Ad slots in feed</button>
      <button class="pbtn ${S.sim.uploadFail?'on':''}" data-act="simUpload">Image upload fails</button>
      <button class="pbtn" data-act="simShared">Link opened by another campus</button>
      <button class="pbtn" data-act="simRestart">Kill app mid-onboarding</button></div></div>
@@ -1688,15 +1736,15 @@ const A={
   reply(a){const c=S.comments.find(x=>x.id===a);const p=S.posts.find(x=>x.id===c.post);const label=c.anon?aliasOf(p.id,c.by).name:user(c.by).name;T.reply={id:c.parent||c.id,to:{anon:c.anon,uid:c.by},label};const v=($('#cInput')||{}).value;render();const i=$('#cInput');if(i){i.value=v||'';i.focus();}},
   cancelReply(){T.reply=null;render();},
   sendComment(){
-    const i=$('#cInput'); const text=i.value.trim(); if(!text) return;
+    const i=$('#cInput'); const text=i.value.trim(); const att=T.cAtt; if(!text&&!att) return;
     if(URL_RE.test(text)) return;
     const pid=top().a; const p=S.posts.find(x=>x.id===pid); const mode=T.cmode||S.settings.mode;
     const ments=mode==='anon'?[]:mentionsIn(text).map(u=>Object.values(USERS).find(x=>x.user===u)).filter(u=>u&&u.mentions!=='none'&&!isBlocked(u.id)).map(u=>u.id);
     if(mentionsIn(text).length>5&&mode!=='anon'){toast(L('แท็กได้ไม่เกิน 5 คน','Max 5 mentions'));return;}
     const mod=moderate(text); if(mod.level==='high'){openOv({t:'blocked',reason:mod.reason});return;} if(mod.level==='self'){openOv({t:'support'});return;}
-    const c={id:uid('c'),post:pid,by:'me',anon:mode==='anon',parent:T.reply?T.reply.id:null,replyTo:T.reply?T.reply.to:null,text,at:Date.now(),ate:0,ated:false,voice:null,mentions:ments,removed:false};
-    S.comments.push(c);
-    track('comment_created',{post_id:pid,type:'text',mode:c.anon?'anonymous':'identity',is_reply:!!c.parent,replying_to_anonymous:!!(c.replyTo&&c.replyTo.anon),mentions_count:ments.length});
+    const c={id:uid('c'),post:pid,by:'me',anon:mode==='anon',parent:T.reply?T.reply.id:null,replyTo:T.reply?T.reply.to:null,text,at:Date.now(),ate:0,ated:false,voice:null,media:att?{kind:att.kind,src:att.src}:null,mentions:ments,removed:false};
+    S.comments.push(c); T.cAtt=null;
+    track('comment_created',{post_id:pid,type:att?att.kind:'text',has_text:!!text,mode:c.anon?'anonymous':'identity',is_reply:!!c.parent,replying_to_anonymous:!!(c.replyTo&&c.replyTo.anon),mentions_count:ments.length});
     T.reply=null; render(); const sc=$('#postScroll'); if(sc) sc.scrollTop=sc.scrollHeight; toast(L('ส่งคอมเมนต์แล้ว','Comment sent'));
   },
   pickMention(a){const [ctx,un,group,pos]=a.split('|');const el=ctx==='c'?$('#cInput'):$('#cmpText');const tok=activeToken(el);if(!tok)return;track('mention_added',{source:ctx==='c'?'comment':'post',group,position:+pos});replaceToken(el,tok,'@'+un);},
@@ -1765,6 +1813,15 @@ const A={
   simRemoved(){addNotif({type:'removed',removedText:'ใครเชื่อโพสต์นี้ก็โง่แล้ว',html:L('<b>คอมเมนต์ของคุณถูกนำออก · คำเตือนครั้งที่ 1</b>','<b>Your comment was removed · Warning 1</b>'),prev:L('แตะเพื่อดูเหตุผลและยื่นอุทธรณ์','Tap to see why and appeal')});render();toast(L('มีแจ้งเตือนใหม่','New notification'),{act:'tab',arg:'activity',label:L('ดู','View')});},
   simReverify(){S.me.verifiedAt=Date.now()-358*DAY;addNotif({type:'reverify',channel:'in_app',html:L('ถึงเวลายืนยันตัวตนประจำปี ยืนยันภายใน 7 วันเพื่อโพสต์ต่อได้','Time for your yearly re-verification. Re-verify within 7 days to keep posting.')});render();},
   simOffline(){S.sim.offline=!S.sim.offline;render();},
+  simAds(){S.sim.ads=S.sim.ads===false;render();toast(S.sim.ads?'Ad slots shown':'Ad slots hidden');},
+  cAttach(){T.attTab=T.attTab||'photo';openOv({t:'cAttach'});},
+  attTab(a){T.attTab=a;renderOverlay();},
+  pickAtt(a){const [kind,src]=a.split('|');const v=($('#cInput')||{}).value||'';T.cAtt={kind,src};closeOv();render();const i=$('#cInput');if(i){i.value=v;i.focus();H.cInput(i);}track('comment_media_added',{type:kind});},
+  cAttClear(){const v=($('#cInput')||{}).value||'';T.cAtt=null;render();const i=$('#cInput');if(i){i.value=v;H.cInput(i);}},
+  adMenu(a){openOv({t:'adMenu',id:a});},
+  adOpen(a){track('ad_clicked',{slot:a});toast(L('ตัวอย่าง: เปิดหน้าโปรโมชันของร้าน','Sample: opens the shop’s deal page'));},
+  hideAd(a){closeOv();S.hiddenAds=(S.hiddenAds||[]).concat(a);render();track('ad_hidden',{slot:a});toast(L('ซ่อนโฆษณาแล้ว','Ad hidden'));},
+  reportAd(a){closeOv();track('ad_reported',{slot:a});toast(L('ขอบคุณ ทีมงานจะตรวจโฆษณานี้','Thanks. Our team will review this ad.'));},
   simUpload(){S.sim.uploadFail=!S.sim.uploadFail;render();},
   simShared(){push('shared');},
   simRestart(){S.done=false;S.ob.started=true;S.ob.resumeTo='profile';S.ob.step='resume';render();},
@@ -1791,9 +1848,10 @@ const H={
     if(!files.length){toast(L('ใส่รูปได้สูงสุด 4 รูป','Up to 4 photos'));return;}
     let left=files.length;files.forEach(f=>{const r=new FileReader();r.onload=()=>shrink(r.result,900,u=>{S.draft.images.push({src:u,failed:S.sim.uploadFail});if(--left===0)render();});r.readAsDataURL(f);});},
   pollOpt(el){S.draft.poll.opts[+el.dataset.i]=el.value;refreshCompose();},
+  gifQ(el){T.gifQ=el.value;const pos=el.selectionStart;renderOverlay();const n=$('#gifQ');if(n){n.focus();n.setSelectionRange(pos,pos);}},
   cInput(el){
     el.style.height='auto'; el.style.height=Math.min(120,el.scrollHeight)+'px';
-    const v=el.value; const hasUrl=URL_RE.test(v); const has=v.trim().length>0;
+    const v=el.value; const hasUrl=URL_RE.test(v); const has=v.trim().length>0||!!T.cAtt;
     $('#cSend').style.display=has?'flex':'none'; $('#cMic').style.display=has?'none':'flex';
     $('#cSend').disabled=hasUrl; $('#cSend').style.opacity=hasUrl?.35:1;
     $('#cHint').innerHTML=hasUrl?`<div class="err-t" style="padding:6px 0">${I('link','xs')} ${L('ใส่ลิงก์ในคอมเมนต์ไม่ได้','Links can’t be added to comments')}</div>`:(mentionsIn(v).length>5&&(T.cmode||S.settings.mode)!=='anon'?`<div class="err-t" style="padding:6px 0">${L('แท็กได้ไม่เกิน 5 คน','Max 5 mentions')}</div>`:'');
@@ -1901,7 +1959,7 @@ if(!S.events.length) track('onboarding_step_viewed',{step_name:'welcome',step_in
 
 <script>
 if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => navigator.serviceWorker.register('sw.js?v=cc396cc9').catch(() => {}));
+  window.addEventListener('load', () => navigator.serviceWorker.register('sw.js?v=00225783').catch(() => {}));
 }
 </script>
 </body>

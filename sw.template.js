@@ -4,7 +4,8 @@ const ASSETS = ['./', 'index.html', 'manifest.webmanifest',
   'icons/favicon.ico', 'icons/favicon-32.png', 'icons/icon-192.png', 'icons/icon-512.png', 'icons/apple-touch-icon.png',
   'img/chicken-rice.jpg', 'img/library.jpg', 'img/arts-library.jpg', 'img/auditorium.jpg',
   'img/sala.jpg', 'img/sala-night.jpg', 'img/samyan.jpg',
-  'img/av/cat.jpg', 'img/av/dog.jpg', 'img/av/golden-hour.jpg', 'img/av/sneakers.jpg', 'img/av/concert.jpg', 'img/av/petals.jpg', 'img/av/bokeh.jpg', 'img/av/dandelion.jpg', 'img/av/blossom.jpg', 'img/av/camera.jpg', 'img/av/tea.jpg', 'img/av/sky.jpg'];
+  'img/av/cat.jpg', 'img/av/dog.jpg', 'img/av/golden-hour.jpg', 'img/av/sneakers.jpg', 'img/av/concert.jpg', 'img/av/petals.jpg', 'img/av/bokeh.jpg', 'img/av/dandelion.jpg', 'img/av/blossom.jpg', 'img/av/camera.jpg', 'img/av/tea.jpg', 'img/av/sky.jpg',
+  'img/gif/ate.gif', 'img/gif/lol.gif', 'img/gif/wow.gif', 'img/gif/hungry.gif', 'img/gif/fight.gif', 'img/gif/confused.gif', 'img/gif/fire.gif', 'img/gif/thanks.gif'];
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)).then(() => self.skipWaiting()));
 });
