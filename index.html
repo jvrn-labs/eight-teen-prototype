@@ -1185,18 +1185,17 @@ function vCompose(){
   return `<div class="screen" style="background:var(--canvas)">
    <div class="topbar"><button class="lbl" data-act="composeCancel">${L('ยกเลิก','Cancel')}</button><div class="t">${ed?L('แก้ไขโพสต์','Edit post'):L('โพสต์ใหม่','New post')}</div><span style="width:56px;flex:none"></span></div>
    <div class="scroll">
-    <div class="pad" style="display:flex;gap:12px;align-items:flex-start">
-      <div style="display:flex;flex-direction:column;align-items:center;gap:6px">${me.av(40)}</div>
-      <div style="flex:1;min-width:0">
-        ${ed?'':`<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:6px">
+    <div class="pad">
+      <div style="display:flex;gap:10px;align-items:center;margin-bottom:10px">${me.av(36)}
+        ${ed?`<div class="pname">${esc(me.name)}</div></div>`:`<div style="display:flex;gap:6px;flex-wrap:wrap">
           <button class="chip ${d.mode==='identity'?'on':''}" style="font-size:calc(13px*var(--ts,1))" data-act="dmode" data-arg="identity">${I('user','xs')} ${esc(S.me.name||L('ชื่อจริง','Identity'))}</button>
-          <button class="chip ${d.mode==='anon'?'on':''}" style="font-size:calc(13px*var(--ts,1))" data-act="dmode" data-arg="anon">${I('mask','xs')} ${L('นิรนาม','Anonymous')}</button></div>
+          <button class="chip ${d.mode==='anon'?'on':''}" style="font-size:calc(13px*var(--ts,1))" data-act="dmode" data-arg="anon">${I('mask','xs')} ${L('นิรนาม','Anonymous')}</button></div></div>
           ${d.mode==='anon'?`<div class="cap" style="margin-bottom:6px">${I('shield','xs')} ${L('คนอื่นเห็นแค่ชื่อแฝง แต่ระบบเก็บบัญชีจริงไว้ ถ้าผิดกติกาก็โดนลงโทษได้','Others only see an alias. We keep your real account, so the rules still apply.')}</div>`:''}`}
         <textarea id="cmpText" class="composer-ta" maxlength="1000" placeholder="${L('มีอะไรเกิดขึ้นในรั้วบ้าง?','What’s happening on campus?')}" data-on="cmpText">${esc(d.text)}</textarea>
         <div id="cmpImgs">${composeImgs()}</div>
         <div id="cmpPoll">${ed?'':composePoll()}</div>
         <div id="cmpLink">${composeLink()}</div>
-      </div></div>
+      </div>
    </div>
    <div id="cmpSuggest"></div>
    ${ed?'':`<div class="cplace"><div class="cdock-l"><span class="cap" style="font-weight:700;color:var(--ink2)">${L('สถานที่','Place')}</span> <span class="cap">${L('(ไม่บังคับ)','(optional)')}</span></div>
@@ -1875,7 +1874,7 @@ if(!S.events.length) track('onboarding_step_viewed',{step_name:'welcome',step_in
 
 <script>
 if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => navigator.serviceWorker.register('sw.js?v=971dd018').catch(() => {}));
+  window.addEventListener('load', () => navigator.serviceWorker.register('sw.js?v=b2e825db').catch(() => {}));
 }
 </script>
 </body>
