@@ -8,7 +8,7 @@
 <meta name="theme-color" content="#0b1026" media="(prefers-color-scheme: dark)">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="EIGHT TEEN">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icons/favicon.ico" sizes="48x48">
@@ -83,7 +83,8 @@ input,textarea,select{font:inherit;color:inherit}
 @media (max-width:520px){
   .stage{padding:0;gap:0}
   body{background:var(--canvas)}
-  .phone{width:100%;height:calc(100dvh - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px));min-height:0;border-radius:0;box-shadow:none;margin:0}
+  .phone{position:fixed;left:0;right:0;top:env(safe-area-inset-top,0px);bottom:env(safe-area-inset-bottom,0px);width:auto;height:auto;min-height:0;border-radius:0;box-shadow:none;margin:0}
+  body::before{content:"";position:fixed;left:0;right:0;top:0;height:env(safe-area-inset-top,0px);background:var(--canvas);z-index:9999;pointer-events:none}
   .statusbar,.homebar{display:none}
 }
 /* type */
@@ -368,8 +369,8 @@ body{font-size:calc(16px*var(--ts,1));line-height:1.6}
 .btn{font-weight:650;transition:transform 160ms var(--ease-out),opacity 160ms var(--ease-out)}
 .btn.primary{box-shadow:0 6px 18px color-mix(in srgb,var(--brand) 28%,transparent)}
 .btn.primary:active,.btn:active{transform:scale(.97);box-shadow:0 3px 10px color-mix(in srgb,var(--brand) 22%,transparent)}
-.fab-float{border-radius:999px;width:56px;height:56px;box-shadow:0 10px 26px color-mix(in srgb,var(--brand) 38%,transparent)}
-.fab-float:active{transform:scale(.95);box-shadow:0 6px 16px color-mix(in srgb,var(--brand) 30%,transparent)}
+.fab-float{border-radius:20px;width:58px;height:58px;box-shadow:4px 4px 0 var(--lime),0 12px 26px color-mix(in srgb,var(--brand) 30%,transparent)}
+.fab-float:active{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--lime),0 6px 14px color-mix(in srgb,var(--brand) 24%,transparent)}
 .iconbtn{background:transparent}
 .hdr-row .iconbtn,.topbar .iconbtn{background:var(--surface)}
 /* post card: more breathing room, one quiet hairline, softer meta */
@@ -1868,7 +1869,7 @@ if(!S.events.length) track('onboarding_step_viewed',{step_name:'welcome',step_in
 
 <script>
 if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => navigator.serviceWorker.register('sw.js?v=84d6812a').catch(() => {}));
+  window.addEventListener('load', () => navigator.serviceWorker.register('sw.js?v=49b70a3d').catch(() => {}));
 }
 </script>
 </body>
