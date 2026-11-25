@@ -172,8 +172,6 @@ svg.i.sm{width:18px;height:18px} svg.i.xs{width:15px;height:15px} svg.i.lg{width
 .livering{animation:lring 1.8s ease-out infinite;transform-box:fill-box;transform-origin:center}
 @keyframes lring{0%{transform:scale(.7);opacity:.7}100%{transform:scale(1.9);opacity:0}}
 .row[disabled]{opacity:.55;cursor:not-allowed}
-.drop{display:flex;gap:12px;align-items:center;margin:12px 20px 0;padding:14px;border-radius:18px;border:2px dashed var(--brand);background:var(--info);color:var(--ink);text-align:left;width:calc(100% - 40px)}
-.drop.open{border-style:solid;background:var(--canvas)}
 .pill.warn{background:var(--warn-bg);color:var(--warn)}
 .pill.danger{background:var(--danger-bg);color:var(--danger)}
 .pill.oq{background:transparent;border:1px dashed var(--tert);color:var(--muted)}
@@ -479,7 +477,7 @@ body{font-size:calc(16px*var(--ts,1));line-height:1.6}
 .attgrid button{aspect-ratio:1;border-radius:10px;background-size:cover;background-position:center;background-color:var(--sunken)}
 .attgrid.gif button{aspect-ratio:4/3}
 .seg{display:flex;gap:4px;background:var(--surface);border-radius:999px;padding:4px}
-.seg button{flex:1;min-height:36px;border-radius:999px;font-weight:700;color:var(--ink2)}
+.seg button{flex:1;min-height:36px;border-radius:999px;font-weight:700;color:var(--ink2);white-space:nowrap;flex-shrink:0}
 .seg button.on{background:var(--canvas);color:var(--ink);box-shadow:0 1px 3px rgba(11,16,38,.12)}
 .adcard{background:color-mix(in srgb,var(--surface) 60%,var(--canvas))}
 .adlbl{display:flex;align-items:center;gap:6px;font:700 calc(12px*var(--ts,1))/1 var(--f-num);color:var(--tert);margin:-6px 0 6px}
@@ -597,10 +595,6 @@ function seed(){
     home:{feed:'university',sort:'hot',cat:'all',bcat:'all',sheet:'peek',firstPrompt:true},
     draft:null, savedDraft:null, recent:[], waitlist:{},
     sim:{offline:false,uploadFail:false,here:'lib'},
-    drops:[
-      {id:'d1',bubble:'lawn',by:'u5',th:'🎁 ดรอปแรกของ EIGHT TEEN! โชว์หน้าจอนี้ที่บูธ EIGHT TEEN ข้างสนามจุ๊บ รับสติกเกอร์ฟรี 1 แผ่น (50 คนแรก)',en:'🎁 EIGHT TEEN’s first drop! Show this screen at the EIGHT TEEN booth by the Main Lawn for a free sticker (first 50 people).',opens:31,max:50},
-      {id:'d2',bubble:'openhouse',by:'u5',th:'🎁 รหัสลับ OPENHOUSE18 ใช้ที่บูธคณะบัญชีรับเครื่องดื่มฟรี',en:'🎁 Secret code OPENHOUSE18 gets you a free drink at the Accountancy booth.',opens:12,max:100}
-    ], dropsOpened:[],
     events:[], seq:100
   };
 }
@@ -659,6 +653,7 @@ more:'<circle cx="5" cy="12" r="1.2" fill="currentColor"/><circle cx="12" cy="12
 flame:'<path d="M12 2.8c.9 3.2 5.2 5.4 5.2 10.4a5.2 5.2 0 0 1-10.4 0c0-2.1 1-3.6 2.1-4.6.1 1.9.9 3 2 3.1-.3-3.1-.5-5.6 1.1-8.9z"/>',
 comment:'<path d="M20.5 12a8.5 8.5 0 0 1-12.3 7.6L3.5 20.5l1-4.4A8.5 8.5 0 1 1 20.5 12z"/>',
 send:'<path d="M21 3 10 14M21 3l-6.5 18-4.5-7-7-4.5z"/>',
+share:'<path d="M12 15V3.5"/><path d="M7.5 7.5 12 3l4.5 4.5"/><path d="M8 11H6.5A1.5 1.5 0 0 0 5 12.5v7A1.5 1.5 0 0 0 6.5 21h11a1.5 1.5 0 0 0 1.5-1.5v-7a1.5 1.5 0 0 0-1.5-1.5H16"/>',
 flag:'<path d="M5 21V4m0 0h11.5l-2.2 4.2L16.5 12H5"/>',
 image:'<rect x="3" y="3" width="18" height="18" rx="3.5"/><circle cx="9" cy="9" r="1.8"/><path d="m21 15-5-5L5 21"/>',
 poll:'<path d="M4 6h9M4 12h16M4 18h6"/>',
@@ -762,7 +757,6 @@ function canTag(b){return bubbleOpen(b)&&(!isLive(b)||onSpot(b));}
 function spotPill(){return `<span class="pill spot">${I('pin','xs')} ${L('อยู่ที่นี่จริง','On the spot')}</span>`;}
 function livePill(){return `<span class="pill live">LIVE</span>`;}
 function hereTag(){return `<span class="pill lime">${L('คุณอยู่ที่นี่','You’re here')}</span>`;}
-function dropsIn(bid){return (S.drops||[]).filter(d=>d.bubble===bid);}
 function locOn(){return S.settings.loc && S.ob.perm.loc==='granted';}
 function fmtDist(m){return m<1000?m+L(' ม.',' m'):(m/1000).toFixed(1)+L(' กม.',' km');}
 function bubbleOpen(b){if(b.status!=='active')return false;if(b.end&&new Date(b.end+'T23:59:59')<new Date())return false;return true;}
@@ -871,7 +865,7 @@ function postCard(p,ctx={}){
    <div class="pacts">
      <button class="pact" data-act="openPost" data-arg="${p.id}" aria-label="${L('คอมเมนต์','Comments')}">${I('comment','sm')} ${n||''}</button>
      <button class="pact ate ${p.ated?'on':''}" data-act="ate" data-arg="post:${p.id}" aria-pressed="${p.ated}">${I('flame','sm')} <span>${nf(p.ate)}</span> <span class="ate-l">ATE</span></button>
-     <button class="pact" data-act="share" data-arg="${p.id}" aria-label="${L('แชร์','Share')}">${I('send','sm')}</button>
+     <button class="pact" data-act="share" data-arg="${p.id}" aria-label="${L('แชร์','Share')}">${I('share','sm')}</button>
      ${ctx.showWhere?`<span class="cap" style="margin-left:auto">${esc(where)}</span>`:''}
    </div></article>`;
 }
@@ -1151,19 +1145,17 @@ function vBubble(id){
   const sort=T.bsort||'hot'; const list=sortPosts(postsIn(id),sort);
   if(sort==='hot'){const sc=p=>hot(p)*(p.spot?1.5:1);list.sort((a,c)=>sc(c)-sc(a));}
   const live=isLive(b), here=onSpot(b), lockedLive=live&&!here;
-  const drops=dropsIn(id);
   let banner='';
   if(b.status==='paused') banner=`<div class="banner warn">${I('lock')}<div><div class="lbl">${L('ปิดโพสต์ชั่วคราว','Read-only for now')}</div><div class="cap" style="color:var(--ink2)">${L(b.reason_th,b.reason_en)}</div></div></div>`;
   else if(b.status==='ended'||(b.end&&!open)) banner=`<div class="banner">${I('clock')}<div><div class="lbl">${L('งานจบแล้ว','This event has ended')}</div><div class="cap" style="color:var(--ink2)">${L('อ่านได้อย่างเดียว 7 วัน แล้วจะหายจากแผนที่','Read-only for 7 days, then hidden from the map')}</div></div></div>`;
-  return `<div class="screen">${topbar('',{right:`<button class="iconbtn" data-act="share" data-arg="bubble:${id}" aria-label="share">${I('send')}</button>`})}
+  return `<div class="screen">${topbar('',{right:`<button class="iconbtn" data-act="share" data-arg="bubble:${id}" aria-label="share">${I('share')}</button>`})}
    <div class="scroll" style="padding-bottom:40px">
     <div class="pad" style="display:flex;gap:14px;align-items:center"><span class="btype t-${b.type}" style="width:60px;height:60px;border-radius:20px">${I(ty[2],'lg')}</span><div style="flex:1;min-width:0"><div class="h1">${esc(bname(b))}</div><div class="cap">${[L(ty[0],ty[1]),count24(id)+L(' โพสต์วันนี้',' posts today'),locOn()?fmtDist(distance(b)):null].filter(Boolean).join(' · ')}</div><div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px">${live?livePill():''}${here?hereTag():''}${b.start?`<span class="pill brand">${I('star','xs')} ${fmtDay(b.start)} – ${fmtDay(b.end)}</span>`:''}</div></div></div>
     <div class="pad" style="margin-top:14px"><button class="btn primary block" ${open&&!lockedLive?'':'disabled'} data-act="composeIn" data-arg="${id}:post_here">${I('plus','sm')} ${L('โพสต์ที่นี่','Post here')}</button>
       <div class="cap" style="margin-top:8px;text-align:center">${lockedLive?'':here?L('คุณอยู่ที่นี่ โพสต์จะได้ตรา “อยู่ที่นี่จริง”','You’re here, so your post gets the On the spot stamp'):L('โพสต์จะขึ้นในฟีดมหาลัย และอยู่ที่บับเบิลนี้ 72 ชม.','Your post goes to University and shows here for 72 hours')}</div></div>
     ${lockedLive&&open?`<div class="banner">${I('pin')}<div><div class="lbl">${L('โพสต์สดสำหรับคนที่อยู่ในงาน','Live posts are for people at the event')}</div><div class="cap" style="color:var(--ink2)">${locOn()?L('คุณยังอ่าน ATE และคอมเมนต์ได้ ไปที่งานเพื่อโพสต์','You can still read, ATE and comment. Go to the event to post.'):L('เปิดตำแหน่งเพื่อเช็กว่าคุณอยู่ในงาน คุณยังอ่าน ATE และคอมเมนต์ได้','Turn on location to check you’re at the event. You can still read, ATE and comment.')}</div></div></div>`:''}
     ${banner}
-    ${drops.map(dr=>{const opened=S.dropsOpened.includes(dr.id);return here||opened?`<button class="drop open" data-act="openDrop" data-arg="${dr.id}"><span class="btype t-event">${I('sparkle','sm')}</span><span style="flex:1;min-width:0"><span class="lbl">${L('ดรอป','Drop')} · ${opened?L('เปิดแล้ว','Opened'):L('แตะเพื่อเปิด','Tap to open')}</span> <span class="pill">MVP 1.5</span><br><span class="cap">${opened?esc(L(dr.th,dr.en)):L('คุณอยู่ที่นี่ เปิดได้เลย','You’re here, so you can open it')} · ${dr.opens}/${dr.max}</span></span></button>`:`<div class="drop" role="note"><span class="btype t-event">${I('lock','sm')}</span><span style="flex:1;min-width:0"><span class="lbl">${L('มี 1 ดรอปซ่อนอยู่ที่นี่','1 drop here')}</span> <span class="pill">MVP 1.5</span><br><span class="cap">${L('ไปที่นี่เพื่อเปิด','Go there to open it')} · ${dr.opens}/${dr.max} ${L('คนเปิดแล้ว','opened')}</span></span></div>`;}).join('')}
-    <div style="display:flex;align-items:center;gap:8px;padding:16px 20px 4px;border-bottom:1px solid var(--divider)"><div class="seg"><button class="${sort==='hot'?'on':''}" data-act="bsort" data-arg="hot">${L('มาแรง','Hot')}</button><button class="${sort==='new'?'on':''}" data-act="bsort" data-arg="new">${L('ล่าสุด','New')}</button></div><span class="cap" style="margin-left:auto">${L('อยู่ที่นี่ 72 ชม. · ตรา “อยู่ที่นี่จริง” ขึ้นก่อน','Shown 72h · On the spot first')}</span></div>
+    <div style="display:flex;align-items:center;gap:8px;padding:16px 20px 4px;border-bottom:1px solid var(--divider)"><div class="seg"><button class="${sort==='hot'?'on':''}" data-act="bsort" data-arg="hot">${L('มาแรง','Hot')}</button><button class="${sort==='new'?'on':''}" data-act="bsort" data-arg="new">${L('ล่าสุด','New')}</button></div></div>
     ${list.length?list.map(p=>postCard(p,{inBubble:true})).join(''):`<div class="empty"><div class="ill">${I(ty[2],'lg')}</div><div class="h2">${L('เงียบ ๆ อยู่','It’s quiet here')}</div><p class="ink2" style="margin:0">${L('เป็นคนแรกที่โพสต์ในบับเบิลนี้','Be the first to post in this bubble.')}</p>${open&&!lockedLive?`<button class="btn primary sm" data-act="composeIn" data-arg="${id}:post_here">${L('โพสต์','Post')}</button>`:''}</div>`}
    </div></div>`;
 }
@@ -1233,7 +1225,7 @@ function vPost(id){
     <div style="display:flex;justify-content:space-around;padding:4px 0;border-bottom:1px solid var(--divider)">
       <button class="pact" data-act="focusComment" aria-label="${L('คอมเมนต์','Comment')}">${I('comment')}</button>
       <button class="pact ate ${p.ated?'on':''}" data-act="ate" data-arg="post:${p.id}" aria-pressed="${p.ated}" aria-label="ATE">${I('flame')}</button>
-      <button class="pact" data-act="share" data-arg="${p.id}" aria-label="${L('แชร์','Share')}">${I('send')}</button>
+      <button class="pact" data-act="share" data-arg="${p.id}" aria-label="${L('แชร์','Share')}">${I('share')}</button>
       <button class="pact" data-act="postMenu" data-arg="${p.id}" aria-label="${L('เพิ่มเติม','More')}">${I('more')}</button></div></div>
     <div style="padding:6px 0 24px">${tops.length?tops.map(c=>commentHTML(c,p)+cs.filter(r=>r.parent===c.id).map(r=>commentHTML(r,p,true)).join('')).join(''):`<div class="empty" style="padding:28px"><div class="cap">${L('ยังไม่มีคอมเมนต์ เริ่มคุยเลย','No comments yet. Start the conversation.')}</div></div>`}</div>
    </div>
@@ -1600,8 +1592,8 @@ function renderOverlay(){
       <div class="sh-b"><div class="pad"><div class="cap" style="margin-bottom:10px">${I('shield','xs')} ${L('หน้าจำลองของผู้ให้บริการ ต้นแบบนี้ไม่มีช่องรหัสผ่าน','Simulated provider page. This prototype has no password field.')}</div>
       <div class="field"><label for="ssoEmail">${L('อีเมลมหาวิทยาลัย','University email')}</label><input class="input ${o.err?'err':''}" id="ssoEmail" type="email" inputmode="email" autocomplete="off" autocapitalize="off" placeholder="name@university.ac.th" data-on="ssoEmail" enterkeyhint="go"><span class="err-t" id="ssoErr" role="alert">${o.err||''}</span></div>
       <button class="btn primary block" style="margin-top:12px" data-act="ssoSubmit">${L('ถัดไป','Next')}</button>
-      <div class="section-t" style="padding:18px 0 8px">${L('บัญชีทดสอบ','Test accounts')}</div>
-      <div style="display:flex;flex-direction:column;gap:6px">${tests.map(t=>`<button class="row" style="padding:10px 12px;min-height:0;border:1px solid var(--border);border-radius:12px" data-act="ssoPick" data-arg="${t[0]}"><span class="rt" style="word-break:break-all;font-size:calc(14px*var(--ts,1))">${t[0]}</span><span class="pill">${t[1]}</span></button>`).join('')}</div></div></div></div>`;
+      ${S.sim.testAcc?`<div class="section-t" style="padding:18px 0 8px">${L('บัญชีทดสอบ','Test accounts')}</div>
+      <div style="display:flex;flex-direction:column;gap:6px">${tests.map(t=>`<button class="row" style="padding:10px 12px;min-height:0;border:1px solid var(--border);border-radius:12px" data-act="ssoPick" data-arg="${t[0]}"><span class="rt" style="word-break:break-all;font-size:calc(14px*var(--ts,1))">${t[0]}</span><span class="pill">${t[1]}</span></button>`).join('')}</div>`:''}</div></div></div>`;
   }
   if(o.t==='keepDraft') h=sheet(L('เก็บร่างไว้ไหม?','Keep this draft?'),`<div class="pad" style="display:flex;flex-direction:column;gap:10px"><p class="ink2" style="margin:0">${L('ร่างจะเก็บไว้ในเครื่องนี้ เปิดหน้าโพสต์ครั้งหน้าจะกลับมา','Drafts are saved on this phone and come back next time you post.')}</p><button class="btn primary block" data-act="draftKeep">${L('เก็บร่าง','Keep draft')}</button><button class="btn soft block" data-act="draftDiscard" style="color:var(--danger)">${L('ทิ้ง','Discard')}</button></div>`);
   if(o.t==='aicheck') h=`<div class="scrim"></div><div class="dialog" style="text-align:center;display:flex;flex-direction:column;align-items:center;gap:12px"><div class="spinner"></div><div class="h3">${L('AI กำลังตรวจโพสต์…','AI is checking your post…')}</div><div class="cap">${L('ใช้เวลาไม่ถึง 1 วินาที','Takes under a second')}</div></div>`;
@@ -1627,11 +1619,11 @@ function renderOverlay(){
 function renderPanel(){
   const p=$('#panel'); if(!p) return;
   const jump=[['home','Home · University'],['bubbleMap','Bubble map'],['search','Search'],['compose','Compose'],['post','Post detail'],['activity','Activity'],['profile','My profile'],['other','Classmate profile'],['settings','Settings']];
-  p.innerHTML=`<div style="display:flex;gap:10px;align-items:flex-start"><div style="flex:1"><h2>EIGHT TEEN · MVP 1</h2><div class="cap">Clickable prototype of PRD v1.4 (Jira KAN). New in v1.4: posts go to University, with an optional place; On the spot stamp, LIVE events and Drops on the Bubble map. New in v1.7 (20 Nov): GIF and voice posts, photos and GIFs in comments, two ad slots in the University feed (sponsored and network), Delete account moved to Help › Report a problem, the comment count removed from profiles, and Re-verify and Download my data removed from Account. No backend: data lives in this browser and resets with the button below.</div></div><button class="iconbtn pclose" data-act="panelClose" aria-label="Close">${I('x')}</button></div>
+  p.innerHTML=`<div style="display:flex;gap:10px;align-items:flex-start"><div style="flex:1"><h2>EIGHT TEEN · MVP 1</h2><div class="cap">Clickable prototype of PRD v1.4 (Jira KAN). New in v1.4: posts go to University, with an optional place; On the spot stamp and LIVE events on the Bubble map. New in v1.7 (20 Nov): GIF and voice posts, photos and GIFs in comments, two ad slots in the University feed (sponsored and network), Delete account moved to Help › Report a problem, the comment count removed from profiles, and Re-verify and Download my data removed from Account. No backend: data lives in this browser and resets with the button below.</div></div><button class="iconbtn pclose" data-act="panelClose" aria-label="Close">${I('x')}</button></div>
    <div><h3>Link to this screen</h3><div class="cap" style="word-break:break-all;margin-bottom:6px">${esc(location.origin+location.pathname)}#${window.routeOf?routeOf():''}</div><div class="pbtns"><button class="pbtn" data-act="copyLink">Copy link</button></div><div class="cap" style="margin-top:6px">Every screen has its own link, for example <span class="kbd">#/post/p1</span>, <span class="kbd">#/home/bubble</span>, <span class="kbd">#/account</span>, <span class="kbd">#/onboarding/profile</span>. Opening an app link skips onboarding with a test account.</div></div>
    <div><h3>Jump to</h3><div class="pbtns">${S.done?jump.map(j=>`<button class="pbtn" data-act="jump" data-arg="${j[0]}">${j[1]}</button>`).join(''):`<button class="pbtn" data-act="skipOnboarding">Skip onboarding</button>`}<button class="pbtn" data-act="resetAll">Reset demo</button></div></div>
    <div><h3>App</h3><div class="pbtns"><button class="pbtn ${S.lang==='th'?'on':''}" data-act="lang" data-arg="th">ไทย</button><button class="pbtn ${S.lang==='en'?'on':''}" data-act="lang" data-arg="en">English</button>${['system','light','dark'].map(t=>`<button class="pbtn ${S.settings.theme===t?'on':''}" data-act="setTheme" data-arg="${t}">${t}</button>`).join('')}</div></div>
-   ${S.done?`<div><h3>Pretend I’m at…</h3><div class="pbtns">${[['none','Off campus'],['lib','Central Library'],['lawn','Main Lawn'],['openhouse','Open House (LIVE)'],['cafe','CU Café']].map(x=>`<button class="pbtn ${(S.sim.here||'none')===x[0]?'on':''}" data-act="simHere" data-arg="${x[0]}">${x[1]}</button>`).join('')}</div><div class="cap" style="margin-top:6px">Location ${locOn()?'on':'off'}. Being inside a bubble’s radius gives the On the spot stamp, unlocks posting into a LIVE event, and opens Drops.</div></div>
+   ${S.done?`<div><h3>Pretend I’m at…</h3><div class="pbtns">${[['none','Off campus'],['lib','Central Library'],['lawn','Main Lawn'],['openhouse','Open House (LIVE)'],['cafe','CU Café']].map(x=>`<button class="pbtn ${(S.sim.here||'none')===x[0]?'on':''}" data-act="simHere" data-arg="${x[0]}">${x[1]}</button>`).join('')}</div><div class="cap" style="margin-top:6px">Location ${locOn()?'on':'off'}. Being inside a bubble’s radius gives the On the spot stamp, and unlocks posting into a LIVE event.</div></div>
    <div><h3>Simulate</h3><div class="pbtns">
      <button class="pbtn" data-act="simComment">Someone comments on my post</button>
      <button class="pbtn" data-act="simRemoved">My comment gets removed</button>
@@ -1641,7 +1633,7 @@ function renderPanel(){
      <button class="pbtn ${S.sim.uploadFail?'on':''}" data-act="simUpload">Image upload fails</button>
      <button class="pbtn" data-act="simShared">Link opened by another campus</button>
      <button class="pbtn" data-act="simRestart">Kill app mid-onboarding</button></div></div>
-   <div><h3>AI moderation test phrases</h3><div class="cap" style="line-height:calc(20px*var(--ts,1))">Type in a post: <span class="kbd">โอนเงินก่อน</span> → blocked (scam) · <span class="kbd">ไอ้โง่</span> → blocked (harassment) · <span class="kbd">อยากตาย</span> → support sheet with 1323 · <span class="kbd">ขายต่อ</span> → published with reduced reach · link <span class="kbd">bit.ly/x</span> → blocked domain. In comments any link is blocked.</div></div>`:`<div class="cap">Onboarding tips: on the sign-in step use the test accounts, or type any email. Chula addresses (@student.chula.ac.th) get in; other university domains (.ac.th, .edu) are put on that university's waitlist; Gmail/Outlook are refused; there is no minimum age; usernames <span class="kbd">natnicha</span>, <span class="kbd">win</span> are taken.</div>`}
+   <div><h3>AI moderation test phrases</h3><div class="cap" style="line-height:calc(20px*var(--ts,1))">Type in a post: <span class="kbd">โอนเงินก่อน</span> → blocked (scam) · <span class="kbd">ไอ้โง่</span> → blocked (harassment) · <span class="kbd">อยากตาย</span> → support sheet with 1323 · <span class="kbd">ขายต่อ</span> → published with reduced reach · link <span class="kbd">bit.ly/x</span> → blocked domain. In comments any link is blocked.</div></div>`:`<div><h3>Sign-in</h3><div class="pbtns"><button class="pbtn ${S.sim.testAcc?'on':''}" data-act="simTestAcc">Show test accounts on sign-in</button></div></div><div class="cap">Onboarding tips: on the sign-in step turn on the test accounts above, or type any email. Chula addresses (@student.chula.ac.th) get in; other university domains (.ac.th, .edu) are put on that university's waitlist; Gmail/Outlook are refused; there is no minimum age; usernames <span class="kbd">natnicha</span>, <span class="kbd">win</span> are taken.</div>`}
    <div><h3>Analytics events (${S.events.length})</h3><div class="evlog">${S.events.slice(0,30).map(e=>`<div class="ev"><b>${e.name}</b> <span class="t">${new Date(e.at).toLocaleTimeString('en-GB')}</span><br>${esc(JSON.stringify(e.props))}</div>`).join('')||'<span class="cap">Events appear here as you use the app. Every event also carries user_id_hash, university_id, platform, app_version and session_id.</span>'}</div></div>`;
 }
 
@@ -1798,7 +1790,6 @@ const A={
   compose(){openCompose({src:'tab'});},
   composeIn(a){const [id,src]=a.split(':');const b=bubble(id);if(!canTag(b)){A.liveBlocked(id);return;}tagPlace(id,src);openCompose({bubble:id,uni:true,src});},
   liveBlocked(a){track('live_post_blocked',{bubble_id:a});toast(L('โพสต์สดได้เฉพาะคนที่อยู่ในงาน คุณยังอ่าน ATE และคอมเมนต์ได้','Live posts are for people at the event. You can still read, ATE and comment.'));},
-  openDrop(a){const dr=S.drops.find(x=>x.id===a);if(!dr)return;if(!S.dropsOpened.includes(a)){if(!onSpot(dr.bubble)){toast(L('ไปที่นี่เพื่อเปิดดรอป','Go there to open this drop'));return;}S.dropsOpened.push(a);dr.opens++;track('drop_opened',{drop_id:a,bubble_id:dr.bubble});haptic();}render();},
   simHere(a){S.sim.here=a==='none'?null:a;if(a!=='none'&&!locOn()){S.settings.loc=true;S.ob.perm.loc='granted';}render();toast(a==='none'?L('จำลอง: ไม่ได้อยู่ในแคมปัส','Simulated: off campus'):L('จำลอง: อยู่ที่ ','Simulated: at ')+bname(bubble(a)));},
   composeCancel(){const d=S.draft;if(d.editing||(!d.text.trim()&&!d.images.length&&!d.poll)){S.draft=null;pop();return;}openOv({t:'keepDraft'});},
   draftKeep(){S.savedDraft=S.draft;S.draft=null;closeOv();pop();toast(L('เก็บร่างแล้ว','Draft saved'));},
@@ -1859,6 +1850,7 @@ const A={
   simRemoved(){addNotif({type:'removed',removedText:'ใครเชื่อโพสต์นี้ก็โง่แล้ว',html:L('<b>คอมเมนต์ของคุณถูกนำออก · คำเตือนครั้งที่ 1</b>','<b>Your comment was removed · Warning 1</b>'),prev:L('แตะเพื่อดูเหตุผลและยื่นอุทธรณ์','Tap to see why and appeal')});render();toast(L('มีแจ้งเตือนใหม่','New notification'),{act:'tab',arg:'activity',label:L('ดู','View')});},
   simReverify(){S.me.verifiedAt=Date.now()-358*DAY;addNotif({type:'reverify',channel:'in_app',html:L('ถึงเวลายืนยันตัวตนประจำปี ยืนยันภายใน 7 วันเพื่อโพสต์ต่อได้','Time for your yearly re-verification. Re-verify within 7 days to keep posting.')});render();},
   simOffline(){S.sim.offline=!S.sim.offline;render();},
+  simTestAcc(){S.sim.testAcc=!S.sim.testAcc;render();toast(S.sim.testAcc?'Test accounts shown on sign-in':'Test accounts hidden');},
   simAds(){S.sim.ads=S.sim.ads===false;render();toast(S.sim.ads?'Ad slots shown':'Ad slots hidden');},
   cAttach(){T.attTab=T.attTab||'photo';openOv({t:'cAttach'});},
   attTab(a){T.attTab=a;renderOverlay();},
@@ -2045,7 +2037,7 @@ if(!S.events.length) track('onboarding_step_viewed',{step_name:'welcome',step_in
 
 <script>
 if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => navigator.serviceWorker.register('sw.js?v=a037e505').catch(() => {}));
+  window.addEventListener('load', () => navigator.serviceWorker.register('sw.js?v=d611321f').catch(() => {}));
 }
 </script>
 </body>
