@@ -302,6 +302,57 @@ svg.i.sm{width:18px;height:18px} svg.i.xs{width:15px;height:15px} svg.i.lg{width
 .idots{display:flex;gap:6px;margin-bottom:20px}
 .idots i{width:8px;height:8px;border-radius:4px;background:var(--sunken)}
 .idots i.on{width:24px;background:var(--ink)}
+/* ---------- onboarding (v1.7 flow, anonymity-first) ---------- */
+.ob{position:absolute;inset:0;z-index:55;background:var(--canvas);display:flex;flex-direction:column;padding-top:var(--st)}
+.ob-top{display:flex;align-items:center;gap:12px;padding:8px 20px;min-height:60px;flex:none}
+.ob-body{flex:1;min-height:0;overflow-y:auto;padding:4px 24px 16px;scrollbar-width:none}
+.ob-foot{padding:12px 24px calc(var(--sb) + 22px);display:flex;flex-direction:column;gap:6px;align-items:stretch;flex:none}
+.ob-foot .lnk{min-height:44px;font:600 14px/1 var(--f-b);color:var(--brand)}
+.ob .art{display:flex;align-items:center;justify-content:center;min-height:280px}
+.ob .bigtile{width:220px;height:220px;border-radius:44px;background:var(--brand);box-shadow:14px 14px 0 var(--lime);transform:rotate(-4deg);display:flex;align-items:center;justify-content:center;font-size:100px}
+.ob .bigtile.list{flex-direction:column;gap:10px;padding:22px;align-items:stretch;justify-content:center}
+.ob .bigtile.list div{display:flex;align-items:center;gap:10px;background:#fff;padding:9px 12px;border-radius:16px;font:700 15px/1.2 var(--f-d)}
+.ob .bigtile.list .av{width:32px;height:32px;font-size:17px;box-shadow:none}
+.ob .bigtile.logo{flex-direction:column;gap:18px;width:250px;height:250px}
+.logo{background:#fff;color:#0b1026;font:800 40px/.92 var(--f-n);letter-spacing:-1px;padding:10px 18px;border-radius:18px;border:4px solid #0b1026;box-shadow:6px 6px 0 #0b1026;transform:rotate(-5deg);text-align:center}
+.vpill{background:#fff;color:#0b1026;border-radius:99px;height:32px;padding:0 14px;display:inline-flex;align-items:center;gap:6px;font:700 13px/1 var(--f-b)}
+.ob p.lead{color:var(--ink2);margin:8px 0 14px;font-size:15.5px;line-height:1.55}
+.segbar{flex:1;display:flex;gap:6px}.segbar i{flex:1;height:4px;border-radius:9px;background:var(--surface)}.segbar i.on{background:var(--brand)}
+.rule{display:flex;gap:12px;padding:12px 14px;align-items:flex-start}
+.rule+.rule{border-top:1px solid var(--divider)}
+.rule .ic{width:38px;height:38px;border-radius:12px;background:var(--canvas);display:flex;align-items:center;justify-content:center;flex:none;color:var(--brand)}
+.rule b{display:block;font:700 15.5px/1.35 var(--f-d)}.rule span{font-size:13.5px;color:var(--ink2);line-height:1.5}
+.box2{background:var(--surface);border-radius:20px}
+.ck{display:flex;gap:12px;align-items:flex-start;width:100%;text-align:left;border:1.5px solid var(--border);border-radius:16px;padding:13px 14px;margin-top:12px;font-size:14px;line-height:1.5}
+.ck.on{border-color:var(--brand);background:var(--info)}
+.ck .bx{width:22px;height:22px;border-radius:7px;border:2px solid var(--border);flex:none;display:flex;align-items:center;justify-content:center;color:#fff;margin-top:1px}
+.ck.on .bx{background:var(--brand);border-color:var(--brand)}
+.ck .bx svg.i{width:14px;height:14px;stroke-width:3}
+.ck u{color:var(--brand);text-decoration:none;font-weight:600}
+.prov{display:flex;align-items:center;justify-content:center;position:relative;height:56px;border-radius:999px;border:1.5px solid var(--border);width:100%;font:600 15px/1 var(--f-b)}
+.prov .lg{position:absolute;left:20px;display:flex}
+.tips{background:var(--surface);border-radius:18px;padding:14px 16px;margin-top:16px;display:flex;flex-direction:column;gap:10px;font-size:14px;line-height:1.5}
+.tips div{display:flex;gap:10px}.tips svg.i{width:18px;height:18px;flex:none;margin-top:2px}
+.fine{display:flex;gap:8px;margin-top:12px;font-size:12.5px;line-height:1.5;color:var(--muted)}.fine svg.i{width:15px;height:15px;flex:none;margin-top:2px}
+.input{width:100%;height:52px;border-radius:14px;border:1.5px solid var(--border);padding:0 14px;font:500 16px var(--f-b);background:var(--canvas);color:var(--ink);appearance:none;-webkit-appearance:none}
+.input:focus{outline:none;border-color:var(--brand)}
+select.input{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%235f6378' stroke-width='2'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:30px}
+.vcard{background:var(--surface);border-radius:18px;margin:14px 0 18px}
+.vcard>div{display:flex;align-items:center;gap:10px;padding:12px 16px}.vcard>div+div{border-top:1px solid var(--divider)}
+.vcard b{display:block;font:600 14.5px/1.35 var(--f-b)}.vcard span{font-size:13px;color:var(--ink2);word-break:break-all}
+.lbl2{font:700 15px/1.3 var(--f-d);margin:18px 0 10px}
+.fxrow{display:flex;align-items:center;gap:12px;width:100%;text-align:left;padding:12px 14px;border:1.5px solid var(--border);border-radius:18px;margin-bottom:8px}
+.fxrow.on{border-color:var(--brand);background:var(--info)}
+.fxrow .e{font-size:26px;width:34px;text-align:center}
+.fxrow .t{flex:1;min-width:0}.fxrow .t b{display:block;font:600 15px/1.35 var(--f-b)}.fxrow .t span{font-size:13px;color:var(--muted)}
+.fxrow .pl{width:40px;height:40px;border-radius:99px;background:var(--canvas);display:flex;align-items:center;justify-content:center;color:var(--brand);flex:none;box-shadow:0 0 0 1px var(--border)}
+.fxrow .pl svg.i{width:16px;height:16px}
+.rad{width:22px;height:22px;border-radius:99px;border:2px solid var(--border);flex:none}.on>.rad{border:7px solid var(--brand)}
+.banner{display:flex;gap:10px;border-radius:16px;padding:12px 14px;font-size:13.5px;line-height:1.5}
+.banner.ok{background:#e7f6ee}.banner.ok svg.i{color:#14805a}.banner.bad{background:var(--danger-bg)}.banner.bad svg.i{color:var(--danger)}
+.banner svg.i{flex:none;margin-top:1px}.banner b{display:block;font-size:14.5px;color:var(--ink)}
+.prog{height:8px;background:var(--canvas);border-radius:9px;margin:10px 0 8px;overflow:hidden}.prog i{display:block;height:100%;background:var(--brand);border-radius:9px}
+.me-band .gear{position:absolute;right:16px;top:calc(var(--st) + 10px);background:rgba(255,255,255,.92);z-index:2}
 </style>
 </head>
 <body>
@@ -331,6 +382,9 @@ const ICON={
  bell:'<path d="M6 9a6 6 0 1 1 12 0c0 6 3 8 3 8H3s3-2 3-8"/><path d="M10 20.5a2.2 2.2 0 0 0 4 0"/>',
  user:'<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6"/>',
  x:'<path d="M6 6l12 12M18 6L6 18"/>',
+ gear:'<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/>',
+ shield:'<path d="M12 3l8 3v6c0 4.5-3.4 8-8 9-4.6-1-8-4.5-8-9V6z"/>',
+ clock:'<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/>',
  back:'<path d="M15 5l-7 7 7 7"/>',
  flip:'<path d="M4 12a8 8 0 0 1 14-5.3M20 12a8 8 0 0 1-14 5.3"/><path d="M18 3v4h-4M6 21v-4h4"/>',
  img:'<rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="9" cy="10" r="2"/><path d="M21 16l-5-5-9 9"/>',
@@ -376,7 +430,9 @@ const PLACES=[
 ];
 const place=id=>PLACES.find(p=>p.id===id);
 const PROMPT={e:'⏰',q:'ข้ออ้างมาสายวันนี้ของคุณคืออะไร',n:214};
-const ME_LABEL='วิศวฯ · ปี 2';
+const meLabel=()=>S.me&&S.me.fac&&S.me.year?`${S.me.fac} · ${S.me.year}`:'นักศึกษาจุฬาฯ';
+const FACS=['วิศวฯ','อักษรฯ','วิทยาศาสตร์','บัญชีฯ','นิติฯ','รัฐศาสตร์','เศรษฐศาสตร์','นิเทศฯ','ครุฯ','สถาปัตย์ฯ','แพทย์ฯ','ทันตะฯ','เภสัชฯ','สัตวแพทย์ฯ','จิตวิทยา','ศิลปกรรมฯ','สหเวชฯ','พยาบาลฯ','วิทยาศาสตร์การกีฬา','หลักสูตรอินเตอร์'];
+const YEARS=['ปี 1','ปี 2','ปี 3','ปี 4','ปี 5+','ป.โท / เอก'];
 
 function seed(){
  const now=Date.now();
@@ -420,9 +476,9 @@ function seedNotifs(){const n=Date.now();return[
  {id:'n3',kind:'place',place:'sala',text:'ศาลาพระเกี้ยว LIVE ตอนนี้: ดนตรีในสวน',at:n-120*60000,read:true}]}
 
 /* ============ state ============ */
-const KEY='et18v2', SEEDV=5;
+const KEY='et18v2', SEEDV=6;
 let S=load();
-function fresh(){return{v:SEEDV,posts:seed(),notifs:seedNotifs(),sound:false,rate:1,filter:'mask',showId:false,intro:false,tab:'home',view:'uni',sort:'hot',seenPlaces:[],log:[],t0:Date.now()}}
+function fresh(){return{v:SEEDV,posts:seed(),notifs:seedNotifs(),sound:false,rate:1,filter:'mask',showId:false,onb:false,ob:{step:'welcome',slide:0,terms:false},me:{email:'',fac:null,year:null,dob:{d:'',m:'',y:''}},notifOn:true,sub:null,tab:'home',view:'uni',sort:'hot',seenPlaces:[],log:[],t0:Date.now()}}
 function load(){try{const s=JSON.parse(localStorage.getItem(KEY));if(s&&s.v===SEEDV)return s}catch(e){}return fresh()}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
 function log(e,p){S.log.unshift({e,p:p||{},t:Date.now()});S.log=S.log.slice(0,200);save()}
@@ -550,28 +606,53 @@ function renderMe(){
  const myReplies=S.posts.reduce((a,p)=>a+p.replies.filter(r=>r.by==='me').length,0);
  const ateGot=mine.reduce((a,p)=>a+p.ate,0);
  app.innerHTML=`<div class="scr" style="padding-top:0"><div class="pg">
- <div class="me-band" style="padding-top:var(--st)"><span class="c1"></span><span class="c2"></span><span class="c3"></span></div>
+ <div class="me-band" style="padding-top:var(--st)"><span class="c1"></span><span class="c2"></span><span class="c3"></span><button class="iconbtn gear" data-act="openSettings" aria-label="ตั้งค่า">${I('gear')}</button></div>
  <div class="me-av">🎭</div>
- <div class="pad" style="margin-top:12px"><h1 class="h1">ของฉัน</h1><div class="muted" style="font-size:13.5px;display:flex;align-items:center;gap:4px;flex-wrap:wrap">${ME_LABEL} · จุฬาฯ · ${I('lock','xs')} มีแค่คุณที่เห็นหน้านี้</div></div>
+ <div class="pad" style="margin-top:12px"><h1 class="h1">ของฉัน</h1><div class="muted" style="font-size:13.5px;display:flex;align-items:center;gap:4px;flex-wrap:wrap">${S.me&&S.me.fac?meLabel()+' · ':''}จุฬาฯ · ${I('lock','xs')} มีแค่คุณที่เห็นหน้านี้</div></div>
  <div class="pad" style="margin-top:14px"><div class="note">${I('mask','sm')}<div><b>ไม่มีหน้าโปรไฟล์สาธารณะ</b><br>คนอื่นเห็นคุณเป็นชื่อเล่นสุ่มในแต่ละโพสต์ และโยงโพสต์ของคุณเข้าด้วยกันไม่ได้</div></div></div>
  <div class="stats"><div><b>${mine.length}</b><span>โพสต์</span></div><div><b>${myReplies}</b><span>คอมเมนต์</span></div><div><b>${nf(ateGot)}</b><span>ATE ที่ได้</span></div></div>
  <div class="sec">โพสต์ของฉัน</div>
  ${mine.length?`<div class="mine">${mine.map(p=>`<button style="${thumbStyle(p)}" data-act="openMine" data-arg="${p.id}">${p.kind==='voice'?`<span>🎙 ${esc((p.text||'คลิปเสียง').slice(0,40))}</span>`:''}<span class="n">${I('stack','xs')} ${p.replies.length} · 🔥 ${nf(p.ate)}</span></button>`).join('')}</div>`
  :`<div class="empty"><div class="tile" style="width:76px;height:76px;font-size:34px;border-radius:24px;box-shadow:6px 6px 0 var(--lime)">🎙</div><b class="h2" style="color:var(--ink)">ยังไม่มีโพสต์</b>ลองตอบคำถามวันนี้ดูไหม ไม่มีใครรู้ว่าเป็นคุณ<button class="btn primary sm" data-act="openPromptCompose">${PROMPT.e} ตอบคำถามวันนี้</button></div>`}
- <div class="sec">ตั้งค่า</div>
- <div class="card2">
-  <button class="row" data-act="tgl" data-arg="showId"><span class="t"><b>แสดงคณะและชั้นปีเป็นค่าเริ่มต้น</b><span>ปิดอยู่ = ทุกโพสต์ขึ้นแค่ “นักศึกษาจุฬาฯ”</span></span><span class="tg ${S.showId?'on':''}"></span></button>
-  <button class="row" data-act="pickFx"><span class="t"><b>ฟิลเตอร์เสียงเริ่มต้น</b><span>${fx(S.filter).e} ${fx(S.filter).n}</span></span>${I('chev','sm')}</button>
-  <button class="row" data-act="tgl" data-arg="sound"><span class="t"><b>เปิดเสียงอัตโนมัติ</b><span>ปิดไว้ก็อ่านคำบรรยายได้ทุกคลิป</span></span><span class="tg ${S.sound?'on':''}"></span></button>
-  <button class="row" data-act="speedRow"><span class="t"><b>ความเร็วเสียง</b><span>${S.rate}× · แตะเพื่อเปลี่ยน</span></span>${I('chev','sm')}</button>
- </div>
- <div class="sec">สำหรับทีมทดสอบ</div>
- <div class="card2"><button class="row" data-act="testlog"><span class="t"><b>ผลการทดสอบในเครื่องนี้</b><span>โพสต์ คอมเมนต์ เวลาถึงโพสต์แรก</span></span>${I('chev','sm')}</button>
- <button class="row" data-act="replayIntro"><span class="t"><b>ดูหน้าแนะนำอีกครั้ง</b></span>${I('chev','sm')}</button>
- <button class="row" data-act="reset"><span class="t"><b style="color:var(--danger)">ล้างข้อมูลต้นแบบ</b><span>เริ่มใหม่เหมือนคนเพิ่งติดตั้ง</span></span></button></div>
  <p class="cap" style="text-align:center;margin-top:18px">EIGHT TEEN v2 · ต้นแบบสำหรับทดสอบ · 25 พ.ย. 2026</p></div>${tabbarHTML()}</div>`;
 }
-function render(keep){stopActive();if(S.tab==='home')renderHome(keep);else if(S.tab==='notif')renderNotif();else renderMe();}
+const facPicker=()=>`<div class="lbl2" style="margin-top:6px">คณะ</div><div class="chips">${FACS.map(f=>`<button class="pick ${S.me.fac===f?'on':''}" data-act="pickFac" data-arg="${f}">${f}</button>`).join('')}</div>
+ <div class="lbl2">ชั้นปี</div><div class="chips">${YEARS.map(y=>`<button class="pick ${S.me.year===y?'on':''}" data-act="pickYear" data-arg="${y}">${y}</button>`).join('')}</div>`;
+const RULES=[['mask','นิรนามได้ แต่ไม่ใช่ล่องหน','เพื่อนไม่รู้ว่าเป็นคุณ แต่ทีมงานรู้ และเปิดเผยได้เฉพาะเมื่อมีคำสั่งตามกฎหมาย'],['cam','ไม่แฉ ไม่บูลลี่','ห้ามพูดชื่อ หรือโพสต์หน้าและเสียงของคนอื่นโดยเขาไม่ยินยอม'],['shield','ไม่หลอก ไม่สแปม','โพสต์หลอกลวงหรือสแปมถูกแบนถาวร']];
+const rulesHTML=()=>`<div class="box2">${RULES.map(r=>`<div class="rule"><span class="ic">${I(r[0],'sm')}</span><div><b>${r[1]}</b><span>${r[2]}</span></div></div>`).join('')}</div>`;
+function renderSettings(){
+ const row=(act,arg,t,sub,right)=>`<button class="row" data-act="${act}" data-arg="${arg}"><span class="t"><b>${t}</b>${sub?`<span>${sub}</span>`:''}</span>${right===undefined?I('chev','sm'):right}</button>`;
+ const tg=on=>`<span class="tg ${on?'on':''}"></span>`;
+ app.innerHTML=`<div class="scr"><div class="hdr"><div class="hdr-row"><button class="iconbtn" data-act="closeSettings" aria-label="กลับ">${I('back')}</button><div class="uni" style="font-size:24px">ตั้งค่า</div></div></div>
+ <div class="pg" style="padding-bottom:calc(var(--sb) + 30px)">
+ <div class="sec">บัญชี</div><div class="card2">
+  <div class="row"><span class="t"><b>อีเมลจุฬาฯ</b><span>${esc(S.me.email||'ยังไม่ได้ยืนยัน')}</span></span><span style="color:#14805a">${I('check','sm')}</span></div>
+  ${row('editFac','','คณะและชั้นปี',`<span id="facRow">${esc(meLabel())}</span>`)}
+ </div>
+ <div class="sec">ความเป็นนิรนาม</div><div class="card2">
+  ${row('tgl','showId','แสดงคณะและชั้นปีเป็นค่าเริ่มต้น',S.showId?`ทุกโพสต์ขึ้นว่า “${esc(meLabel())}”`:'ปิดอยู่ · ทุกโพสต์ขึ้นแค่ “นักศึกษาจุฬาฯ”',tg(S.showId))}
+  ${row('pickFx','','ฟิลเตอร์เสียงเริ่มต้น',`${fx(S.filter).e} ${fx(S.filter).n}`)}
+ </div>
+ <div class="sec">เสียงและคำบรรยาย</div><div class="card2">
+  ${row('tgl','sound','เปิดเสียงอัตโนมัติ','ปิดไว้ก็อ่านคำบรรยายได้ทุกคลิป',tg(S.sound))}
+  ${row('speedRow','','ความเร็วเสียง',`${S.rate}× · แตะเพื่อเปลี่ยน`)}
+ </div>
+ <div class="sec">การแจ้งเตือน</div><div class="card2">
+  ${row('tgl','notifOn','แจ้งเตือน','คอมเมนต์ ATE และคำถามวันนี้ · ไม่ส่งช่วง 00:00–07:00',tg(S.notifOn))}
+ </div>
+ <div class="sec">ช่วยเหลือ</div><div class="card2">
+  ${row('showRules','','กติกาชุมชน','')}
+  ${row('privacy','','ความเป็นส่วนตัวและข้อมูลของคุณ','')}
+ </div>
+ <div class="sec">สำหรับทีมทดสอบ</div><div class="card2">
+  ${row('testlog','','ผลการทดสอบในเครื่องนี้','โพสต์ คอมเมนต์ เวลาถึงโพสต์แรก')}
+  ${row('replayOb','','ดูขั้นตอนสมัครอีกครั้ง','โพสต์ที่มีอยู่ยังอยู่ครบ')}
+  ${row('reset','','<span style="color:var(--danger)">ล้างข้อมูลต้นแบบ</span>','เริ่มใหม่เหมือนคนเพิ่งติดตั้ง','')}
+ </div>
+ <div class="card2" style="margin-top:20px">${row('signOut','','<span style="color:var(--danger)">ออกจากระบบ</span>','','')}</div>
+ <p class="cap" style="text-align:center;margin-top:18px">EIGHT TEEN v2 · ต้นแบบสำหรับทดสอบ · 26 พ.ย. 2026</p></div></div>`;
+}
+function render(keep){stopActive();if(S.tab==='home')renderHome(keep);else if(S.tab==='notif')renderNotif();else if(S.sub==='settings')renderSettings();else renderMe();}
 
 /* ============ player ============ */
 let active=null, raf=0;
@@ -884,7 +965,7 @@ function postSheet(){
  const pl=C.place&&place(C.place);
  sheet(`<h2 class="h1">พร้อมโพสต์</h2><p class="sub">โพสต์ไปที่ฟีดมหาลัย · นักศึกษาจุฬาฯ เท่านั้นที่เห็น</p>
   <div class="note">${I('mask','sm')}<div><b>ไม่ระบุตัวตน</b><br>คนอื่นเห็นคุณเป็นชื่อเล่นสุ่มที่ใช้แค่ในโพสต์นี้ ไม่มีชื่อ ไม่มีรูปโปรไฟล์</div></div>
-  <button class="row" id="sid"><span class="t"><b>แสดงคณะและชั้นปี</b><span>${C.showId?`ขึ้นว่า “${ME_LABEL}”`:'ปิดอยู่ · ขึ้นแค่ “นักศึกษาจุฬาฯ”'}</span></span><span class="tg ${C.showId?'on':''}"></span></button>
+  <button class="row" id="sid"><span class="t"><b>แสดงคณะและชั้นปี</b><span>${C.showId?`ขึ้นว่า “${meLabel()}”`:'ปิดอยู่ · ขึ้นแค่ “นักศึกษาจุฬาฯ”'}</span></span><span class="tg ${C.showId?'on':''}"></span></button>
   <button class="row" data-act="placeSheet"><span class="t"><b>สถานที่</b><span>${pl?esc(pl.n)+' · ขึ้นในบับเบิล 72 ชม.':'ไม่ใส่ (ไม่บังคับ)'}</span></span>${I('chev','sm')}</button>
   ${C.media.kind==='voice'?`<div class="row"><span class="t"><b>คำบรรยายอัตโนมัติ</b><span>${C.media.text?'พร้อมแล้ว':esc(C.media.noSR?noSR:'ไม่ได้ยินคำพูด')}</span></span></div>`:''}
   <button class="btn primary block" style="margin-top:14px" data-act="doPost">โพสต์เลย</button>`);
@@ -893,7 +974,7 @@ function postSheet(){
 async function doPost(){
  closeSheet(); const m=C.media; let key=null,src=m.src;
  if(m.kind==='voice'||(m.kind==='photo'&&m.src.startsWith('data:'))){key=uid('m');const data=m.kind==='voice'?await blobToData(m.blob):m.src;MEM[key]=data;await idb.put(key,data);src=null}
- const p={id:uid('p'),by:'me',kind:m.kind,src,key,dur:m.dur,text:m.text||'',bg:C.bg,filter:m.kind==='voice'?C.filter:null,stickers:C.stickers,place:C.place,showId:C.showId?ME_LABEL:null,prompt:C.stickers.some(s=>s.t==='prompt'),ate:0,ated:false,replies:[],at:Date.now()};
+ const p={id:uid('p'),by:'me',kind:m.kind,src,key,dur:m.dur,text:m.text||'',bg:C.bg,filter:m.kind==='voice'?C.filter:null,stickers:C.stickers,place:C.place,showId:C.showId?meLabel():null,prompt:C.stickers.some(s=>s.t==='prompt'),ate:0,ated:false,replies:[],at:Date.now()};
  S.posts.unshift(p); const first=!S.log.some(l=>l.e==='post_created');
  log('post_created',{kind:p.kind,filter:p.filter,place:!!p.place,prompt:p.prompt,show_id:!!p.showId,has_transcript:!!p.text,first,secs_since_start:Math.round((Date.now()-S.t0)/1000)});
  closeComposerRaw(); if(SV){SV.el.remove();SV=null} S.tab='home'; S.view='uni'; S.sort='hot'; save(); render(); $('#feed').scrollTop=0;
@@ -913,22 +994,113 @@ let tT=0;
 function toast(msg,action){$$('.toast').forEach(t=>t.remove());clearTimeout(tT);const t=document.createElement('div');t.className='toast';t.innerHTML=`<span>${esc(msg)}</span>`;
  if(action){const b=document.createElement('button');b.textContent=action.label;b.onclick=()=>{t.remove();action.fn()};t.appendChild(b)}app.appendChild(t);tT=setTimeout(()=>t.remove(),action?4500:2400)}
 
-/* ============ intro (v1.7 onboarding look) ============ */
-function intro(k=0){
- const P=[
-  {a:`<div class="bigtile">🎭</div>`,h:'พูด โพสต์ คอมเมนต์<br>โดย<span class="hl">ไม่มีใครรู้</span>ว่าเป็นคุณ',p:'ทุกโพสต์ไม่ระบุตัวตนเป็นค่าเริ่มต้น คนอื่นเห็นแค่ว่าคุณเป็นนักศึกษาจุฬาฯ'},
-  {a:`<div class="bigtile list"><div>${avHTML({e:'🦊',c:'#ffd2b3'})} จิ้งจอกส้ม</div><div>${avHTML({e:'🐙',c:'#c9f2ea'})} หมึกมิ้นต์</div><div>${avHTML({e:'🦉',c:'#ffd3e7'})} นกฮูกชมพู</div></div>`,h:'<span class="hl">ชื่อเล่นใหม่</span><br>ทุกโพสต์',p:'สามชื่อนี้อาจเป็นคนเดียวกัน ไม่มีใครโยงโพสต์ของคุณเข้าด้วยกันได้ และหน้า “ฉัน” มีแค่คุณที่เห็น'},
-  {a:`<div class="bigtile">🎙️</div>`,h:'เสียงของคุณ<br>แต่<span class="hl">ไม่มีใครจำได้</span>',p:'ใส่ฟิลเตอร์ปลอมเสียงได้ ทุกคลิปมีคำบรรยาย เปิดเสียงไม่ได้ก็อ่านได้ หรือฟัง 2× ก็ได้'}];
- const x=P[k]; $$('.intro').forEach(i=>i.remove()); const el=document.createElement('div');el.className='intro';
- el.innerHTML=`<div style="display:flex;justify-content:flex-end"><button class="btn soft sm" id="inskip" style="min-height:36px">ข้าม</button></div><div class="art">${x.a}</div><h1 class="display">${x.h}</h1><p>${x.p}</p><div class="idots">${P.map((_,i)=>`<i class="${i===k?'on':''}"></i>`).join('')}</div><button class="btn primary block" id="inx">${k<2?'ต่อไป':'เริ่มเลย'}</button>`;
- app.appendChild(el);
- const done=()=>{el.remove();S.intro=true;save();log('intro_done');render()};
- $('#inx',el).onclick=()=>{if(k<2)intro(k+1);else done()}; $('#inskip',el).onclick=done;
+/* ============ onboarding (v1.7 flow: Chula only, anonymity-first) ============ */
+const OB_ORDER=['sso','dob','fac','voice','notif'];
+const OB_PREV={rules:'welcome',sso:'rules',waitlist:'sso',ssoerr:'sso',dob:'sso',fac:'dob',voice:'fac',notif:'voice'};
+const PERSONAL=['gmail.com','googlemail.com','outlook.com','hotmail.com','live.com','yahoo.com','icloud.com','me.com','proton.me'];
+const OTHER_UNI={'tu.ac.th':['ธรรมศาสตร์',154],'mahidol.ac.th':['มหิดล',212],'mahidol.edu':['มหิดล',212],'ku.ac.th':['เกษตรศาสตร์',98],'ku.th':['เกษตรศาสตร์',98],'kmutt.ac.th':['มจธ.',61],'cmu.ac.th':['ม.เชียงใหม่',87],'swu.ac.th':['มศว',57]};
+function classifyEmail(e){
+ if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e))return{k:'invalid'};
+ const d=e.split('@')[1];
+ if(d==='alumni.chula.ac.th')return{k:'graduated'};
+ if(d==='student.chula.ac.th'||d==='chula.ac.th')return{k:'ok'};
+ if(PERSONAL.includes(d))return{k:'personal'};
+ const key=Object.keys(OTHER_UNI).find(x=>d===x||d.endsWith('.'+x));
+ if(key)return{k:'waitlist',d,name:OTHER_UNI[key][0],n:OTHER_UNI[key][1]+1};
+ if(/\.(ac\.[a-z]{2}|edu(\.[a-z]{2})?)$/.test(d))return{k:'waitlist',d,name:null,n:3+hash(d)%40};
+ return{k:'notuni'};
+}
+const OB_SLIDES=[
+ {a:`<div class="bigtile logo"><div class="logo">EIGHT<br>TEEN</div><span class="vpill">${'✓'} นิสิตจุฬาฯ ตัวจริงเท่านั้น</span></div>`,h:'ที่ของ<span class="hl">เด็กจุฬาฯ</span><br>ตัวจริง',p:'ยืนยันด้วยอีเมลจุฬาฯ ครั้งเดียว ไม่มีบัญชีปลอม เปิดที่จุฬาฯ เป็นที่แรก'},
+ {a:`<div class="bigtile">🎭</div>`,h:'พูด โพสต์ คอมเมนต์<br>โดย<span class="hl">ไม่มีใครรู้</span>ว่าเป็นคุณ',p:'ทุกโพสต์ไม่ระบุตัวตนเป็นค่าเริ่มต้น คนอื่นเห็นแค่ว่าคุณเป็นนักศึกษาจุฬาฯ'},
+ {a:`<div class="bigtile list"><div>${avHTML({e:'🦊',c:'#ffd2b3'})} จิ้งจอกส้ม</div><div>${avHTML({e:'🐙',c:'#c9f2ea'})} หมึกมิ้นต์</div><div>${avHTML({e:'🦉',c:'#ffd3e7'})} นกฮูกชมพู</div></div>`,h:'<span class="hl">ชื่อเล่นใหม่</span><br>ทุกโพสต์',p:'สามชื่อนี้อาจเป็นคนเดียวกัน ไม่มีใครโยงโพสต์ของคุณเข้าด้วยกันได้ และหน้า “ฉัน” มีแค่คุณที่เห็น'},
+ {a:`<div class="bigtile">🎙️</div>`,h:'เสียงของคุณ<br>แต่<span class="hl">ไม่มีใครจำได้</span>',p:'ใส่ฟิลเตอร์ปลอมเสียงได้ ทุกคลิปมีคำบรรยาย เปิดเสียงไม่ได้ก็อ่านได้ หรือฟัง 2× ก็ได้'}];
+function obTop(step){
+ const i=OB_ORDER.indexOf(step),back=OB_PREV[step];
+ return `<div class="ob-top">${back?`<button class="iconbtn" data-act="obGo" data-arg="${back}" aria-label="กลับ">${I('back')}</button>`:''}${i<0?'<div style="flex:1"></div>':`<div class="segbar">${OB_ORDER.map((_,k)=>`<i class="${k<=i?'on':''}"></i>`).join('')}</div><span class="cap" style="min-width:28px;text-align:right;font-weight:700">${i+1}/${OB_ORDER.length}</span>`}</div>`;
+}
+function obHTML(){
+ const o=S.ob,st=o.step,foot=h=>`<div class="ob-foot">${h}</div>`;
+ if(st==='welcome'){const k=o.slide,x=OB_SLIDES[k],last=k===OB_SLIDES.length-1;
+  return `<div class="ob-top"><div style="flex:1"></div><button class="btn soft sm" style="min-height:36px" data-act="obGo" data-arg="rules">ข้าม</button></div>
+  <div class="ob-body" data-act="obSlide" style="display:flex;flex-direction:column;cursor:pointer"><div class="art" style="flex:1">${x.a}</div><h1 class="display">${x.h}</h1><p class="lead">${x.p}</p><div class="idots" style="margin:0">${OB_SLIDES.map((_,i)=>`<i class="${i===k?'on':''}"></i>`).join('')}</div></div>
+  ${foot(`<button class="btn primary block" data-act="${last?'obGo':'obSlide'}" data-arg="rules">${last?'เริ่มเลย':'ต่อไป'}</button><button class="lnk" data-act="obSignin">มีบัญชีอยู่แล้ว? เข้าสู่ระบบ</button>`)}`}
+ if(st==='rules')return `${obTop('rules')}<div class="ob-body"><h1 class="h1">กติกาสั้น ๆ 3 ข้อ</h1><p class="lead">อ่านไม่ถึงนาที แล้วไปต่อกัน</p>${rulesHTML()}
+  <button class="ck ${o.terms?'on':''}" data-act="obTerms"><span class="bx">${o.terms?I('check'):''}</span><span>ฉันยอมรับ <u>เงื่อนไขการใช้งาน</u> และ <u>นโยบายความเป็นส่วนตัว</u> (PDPA)</span></button></div>
+  ${foot(`<button class="btn primary block" ${o.terms?'':'disabled style="opacity:.4"'} data-act="obGo" data-arg="sso">ยอมรับและไปต่อ</button>`)}`;
+ if(st==='sso'){const G='<svg width="22" height="22" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 13 4 4 13 4 24s9 20 20 20 20-9 20-20c0-1.3-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.5z"/></svg>';
+  const M='<svg width="20" height="20" viewBox="0 0 22 22"><rect width="10" height="10" fill="#f25022"/><rect x="12" width="10" height="10" fill="#7fba00"/><rect y="12" width="10" height="10" fill="#00a4ef"/><rect x="12" y="12" width="10" height="10" fill="#ffb900"/></svg>';
+  return `${obTop('sso')}<div class="ob-body"><h1 class="h1">เข้าสู่ระบบด้วย<br>บัญชีจุฬาฯ</h1><p class="lead">ใช้ Google หรือ Microsoft ด้วยอีเมล @student.chula.ac.th ไม่ต้องรอรหัสทางอีเมล</p>
+  <div style="display:flex;flex-direction:column;gap:10px"><button class="prov" data-act="obSso" data-arg="Google"><span class="lg">${G}</span>ดำเนินการต่อด้วย Google</button><button class="prov" data-act="obSso" data-arg="Microsoft"><span class="lg">${M}</span>ดำเนินการต่อด้วย Microsoft</button></div>
+  <div class="tips"><div><span style="color:#14805a">${I('check')}</span><span>ใช้อีเมลที่จุฬาฯ ออกให้</span></div><div><span style="color:var(--danger)">${I('x')}</span><span>Gmail หรือ Outlook ส่วนตัวใช้สมัครไม่ได้</span></div><div><span style="color:var(--warn)">${I('clock')}</span><span>มหาลัยอื่นยังไม่เปิด เราลงชื่อรอให้อัตโนมัติ</span></div></div>
+  <div class="fine">${I('lock')}<span>อีเมลใช้ยืนยันว่าเป็นนิสิตเท่านั้น ไม่มีใครเห็น และไม่ผูกกับโพสต์ที่คนอื่นเห็น เราไม่เห็นรหัสผ่านของคุณ</span></div></div>`}
+ if(st==='waitlist'){const w=o.wl,name=w.name||'มหาลัยของคุณ';
+  return `${obTop('waitlist')}<div class="ob-body"><h1 class="h1">ยังไม่เปิดที่${esc(name)}<br>แต่ใกล้แล้ว</h1><p class="lead">ตอนนี้ EIGHT TEEN เปิดที่จุฬาฯ ที่แรก เราลงชื่อรอให้แล้ว และจะส่งอีเมลไปบอกทันทีที่เปิด</p>
+  <div class="box2" style="padding:16px 18px"><div style="display:flex;align-items:baseline;gap:8px"><b style="font:800 28px/1 var(--f-n)">${w.n} / 500</b><span class="cap">คนลงชื่อรอแล้ว</span></div><div class="prog"><i style="width:${Math.min(100,w.n/5)}%"></i></div><div class="cap">ยิ่งเพื่อนลงชื่อเยอะ ยิ่งเปิดเร็วขึ้น</div></div>
+  <div class="banner ok" style="margin-top:14px">${I('check')}<div><b>คุณอยู่ในรายชื่อรอแล้ว</b>จะแจ้งที่ ${esc(w.email)} ครั้งเดียวตอนเปิด</div></div></div>
+  ${foot(`<button class="btn primary block" data-act="obShare">ชวนเพื่อนมาลงชื่อ</button><button class="lnk" data-act="obGo" data-arg="sso">ใช้บัญชีอื่น</button>`)}`}
+ if(st==='ssoerr'){const m={personal:['นี่เป็นบัญชีส่วนตัว','Gmail, Outlook หรืออีเมลส่วนตัวใช้สมัครไม่ได้ ใช้อีเมลที่จุฬาฯ ออกให้'],notuni:['อีเมลนี้ไม่ใช่อีเมลมหาวิทยาลัย','ใช้อีเมลที่จุฬาฯ ออกให้ ที่ลงท้ายด้วย @student.chula.ac.th'],graduated:['บัญชีนี้สมัครไม่ได้','จุฬาฯ แจ้งว่าบัญชีนี้เป็นศิษย์เก่าหรือถูกระงับ ถ้าคิดว่าผิดพลาด ติดต่อทีมงาน']}[o.err];
+  return `${obTop('ssoerr')}<div class="ob-body"><div class="banner bad" role="alert">${I('x')}<div><b>${m[0]}</b>${m[1]}</div></div></div>${foot(`<button class="btn primary block" data-act="obGo" data-arg="sso">ลองอีกครั้ง</button>`)}`}
+ if(st==='dob'){const d=S.me.dob,months=['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'],years=[];for(let y=2012;y>=1985;y--)years.push(y);
+  const sel=(k,ph,opts)=>`<select class="input" data-dob="${k}"><option value="">${ph}</option>${opts.map(x=>`<option value="${x[0]}" ${String(d[k])===String(x[0])?'selected':''}>${x[1]}</option>`).join('')}</select>`;
+  const ok=d.d&&d.m&&d.y;
+  return `${obTop('dob')}<div class="ob-body"><h1 class="h1">ยืนยันแล้ว! อีกนิดเดียว</h1>
+  <div class="vcard"><div><div style="flex:1;min-width:0"><b>อีเมล</b><span>${esc(S.me.email)}</span></div><span style="color:#14805a">${I('check')}</span></div><div><div style="flex:1"><b>มหาวิทยาลัย</b><span>จุฬาลงกรณ์มหาวิทยาลัย · รู้จากโดเมนอีเมล</span></div></div></div>
+  <div class="lbl2">วันเกิดของคุณ</div><div style="display:grid;grid-template-columns:1fr 1.3fr 1.3fr;gap:8px">${sel('d','วัน',Array.from({length:31},(_,i)=>[i+1,i+1]))}${sel('m','เดือน',months.map((m,i)=>[i+1,m]))}${sel('y','ปี พ.ศ.',years.map(y=>[y,y+543]))}</div>
+  <div class="fine">${I('lock')}<span>วันเกิดเก็บเป็นความลับ ไม่แสดงให้ใครเห็น ใช้ดูแลความปลอดภัยของผู้ใช้อายุน้อย</span></div></div>
+  ${foot(`<button class="btn primary block" ${ok?'':'disabled style="opacity:.4"'} data-act="obGo" data-arg="fac">ไปต่อ</button>`)}`}
+ if(st==='fac'){const ok=S.me.fac&&S.me.year;
+  return `${obTop('fac')}<div class="ob-body"><h1 class="h1">เรียนคณะอะไร ปีไหน?</h1><p class="lead">ใช้แนะนำเรื่องใกล้ตัวคุณ ปกติซ่อนไว้ ทุกโพสต์ขึ้นแค่ “นักศึกษาจุฬาฯ” จะโชว์คณะในโพสต์ไหนก็เลือกเองตอนโพสต์</p>${facPicker()}</div>
+  ${foot(`<button class="btn primary block" ${ok?'':'disabled style="opacity:.4"'} data-act="obGo" data-arg="voice">ไปต่อ</button>`)}`}
+ if(st==='voice')return `${obTop('voice')}<div class="ob-body"><h1 class="h1">เลือกเสียงลับของคุณ</h1><p class="lead">ทุกคลิปเสียงที่คุณส่งจะผ่านฟิลเตอร์นี้ แตะ ▶ เพื่อฟังตัวอย่าง เปลี่ยนได้ทุกครั้งที่อัด</p>
+  ${FX.map(f=>`<div class="fxrow ${S.filter===f.id?'on':''}" data-act="obFx" data-arg="${f.id}" role="button"><span class="e">${f.e}</span><span class="t"><b>${f.n}${f.id==='mask'?' · แนะนำ':''}</b><span>${f.d}</span></span><button class="pl" data-act="obPreview" data-arg="${f.id}" aria-label="ฟังตัวอย่าง">${I('play')}</button><span class="rad"></span></div>`).join('')}
+  ${S.filter==='orig'?`<div class="banner bad" style="margin-top:6px">${I('mask')}<div><b>เสียงจริงอาจทำให้คนจำคุณได้</b>ถ้าอยากไม่ระบุตัวตนจริง ๆ แนะนำเสียงลับ</div></div>`:''}</div>
+  ${foot(`<button class="btn primary block" data-act="obGo" data-arg="notif">ไปต่อ</button>`)}`;
+ if(st==='notif')return `${obTop('notif')}<div class="ob-body" style="display:flex;flex-direction:column;justify-content:center"><div class="art" style="min-height:240px"><div class="bigtile" style="width:180px;height:180px;font-size:84px">🔔</div></div><h1 class="h1" style="text-align:center">รู้ทันทีเมื่อมีคนคอมเมนต์</h1><p class="lead" style="text-align:center">แจ้งเมื่อมีคนคอมเมนต์หรือ ATE โพสต์ของคุณ และตอนคำถามวันนี้มาแล้ว ไม่ส่งช่วง 00:00–07:00</p></div>
+  ${foot(`<button class="btn primary block" data-act="obFinish" data-arg="on">เปิดการแจ้งเตือน</button><button class="lnk" style="color:var(--ink2)" data-act="obFinish" data-arg="off">ไว้ทีหลัง</button>`)}`;
+ o.step='welcome';return obHTML();
+}
+function ob(){stopActive();let el=$('.ob');if(!el){el=document.createElement('div');el.className='ob';app.appendChild(el)}el.innerHTML=obHTML();const b=$('.ob-body',el);if(b)b.scrollTop=0;
+ $$('[data-dob]',el).forEach(x=>x.onchange=()=>{S.me.dob[x.dataset.dob]=x.value;save();ob()});}
+const PREV={pcm:null,a:null};
+async function previewFx(id){
+ try{if(PREV.a){PREV.a.pause();PREV.a=null}
+  if(!PREV.pcm){const b=await(await fetch('audio/v1.m4a')).blob();PREV.pcm=await decodePCM(b)}
+  const {pcm,sr}=PREV.pcm;const out=applyFx(pcm.subarray(0,Math.min(pcm.length,sr*6)),sr,fx(id));
+  const a=new Audio(URL.createObjectURL(wavBlob(out,sr)));PREV.a=a;a.play().catch(()=>toast('แตะอีกครั้งเพื่อฟัง'));log('ob_fx_preview',{id})}
+ catch(e){toast('เล่นตัวอย่างไม่ได้ในเบราว์เซอร์นี้')}
 }
 
 /* ============ actions ============ */
 const A={
- tab(t){S.tab=t;save();render()},
+ tab(t){S.tab=t;S.sub=null;save();render()},
+ openSettings(){S.sub='settings';save();render();$('.pg').scrollTop=0},
+ closeSettings(){S.sub=null;save();render()},
+ editFac(){sheet(`<h2 class="h1">คณะและชั้นปี</h2><p class="sub">ซ่อนไว้เป็นค่าเริ่มต้น โชว์เฉพาะโพสต์ที่คุณเลือก</p>${facPicker()}<div style="height:16px"></div><button class="btn primary block" data-act="closeSheet">เสร็จ</button>`)},
+ pickFac(f){S.me.fac=f;save();if($('.ob'))return ob();$$('[data-act=pickFac]').forEach(b=>b.classList.toggle('on',b.dataset.arg===f));const r=$('#facRow');if(r)r.textContent=meLabel()},
+ pickYear(y){S.me.year=y;save();if($('.ob'))return ob();$$('[data-act=pickYear]').forEach(b=>b.classList.toggle('on',b.dataset.arg===y));const r=$('#facRow');if(r)r.textContent=meLabel()},
+ showRules(){sheet(`<h2 class="h1">กติกาชุมชน</h2><p class="sub">ใช้กับทุกโพสต์และคอมเมนต์</p>${rulesHTML()}`)},
+ privacy(){sheet(`<h2 class="h1">ความเป็นส่วนตัว</h2><p class="sub">สิ่งที่เราเก็บ และใครเห็นอะไร</p><div class="note" style="flex-direction:column;gap:6px"><div><b>คนอื่นเห็น</b> ชื่อเล่นสุ่มที่เปลี่ยนทุกโพสต์ และ “นักศึกษาจุฬาฯ” (คณะและชั้นปีเฉพาะโพสต์ที่คุณเลือกโชว์)</div><div><b>คนอื่นไม่เห็น</b> อีเมล วันเกิด และโพสต์อื่นของคุณ</div><div><b>ทีมงาน</b> เปิดดูตัวตนได้เฉพาะเมื่อมีคำสั่งตามกฎหมาย</div><div><b>เสียง</b> เก็บแค่คลิปที่ผ่านฟิลเตอร์แล้ว ไม่เก็บเสียงจริง</div></div>`)},
+ replayOb(){S.onb=false;S.sub=null;S.ob={step:'welcome',slide:0,terms:false};save();render();ob()},
+ signOut(){if(!confirm('ออกจากระบบ?'))return;S.onb=false;S.sub=null;S.tab='home';S.ob={step:'sso',slide:0,terms:true};save();log('sign_out');render();ob()},
+ obGo(st){S.ob.step=st;save();log('ob_step',{step:st});ob()},
+ obSlide(){if(S.ob.slide<OB_SLIDES.length-1){S.ob.slide++;save();ob()}else A.obGo('rules')},
+ obSignin(){S.ob.terms=true;A.obGo('sso')},
+ obTerms(){S.ob.terms=!S.ob.terms;save();ob()},
+ obSso(prov){S.ob.prov=prov;sheet(`<h2 class="h1">ดำเนินการต่อด้วย ${prov}</h2><p class="sub">ต้นแบบ: พิมพ์อีเมลอะไรก็ได้ ไม่มีการเข้าสู่ระบบจริง</p>
+  <input class="input" id="obEmail" type="email" inputmode="email" autocapitalize="off" autocomplete="off" placeholder="6730012321@student.chula.ac.th"><div style="height:12px"></div><button class="btn primary block" data-act="obEmail">ไปต่อ</button>
+  <div class="lbl2" style="font-size:13px;color:var(--muted)">บัญชีทดสอบ</div>${[['6730012321@student.chula.ac.th','จุฬาฯ · เข้าได้'],['pim.r@dome.tu.ac.th','ธรรมศาสตร์ · ลงชื่อรอ'],['someone@gmail.com','บัญชีส่วนตัว · ไม่ผ่าน'],['old.grad@alumni.chula.ac.th','ศิษย์เก่า · ไม่ผ่าน']].map(x=>`<button class="row" data-act="obPick" data-arg="${x[0]}"><span class="t"><b style="font-size:14px">${x[0]}</b><span>${x[1]}</span></span>${I('chev','sm')}</button>`).join('')}`);
+  const i=$('#obEmail');i.onkeydown=e=>{if(e.key==='Enter')A.obEmail()}},
+ obPick(e){$('#obEmail').value=e;A.obEmail()},
+ obEmail(){const e=($('#obEmail').value||'').trim().toLowerCase(),r=classifyEmail(e);
+  if(r.k==='invalid'){toast('ใส่อีเมลให้ถูกต้อง');return}
+  closeSheet();log('ob_signin',{result:r.k,provider:S.ob.prov});
+  if(r.k==='ok'){S.me.email=e;A.obGo('dob')}else if(r.k==='waitlist'){S.ob.wl={email:e,name:r.name,n:r.n};A.obGo('waitlist')}else{S.ob.err=r.k;A.obGo('ssoerr')}},
+ obShare(){try{navigator.clipboard.writeText(location.href)}catch(e){}toast('คัดลอกลิงก์ชวนเพื่อนแล้ว')},
+ obFx(id){S.filter=id;save();ob()},
+ obPreview(id,el,e){S.filter=id;save();ob();previewFx(id)},
+ obFinish(v){if(PREV.a)PREV.a.pause();S.notifOn=v==='on';if(v==='on'&&window.Notification&&Notification.permission==='default'){try{Notification.requestPermission()}catch(e){}}
+  S.onb=true;S.tab='home';S.t0=Date.now();save();log('onboarding_done',{notif:S.notifOn,filter:S.filter,fac:S.me.fac,year:S.me.year});$('.ob')&&$('.ob').remove();render();setTimeout(()=>toast(`ยินดีต้อนรับ! ลองตอบคำถามวันนี้ดูไหม ${PROMPT.e}`),300)},
  view(v){S.view=v;save();render()},
  sort(s){S.sort=s;save();render()},
  sound(){S.sound=!S.sound;save();log('sound_toggled',{on:S.sound});applyAudioPrefs()},
@@ -983,7 +1155,6 @@ const A={
   const cnt=k=>S.log.filter(l=>l.e===k).length;
   sheet(`<h2 class="h1">ผลการทดสอบในเครื่องนี้</h2><p class="sub">เก็บไว้ในเครื่องนี้เท่านั้น</p><div class="stats" style="margin:0 0 12px"><div><b>${posts.length}</b><span>โพสต์</span></div><div><b>${reps.length}</b><span>คอมเมนต์</span></div><div><b>${first?Math.round((first.t-S.t0)/1000)+'s':'–'}</b><span>ถึงโพสต์แรก</span></div></div>
   <div class="mono">เปิดคอมเมนต์ ${cnt('replies_opened')} · เปิดบับเบิล ${cnt('place_opened')} · เปิดคำถามวันนี้ ${cnt('prompt_opened')}\nเปิด/ปิดเสียง ${cnt('sound_toggled')} · เปลี่ยนความเร็ว ${cnt('speed_changed')} · ATE ${cnt('ate')}\n\n${S.log.slice(0,25).map(l=>new Date(l.t).toLocaleTimeString('th-TH')+'  '+l.e+' '+JSON.stringify(l.p)).join('\n')}</div>`)},
- replayIntro(){intro(0)},
  reset(){if(!confirm('ล้างข้อมูลต้นแบบทั้งหมดในเครื่องนี้?'))return;try{localStorage.removeItem(KEY);indexedDB.deleteDatabase('et18v2')}catch(e){}location.reload()}
 };
 document.addEventListener('click',e=>{const b=e.target.closest('[data-act]');if(!b||!app.contains(b))return;const a=A[b.dataset.act];if(a){e.stopPropagation();a(b.dataset.arg,b,e)}});
@@ -992,7 +1163,7 @@ document.addEventListener('click',e=>{const b=e.target.closest('[data-act]');if(
 (async()=>{
  const keys=[];S.posts.forEach(p=>{p.key&&keys.push(p.key);p.replies.forEach(r=>r.key&&keys.push(r.key))});
  await Promise.all(keys.map(async k=>{MEM[k]=await idb.get(k)}));
- render(); if(!S.intro)intro(0);
+ render(); if(!S.onb)ob();
 })();
 </script>
 </body>
