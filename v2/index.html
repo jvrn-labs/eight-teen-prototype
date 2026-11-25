@@ -79,11 +79,11 @@ svg.i.sm{width:18px;height:18px} svg.i.xs{width:15px;height:15px} svg.i.lg{width
 .pstrip b{display:block;font:700 14.5px/1.35 var(--f-d);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .pstrip .go{flex:none;background:var(--brand);color:#fff;border-radius:99px;padding:9px 14px;font:700 13px/1 var(--f-d);box-shadow:2px 2px 0 var(--lime)}
 /* ---------- tab bar + FAB (v1.7) ---------- */
-.tabbar{position:absolute;left:16px;right:16px;bottom:calc(12px + var(--sb));height:64px;border-radius:999px;background:var(--nav);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);box-shadow:0 0 0 1px rgba(11,16,38,.06),0 12px 32px rgba(11,16,38,.14);display:grid;grid-template-columns:repeat(3,1fr);align-items:center;z-index:30;padding:0 8px}
+.tabbar{position:absolute;left:88px;right:16px;bottom:calc(12px + var(--sb));height:64px;border-radius:999px;background:var(--nav);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);box-shadow:0 0 0 1px rgba(11,16,38,.06),0 12px 32px rgba(11,16,38,.14);display:grid;grid-template-columns:repeat(3,1fr);align-items:center;z-index:30;padding:0 8px}
 .tab{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;font:600 12px/1.3 var(--f-b);color:var(--ink2);min-height:52px;margin:0 6px;border-radius:999px;position:relative}
 .tab.on{color:var(--ink);background:var(--surface)}
 .tab .dot{position:absolute;top:3px;left:calc(50% + 4px);min-width:18px;height:18px;border-radius:9px;background:#d1242f;color:#fff;font:800 11px/18px var(--f-n);text-align:center;padding:0 5px}
-.fab{position:absolute;right:18px;bottom:calc(92px + var(--sb));width:58px;height:58px;border-radius:20px;background:var(--brand);color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:4px 4px 0 var(--lime),0 10px 24px rgba(124,58,237,.35);z-index:31}
+.fab{position:absolute;left:16px;bottom:calc(15px + var(--sb));width:60px;height:60px;border-radius:20px;background:var(--brand);color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:4px 4px 0 var(--lime),0 10px 24px rgba(124,58,237,.35);z-index:31}
 .fab svg.i{width:28px;height:28px;stroke-width:2.4}
 /* ---------- feed (swipe cards) ---------- */
 #feed{flex:1;min-height:0;overflow-y:scroll;scroll-snap-type:y mandatory;scrollbar-width:none;overscroll-behavior:contain}
@@ -416,11 +416,11 @@ function seed(){
 }
 function seedNotifs(){const n=Date.now();return[
  {id:'n1',kind:'prompt',text:`คำถามวันนี้มาแล้ว: ${PROMPT.q}`,at:n-50*60000,read:false},
- {id:'n2',kind:'post',pid:'p8',text:'โพสต์ที่คุณเคยดูมีคำตอบใหม่ 3 คำตอบ',at:n-40*60000,read:false},
+ {id:'n2',kind:'post',pid:'p8',text:'โพสต์ที่คุณเคยดูมีคอมเมนต์ใหม่ 3 คอมเมนต์',at:n-40*60000,read:false},
  {id:'n3',kind:'place',place:'sala',text:'ศาลาพระเกี้ยว LIVE ตอนนี้: ดนตรีในสวน',at:n-120*60000,read:true}]}
 
 /* ============ state ============ */
-const KEY='et18v2', SEEDV=4;
+const KEY='et18v2', SEEDV=5;
 let S=load();
 function fresh(){return{v:SEEDV,posts:seed(),notifs:seedNotifs(),sound:false,rate:1,filter:'mask',showId:false,intro:false,tab:'home',view:'uni',sort:'hot',seenPlaces:[],log:[],t0:Date.now()}}
 function load(){try{const s=JSON.parse(localStorage.getItem(KEY));if(s&&s.v===SEEDV)return s}catch(e){}return fresh()}
@@ -499,7 +499,7 @@ function slideHTML(p){
    <button class="rb" data-act="more" data-arg="${p.id}"><span class="o">${I('more')}</span></button>
   </div>
   <div class="info">${whoHTML(p,al)}
-   <button class="rhint" data-act="openStack" data-arg="${p.id}">${n?`<span class="avs">${avs}</span> ${n} คำตอบ · ปัดซ้ายดู`:`<span style="padding-left:8px;display:flex">${I('mic','xs')}</span> ยังไม่มีคำตอบ · ตอบคนแรกเลย`} ${I('chev','xs')}</button>
+   <button class="rhint" data-act="openStack" data-arg="${p.id}">${n?`<span class="avs">${avs}</span> ${n} คอมเมนต์ · ปัดซ้ายดู`:`<span style="padding-left:8px;display:flex">${I('mic','xs')}</span> ยังไม่มีคอมเมนต์ · คอมเมนต์คนแรกเลย`} ${I('chev','xs')}</button>
   </div></div></section>`;
 }
 function hdrHTML(){
@@ -554,7 +554,7 @@ function renderMe(){
  <div class="me-av">🎭</div>
  <div class="pad" style="margin-top:12px"><h1 class="h1">ของฉัน</h1><div class="muted" style="font-size:13.5px;display:flex;align-items:center;gap:4px;flex-wrap:wrap">${ME_LABEL} · จุฬาฯ · ${I('lock','xs')} มีแค่คุณที่เห็นหน้านี้</div></div>
  <div class="pad" style="margin-top:14px"><div class="note">${I('mask','sm')}<div><b>ไม่มีหน้าโปรไฟล์สาธารณะ</b><br>คนอื่นเห็นคุณเป็นชื่อเล่นสุ่มในแต่ละโพสต์ และโยงโพสต์ของคุณเข้าด้วยกันไม่ได้</div></div></div>
- <div class="stats"><div><b>${mine.length}</b><span>โพสต์</span></div><div><b>${myReplies}</b><span>คำตอบ</span></div><div><b>${nf(ateGot)}</b><span>ATE ที่ได้</span></div></div>
+ <div class="stats"><div><b>${mine.length}</b><span>โพสต์</span></div><div><b>${myReplies}</b><span>คอมเมนต์</span></div><div><b>${nf(ateGot)}</b><span>ATE ที่ได้</span></div></div>
  <div class="sec">โพสต์ของฉัน</div>
  ${mine.length?`<div class="mine">${mine.map(p=>`<button style="${thumbStyle(p)}" data-act="openMine" data-arg="${p.id}">${p.kind==='voice'?`<span>🎙 ${esc((p.text||'คลิปเสียง').slice(0,40))}</span>`:''}<span class="n">${I('stack','xs')} ${p.replies.length} · 🔥 ${nf(p.ate)}</span></button>`).join('')}</div>`
  :`<div class="empty"><div class="tile" style="width:76px;height:76px;font-size:34px;border-radius:24px;box-shadow:6px 6px 0 var(--lime)">🎙</div><b class="h2" style="color:var(--ink)">ยังไม่มีโพสต์</b>ลองตอบคำถามวันนี้ดูไหม ไม่มีใครรู้ว่าเป็นคุณ<button class="btn primary sm" data-act="openPromptCompose">${PROMPT.e} ตอบคำถามวันนี้</button></div>`}
@@ -566,7 +566,7 @@ function renderMe(){
   <button class="row" data-act="speedRow"><span class="t"><b>ความเร็วเสียง</b><span>${S.rate}× · แตะเพื่อเปลี่ยน</span></span>${I('chev','sm')}</button>
  </div>
  <div class="sec">สำหรับทีมทดสอบ</div>
- <div class="card2"><button class="row" data-act="testlog"><span class="t"><b>ผลการทดสอบในเครื่องนี้</b><span>โพสต์ คำตอบ เวลาถึงโพสต์แรก</span></span>${I('chev','sm')}</button>
+ <div class="card2"><button class="row" data-act="testlog"><span class="t"><b>ผลการทดสอบในเครื่องนี้</b><span>โพสต์ คอมเมนต์ เวลาถึงโพสต์แรก</span></span>${I('chev','sm')}</button>
  <button class="row" data-act="replayIntro"><span class="t"><b>ดูหน้าแนะนำอีกครั้ง</b></span>${I('chev','sm')}</button>
  <button class="row" data-act="reset"><span class="t"><b style="color:var(--danger)">ล้างข้อมูลต้นแบบ</b><span>เริ่มใหม่เหมือนคนเพิ่งติดตั้ง</span></span></button></div>
  <p class="cap" style="text-align:center;margin-top:18px">EIGHT TEEN v2 · ต้นแบบสำหรับทดสอบ · 25 พ.ย. 2026</p></div>${tabbarHTML()}</div>`;
@@ -646,15 +646,15 @@ function renderStack(){
  const it=items[SV.i]; const post=SV.mode==='replies'?postById(SV.pid):it;
  let who='',stage='';
  if(end){
-  const e=SV.mode==='replies'?{b:'💬',h:'ดูครบทุกคำตอบแล้ว',p:'กดค้างปุ่มด้านล่างเพื่อตอบด้วยเสียง หรือส่งรูป GIF ก็ได้'}:SV.mode==='place'?{b:'📍',h:'ดูครบทุกโพสต์ที่นี่แล้ว',p:'อยู่แถวนี้ไหม? โพสต์แล้วติดสถานที่นี้ได้เลย'}:{b:PROMPT.e,h:'ดูคำตอบครบแล้ว',p:'ถึงตาคุณแล้ว ไม่มีใครรู้ว่าเป็นคุณ'};
+  const e=SV.mode==='replies'?{b:'💬',h:'ดูครบทุกคอมเมนต์แล้ว',p:'กดค้างปุ่มด้านล่างเพื่อคอมเมนต์ด้วยเสียง หรือส่งรูป GIF ก็ได้'}:SV.mode==='place'?{b:'📍',h:'ดูครบทุกโพสต์ที่นี่แล้ว',p:'อยู่แถวนี้ไหม? โพสต์แล้วติดสถานที่นี้ได้เลย'}:{b:PROMPT.e,h:'ดูคำตอบครบแล้ว',p:'ถึงตาคุณแล้ว ไม่มีใครรู้ว่าเป็นคุณ'};
   stage=`<div class="sv-end"><div class="tile">${e.b}</div><h2 class="h1">${e.h}</h2><p>${e.p}</p><button class="btn soft sm" style="background:#fff" data-act="svRestart">ดูอีกรอบ</button></div>`;
-  who=`<div class="sv-who"><div class="t"><b>${SV.mode==='replies'?'คำตอบทั้งหมด':SV.mode==='place'?esc(place(SV.place).n):'คำถามวันนี้'}</b><span>${n} รายการ</span></div><button class="iconbtn" data-act="closeStack" aria-label="ปิด">${I('x')}</button></div>`;
+  who=`<div class="sv-who"><div class="t"><b>${SV.mode==='replies'?'คอมเมนต์ทั้งหมด':SV.mode==='place'?esc(place(SV.place).n):'คำถามวันนี้'}</b><span>${n} รายการ</span></div><button class="iconbtn" data-act="closeStack" aria-label="ปิด">${I('x')}</button></div>`;
  } else {
   const al=aliasMap(post), a=al[it.by]||al[post.by];
   const isOP=SV.mode==='replies'&&SV.i>0&&it.by===post.by;
-  const sub=SV.mode==='replies'?(SV.i===0?'โพสต์ต้นเรื่อง':`คำตอบที่ ${SV.i} จาก ${n-1}`):(it.showId||'นักศึกษาจุฬาฯ');
+  const sub=SV.mode==='replies'?(SV.i===0?'โพสต์ต้นเรื่อง':`คอมเมนต์ที่ ${SV.i} จาก ${n-1}`):(it.showId||'นักศึกษาจุฬาฯ');
   who=`<div class="sv-who">${avHTML(a)}<div class="t"><b>${a.n}${isOP?'<span class="badge">เจ้าของโพสต์</span>':''}${it.by==='me'?'<span class="badge">คุณ</span>':''}</b><span>${esc(sub)} · ${ago(it.at)}</span></div>
-   ${SV.mode!=='replies'?`<button class="iconbtn" data-act="svToReplies" aria-label="ดูคำตอบ">${I('stack')}</button>`:''}<button class="iconbtn" data-act="closeStack" aria-label="ปิด">${I('x')}</button></div>`;
+   ${SV.mode!=='replies'?`<button class="iconbtn" data-act="svToReplies" aria-label="ดูคอมเมนต์">${I('stack')}</button>`:''}<button class="iconbtn" data-act="closeStack" aria-label="ปิด">${I('x')}</button></div>`;
   const rid=SV.mode==='replies'&&SV.i>0?it.id:'';
   stage=frameHTML(it)+`<div class="sv-ate ${it.kind==='voice'?'lt':''}"><button class="rb ${it.ated?'on':''}" data-act="ate" data-arg="${post.id}${rid?'|'+rid:''}"><span class="o">${I(it.ated?'flameF':'flame')}</span>${nf(it.ate)}</button></div>`;
  }
@@ -662,10 +662,10 @@ function renderStack(){
  const ctx=SV.mode==='place'?`<div class="sv-ctx">${I('pin','sm')} ${esc(pl.n)}${pl.live?' · ● LIVE '+esc(pl.live):''}</div>`:SV.mode==='prompt'?`<div class="sv-ctx"><span style="font-size:17px">${PROMPT.e}</span> ${esc(PROMPT.q)}</div>`:'';
  const bars=`<div class="bars">${items.map((_,k)=>`<i class="${k<SV.i?'done':''}"><b></b></i>`).join('')}</div>`;
  const f=fx(S.filter);
- const bottom=SV.mode==='replies'?`<div class="rbar"><button class="iconbtn" style="width:50px;height:50px" data-act="replyPhoto" aria-label="ตอบด้วยรูป">${I('cam')}</button><button class="iconbtn" style="width:50px;height:50px;font:800 13px/1 var(--f-n)" data-act="replyGif">GIF</button>
+ const bottom=SV.mode==='replies'?`<div class="rbar"><button class="iconbtn" style="width:50px;height:50px" data-act="replyPhoto" aria-label="คอมเมนต์ด้วยรูป">${I('cam')}</button><button class="iconbtn" style="width:50px;height:50px;font:800 13px/1 var(--f-n)" data-act="replyGif">GIF</button>
    <div class="talk" id="talk"><span class="lbl">${I('mic')} กดค้างพูด</span><button class="fx" data-act="pickFx">${f.e} ${f.n}</button></div></div>`
   :SV.mode==='prompt'?`<div class="rbar"><button class="btn primary block" data-act="openPromptCompose">${PROMPT.e} ตอบคำถามนี้</button></div>`
-  :`<div class="rbar"><button class="btn ${end?'primary':'soft'} block" data-act="${end?'composePlace':'svToReplies'}">${end?I('plus')+' โพสต์ที่นี่':I('stack')+' ดูคำตอบของโพสต์นี้'}</button></div>`;
+  :`<div class="rbar"><button class="btn ${end?'primary':'soft'} block" data-act="${end?'composePlace':'svToReplies'}">${end?I('plus')+' โพสต์ที่นี่':I('stack')+' ดูคอมเมนต์ของโพสต์นี้'}</button></div>`;
  SV.el.innerHTML=`<div class="sv-top">${bars}${ctx}${who}</div><div class="sv-stage">${stage}</div>${bottom}`;
  if(!end) runStackItem(); else stopActive();
  const talk=$('#talk',SV.el); talk&&bindTalk(talk);
@@ -775,8 +775,8 @@ function simulateReply(pid){
  setTimeout(()=>{const p=postById(pid);if(!p)return;const g=GIFS[Math.floor(Math.random()*GIFS.length)][0];
   const r={id:uid('r'),by:'u'+(10+Math.floor(Math.random()*5)),kind:'gif',src:`../img/gif/${g}.gif`,stickers:[],at:Date.now(),ate:0,ated:false};
   p.replies.push(r);const a=aliasMap(p)[r.by];
-  S.notifs.push({id:uid('n'),kind:'reply',pid,text:`${a.n} ตอบโพสต์ของคุณด้วย GIF`,alias:a.e,color:a.c,at:Date.now(),read:false});save();log('simulated_reply',{pid});
-  toast(`${a.e} มีคนตอบโพสต์ของคุณ`,{label:'ดู',fn:()=>openStack(pid,p.replies.length)});
+  S.notifs.push({id:uid('n'),kind:'reply',pid,text:`${a.n} คอมเมนต์โพสต์ของคุณด้วย GIF`,alias:a.e,color:a.c,at:Date.now(),read:false});save();log('simulated_reply',{pid});
+  toast(`${a.e} มีคนคอมเมนต์โพสต์ของคุณ`,{label:'ดู',fn:()=>openStack(pid,p.replies.length)});
   if(!SV&&!C)render(true);
  },25000);
 }
@@ -801,7 +801,7 @@ async function startCam(){
 function renderComposer(){
  const el=C.el; const reply=!!C.target;
  if(C.step==='capture'){
-  const topChip=C.prompt?`<span class="chip" style="max-width:75%;overflow:hidden;text-overflow:ellipsis">${PROMPT.e} ${esc(PROMPT.q)}</span>`:reply?`<span class="chip">${I('mask','xs')} ตอบแบบไม่ระบุตัวตน</span>`:C.place?`<span class="chip">${I('pin','xs')} ${esc(place(C.place).n)}</span>`:'<span></span>';
+  const topChip=C.prompt?`<span class="chip" style="max-width:75%;overflow:hidden;text-overflow:ellipsis">${PROMPT.e} ${esc(PROMPT.q)}</span>`:reply?`<span class="chip">${I('mask','xs')} คอมเมนต์แบบไม่ระบุตัวตน</span>`:C.place?`<span class="chip">${I('pin','xs')} ${esc(place(C.place).n)}</span>`:'<span></span>';
   let stage='',shut='',light=false;
   if(C.mode==='photo'){
    stage=`<video id="cv" playsinline muted autoplay></video>
@@ -833,7 +833,7 @@ function renderComposer(){
    ${reply?'':`<div class="dots">${BG.map((b,k)=>`<button class="${C.bg===k?'on':''}" style="background:${b.bg}" data-act="setBg" data-arg="${k}" aria-label="พื้นหลัง ${k+1}"></button>`).join('')}</div>`}`:'';
  const pl=C.place&&place(C.place);
  el.innerHTML=`<div class="cmp-stage editing" id="edstage">${frameHTML(it,{final:false})}<div class="cmp-top"><button class="iconbtn w" data-act="cmpBack" aria-label="ย้อนกลับ">${I('back')}</button>${pl?`<span class="chip">${I('pin','xs')} ${esc(pl.n)}</span>`:'<span></span>'}</div>${tools}${face}<div class="trash" id="trash">${I('trash')}</div></div>
-  <div class="cmp-bot">${vctl}<button class="btn primary block" data-act="${reply?'sendReply':'postSheet'}">${reply?I('send','sm')+' ส่งคำตอบ':'ถัดไป'}</button></div>`;
+  <div class="cmp-bot">${vctl}<button class="btn primary block" data-act="${reply?'sendReply':'postSheet'}">${reply?I('send','sm')+' ส่งคอมเมนต์':'ถัดไป'}</button></div>`;
  const fr=$('.fr',el); if(C.media.kind==='voice'){$('.vwrap',fr).style.right='20px';activate(fr,{loop:true})}
  bindStickers($('#edstage',el));
 }
@@ -916,7 +916,7 @@ function toast(msg,action){$$('.toast').forEach(t=>t.remove());clearTimeout(tT);
 /* ============ intro (v1.7 onboarding look) ============ */
 function intro(k=0){
  const P=[
-  {a:`<div class="bigtile">🎭</div>`,h:'พูด โพสต์ ตอบ<br>โดย<span class="hl">ไม่มีใครรู้</span>ว่าเป็นคุณ',p:'ทุกโพสต์ไม่ระบุตัวตนเป็นค่าเริ่มต้น คนอื่นเห็นแค่ว่าคุณเป็นนักศึกษาจุฬาฯ'},
+  {a:`<div class="bigtile">🎭</div>`,h:'พูด โพสต์ คอมเมนต์<br>โดย<span class="hl">ไม่มีใครรู้</span>ว่าเป็นคุณ',p:'ทุกโพสต์ไม่ระบุตัวตนเป็นค่าเริ่มต้น คนอื่นเห็นแค่ว่าคุณเป็นนักศึกษาจุฬาฯ'},
   {a:`<div class="bigtile list"><div>${avHTML({e:'🦊',c:'#ffd2b3'})} จิ้งจอกส้ม</div><div>${avHTML({e:'🐙',c:'#c9f2ea'})} หมึกมิ้นต์</div><div>${avHTML({e:'🦉',c:'#ffd3e7'})} นกฮูกชมพู</div></div>`,h:'<span class="hl">ชื่อเล่นใหม่</span><br>ทุกโพสต์',p:'สามชื่อนี้อาจเป็นคนเดียวกัน ไม่มีใครโยงโพสต์ของคุณเข้าด้วยกันได้ และหน้า “ฉัน” มีแค่คุณที่เห็น'},
   {a:`<div class="bigtile">🎙️</div>`,h:'เสียงของคุณ<br>แต่<span class="hl">ไม่มีใครจำได้</span>',p:'ใส่ฟิลเตอร์ปลอมเสียงได้ ทุกคลิปมีคำบรรยาย เปิดเสียงไม่ได้ก็อ่านได้ หรือฟัง 2× ก็ได้'}];
  const x=P[k]; $$('.intro').forEach(i=>i.remove()); const el=document.createElement('div');el.className='intro';
@@ -941,9 +941,9 @@ const A={
  svRestart(){SV.i=0;renderStack()},
  svToReplies(){const items=svItems();const it=items[Math.min(SV.i,items.length-1)];openStack(it.id)},
  replyPhoto(){const pid=SV.pid;stopActive();openComposer({mode:'photo',target:pid})},
- replyGif(){const pid=SV.pid;sheet(`<h2 class="h1">ตอบด้วย GIF</h2><p class="sub">แตะเพื่อส่งทันที</p><div class="grid g">${GIFS.map(x=>`<button style="background-image:url('../img/gif/${x[0]}.gif')" data-act="sendGif" data-arg="${pid}|../img/gif/${x[0]}.gif"></button>`).join('')}</div>`)},
+ replyGif(){const pid=SV.pid;sheet(`<h2 class="h1">คอมเมนต์ด้วย GIF</h2><p class="sub">แตะเพื่อส่งทันที</p><div class="grid g">${GIFS.map(x=>`<button style="background-image:url('../img/gif/${x[0]}.gif')" data-act="sendGif" data-arg="${pid}|../img/gif/${x[0]}.gif"></button>`).join('')}</div>`)},
  sendGif(arg){const [pid,src]=arg.split('|');closeSheet();addReply(pid,{kind:'gif',src})},
- pickFx(){sheet(`<h2 class="h1">ฟิลเตอร์เสียง</h2><p class="sub">ใช้กับคลิปเสียงที่คุณส่ง ทั้งโพสต์และคำตอบ</p>${FX.map(f=>`<button class="row" data-act="setDefFx" data-arg="${f.id}"><span style="font-size:26px">${f.e}</span><span class="t"><b>${f.n}${f.id==='mask'?' · แนะนำ':''}</b><span>${f.d}</span></span>${S.filter===f.id?`<span style="color:var(--brand)">${I('check')}</span>`:''}</button>`).join('')}`)},
+ pickFx(){sheet(`<h2 class="h1">ฟิลเตอร์เสียง</h2><p class="sub">ใช้กับคลิปเสียงที่คุณส่ง ทั้งโพสต์และคอมเมนต์</p>${FX.map(f=>`<button class="row" data-act="setDefFx" data-arg="${f.id}"><span style="font-size:26px">${f.e}</span><span class="t"><b>${f.n}${f.id==='mask'?' · แนะนำ':''}</b><span>${f.d}</span></span>${S.filter===f.id?`<span style="color:var(--brand)">${I('check')}</span>`:''}</button>`).join('')}`)},
  setDefFx(id){S.filter=id;save();log('filter_default',{id});closeSheet();if(SV)renderStack();else if(!C)render(true)},
  more(pid){sheet(`<h2 class="h1">โพสต์นี้</h2><button class="row" data-act="hide" data-arg="${pid}"><span class="t"><b>ไม่อยากเห็นโพสต์นี้</b><span>ซ่อนจากฟีดของคุณเท่านั้น</span></span></button><button class="row" data-act="report" data-arg="${pid}"><span class="t"><b style="color:var(--danger)">รายงาน</b><span>กลั่นแกล้ง เปิดเผยตัวตนคนอื่น เนื้อหาไม่เหมาะสม</span></span></button>`)},
  hide(){closeSheet();toast('ซ่อนแล้ว')},
@@ -981,8 +981,8 @@ const A={
  tgl(k){S[k]=!S[k];save();if(k==='sound')applyAudioPrefs();render()},
  testlog(){const posts=S.log.filter(l=>l.e==='post_created'),reps=S.log.filter(l=>l.e==='reply_created');const first=[...posts,...reps].sort((a,b)=>a.t-b.t)[0];
   const cnt=k=>S.log.filter(l=>l.e===k).length;
-  sheet(`<h2 class="h1">ผลการทดสอบในเครื่องนี้</h2><p class="sub">เก็บไว้ในเครื่องนี้เท่านั้น</p><div class="stats" style="margin:0 0 12px"><div><b>${posts.length}</b><span>โพสต์</span></div><div><b>${reps.length}</b><span>คำตอบ</span></div><div><b>${first?Math.round((first.t-S.t0)/1000)+'s':'–'}</b><span>ถึงโพสต์แรก</span></div></div>
-  <div class="mono">เปิดคำตอบ ${cnt('replies_opened')} · เปิดบับเบิล ${cnt('place_opened')} · เปิดคำถามวันนี้ ${cnt('prompt_opened')}\nเปิด/ปิดเสียง ${cnt('sound_toggled')} · เปลี่ยนความเร็ว ${cnt('speed_changed')} · ATE ${cnt('ate')}\n\n${S.log.slice(0,25).map(l=>new Date(l.t).toLocaleTimeString('th-TH')+'  '+l.e+' '+JSON.stringify(l.p)).join('\n')}</div>`)},
+  sheet(`<h2 class="h1">ผลการทดสอบในเครื่องนี้</h2><p class="sub">เก็บไว้ในเครื่องนี้เท่านั้น</p><div class="stats" style="margin:0 0 12px"><div><b>${posts.length}</b><span>โพสต์</span></div><div><b>${reps.length}</b><span>คอมเมนต์</span></div><div><b>${first?Math.round((first.t-S.t0)/1000)+'s':'–'}</b><span>ถึงโพสต์แรก</span></div></div>
+  <div class="mono">เปิดคอมเมนต์ ${cnt('replies_opened')} · เปิดบับเบิล ${cnt('place_opened')} · เปิดคำถามวันนี้ ${cnt('prompt_opened')}\nเปิด/ปิดเสียง ${cnt('sound_toggled')} · เปลี่ยนความเร็ว ${cnt('speed_changed')} · ATE ${cnt('ate')}\n\n${S.log.slice(0,25).map(l=>new Date(l.t).toLocaleTimeString('th-TH')+'  '+l.e+' '+JSON.stringify(l.p)).join('\n')}</div>`)},
  replayIntro(){intro(0)},
  reset(){if(!confirm('ล้างข้อมูลต้นแบบทั้งหมดในเครื่องนี้?'))return;try{localStorage.removeItem(KEY);indexedDB.deleteDatabase('et18v2')}catch(e){}location.reload()}
 };
