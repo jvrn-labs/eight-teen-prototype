@@ -1,8 +1,34 @@
-# EIGHT TEEN · MVP 1 prototype
+# EIGHT TEEN · prototypes
 
-A clickable prototype of the EIGHT TEEN app (PRD v1.3): a verified, campus-only social feed for Thai university students. There's no backend. Everything runs in the browser, and the data stays on the device.
+Clickable prototypes of EIGHT TEEN, a verified, campus-only social app for Thai university students. There's no backend. Everything runs in the browser, and the data stays on the device.
 
-**Open it:** https://jvrn-labs.github.io/eight-teen-prototype/
+**Link for testers:** https://jvrn-labs.github.io/eight-teen-prototype/
+
+This link always opens the current test build. Right now that's **v2.2**. The older link testers already have, `/v2.1/`, also opens the current build.
+
+## Versions
+
+| Version | Link | What it is |
+| --- | --- | --- |
+| **v2.2** (current) | [/v2.2/](https://jvrn-labs.github.io/eight-teen-prototype/v2.2/) | User-testing round 1 fixes: speech-bubble comments, photo + voice, name or anonymous, one-tap poll and GIF answers, "same here" with faculty/year breakdown |
+| v2.1 | [/archive/v2.1/](https://jvrn-labs.github.io/eight-teen-prototype/archive/v2.1/) | Stoic-style daily ritual, full-bleed feed, comment highlights |
+| v2 | [/v2/](https://jvrn-labs.github.io/eight-teen-prototype/v2/) | Media pivot: voice, photo and GIF posts, anonymous-first |
+| v1 | [/archive/v1/](https://jvrn-labs.github.io/eight-teen-prototype/archive/v1/) | MVP 1 (PRD v1.3, design v1.7): text-first campus feed, installable app |
+
+## How versions work
+
+- **Testers get one link: the root.** `index.html` at the root redirects to the current build. To switch builds, change `CURRENT` (and the `<noscript>` line) in `index.html`.
+- **The current build has its own folder** (now `v2.2/`) with its own saved data on the phone.
+- **A link that testers already have keeps working.** When a version is replaced, its build moves into `archive/` and its old folder becomes a small redirect to the root, so it follows the current build too. `v2.1/` works this way. When moving a build into `archive/`, change its `../img/` and `../icons/` paths to `../../img/` and `../../icons/`.
+- **Small fixes go into the current folder. A new idea to test gets a new folder** (copy the folder, bump the version in the title, footer and storage key), so results from one test round always match one build.
+- **Shared files** live at the root and are used by every version: `img/` (sample photos and GIFs), `icons/`, `brand/`.
+- **`sw.js` at the root is retired.** It clears the offline cache from when v1 was installed at the root. Keep it for a few weeks after 27 Nov 2026, then delete it.
+
+---
+
+# v1 (archive)
+
+**Open it:** https://jvrn-labs.github.io/eight-teen-prototype/archive/v1/
 
 ## Use it like an app on your phone
 
@@ -15,7 +41,7 @@ Phone support: works from 320px (iPhone SE) up to large phones, keeps inputs abo
 
 ## Links to each screen
 
-Every screen has its own link, so testers can open it directly or send it in a bug report. The link in the address bar updates as you move around the app, and **Prototype test tools → Copy link** copies it. Opening an app link skips onboarding with a test account.
+Every v1 screen has its own link (add it after `/archive/v1/`), so testers can open it directly or send it in a bug report. The link in the address bar updates as you move around the app, and **Prototype test tools → Copy link** copies it. Opening an app link skips onboarding with a test account.
 
 | Screen | Link |
 | --- | --- |
@@ -43,10 +69,10 @@ Every screen has its own link, so testers can open it directly or send it in a b
 
 ## Files
 
-- `eight-teen-prototype.html`: the app source (an HTML fragment, also published as a claude.ai artifact)
-- `build.py`: wraps the source into `index.html` and generates `sw.js` (`python3 build.py`)
-- `manifest.webmanifest`, `icons/`, `sw.template.js`: what makes it installable and work offline
-- `img/`: sample photos
+- `archive/v1/eight-teen-prototype.html`: the v1 app source (an HTML fragment, also published as a claude.ai artifact)
+- `archive/v1/build.py`: wraps the source into `archive/v1/index.html` and generates `archive/v1/sw.js` (`python3 archive/v1/build.py`)
+- `archive/v1/manifest.webmanifest`, `archive/v1/sw.template.js`: what makes v1 installable and work offline
+- `img/`, `icons/`: shared by every version
 
 ## Sample photo credits (Wikimedia Commons, resized, EXIF removed)
 

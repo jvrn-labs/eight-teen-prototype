@@ -1,3 +1,28 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,interactive-widget=resizes-content">
+<meta name="description" content="EIGHT TEEN MVP 1 clickable prototype: verified campus social for Thai university students.">
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0b1026" media="(prefers-color-scheme: dark)">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="EIGHT TEEN">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="../../icons/favicon.ico" sizes="48x48">
+<link rel="icon" type="image/png" sizes="32x32" href="../../icons/favicon-32.png">
+<link rel="apple-touch-icon" href="../../icons/apple-touch-icon.png">
+<style>
+:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html,body{margin:0}
+img{max-width:100%}
+[hidden]{display:none!important}
+@media (max-width:520px){html,body{overflow:hidden;overscroll-behavior:none}}
+</style>
+</head>
+<body>
 <title>EIGHT TEEN Prototype</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -500,11 +525,11 @@ const MOD={
   blockedDomains:['free-iphone.xyz','bit.ly','cutt.ly']
 };
 const USERS={
-  u1:{id:'u1',photo:'img/av/golden-hour.jpg',name:'ณัฐณิชา ศรีสุวรรณวงศ์',user:'natnicha',fac:['อักษรศาสตร์','Arts'],year:2,bg:'var(--peach-bg)',fg:'var(--peach-fg)',ini:'ณ',show:true,mentions:'all',bio:'ชอบกิน ชอบเที่ยว 🍜',interests:['food','travel']},
-  u2:{id:'u2',photo:'img/av/concert.jpg',name:'ภูมิ ธนากร',user:'phum.eng',fac:['วิศวกรรมศาสตร์','Engineering'],year:3,bg:'#e3ecff',fg:'#2556c7',ini:'ภ',show:true,mentions:'all',bio:'ICE 🛠️ รับติวแคลฯ',interests:['class','tech']},
-  u3:{id:'u3',photo:'img/av/sneakers.jpg',name:'ปาล์ม',user:'palm_cu',fac:['พาณิชยศาสตร์และการบัญชี','Commerce & Accountancy'],year:1,bg:'#e4f7ec',fg:'#14805a',ini:'ป',show:false,mentions:'all',bio:'',interests:['music']},
-  u4:{id:'u4',photo:'img/av/petals.jpg',name:'มิ้นท์ อารยา',user:'mint.arch',fac:['สถาปัตยกรรมศาสตร์','Architecture'],year:4,bg:'#ffe8f1',fg:'#c22a6a',ini:'ม',show:true,mentions:'none',bio:'thesis mode 🫠',interests:['fashion','event']},
-  u6:{id:'u6',photo:'img/av/dog.jpg',name:'ก้อง วรเมธ',user:'kong.sci',fac:['วิทยาศาสตร์','Science'],year:2,bg:'#fff6d6',fg:'#8a6400',ini:'ก',show:true,mentions:'all',bio:'แบดทุกเย็น 🏸',interests:['sports','games']},
+  u1:{id:'u1',photo:'../../img/av/golden-hour.jpg',name:'ณัฐณิชา ศรีสุวรรณวงศ์',user:'natnicha',fac:['อักษรศาสตร์','Arts'],year:2,bg:'var(--peach-bg)',fg:'var(--peach-fg)',ini:'ณ',show:true,mentions:'all',bio:'ชอบกิน ชอบเที่ยว 🍜',interests:['food','travel']},
+  u2:{id:'u2',photo:'../../img/av/concert.jpg',name:'ภูมิ ธนากร',user:'phum.eng',fac:['วิศวกรรมศาสตร์','Engineering'],year:3,bg:'#e3ecff',fg:'#2556c7',ini:'ภ',show:true,mentions:'all',bio:'ICE 🛠️ รับติวแคลฯ',interests:['class','tech']},
+  u3:{id:'u3',photo:'../../img/av/sneakers.jpg',name:'ปาล์ม',user:'palm_cu',fac:['พาณิชยศาสตร์และการบัญชี','Commerce & Accountancy'],year:1,bg:'#e4f7ec',fg:'#14805a',ini:'ป',show:false,mentions:'all',bio:'',interests:['music']},
+  u4:{id:'u4',photo:'../../img/av/petals.jpg',name:'มิ้นท์ อารยา',user:'mint.arch',fac:['สถาปัตยกรรมศาสตร์','Architecture'],year:4,bg:'#ffe8f1',fg:'#c22a6a',ini:'ม',show:true,mentions:'none',bio:'thesis mode 🫠',interests:['fashion','event']},
+  u6:{id:'u6',photo:'../../img/av/dog.jpg',name:'ก้อง วรเมธ',user:'kong.sci',fac:['วิทยาศาสตร์','Science'],year:2,bg:'#fff6d6',fg:'#8a6400',ini:'ก',show:true,mentions:'all',bio:'แบดทุกเย็น 🏸',interests:['sports','games']},
   u5:{id:'u5',name:'EIGHT TEEN',user:'eightteen',official:true,fac:['ทีมงาน','Team'],year:0,bg:'#7c3aed',fg:'#ffffff',ini:'18',show:false,mentions:'none',bio:'',interests:[]},
 };
 const DSTR=o=>{const d=new Date(Date.now()+o*864e5);return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');};
@@ -531,24 +556,24 @@ function seed(){
   const P=(o)=>Object.assign({anon:false,uni:true,spot:false,bubble:null,images:[],poll:null,gif:null,voice:null,ate:0,ated:false,tags:[],mentions:[],edited:false,removed:false,pinned:false,reach:'normal'},o,{at:now-(o.ago||0)*MIN,tags:o.tags||tagsOf(o.text)});
   const posts=[
     P({id:'p3',by:'u5',cat:'other',pinned:true,ago:600,text:'ยินดีต้อนรับสู่ EIGHT TEEN เบต้า 🎉 ทุกคนในนี้เป็นนิสิตจุฬาฯ ตัวจริง ยืนยันตัวตนแล้วทุกบัญชี อ่านกติกาชุมชนก่อนโพสต์นะ #EIGHTTEEN',ate:356}),
-    P({id:'p1',by:'u1',cat:'food',bubble:'samyan',ago:52,text:'ข้าวมันไก่ร้านใหม่หลังสามย่านฯ ATE มาก ไก่นุ่ม น้ำจิ้มถึง ไปบ่ายสองคิวไม่ยาว #สามย่าน',images:[{src:'img/chicken-rice.jpg',alt:'ข้าวมันไก่ไหหลำพร้อมน้ำจิ้ม'}],ate:1284}),
+    P({id:'p1',by:'u1',cat:'food',bubble:'samyan',ago:52,text:'ข้าวมันไก่ร้านใหม่หลังสามย่านฯ ATE มาก ไก่นุ่ม น้ำจิ้มถึง ไปบ่ายสองคิวไม่ยาว #สามย่าน',images:[{src:'../../img/chicken-rice.jpg',alt:'ข้าวมันไก่ไหหลำพร้อมน้ำจิ้ม'}],ate:1284}),
     P({id:'p8',by:'u3',cat:'other',ago:12,text:'เล่าเรื่องผีหอในให้ฟัง ฟังตอนกลางคืนนะ 👻 #หอใน',voice:{sec:48},ate:142}),
-    P({id:'p9',by:'u6',cat:'other',ago:40,text:'สอบเสร็จแล้วววว',gif:'img/gif/fight.gif',ate:410}),
+    P({id:'p9',by:'u6',cat:'other',ago:40,text:'สอบเสร็จแล้วววว',gif:'../../img/gif/fight.gif',ate:410}),
     P({id:'p2',by:'u2',anon:true,cat:'question',ago:25,text:'ใครมีชีทแคลคูลัส 2 บทที่ 4 บ้างคะ สอบวันศุกร์นี้แล้ว 😭 #มิดเทอม',ate:88}),
     P({id:'p5',by:'u4',cat:'event',bubble:'openhouse',ago:180,text:'Open House ปีนี้อยากให้มีบูธอะไรเพิ่ม? #OpenHouse',poll:{opts:['Workshop AI','ดนตรีสด','ตลาดนัดนิสิต','ฟู้ดทรัค'],votes:[42,31,57,64],mine:null,ends:now+2*DAY},ate:203}),
     P({id:'p6',by:'u6',anon:true,cat:'other',bubble:'lawn',spot:true,ago:95,text:'ใครนั่งเล่นกีตาร์ที่สนามจุ๊บตอนเย็นเมื่อวาน เพราะมากกก อยากรู้จัก 🎸',ate:412}),
     P({id:'p4',by:'u3',cat:'lost',bubble:'lib',spot:true,ago:40,text:'ใครเก็บบัตรนิสิตชื่อ "ปาล์ม" ได้ที่ชั้น 3 หอสมุดกลาง ทักหน่อยครับ 🙏 #ของหาย',ate:27}),
     P({id:'p7',by:'u2',cat:'class',bubble:'eng',ago:130,text:'แล็บ Circuits วันนี้ย้ายไปห้อง 3-304 นะครับ ฝากบอกเพื่อน ๆ ปี 3 ด้วย #วิศวะ',ate:64}),
-    P({id:'p14',by:'u1',cat:'class',bubble:'lib',ago:300,text:'หอสมุดกลางชั้น 4 เงียบสุด ปลั๊กเยอะ แอร์เย็น แนะนำช่วงสอบ #ที่อ่านหนังสือ',ate:530,images:[{src:'img/library.jpg',alt:'โต๊ะอ่านหนังสือในหอสมุดกลาง'},{src:'img/arts-library.jpg',alt:'ชั้นหนังสือในห้องสมุดคณะอักษรศาสตร์'}]}),
+    P({id:'p14',by:'u1',cat:'class',bubble:'lib',ago:300,text:'หอสมุดกลางชั้น 4 เงียบสุด ปลั๊กเยอะ แอร์เย็น แนะนำช่วงสอบ #ที่อ่านหนังสือ',ate:530,images:[{src:'../../img/library.jpg',alt:'โต๊ะอ่านหนังสือในหอสมุดกลาง'},{src:'../../img/arts-library.jpg',alt:'ชั้นหนังสือในห้องสมุดคณะอักษรศาสตร์'}]}),
     P({id:'p10',by:'u4',cat:'class',ago:420,text:'สรุปตารางสอบปลายภาค 2/2569 อยู่ในลิงก์นี้ https://www.reg.chula.ac.th/exam-schedule #ตารางสอบ',ate:941,edited:true}),
     P({id:'p9',by:'u6',cat:'other',bubble:'sports',spot:true,ago:70,text:'ใครว่างตีแบดเย็นนี้ 5 โมงที่ศูนย์กีฬาบ้าง ขาด 2 คน 🏸 #แบดมินตัน',ate:19}),
     P({id:'p15',by:'u6',cat:'food',bubble:'cafe',spot:true,ago:15,text:'CU Café มีเมนูใหม่ ชาไทยโอ๊ตมิลค์ 45 บาท ลองแล้วโอเคเลย',ate:12}),
-    P({id:'p8',by:'u1',cat:'housing',ago:900,text:'หารูมเมทคอนโดแถวสามย่าน ผู้หญิง ไม่สูบบุหรี่ งบ 6,500/เดือน เดินไปสามย่านมิตรทาวน์ 5 นาที #หารูมเมท',ate:45,images:[{src:'img/samyan.jpg',alt:'ด้านหลังสามย่านมิตรทาวน์'}]}),
+    P({id:'p8',by:'u1',cat:'housing',ago:900,text:'หารูมเมทคอนโดแถวสามย่าน ผู้หญิง ไม่สูบบุหรี่ งบ 6,500/เดือน เดินไปสามย่านมิตรทาวน์ 5 นาที #หารูมเมท',ate:45,images:[{src:'../../img/samyan.jpg',alt:'ด้านหลังสามย่านมิตรทาวน์'}]}),
     P({id:'p11',by:'u3',anon:true,cat:'other',ago:210,text:'เครียดกับโปรเจกต์จบมากเลย ใครเป็นเหมือนกันบ้าง ขอกำลังใจหน่อย #ปี4',ate:301}),
-    P({id:'p12',by:'u2',cat:'event',bubble:'freshy',ago:4*24*60,text:'ขอบคุณทุกคนที่มา Freshy Night! รูปทั้งหมดจะลงเพจคณะพรุ่งนี้',ate:388,images:[{src:'img/sala-night.jpg',alt:'งานกลางคืนที่ศาลาพระเกี้ยว'}]}),
+    P({id:'p12',by:'u2',cat:'event',bubble:'freshy',ago:4*24*60,text:'ขอบคุณทุกคนที่มา Freshy Night! รูปทั้งหมดจะลงเพจคณะพรุ่งนี้',ate:388,images:[{src:'../../img/sala-night.jpg',alt:'งานกลางคืนที่ศาลาพระเกี้ยว'}]}),
     P({id:'p16',by:'u4',cat:'food',bubble:'icanteen',ago:200,text:'iCanteen ร้านข้าวแกงเปิดถึง 2 ทุ่มแล้วนะ',ate:33}),
-    P({id:'p17',by:'u3',cat:'event',bubble:'openhouse',spot:true,ago:35,text:'บูธคณะบัญชีแจกสติกเกอร์ฟรี มาก่อนได้ก่อน #OpenHouse',ate:76,images:[{src:'img/auditorium.jpg',alt:'หอประชุมจุฬาฯ'}]}),
-    P({id:'p18',by:'u1',cat:'other',bubble:'sala',ago:500,text:'ศาลาพระเกี้ยวตอนเย็นสวยมาก',ate:58,images:[{src:'img/sala.jpg',alt:'ทางเข้าศาลาพระเกี้ยว'}]}),
+    P({id:'p17',by:'u3',cat:'event',bubble:'openhouse',spot:true,ago:35,text:'บูธคณะบัญชีแจกสติกเกอร์ฟรี มาก่อนได้ก่อน #OpenHouse',ate:76,images:[{src:'../../img/auditorium.jpg',alt:'หอประชุมจุฬาฯ'}]}),
+    P({id:'p18',by:'u1',cat:'other',bubble:'sala',ago:500,text:'ศาลาพระเกี้ยวตอนเย็นสวยมาก',ate:58,images:[{src:'../../img/sala.jpg',alt:'ทางเข้าศาลาพระเกี้ยว'}]}),
   ];
   const C=(o)=>Object.assign({anon:false,parent:null,replyTo:null,ate:0,ated:false,voice:null,mentions:[],removed:false},o,{at:now-(o.ago||0)*MIN});
   const comments=[
@@ -563,7 +588,7 @@ function seed(){
   return {
     v:5, lang:'th', done:false,
     ob:{step:'welcome',slide:0,consent:{terms:false,mkt:false},wl:null,dob:{d:'',m:'',y:''},interests:[],perm:{loc:null,push:null},started:false},
-    me:{id:'me',name:'',user:'',fac:null,major:'',year:null,bg:'#ede4ff',fg:'#5b21b6',ini:'',photo:'img/av/'+['cat','bokeh','sky','tea','camera','dandelion','blossom'][Math.floor(Math.random()*7)]+'.jpg',bio:'',interests:[],show:true,mentions:'all',email:'6930012321@student.chula.ac.th',verifiedAt:now},
+    me:{id:'me',name:'',user:'',fac:null,major:'',year:null,bg:'#ede4ff',fg:'#5b21b6',ini:'',photo:'../../img/av/'+['cat','bokeh','sky','tea','camera','dandelion','blossom'][Math.floor(Math.random()*7)]+'.jpg',bio:'',interests:[],show:true,mentions:'all',email:'6930012321@student.chula.ac.th',verifiedAt:now},
     settings:{mode:'identity',loc:true,theme:'system',text:'system'},
     posts, comments, notifs:[], blocked:[], mutedTags:[], hidden:[], reported:[], appealed:[], removedMentions:[],
     nav:[{s:'home'}], tab:'home',
@@ -573,9 +598,9 @@ function seed(){
     events:[], seq:100
   };
 }
-function load(){ try{ const raw=localStorage.getItem(KEY); if(raw){ const s=JSON.parse(raw); if(s&&s.v===5) return s; } }catch(e){} return seed(); }
+function load(){ try{ const raw=(localStorage.getItem(KEY)||'').replace(/"(\.\.\/)?img\//g,'"../../img/'); /* saved before the move to /archive/v1/ */ if(raw){ const s=JSON.parse(raw); if(s&&s.v===5) return s; } }catch(e){} return seed(); }
 function save(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} }
-S=load(); if(S.me&&!S.me.photo&&!S.me.photoSet) S.me.photo='img/av/'+['cat','bokeh','sky','tea','camera','dandelion','blossom'][Math.floor(Math.random()*7)]+'.jpg';
+S=load(); if(S.me&&!S.me.photo&&!S.me.photoSet) S.me.photo='../../img/av/'+['cat','bokeh','sky','tea','camera','dandelion','blossom'][Math.floor(Math.random()*7)]+'.jpg';
 const T={ov:null,toast:null,loadingUntil:0,scroll:{},search:{q:'',tab:'posts'},rec:null,playing:null,cmode:null,reply:null};
 
 /* ============ helpers ============ */
@@ -818,7 +843,7 @@ function adCard(kind){
    <div class="adlbl">${I('sparkle','xs')} ${L('ได้รับการสนับสนุน','Sponsored')}<button class="iconbtn plain" style="margin-left:auto;width:32px;height:32px" data-act="adMenu" data-arg="sponsored" aria-label="${L('ตัวเลือกโฆษณา','Ad options')}">${I('more','sm')}</button></div>
    <div class="phead"><span class="adav">ป</span><div style="flex:1;min-width:0"><div class="pname">${L('ข้าวมันไก่ป้าแดง สามย่าน','Pa Daeng Chicken Rice, Samyan')}</div><div class="pmeta">${L('ร้านใกล้แคมปัส · ตัวอย่าง','Near campus · sample')}</div></div></div>
    <div class="ptext">${L('นิสิตจุฬาฯ โชว์แอป EIGHT TEEN ลด 15% ทุกเมนู ถึงสิ้นเดือนนี้ 🍗','Chula students: show EIGHT TEEN for 15% off every dish until the end of this month 🍗')}</div>
-   <div class="pimgs n1"><img class="pimg" src="img/chicken-rice.jpg" alt="${L('ข้าวมันไก่','Chicken rice')}" loading="lazy"></div>
+   <div class="pimgs n1"><img class="pimg" src="../../img/chicken-rice.jpg" alt="${L('ข้าวมันไก่','Chicken rice')}" loading="lazy"></div>
    <div class="adcta"><span class="cap">${L('ห่างไป 400 ม.','400 m away')}</span><span class="btn sm primary" style="margin-left:auto">${L('ดูโปรโมชัน','See the deal')}</span></div></article>`;
 }
 function postCard(p,ctx={}){
@@ -1463,10 +1488,10 @@ function vTheme(){const tx=S.settings.text||'system';return `<div class="screen"
   <div class="card pad" style="margin:12px 16px 0;padding:14px 16px"><div class="cap">${L('ตัวอย่าง','Preview')}</div><div style="font-size:calc(15px*var(--ts,1));line-height:1.6">ข้าวมันไก่ร้านใหม่หลังสามย่านฯ ATE มาก #สามย่าน</div></div></div></div>`;}
 function vHelp(){return `<div class="screen">${topbar(L('ช่วยเหลือ','Help'))}<div class="card" style="margin:6px 16px">${sRow('shield',L('กติกาชุมชน','Community Rules'),'','go','rules')}${sRow('lock',L('นโยบายความเป็นส่วนตัว','Privacy Policy'),'','go','privacyPolicy')}${sRow('mail',L('ติดต่อทีมงาน','Contact support'),'','go','support:contact')}${sRow('flag',L('แจ้งปัญหาการใช้งาน','Report a problem'),'','go','support:problem')}${sRow('image',L('เครดิตภาพตัวอย่าง','Sample photo credits'),'','go','credits')}</div></div>`;}
 const AV_PHOTOS=[['cat','Ryan Mcguire','N-1XGL54pQg'],['dog','André Spieker','8wTPqxlnKM4'],['golden-hour','Alexander Shustov','2FrX56QL7P8'],['sneakers','Ilham Rahmansyah','DwTZwZYi9Ww'],['concert','Daniel Robert','MRxD-J9-4ps'],['petals','Steven Spassov','tVIqMgGlAG0'],['bokeh','Sebastian Muller','VLdaxYyXJvw'],['dandelion','Coley Christine','GyvMk5pPDXI'],['blossom','Rula Sibai','-vq7mi4oF0s'],['camera','Nicola Perantoni','irUQaBK3ydI'],['tea','Sonja Langford','RQHzRELE2Ss'],['sky','J Duclos','6qORI5j_6n8']];
-const avSrc=n=>'img/av/'+n+'.jpg';
+const avSrc=n=>'../../img/av/'+n+'.jpg';
 function avPicker(cur){return `<div class="avpick">${AV_PHOTOS.map(a=>`<button aria-label="${L('ใช้รูปนี้','Use this picture')}: ${a[0]}" data-act="avPhoto" data-arg="${a[0]}" class="${cur===avSrc(a[0])?'on':''}" style="background-image:url('${avSrc(a[0])}')"></button>`).join('')}</div>`;}
 const CREDITS=[['chicken-rice.jpg','Hainanese chicken rice','Misaochan','CC BY 4.0','Hainanese_chicken_rice.jpg'],['library.jpg','Chula UltimateX Library','Apiwat K.','CC BY 4.0','Chula_UltimateX_Library_20201124_182323.jpg'],['arts-library.jpg','Faculty of Arts Library, Chulalongkorn University','Geonuch','CC BY-SA 4.0','Faculty_of_Arts_Library,_Chulalongkorn_University.jpg'],['auditorium.jpg','Chulalongkorn University Auditorium','Supanut Arunoprayote','CC BY-SA 4.0','Chulalongkorn_University_Auditorium.jpg'],['sala.jpg','Entrance of Sala Phra Kiao','Supanut Arunoprayote','CC BY 4.0','Entrance_of_Sala_Phra_Kiao.jpg'],['sala-night.jpg','Event in Sala Phra Kiao at night','Supanut Arunoprayote','CC BY 4.0','Event_in_Sala_Phra_Kiao_at_night.jpg'],['samyan.jpg','Samyan Mitrtown (back)','Chainwit.','CC BY-SA 4.0','Samyan_Mitrtown_Back.jpg']];
-function vCredits(){return `<div class="screen">${topbar(L('เครดิตภาพตัวอย่าง','Sample photo credits'))}<div class="scroll" style="padding-bottom:40px"><p class="pad cap" style="margin-top:0">${L('ภาพในโพสต์ตัวอย่างมาจาก Wikimedia Commons ปรับขนาดและลบข้อมูล EXIF แล้ว','Sample post photos come from Wikimedia Commons, resized with EXIF removed.')}</p>${CREDITS.map(c=>`<a class="row" href="https://commons.wikimedia.org/wiki/File:${c[4]}" target="_blank" rel="noopener" style="color:inherit;text-decoration:none"><span class="av" style="width:56px;height:42px;border-radius:10px;background-image:url('img/${c[0]}')"></span><span class="rt"><span class="lbl">${c[1]}</span><br><span class="cap">${c[2]} · ${c[3]}</span></span></a>`).join('')}<div class="section-t">${L('รูปโปรไฟล์ตัวอย่าง','Sample profile pictures')}</div><p class="pad cap" style="margin-top:0">${L('จาก Unsplash ผ่าน Picsum ใช้ได้ฟรีตาม Unsplash License ครอปและลบข้อมูล EXIF แล้ว','From Unsplash via Picsum, free under the Unsplash License. Cropped with EXIF removed.')}</p>${AV_PHOTOS.map(a=>`<a class="row" href="https://unsplash.com/photos/${a[2]}" target="_blank" rel="noopener" style="color:inherit;text-decoration:none"><span class="av" style="width:44px;height:44px;background-image:url('${avSrc(a[0])}')"></span><span class="rt"><span class="lbl">${esc(a[1])}</span><br><span class="cap">Unsplash License</span></span>${I('link','sm')}</a>`).join('')}</div></div>`;}
+function vCredits(){return `<div class="screen">${topbar(L('เครดิตภาพตัวอย่าง','Sample photo credits'))}<div class="scroll" style="padding-bottom:40px"><p class="pad cap" style="margin-top:0">${L('ภาพในโพสต์ตัวอย่างมาจาก Wikimedia Commons ปรับขนาดและลบข้อมูล EXIF แล้ว','Sample post photos come from Wikimedia Commons, resized with EXIF removed.')}</p>${CREDITS.map(c=>`<a class="row" href="https://commons.wikimedia.org/wiki/File:${c[4]}" target="_blank" rel="noopener" style="color:inherit;text-decoration:none"><span class="av" style="width:56px;height:42px;border-radius:10px;background-image:url('../../img/${c[0]}')"></span><span class="rt"><span class="lbl">${c[1]}</span><br><span class="cap">${c[2]} · ${c[3]}</span></span></a>`).join('')}<div class="section-t">${L('รูปโปรไฟล์ตัวอย่าง','Sample profile pictures')}</div><p class="pad cap" style="margin-top:0">${L('จาก Unsplash ผ่าน Picsum ใช้ได้ฟรีตาม Unsplash License ครอปและลบข้อมูล EXIF แล้ว','From Unsplash via Picsum, free under the Unsplash License. Cropped with EXIF removed.')}</p>${AV_PHOTOS.map(a=>`<a class="row" href="https://unsplash.com/photos/${a[2]}" target="_blank" rel="noopener" style="color:inherit;text-decoration:none"><span class="av" style="width:44px;height:44px;background-image:url('${avSrc(a[0])}')"></span><span class="rt"><span class="lbl">${esc(a[1])}</span><br><span class="cap">Unsplash License</span></span>${I('link','sm')}</a>`).join('')}</div></div>`;}
 function vDoc(kind){
   const rules=kind==='rules';
   const body=rules?L(`<h3 class="h3">1. เคารพกัน</h3><p>ไม่กลั่นแกล้ง ด่าทอ เหยียดเพศ เชื้อชาติ ศาสนา หรือความพิการ</p><h3 class="h3">2. ไม่หลอกลวง</h3><p>ห้ามโกง ขายของผิดกฎหมาย หรือชวนโอนเงินก่อน</p><h3 class="h3">3. ปกป้องข้อมูลส่วนตัว</h3><p>ห้ามเปิดเผยเบอร์ ที่อยู่ หรือรูปของคนอื่นโดยไม่ได้รับอนุญาต</p><h3 class="h3">4. นิรนามแต่รับผิดชอบ</h3><p>ทุกบัญชียืนยันตัวตนแล้ว ระบบเก็บบัญชีจริงไว้เสมอ</p><h3 class="h3">บทลงโทษ</h3><p>เตือน → จำกัดการโพสต์ 7 วัน → ระงับ 14 วัน → แบนถาวร</p>`,`<h3 class="h3">1. Respect each other</h3><p>No bullying, harassment or hate based on gender, race, religion or disability.</p><h3 class="h3">2. No scams</h3><p>No cheating, illegal sales or asking people to transfer money first.</p><h3 class="h3">3. Protect personal info</h3><p>Never share someone’s phone, address or photos without permission.</p><h3 class="h3">4. Anonymous, still accountable</h3><p>Every account is verified, and we always keep the real account behind a post.</p><h3 class="h3">Penalties</h3><p>Warning → 7-day posting limit → 14-day suspension → permanent ban.</p>`)
@@ -1583,8 +1608,8 @@ function renderOverlay(){
     const gifs=GIFS.filter(g=>!q||g[0].includes(q)||g[1].includes(q));
     h=sheet(o.target==='post'?L('เพิ่ม GIF ในโพสต์','Add a GIF to your post'):L('แนบในคอมเมนต์','Add to comment'),`<div class="pad" style="padding-bottom:18px">
       <div class="seg" role="tablist" ${o.target==='post'?'hidden':''}><button class="${tab==='photo'?'on':''}" data-act="attTab" data-arg="photo" role="tab" aria-selected="${tab==='photo'}">${L('รูปภาพ','Photos')}</button><button class="${tab==='gif'?'on':''}" data-act="attTab" data-arg="gif" role="tab" aria-selected="${tab==='gif'}">GIF</button></div>
-      ${tab==='photo'?`<div class="attgrid">${CAMROLL.map(n=>`<button data-act="pickAtt" data-arg="photo|img/${n}.jpg" style="background-image:url('img/${n}.jpg')" aria-label="${L('เลือกรูปนี้','Pick this photo')}"></button>`).join('')}</div><div class="cap" style="margin-top:10px">${L('1 รูปต่อคอมเมนต์ · ลบตำแหน่งในรูปให้อัตโนมัติ · AI ตรวจก่อนขึ้น','1 photo per comment · location data removed · AI checks it before it shows')}</div>`
-      :`<input class="input" id="gifQ" placeholder="${L('ค้นหา GIF','Search GIFs')}" value="${esc(T.gifQ||'')}" data-on="gifQ" style="margin-top:12px"><div class="attgrid gif">${gifs.map(g=>`<button data-act="pickAtt" data-arg="gif|img/gif/${g[0]}.gif" style="background-image:url('img/gif/${g[0]}.gif')" aria-label="GIF ${g[0]}"></button>`).join('')||`<div class="cap" style="grid-column:1/-1;padding:16px 0">${L('ไม่เจอ GIF','No GIFs found')}</div>`}</div><div class="cap" style="margin-top:10px">${L('GIF จากผู้ให้บริการ (รอเลือก) เปิดตัวกรองเนื้อหาปลอดภัย · สติกเกอร์และ GIF ที่บันทึกไว้มาทีหลัง','GIFs from a provider (to be chosen) with safe search on · Stickers and saved GIFs come later')}</div>`}
+      ${tab==='photo'?`<div class="attgrid">${CAMROLL.map(n=>`<button data-act="pickAtt" data-arg="photo|../../img/${n}.jpg" style="background-image:url('../../img/${n}.jpg')" aria-label="${L('เลือกรูปนี้','Pick this photo')}"></button>`).join('')}</div><div class="cap" style="margin-top:10px">${L('1 รูปต่อคอมเมนต์ · ลบตำแหน่งในรูปให้อัตโนมัติ · AI ตรวจก่อนขึ้น','1 photo per comment · location data removed · AI checks it before it shows')}</div>`
+      :`<input class="input" id="gifQ" placeholder="${L('ค้นหา GIF','Search GIFs')}" value="${esc(T.gifQ||'')}" data-on="gifQ" style="margin-top:12px"><div class="attgrid gif">${gifs.map(g=>`<button data-act="pickAtt" data-arg="gif|../../img/gif/${g[0]}.gif" style="background-image:url('../../img/gif/${g[0]}.gif')" aria-label="GIF ${g[0]}"></button>`).join('')||`<div class="cap" style="grid-column:1/-1;padding:16px 0">${L('ไม่เจอ GIF','No GIFs found')}</div>`}</div><div class="cap" style="margin-top:10px">${L('GIF จากผู้ให้บริการ (รอเลือก) เปิดตัวกรองเนื้อหาปลอดภัย · สติกเกอร์และ GIF ที่บันทึกไว้มาทีหลัง','GIFs from a provider (to be chosen) with safe search on · Stickers and saved GIFs come later')}</div>`}
     </div>`);
   }
   if(o.t==='adMenu') h=sheet(L('โฆษณานี้','About this ad'),`<div class="pad" style="padding-bottom:6px"><p class="ink2" style="margin:0 0 6px">${o.id==='network'?L('โฆษณานี้มาจากเครือข่ายโฆษณา เราไม่ส่งชื่อ อีเมล หรือตำแหน่งของคุณให้ผู้ลงโฆษณา','This ad comes from an ad network. We never share your name, email or location with advertisers.'):L('คุณเห็นโฆษณานี้เพราะเป็นนิสิตจุฬาฯ ผู้ลงโฆษณาเลือกได้แค่มหาวิทยาลัยและหมวด ไม่เห็นข้อมูลของคุณ','You see this because you study at Chula. Advertisers can only pick a university and a topic. They never see who you are.')}</p></div>${mRow('eyeoff',L('ซ่อนโฆษณานี้','Hide this ad'),'hideAd',o.id)}${mRow('flag',L('รายงานโฆษณา','Report this ad'),'reportAd',o.id)}`);
@@ -2010,3 +2035,11 @@ requestAnimationFrame(()=>requestAnimationFrame(()=>setTimeout(()=>document.docu
 if(!S.events.length) track('onboarding_step_viewed',{step_name:'welcome',step_index:0});
 })();
 </script>
+
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => navigator.serviceWorker.register('sw.js?v=ccd8fb8c').catch(() => {}));
+}
+</script>
+</body>
+</html>

@@ -1,4 +1,4 @@
-"""Build the GitHub Pages site (index.html) from the artifact page fragment.
+"""Build the v1 prototype page (archive/v1/index.html) from the artifact page fragment.
 
 The artifact source (eight-teen-prototype.html) has no <html>/<head>/<body>
 because claude.ai wraps it at publish time. This script adds that shell plus
@@ -9,9 +9,10 @@ from pathlib import Path
 import hashlib
 
 root = Path(__file__).parent
+shared = root.parent.parent  # icons/ and img/ are shared by every version
 frag = (root / "eight-teen-prototype.html").read_text(encoding="utf-8")
 _h = hashlib.sha1(frag.encode())
-for _p in sorted(list((root / "icons").glob("*")) + list((root / "img").rglob("*.jpg")) + list((root / "img").rglob("*.gif")) + [root / "build.py", root / "sw.template.js", root / "manifest.webmanifest"]):
+for _p in sorted(list((shared / "icons").glob("*")) + list((shared / "img").rglob("*.jpg")) + list((shared / "img").rglob("*.gif")) + [root / "build.py", root / "sw.template.js", root / "manifest.webmanifest"]):
     _h.update(_p.read_bytes())
 version = _h.hexdigest()[:8]
 
@@ -28,9 +29,9 @@ head = """<!doctype html>
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="EIGHT TEEN">
 <link rel="manifest" href="manifest.webmanifest">
-<link rel="icon" href="icons/favicon.ico" sizes="48x48">
-<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
-<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="icon" href="../../icons/favicon.ico" sizes="48x48">
+<link rel="icon" type="image/png" sizes="32x32" href="../../icons/favicon-32.png">
+<link rel="apple-touch-icon" href="../../icons/apple-touch-icon.png">
 <style>
 :root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 html,body{margin:0}
