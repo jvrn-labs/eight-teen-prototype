@@ -657,6 +657,15 @@ button.popt:active{transform:scale(.97)}
 .popt .pc{margin-left:auto;font:800 14px/1 var(--f-n)}
 @keyframes barIn{from{transform:scaleX(0)}}
 @media (prefers-reduced-motion:reduce){.popt .bar{animation:none}.pcap .caption{transition:none}}
+/* same here: "this is me too", counted by faculty + year */
+.rb small{font:600 10px/1 var(--f-b);opacity:.9;margin-top:-1px}
+.rb.same.on .o{background:var(--lime);color:#0b1026;box-shadow:3px 3px 0 var(--brand)}
+.chip.same{background:rgba(255,255,255,.96);border-color:transparent;color:var(--ink);transition:transform var(--press)}
+.chip.same:active{transform:scale(.97)}
+.chip.same.on{background:var(--lime)}
+.sm-me{display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:16px;background:#f3fbd9;font:600 14px/1.35 var(--f-b);margin:6px 0}
+.popt.sm{min-height:44px;padding:10px 14px;font-size:15px;border-radius:14px}
+.popt.mine{margin:0;display:flex}
 </style>
 </head>
 <body>
@@ -693,6 +702,7 @@ const ICON={
  flip:'<path d="M4 12a8 8 0 0 1 14-5.3M20 12a8 8 0 0 1-14 5.3"/><path d="M18 3v4h-4M6 21v-4h4"/>',
  img:'<rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="9" cy="10" r="2"/><path d="M21 16l-5-5-9 9"/>',
  pin:'<circle cx="12" cy="10" r="2.5"/><path d="M12 21s-6.5-5.8-6.5-10.5a6.5 6.5 0 0 1 13 0C18.5 15.2 12 21 12 21z"/>',
+ hand:'<path d="M8 12.5V6a1.5 1.5 0 0 1 3 0v5M11 10.5V4.5a1.5 1.5 0 0 1 3 0v6M14 10.5V6a1.5 1.5 0 0 1 3 0v7.5c0 4-2.6 7-6.2 7-2.4 0-3.9-1.2-5.2-3.2L3.8 14a1.5 1.5 0 0 1 2.5-1.7L8 14.5"/>',
  more:'<circle cx="5" cy="12" r="1.6" fill="currentColor"/><circle cx="12" cy="12" r="1.6" fill="currentColor"/><circle cx="19" cy="12" r="1.6" fill="currentColor"/>',
  play:'<path fill="currentColor" stroke="none" d="M8 5.5v13l10.5-6.5z"/>',
  pause:'<path fill="currentColor" stroke="none" d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z"/>',
@@ -758,7 +768,7 @@ const YEARS=['ปี 1','ปี 2','ปี 3','ปี 4','ปี 5+','ป.โท
 function seed(){
  const now=Date.now();
  const R=o=>Object.assign({id:uid('r'),stickers:[],ate:0,ated:false},o,{at:now-(o.ago||0)*60000});
- const P=o=>Object.assign({stickers:[],place:null,showId:null,prompt:false,ate:0,ated:false,as:null,voice:null},o,{at:now-(o.ago||0)*60000,replies:(o.replies||[]).map(R)});
+ const P=o=>Object.assign({stickers:[],place:null,showId:null,prompt:false,ate:0,ated:false,as:null,voice:null,same:0,samed:false,sf:{},sy:{}},o,{at:now-(o.ago||0)*60000,replies:(o.replies||[]).map(R)});
  const T=(s,x=.5,y=.22,r=-3,c=0)=>({t:'text',s,x,y,r,c});
  return [
   P({id:'p6',by:'u2',kind:'photo',src:'../img/sala.jpg',voice:{src:'audio/v1.m4a',dur:7.0,text:'ใครเห็นพี่ยามหน้าตึกจักรพงษ์เต้น TikTok บ้าง เมื่อเช้าคือปังมาก ขอคลิปหน่อย',filter:'radio'},ago:8,ate:233,replies:[
@@ -808,15 +818,27 @@ function seed(){
   P({id:'p12',by:'u9',kind:'gif',src:'../img/gif/confused.gif',stickers:[{t:'prompt',x:.5,y:.13,r:-2},T('ตื่นสายแต่ยังสวย 💅',.5,.78,3,5)],prompt:true,ago:33,ate:96})
  ];
 }
+const SAME_SEED={c1:[412,'วิศวฯ','ปี 1'],c2:[188,'อักษรฯ','ปี 3'],c3:[96,'วิศวฯ','ปี 2'],c4:[240,'รัฐศาสตร์','ปี 1'],
+ p1:[64,'นิเทศฯ','ปี 2'],p2:[23,'บัญชีฯ','ปี 1'],p3:[41,'วิทยาศาสตร์','ปี 2'],p4:[12,'นิติฯ','ปี 3'],p5:[57,'เศรษฐศาสตร์','ปี 4'],p6:[34,'ครุฯ','ปี 1'],
+ p7:[64,'อักษรฯ','ปี 2'],p8:[120,'วิศวฯ','ปี 2'],p9:[31,'วิทยาศาสตร์','ปี 3'],p10:[140,'บัญชีฯ','ปี 1'],p11:[8,'สถาปัตย์ฯ','ปี 1'],p12:[45,'จิตวิทยา','ปี 1']};
+/* spread a seeded count across faculties and years; ~8% of tappers chose not to be counted by group */
+function mkSame(id,n,f,y){let h=0;for(const c of id)h=(h*31+c.charCodeAt(0))>>>0;const rnd=()=>{h=(h*1103515245+12345)>>>0;return(h>>>8)/16777216};
+ const sf={},sy={},cnt=Math.round(n*.92);
+ const spread=(m,keys,main,shares)=>{let left=cnt;const others=keys.filter(k=>k!==main).sort(()=>rnd()-.5);const order=[main,...others];
+  order.forEach((k,i)=>{if(left<=0)return;const v=i<shares.length?Math.round(cnt*shares[i]):Math.max(1,Math.round(rnd()*cnt*.05));const g=Math.min(v,left);m[k]=g;left-=g});
+  if(left>0)m[main]+=left};
+ spread(sf,FACS,f,[.42,.17,.11]); spread(sy,YEARS.slice(0,5),y,[.46,.22,.14]);
+ return{same:n,sf,sy}}
+function seedSame(ps){ps.forEach(p=>{const d=SAME_SEED[p.id];if(d)Object.assign(p,mkSame(p.id,...d))});return ps}
 function seedNotifs(){const n=Date.now();return[
  {id:'n1',kind:'prompt',text:`คำถามวันนี้มาแล้ว: ${PROMPT.q}`,at:n-50*60000,read:false},
  {id:'n2',kind:'post',pid:'p8',text:'โพสต์ที่คุณเคยดูมีคอมเมนต์ใหม่ 3 คอมเมนต์',at:n-40*60000,read:false},
  {id:'n3',kind:'place',place:'sala',text:'ศาลาพระเกี้ยว LIVE ตอนนี้: ดนตรีในสวน',at:n-120*60000,read:true}]}
 
 /* ============ state ============ */
-const KEY='et18v22', SEEDV=2;
+const KEY='et18v22', SEEDV=3;
 let S=load(); S.visit=S.visit||{};
-function fresh(){return{v:SEEDV,posts:seed(),notifs:seedNotifs(),sound:false,rate:1,filter:'mask',showId:false,onb:false,ob:{step:'welcome',slide:0,terms:false},me:{email:'',fac:null,year:null,dob:{d:'',m:'',y:''},prof:{name:'',img:null}},notifOn:true,visit:{p8:Date.now()-47*60000},vote:null,cc:true,replyAs:'anon',sub:null,tab:'home',view:'uni',sort:'hot',seenPlaces:[],log:[],t0:Date.now()}}
+function fresh(){return{v:SEEDV,posts:seedSame(seed()),notifs:seedNotifs(),sound:false,rate:1,filter:'mask',showId:false,onb:false,ob:{step:'welcome',slide:0,terms:false},me:{email:'',fac:null,year:null,dob:{d:'',m:'',y:''},prof:{name:'',img:null}},notifOn:true,visit:{p8:Date.now()-47*60000},vote:null,cc:true,replyAs:'anon',sub:null,tab:'home',view:'uni',sort:'hot',seenPlaces:[],log:[],t0:Date.now()}}
 function load(){try{const s=JSON.parse(localStorage.getItem(KEY));if(s&&s.v===SEEDV)return s}catch(e){}return fresh()}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
 function log(e,p){S.log.unshift({e,p:p||{},t:Date.now()});S.log=S.log.slice(0,200);save()}
@@ -881,20 +903,20 @@ function frameHTML(it,o={}){
 function feedList(){
  const ps=[...S.posts];
  if(S.sort==='new') return ps.sort((a,b)=>b.at-a.at);
- const hot=p=>(p.ate+3*new Set(p.replies.map(r=>r.by).filter(u=>u!==p.by)).size+1)/Math.pow((Date.now()-p.at)/3600000+2,1.4);
+ const hot=p=>(p.ate+2*(p.same||0)+3*new Set(p.replies.map(r=>r.by).filter(u=>u!==p.by)).size+1)*facBoost(p)/Math.pow((Date.now()-p.at)/3600000+2,1.4);
  const fresh=p=>p.by==='me'&&Date.now()-p.at<6e5;
  return ps.sort((a,b)=>fresh(b)-fresh(a)||hot(b)-hot(a));
 }
 function whoHTML(p,al){
  const a=idOf(p,al); const pl=p.place&&place(p.place);
  return `<div class="who">${avHTML(a)}<div><b>${a.n}${p.by==='me'?'<span class="badge">คุณ</span>':''}</b><span>${esc(p.showId||'นักศึกษาจุฬาฯ')} · ${ago(p.at)}</span></div></div>
- ${pl||p.prompt?`<div style="display:flex;gap:6px;flex-wrap:wrap">${pl?`<button class="chip" data-act="openPlace" data-arg="${pl.id}">${I('pin','xs')} ${esc(pl.n)}</button>`:''}${p.prompt?`<button class="chip brand" data-act="openPrompt">${PROMPT.e} คำถามวันนี้</button>`:''}</div>`:''}`;
+ ${pl||p.prompt||p.same?`<div style="display:flex;gap:6px;flex-wrap:wrap">${sameChip(p)}${pl?`<button class="chip" data-act="openPlace" data-arg="${pl.id}">${I('pin','xs')} ${esc(pl.n)}</button>`:''}${p.prompt?`<button class="chip brand" data-act="openPrompt">${PROMPT.e} คำถามวันนี้</button>`:''}</div>`:''}`;
 }
 function slideHTML(p){
  const al=aliasMap(p), n=p.replies.length;
  const avs=[...new Map(p.replies.map(r=>[r.by,r])).values()].slice(0,3).map(r=>avHTML(idOf(r,al),'sm')).join('');
  return `<section class="slide ${p.kind==='voice'?'lt':''}" data-pid="${p.id}"><div class="card">${frameHTML(p)}
-  <div class="rail">
+  <div class="rail">${sameBtn(p)}
    <button class="rb ${p.ated?'on':''}" data-act="ate" data-arg="${p.id}"><span class="o">${I(p.ated?'flameF':'flame')}</span>${nf(p.ate)}</button>
    <button class="rb" data-act="openStack" data-arg="${p.id}"><span class="o">${I('bubble')}</span>${n}</button>
    <button class="rb" data-act="more" data-arg="${p.id}"><span class="o">${I('more')}</span></button>
@@ -945,7 +967,7 @@ function thumbStyle(it){const s=srcOf(it);return it.kind==='voice'?`background:$
 function renderNotif(){
  const list=[...S.notifs].sort((a,b)=>b.at-a.at);
  app.innerHTML=`<div class="scr"><div class="hdr"><div class="hdr-row"><div class="uni">แจ้งเตือน</div></div></div>
- <div class="pg" style="padding-top:8px">${list.length?list.map(n=>{const p=n.pid&&postById(n.pid);const em=n.kind==='prompt'?PROMPT.e:n.kind==='place'?'📍':n.kind==='reply'?(n.alias||'💬'):'💬';
+ <div class="pg" style="padding-top:8px">${list.length?list.map(n=>{const p=n.pid&&postById(n.pid);const em=n.kind==='prompt'?PROMPT.e:n.kind==='place'?'📍':n.kind==='reply'?(n.alias||'💬'):n.kind==='same'?'🙋':'💬';
   return `<button class="nrow ${n.read?'':'unread'}" data-act="openNotif" data-arg="${n.id}"><span class="av" style="background:${n.color||'#e4d6ff'}">${em}</span><span class="t">${esc(n.text)}<span>${ago(n.at)}</span></span>${p?`<span class="th" style="${thumbStyle(p)}">${p.kind==='voice'?'🎙':''}</span>`:''}</button>`}).join('')
  :`<div class="empty" style="margin-top:20px">ยังไม่มีอะไรใหม่</div>`}</div>${tabbarHTML()}</div>`;
 }
@@ -960,7 +982,7 @@ function renderMe(){
  <div class="pad" style="margin-top:14px"><div class="note">${I('mask','sm')}<div><b>ไม่มีหน้าโปรไฟล์สาธารณะ</b><br>โพสต์ไม่ระบุตัวตนขึ้นเป็นชื่อเล่นสุ่ม โยงกันไม่ได้ · โพสต์ที่เลือก “ใช้ชื่อฉัน” เพื่อนจะเห็นชื่อและรูปของคุณ<br><button class="ul" data-act="editProf">${mp?'แก้ชื่อและรูป':'ตั้งชื่อและรูป'}</button></div></div></div>
  <div class="stats"><div><b>${mine.length}</b><span>โพสต์</span></div><div><b>${myReplies}</b><span>คอมเมนต์</span></div><div><b>${nf(ateGot)}</b><span>ATE ที่ได้</span></div></div>
  <div class="sec">โพสต์ของฉัน</div>
- ${mine.length?`<div class="mine">${mine.map(p=>`<button style="${thumbStyle(p)}" data-act="openMine" data-arg="${p.id}">${p.kind==='voice'?`<span>🎙 ${esc((p.text||'คลิปเสียง').slice(0,40))}</span>`:''}<span class="n">${I('bubble','xs')} ${p.replies.length} · 🔥 ${nf(p.ate)}</span></button>`).join('')}</div>`
+ ${mine.length?`<div class="mine">${mine.map(p=>`<button style="${thumbStyle(p)}" data-act="openMine" data-arg="${p.id}">${p.kind==='voice'?`<span>🎙 ${esc((p.text||'คลิปเสียง').slice(0,40))}</span>`:''}<span class="n">${I('bubble','xs')} ${p.replies.length} · 🔥 ${nf(p.ate)} · 🙋 ${nf(p.same||0)}</span></button>`).join('')}</div>`
  :`<div class="empty"><div class="tile" style="width:76px;height:76px;font-size:34px;border-radius:24px;box-shadow:6px 6px 0 var(--lime)">🎙</div><b class="h2" style="color:var(--ink)">ยังไม่มีโพสต์</b>ลองตอบคำถามวันนี้ดูไหม ไม่มีใครรู้ว่าเป็นคุณ<button class="btn primary sm" data-act="openPromptCompose">${PROMPT.e} ตอบคำถามวันนี้</button></div>`}
  <p class="cap" style="text-align:center;margin-top:18px">EIGHT TEEN v2.2 · ต้นแบบสำหรับทดสอบ · 26 พ.ย. 2026</p></div>${tabbarHTML()}</div>`;
 }
@@ -979,6 +1001,7 @@ function renderSettings(){
  </div>
  <div class="sec">ความเป็นนิรนาม</div><div class="card2">
   ${row('tgl','showId','แสดงคณะและชั้นปีเป็นค่าเริ่มต้น',S.showId?`ทุกโพสต์ขึ้นว่า “${esc(meLabel())}”`:'ปิดอยู่ · ทุกโพสต์ขึ้นแค่ “นักศึกษาจุฬาฯ”',tg(S.showId))}
+  ${row('tgl','sameHide','นับคณะและปีของฉันใน “เหมือนกัน”',S.sameHide?'ปิดอยู่ · นับแค่จำนวน ไม่นับคณะและปี':`นับเป็น “${esc(meLabel())}” · ไม่มีใครรู้ว่าใครกด`,tg(!S.sameHide))}
   ${row('editProf','','ชื่อและรูปสำหรับ “ใช้ชื่อฉัน”',S.me.prof.name?esc(S.me.prof.name):'ยังไม่ได้ตั้ง · ทุกโพสต์ไม่ระบุตัวตน')}
   ${row('pickFx','','ฟิลเตอร์เสียงเริ่มต้น',`${fx(S.filter).e} ${fx(S.filter).n}`)}
  </div>
@@ -1061,6 +1084,66 @@ function doAte(pid,only,e,rid){
  $$(`[data-act="ate"][data-arg="${pid}${rid?'|'+rid:''}"]`).forEach(b=>{b.classList.toggle('on',it.ated);b.innerHTML=`<span class="o">${I(it.ated?'flameF':'flame')}</span>${nf(it.ate)}`;b.classList.toggle('pop',it.ated)});
 }
 
+/* ============ same here: "this is me too" — anonymous, counted by faculty + year ============ */
+const MIN_K=5;
+const facBoost=p=>S.me&&S.me.fac&&((p.sf||{})[S.me.fac]||0)>=MIN_K?1.25:1;
+const topK=m=>Object.entries(m||{}).filter(e=>e[1]>=MIN_K).sort((a,b)=>b[1]-a[1]);
+function sameHint(p){const f=topK(p.sf),y=topK(p.sy),mf=S.me&&S.me.fac,mine=mf?(p.sf||{})[mf]||0:0;
+ if(mine>=MIN_K&&f[0]&&f[0][0]!==mf)return `คณะคุณ ${nf(mine)}`;
+ if(f[0])return `ส่วนใหญ่ ${f[0][0]}${y[0]?' '+y[0][0]:''}`;return ''}
+function sameChip(p){if(!p.same)return '';const h=sameHint(p);
+ return `<button class="chip same ${p.samed?'on':''}" data-act="sameSheet" data-arg="${p.id}">🙋 ${p.samed?`คุณกับอีก ${nf(p.same-1)}`:`${nf(p.same)} เหมือนกัน`}${h?` · ${h}`:''}</button>`}
+const sameBtn=p=>`<button class="rb same ${p.samed?'on':''}" data-act="${p.by==='me'?'sameSheet':'same'}" data-arg="${p.id}" aria-label="เหมือนกัน"><span class="o">${I('hand')}</span>${nf(p.same||0)}<small>เหมือนกัน</small></button>`;
+const myGroup=()=>S.sameHide||!S.me||!S.me.fac?null:{f:S.me.fac,y:S.me.year};
+const groupLabel=g=>g?`${g.f}${g.y?' · '+g.y:''}`:'นักศึกษาจุฬาฯ (ไม่นับคณะและปี)';
+function doSame(pid){
+ const p=postById(pid);if(!p)return; if(p.by==='me'){openSameSheet(pid);return}
+ p.sf=p.sf||{};p.sy=p.sy||{};p.samed=!p.samed;p.same=(p.same||0)+(p.samed?1:-1);
+ const g=p.samed?myGroup():p.sameAs;
+ if(g){const d=p.samed?1:-1;p.sf[g.f]=(p.sf[g.f]||0)+d;if(g.y)p.sy[g.y]=(p.sy[g.y]||0)+d}
+ p.sameAs=p.samed?g:null;save();
+ log(p.samed?'same_here':'same_undo',{pid,counted:!!g,first_action:!S.log.some(l=>l.e==='post_created'||l.e==='reply_created'||l.e==='same_here')});
+ refreshSame(pid,p.samed);
+ if(!p.samed)return;
+ if(!S.sameTip){S.sameTip=1;save();toast(`นับคุณเป็น ${groupLabel(g)} · ไม่มีใครรู้ว่าใครกด`,{label:'ดูสถิติ',fn:()=>openSameSheet(pid)})}
+ else toast(`คุณกับอีก ${nf(p.same-1)} คน · จะแจ้งถ้ามีอัปเดต`);
+ followSim(pid);
+}
+function refreshSame(pid,pop){const p=postById(pid);
+ $$(`[data-act="same"][data-arg="${pid}"]`).forEach(b=>{b.classList.toggle('on',!!p.samed);b.innerHTML=`<span class="o">${I('hand')}</span>${nf(p.same)}<small>เหมือนกัน</small>`;b.classList.toggle('pop',!!pop)});
+ $$(`.chip.same[data-arg="${pid}"]`).forEach(c=>{const h=sameChip(p);if(!h){c.remove();return}const t=document.createElement('div');t.innerHTML=h;c.replaceWith(t.firstElementChild)})}
+/* tapping "same here" follows the thread: one simulated update per session */
+function followSim(pid){if(S.followSim)return;S.followSim=1;save();
+ setTimeout(()=>{const p=postById(pid);if(!p||!p.samed)return;const g=GIFS[Math.floor(Math.random()*GIFS.length)][0];
+  p.replies.push({id:uid('r'),by:'u'+(50+Math.floor(Math.random()*5)),kind:'gif',src:`../img/gif/${g}.gif`,stickers:[],at:Date.now(),ate:0,ated:false});
+  S.notifs.push({id:uid('n'),kind:'post',pid,text:'โพสต์ที่คุณกด “เหมือนกัน” มีคอมเมนต์ใหม่',at:Date.now(),read:false});save();log('same_follow_notif',{pid});
+  toast('🙋 โพสต์ที่คุณกดเหมือนกันมีคอมเมนต์ใหม่',{label:'ดู',fn:()=>openStack(pid,p.replies.length)});if(!SV&&!C)render(true)},20000)}
+/* the poster's reward: people who feel the same, mostly from their own faculty */
+function simulateSame(pid){
+ const add=(k,i0)=>{const p=postById(pid);if(!p)return;p.sf=p.sf||{};p.sy=p.sy||{};const mf=S.me&&S.me.fac||FACS[0],my=S.me&&S.me.year||YEARS[0];
+  for(let i=i0;i<i0+k;i++){const f=i%4===3?FACS.filter(x=>x!==mf)[i%5]:mf,y=i%3===2?YEARS.filter(x=>x!==my)[i%4]:my;p.same++;p.sf[f]=(p.sf[f]||0)+1;p.sy[y]=(p.sy[y]||0)+1}
+  const h=sameHint(p);S.notifs.push({id:uid('n'),kind:'same',pid,text:`${p.same} คนเหมือนกับคุณ${h?' · '+h:''}`,at:Date.now(),read:false});save();log('simulated_same',{pid,n:p.same});
+  if(p.same>=7)toast(`🙋 ${p.same} คนเหมือนกับคุณ${h?' · '+h:''}`,{label:'ดู',fn:()=>openSameSheet(pid)});
+  if(!SV&&!C)render(true)};
+ setTimeout(()=>add(3,0),9000); setTimeout(()=>add(4,3),16000);
+}
+function openSameSheet(pid){const p=postById(pid);if(!p)return;log('same_sheet_opened',{pid,mine:p.by==='me'});
+ const n=p.same||0,mf=S.me&&S.me.fac,my=S.me&&S.me.year,mineN=mf?(p.sf||{})[mf]||0:0;
+ const f=topK(p.sf).slice(0,3),fSum=f.reduce((a,e)=>a+e[1],0);
+ const yrs=YEARS.map(y=>[y,(p.sy||{})[y]||0]).filter(e=>e[1]>=MIN_K),ySum=yrs.reduce((a,e)=>a+e[1],0);
+ const row=(lab,v,on)=>`<div class="popt sm ${on?'mine':''}" style="--s:${n?(v/n).toFixed(3):0}"><i class="bar"></i><span>${esc(lab)}${on?' · คุณ':''}</span><span class="pc">${nf(v)}</span></div>`;
+ const fr=f.map(e=>row(e[0],e[1],e[0]===mf)).join('')+(n-fSum>0?row('คณะอื่นๆ / ไม่ระบุ',n-fSum):'');
+ const yr=yrs.map(e=>row(e[0],e[1],e[0]===my)).join('')+(n-ySum>0?row('อื่นๆ / ไม่ระบุ',n-ySum):'');
+ const own=mf&&mineN>=MIN_K&&!f.some(e=>e[0]===mf)?`<div class="sm-me">🫶 <span>คณะคุณ (${esc(mf)}) เหมือนกัน <b>${nf(mineN)}</b> คน</span></div>`:'';
+ const head=p.by==='me'?`${nf(n)} คนเหมือนกับคุณ`:p.samed?`คุณกับอีก ${nf(n-1)} คน`:`${nf(n)} คนเหมือนกัน`;
+ const few=!f.length&&!yrs.length;
+ sheet(`<h2 class="h1">🙋 ${head}</h2><p class="sub">ไม่มีใครเห็นว่าใครกด แม้แต่เจ้าของโพสต์ · แยกกลุ่มเฉพาะที่มี ${MIN_K} คนขึ้นไป</p>
+  ${p.samed?`<div class="sm-me">✓ <span>นับคุณเป็น <b>${esc(groupLabel(p.sameAs))}</b></span></div>`:''}${own}
+  ${few?`<div class="note" style="margin-top:10px">ยังน้อยเกินไปที่จะแยกกลุ่ม · ต้องมีอย่างน้อย ${MIN_K} คนต่อกลุ่ม ไม่ให้ใครเดาได้ว่าเป็นใคร</div>`
+  :`<div class="lbl2">คณะ</div><div class="poll" style="margin-top:0">${fr}</div><div class="lbl2">ชั้นปี</div><div class="poll" style="margin-top:0">${yr}</div>`}
+  <p class="cap" style="margin:12px 0 0">ตัวเลขของคนอื่นอัปเดตทุก 5 นาที เพื่อไม่ให้เดาได้ว่าใครกดตอนไหน</p>
+  ${p.by==='me'?'':`<button class="btn ${p.samed?'soft':'primary'} block" style="margin-top:14px" data-act="sameFromSheet" data-arg="${pid}">${p.samed?'ยกเลิก “เหมือนกัน”':'🙋 ฉันก็เหมือนกัน'}</button>`}`)}
+
 /* ============ stack viewer (replies / place stories / prompt answers) ============ */
 let SV=null;
 const HL=5; /* comments shown as Stories before the full list takes over */
@@ -1102,7 +1185,7 @@ function renderStack(){
   who=`<div class="sv-who">${avHTML(a)}<div class="t"><b>${a.n}${isOP?'<span class="badge">เจ้าของโพสต์</span>':''}${it.by==='me'?'<span class="badge">คุณ</span>':''}</b><span>${esc(sub)} · ${ago(it.at)}</span></div>
    ${!rep?`<button class="iconbtn" data-act="svToReplies" aria-label="ดูคอมเมนต์">${I('bubble')}</button>`:listBtn}<button class="iconbtn" data-act="closeStack" aria-label="ปิด">${I('x')}</button></div>`;
   const rid=rep&&SV.i>0?it.id:'';
-  stage=frameHTML(it)+`<div class="sv-ate ${it.kind==='voice'?'lt':''}"><button class="rb ${it.ated?'on':''}" data-act="ate" data-arg="${post.id}${rid?'|'+rid:''}"><span class="o">${I(it.ated?'flameF':'flame')}</span>${nf(it.ate)}</button></div>`;
+  stage=frameHTML(it)+`<div class="sv-ate ${it.kind==='voice'?'lt':''}">${it.replies?sameBtn(it):''}<button class="rb ${it.ated?'on':''}" data-act="ate" data-arg="${post.id}${rid?'|'+rid:''}"><span class="o">${I(it.ated?'flameF':'flame')}</span>${nf(it.ate)}</button></div>`;
  }
  const pl=SV.place&&place(SV.place);
  const ctx=SV.mode==='place'?`<div class="sv-ctx">${I('pin','sm')} ${esc(pl.n)}${pl.live?' · ● LIVE '+esc(pl.live):''}</div>`:SV.mode==='prompt'?`<div class="sv-ctx"><span style="font-size:17px">${PROMPT.e}</span> ${esc(PROMPT.q)}</div>`
@@ -1414,11 +1497,11 @@ async function doPost(){
  if(m.kind==='voice'||(m.kind==='photo'&&m.src.startsWith('data:'))){key=uid('m');const data=m.kind==='voice'?await blobToData(m.blob):m.src;MEM[key]=data;await idb.put(key,data);src=null}
  if(m.voice){const vk=uid('m'),d=await blobToData(m.voice.blob);MEM[vk]=d;await idb.put(vk,d);voice={key:vk,dur:m.voice.dur,text:m.voice.text||'',filter:m.voice.filter}}
  const as=C.asMe&&myProf()?{n:S.me.prof.name,img:S.me.prof.img}:null;
- const p={id:uid('p'),by:'me',kind:m.kind,src,key,dur:m.dur,text:m.text||'',bg:C.bg,filter:m.kind==='voice'?C.filter:null,stickers:C.stickers,place:C.place,showId:C.showId?meLabel():null,prompt:C.stickers.some(s=>s.t==='prompt'),ate:0,ated:false,as,voice,capTop:C.capTop,replies:[],at:Date.now()};
+ const p={id:uid('p'),by:'me',kind:m.kind,src,key,dur:m.dur,text:m.text||'',bg:C.bg,filter:m.kind==='voice'?C.filter:null,stickers:C.stickers,place:C.place,showId:C.showId?meLabel():null,prompt:C.stickers.some(s=>s.t==='prompt'),ate:0,ated:false,same:0,samed:false,sf:{},sy:{},as,voice,capTop:C.capTop,replies:[],at:Date.now()};
  S.posts.unshift(p); const first=!S.log.some(l=>l.e==='post_created');
  log('post_created',{kind:p.kind,filter:p.filter||(voice&&voice.filter),as_me:!!p.as,photo_voice:!!voice,place:!!p.place,prompt:p.prompt,show_id:!!p.showId,has_transcript:!!p.text,first,secs_since_start:Math.round((Date.now()-S.t0)/1000)});
  closeComposerRaw(); if(SV){SV.el.remove();SV=null} S.tab='home'; S.view='uni'; S.sort='hot'; save(); render(); $('#feed').scrollTop=0;
- simulateReply(p.id);
+ simulateReply(p.id);simulateSame(p.id);
  if(fromRit&&p.prompt){openRitual('done');return}
  toast(p.as?`โพสต์แล้ว · ขึ้นในชื่อ ${S.me.prof.name}`:'โพสต์แล้ว · ไม่มีใครรู้ว่าเป็นคุณ 🎭');
 }
@@ -1570,7 +1653,7 @@ async function ritPost(){
  const p={id:uid('p'),by:'me',kind:'voice',src:null,key,dur:R.media.dur,text:R.media.text||'',bg:R.bg||0,filter:R.filter,stickers:[promptStk()],place:null,showId:null,prompt:true,ate:0,ated:false,replies:[],at:Date.now()};
  S.posts.unshift(p); S.filter=R.filter; const first=!S.log.some(l=>l.e==='post_created');
  log('post_created',{kind:'voice',filter:p.filter,prompt:true,via:'ritual',has_transcript:!!p.text,first,secs_since_start:Math.round((Date.now()-S.t0)/1000)});
- S.tab='home';S.view='uni';S.sort='hot';save();simulateReply(p.id);ritGo('done');
+ S.tab='home';S.view='uni';S.sort='hot';save();simulateReply(p.id);simulateSame(p.id);ritGo('done');
 }
 
 /* ============ sheets & toast ============ */
@@ -1704,6 +1787,9 @@ const A={
  speed(){S.rate=S.rate===1?1.5:S.rate===1.5?2:1;save();log('speed_changed',{rate:S.rate});applyAudioPrefs()},
  speedRow(){A.speed();render()},
  playpause(){togglePlay()},
+ same(arg){doSame(arg)},
+ sameSheet(arg){openSameSheet(arg)},
+ sameFromSheet(arg){doSame(arg);openSameSheet(arg)},
  ate(arg,el,e){const [pid,rid]=arg.split('|');doAte(pid,false,e,rid)},
  openStack(pid){openStack(pid)},
  closeStack(){closeStack()},
@@ -1737,7 +1823,7 @@ const A={
  composePlace(){const id=SV.place;const el=SV.el;stopActive();SV=null;el.remove();openComposer({mode:'photo',place:id})},
  openMine(pid){openStack(pid,0)},
  openNotif(id){const n=S.notifs.find(x=>x.id===id);n.read=true;save();
-  if(n.kind==='prompt')A.openPrompt();else if(n.kind==='place')A.openPlace(n.place);else if(n.pid){const p=postById(n.pid);openStack(n.pid,n.kind==='reply'?p.replies.length:1)}},
+  if(n.kind==='prompt')A.openPrompt();else if(n.kind==='place')A.openPlace(n.place);else if(n.kind==='same')openSameSheet(n.pid);else if(n.pid){const p=postById(n.pid);openStack(n.pid,n.kind==='reply'?p.replies.length:1)}},
  compose(){openComposer({mode:'photo'})},
  closeCmp(){closeComposer()},
  cmode(m){if(C.recording||C.mode===m)return;const b=$('.modes button.on',C.el);C.pillFrom=b?{x:b.offsetLeft,w:b.offsetWidth}:null;C.swap=true;C.mode=m;renderComposer()},
@@ -1774,9 +1860,9 @@ const A={
  obAv(a){S.me.prof.img=a||null;save();ob()},
  obIdNext(){const m=S.ob.idMode||'anon';if(m==='me'&&!S.me.prof.name){toast('ใส่ชื่อก่อน หรือเลือกไม่ระบุตัวตน');return}log('ob_identity',{mode:m,photo:!!S.me.prof.img});A.obGo('voice')},
  ritVote(id){S.vote=id;save();log('prompt_vote',{option:id,first_action:!S.log.some(l=>l.e==='post_created'||l.e==='reply_created')});ritGo('voted')},
- ritGif(src){if(!R)return;const p={id:uid('p'),by:'me',kind:'gif',src,stickers:[promptStk()],place:null,showId:null,prompt:true,ate:0,ated:false,as:null,voice:null,replies:[],at:Date.now()};
+ ritGif(src){if(!R)return;const p={id:uid('p'),by:'me',kind:'gif',src,stickers:[promptStk()],place:null,showId:null,prompt:true,ate:0,ated:false,same:0,samed:false,sf:{},sy:{},as:null,voice:null,replies:[],at:Date.now()};
   S.posts.unshift(p);const first=!S.log.some(l=>l.e==='post_created');log('post_created',{kind:'gif',prompt:true,via:'ritual_gif',first,secs_since_start:Math.round((Date.now()-S.t0)/1000)});
-  S.tab='home';S.view='uni';S.sort='hot';save();simulateReply(p.id);ritGo('done')},
+  S.tab='home';S.view='uni';S.sort='hot';save();simulateReply(p.id);simulateSame(p.id);ritGo('done')},
  sendReply(){sendReply()},
  closeSheet(){closeSheet()},
  tgl(k){S[k]=!S[k];save();if(k==='sound')applyAudioPrefs();render()},
@@ -1784,7 +1870,7 @@ const A={
   const cnt=k=>S.log.filter(l=>l.e===k).length;
   const rc=S.log.filter(l=>l.e==='replies_closed'), avg=rc.length?(rc.reduce((a,l)=>a+(l.p.viewed||0),0)/rc.length).toFixed(1):'–';
   sheet(`<h2 class="h1">ผลการทดสอบในเครื่องนี้</h2><p class="sub">เก็บไว้ในเครื่องนี้เท่านั้น</p><div class="stats" style="margin:0 0 12px"><div><b>${posts.length}</b><span>โพสต์</span></div><div><b>${reps.length}</b><span>คอมเมนต์</span></div><div><b>${first?Math.round((first.t-S.t0)/1000)+'s':'–'}</b><span>ถึงโพสต์แรก</span></div></div>
-  <div class="mono">เปิดคอมเมนต์ ${cnt('replies_opened')} · เปิดบับเบิล ${cnt('place_opened')} · เปิดคำถามวันนี้ ${cnt('prompt_opened')}\nเปิด/ปิดเสียง ${cnt('sound_toggled')} · เปลี่ยนความเร็ว ${cnt('speed_changed')} · ATE ${cnt('ate')}\nดูคอมเมนต์เฉลี่ย ${avg} อัน/ครั้ง · เปิดรายการทั้งหมด ${cnt('comments_list_opened')} · กระโดดจากรายการ ${cnt('comment_jump')}\nโหวตคำถามวันนี้ ${cnt('prompt_vote')} · เตือนชื่อคน ${cnt('name_guard_shown')} · ตั้งชื่อโปรไฟล์ ${cnt('profile_set')}\n\n${S.log.slice(0,25).map(l=>new Date(l.t).toLocaleTimeString('th-TH')+'  '+l.e+' '+JSON.stringify(l.p)).join('\n')}</div>`)},
+  <div class="mono">เปิดคอมเมนต์ ${cnt('replies_opened')} · เปิดบับเบิล ${cnt('place_opened')} · เปิดคำถามวันนี้ ${cnt('prompt_opened')}\nเปิด/ปิดเสียง ${cnt('sound_toggled')} · เปลี่ยนความเร็ว ${cnt('speed_changed')} · ATE ${cnt('ate')}\nดูคอมเมนต์เฉลี่ย ${avg} อัน/ครั้ง · เปิดรายการทั้งหมด ${cnt('comments_list_opened')} · กระโดดจากรายการ ${cnt('comment_jump')}\nเหมือนกัน ${cnt('same_here')} · เปิดสถิติเหมือนกัน ${cnt('same_sheet_opened')} · โหวตคำถามวันนี้ ${cnt('prompt_vote')} · เตือนชื่อคน ${cnt('name_guard_shown')} · ตั้งชื่อโปรไฟล์ ${cnt('profile_set')}\n\n${S.log.slice(0,25).map(l=>new Date(l.t).toLocaleTimeString('th-TH')+'  '+l.e+' '+JSON.stringify(l.p)).join('\n')}</div>`)},
  reset(){if(!confirm('ล้างข้อมูลต้นแบบทั้งหมดในเครื่องนี้?'))return;try{localStorage.removeItem(KEY);indexedDB.deleteDatabase('et18v22')}catch(e){}location.reload()}
 };
 document.addEventListener('click',e=>{const b=e.target.closest('[data-act]');if(!b||!app.contains(b))return;const a=A[b.dataset.act];if(a){e.stopPropagation();a(b.dataset.arg,b,e)}});
