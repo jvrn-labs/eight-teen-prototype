@@ -620,14 +620,7 @@ button.sv-ctx{transition:transform var(--press)}button.sv-ctx:active{transform:s
 .pvbtn.rec i{width:26px;height:26px;border-radius:7px;background:#fff;display:block}
 .pvov .smp{font:600 12.5px/1.3 var(--f-b);color:#fff;opacity:.6;text-decoration:underline;min-height:32px}
 .pvov .lnk{color:#fff;font:600 14px/1 var(--f-b);min-height:40px}
-/* complaints + same here */
-.chip.cx{background:#ff6b3d;color:#fff;border-color:transparent}
-.chip.top{background:var(--lime);color:#0b1026;border-color:transparent}
-.rb small{font:600 10px/1 var(--f-b);opacity:.9;margin-top:-1px}
-.rb.same.on .o{background:#ff6b3d;color:#fff;box-shadow:3px 3px 0 var(--lime)}
 .sv-ate{display:flex;flex-direction:column;gap:14px}
-.pstrip.cxs .go{background:#ff6b3d}
-.pstrip.cxs small{color:#d9481c}
 .hits{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0 16px}
 .hits span{background:#ffe4d8;color:#b23a12;border-radius:8px;padding:5px 9px;font:700 13.5px/1.2 var(--f-b)}
 .gskip{display:block;margin:10px auto 0;min-height:44px;color:var(--ink2);font:600 14px/1 var(--f-b)}
@@ -712,8 +705,6 @@ const ICON={
  lock:'<rect x="5" y="11" width="14" height="10" rx="3"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/>',
  send:'<path d="M4 12l16-8-6 17-3-7z"/>',
  bubble:'<path d="M20.5 11.5a8.5 8.5 0 0 1-12.3 7.6L3.5 20.5l1.4-4.4A8.5 8.5 0 1 1 20.5 11.5z"/>',
- hand:'<path d="M8 12.5V6a1.5 1.5 0 0 1 3 0v5M11 10.5V4.5a1.5 1.5 0 0 1 3 0v6M14 10.5V6a1.5 1.5 0 0 1 3 0v7.5c0 4-2.6 7-6.2 7-2.4 0-3.9-1.2-5.2-3.2L3.8 14a1.5 1.5 0 0 1 2.5-1.7L8 14.5"/>',
- mega:'<path d="M4 10v4h3l10 5.5V4.5L7 10z"/><path d="M7 14l1.5 5.5"/>',
  cc:'<rect x="3" y="5" width="18" height="14" rx="3"/><path d="M10 10.5a2.2 2.2 0 1 0 0 3M16.5 10.5a2.2 2.2 0 1 0 0 3"/>'
 };
 const I=(n,c='')=>`<svg class="i ${c}" viewBox="0 0 24 24" aria-hidden="true">${ICON[n]}</svg>`;
@@ -746,10 +737,6 @@ const PLACES=[
 const place=id=>PLACES.find(p=>p.id===id);
 const PROMPT={e:'⏰',q:'ข้ออ้างมาสายวันนี้ของคุณคืออะไร',n:214,
  poll:[['alarm','⏰','กดเลื่อนนาฬิกาปลุก',88],['train','🚇','รถไฟฟ้า / รถติด',61],['coffee','☕','แวะซื้อกาแฟก่อน',37],['secret','🙈','ขอไม่บอก',28]]};
-/* complaints: about things, never about named people */
-const CATS=[{id:'class',e:'📚',n:'คลาสเรียน'},{id:'teach',e:'🧑‍🏫',n:'การสอน'},{id:'food',e:'🍜',n:'อาหาร'},{id:'service',e:'🏢',n:'บริการ'},{id:'place',e:'🏫',n:'ตึก / ห้อง'},{id:'transit',e:'🚌',n:'การเดินทาง'}];
-const cat=id=>CATS.find(c=>c.id===id);
-const SAME_TOP=300;
 /* name guard: a title (อาจารย์, อ., ดร. …) followed by a word, or an @handle */
 const TITLES=['อาจารย์','อ.','ดร.','ผศ.','รศ.','ศ.','ครู'];
 const NOT_NAME=['ที่','ท่าน','คน','ประจำ','ผู้','สอน','เขา','เค้า','กับ','ก็','ทุก','บาง','หลาย','เรา','มัน','นะ','ครับ','ค่ะ','ใน','ของ','วิชา','คณะ','sec','ใหม่','เก่า','พิเศษ'];
@@ -771,7 +758,7 @@ const YEARS=['ปี 1','ปี 2','ปี 3','ปี 4','ปี 5+','ป.โท
 function seed(){
  const now=Date.now();
  const R=o=>Object.assign({id:uid('r'),stickers:[],ate:0,ated:false},o,{at:now-(o.ago||0)*60000});
- const P=o=>Object.assign({stickers:[],place:null,showId:null,prompt:false,ate:0,ated:false,cx:null,same:0,samed:false,as:null,voice:null},o,{at:now-(o.ago||0)*60000,replies:(o.replies||[]).map(R)});
+ const P=o=>Object.assign({stickers:[],place:null,showId:null,prompt:false,ate:0,ated:false,as:null,voice:null},o,{at:now-(o.ago||0)*60000,replies:(o.replies||[]).map(R)});
  const T=(s,x=.5,y=.22,r=-3,c=0)=>({t:'text',s,x,y,r,c});
  return [
   P({id:'p6',by:'u2',kind:'photo',src:'../img/sala.jpg',voice:{src:'audio/v1.m4a',dur:7.0,text:'ใครเห็นพี่ยามหน้าตึกจักรพงษ์เต้น TikTok บ้าง เมื่อเช้าคือปังมาก ขอคลิปหน่อย',filter:'radio'},ago:8,ate:233,replies:[
@@ -808,16 +795,16 @@ function seed(){
   P({id:'p9',by:'u9',as:{n:'ปั้น',img:null},kind:'photo',src:'../img/library.jpg',stickers:[T('ชั้น 3 ที่นั่งว่างเพียบตอนนี้ ⚡',.5,.16,2,1)],place:'lib',ago:15,ate:120,replies:[{by:'u6',kind:'gif',src:'../img/gif/thanks.gif',ago:10,ate:3}]}),
   P({id:'p10',by:'u3',kind:'gif',src:'../img/gif/hungry.gif',stickers:[T('เที่ยงนี้กินไรดี 🍜',.5,.78,-3,4)],place:'samyan',ago:70,ate:300}),
   P({id:'p11',by:'u2',kind:'photo',src:'../img/auditorium.jpg',stickers:[T('ซ้อมรับน้องเสร็จแล้ว เหนื่อยแต่สนุก',.5,.16,-2,0)],place:'aud',ago:200,ate:77}),
-  P({id:'c1',by:'u30',kind:'gif',src:'../img/gif/hungry.gif',stickers:[T('โรงอาหารขึ้นราคาอีกแล้ว ข้าวไข่เจียว 45 บาท 😭',.5,.3,-3,4)],cx:'food',same:412,ago:35,ate:268,replies:[
-   {by:'u31',kind:'gif',src:'../img/gif/lol.gif',ago:30,ate:22},
-   {by:'u32',kind:'photo',src:'../img/av/tea.jpg',stickers:[T('ร้านหลังคณะยัง 35 อยู่นะ',.5,.72,2,1)],as:{n:'แพรว',img:'../img/av/petals.jpg'},ago:26,ate:61},
-   {by:'u33',kind:'gif',src:'../img/gif/confused.gif',ago:20,ate:9}]}),
-  P({id:'c2',by:'u34',kind:'photo',src:'../img/arts-library.jpg',stickers:[T('แอร์ห้องเรียนชั้น 4 พังมา 3 อาทิตย์ เรียนแบบซาวน่า 🥵',.5,.2,-2,0)],cx:'place',same:188,ago:90,ate:97,replies:[
-   {by:'u35',kind:'gif',src:'../img/gif/fire.gif',ago:80,ate:14},{by:'u36',kind:'gif',src:'../img/gif/wow.gif',ago:70,ate:3}]}),
-  P({id:'c3',by:'u37',kind:'gif',src:'../img/gif/confused.gif',stickers:[T('สไลด์ 80 หน้าใน 1 คาบ ใครตามทันบอกที 😵‍💫',.5,.3,3,1)],cx:'teach',same:96,ago:50,ate:64,replies:[
-   {by:'u38',kind:'gif',src:'../img/gif/fight.gif',ago:44,ate:11}]}),
-  P({id:'c4',by:'u39',kind:'photo',src:'../img/av/sky.jpg',stickers:[T('รอรถป๊อป 25 นาที มาถึงก็เต็ม 🚌',.5,.2,-3,3)],cx:'transit',same:240,ago:22,ate:151,replies:[
-   {by:'u40',kind:'gif',src:'../img/gif/lol.gif',ago:18,ate:6}]}),
+  P({id:'c1',by:'u30',kind:'gif',src:'../img/gif/hungry.gif',stickers:[T('โรงอาหารขึ้นราคาอีกแล้ว ข้าวไข่เจียว 45 บาท 😭',.5,.3,-3,4)],ago:5,ate:1820,replies:[
+   {by:'u31',kind:'gif',src:'../img/gif/lol.gif',ago:4,ate:22},
+   {by:'u32',kind:'photo',src:'../img/av/tea.jpg',stickers:[T('ร้านหลังคณะยัง 35 อยู่นะ',.5,.72,2,1)],as:{n:'แพรว',img:'../img/av/petals.jpg'},ago:3,ate:61},
+   {by:'u33',kind:'gif',src:'../img/gif/confused.gif',ago:1,ate:9}]}),
+  P({id:'c2',by:'u34',kind:'photo',src:'../img/arts-library.jpg',stickers:[T('แอร์ห้องเรียนชั้น 4 พังมา 3 อาทิตย์ เรียนแบบซาวน่า 🥵',.5,.2,-2,0)],ago:9,ate:1640,replies:[
+   {by:'u35',kind:'gif',src:'../img/gif/fire.gif',ago:7,ate:14},{by:'u36',kind:'gif',src:'../img/gif/wow.gif',ago:4,ate:3}]}),
+  P({id:'c3',by:'u37',kind:'gif',src:'../img/gif/confused.gif',stickers:[T('สไลด์ 80 หน้าใน 1 คาบ ใครตามทันบอกที 😵‍💫',.5,.3,3,1)],ago:3,ate:1400,replies:[
+   {by:'u38',kind:'gif',src:'../img/gif/fight.gif',ago:2,ate:11}]}),
+  P({id:'c4',by:'u39',kind:'photo',src:'../img/av/sky.jpg',stickers:[T('รอรถป๊อป 25 นาที มาถึงก็เต็ม 🚌',.5,.2,-3,3)],ago:14,ate:1490,replies:[
+   {by:'u40',kind:'gif',src:'../img/gif/lol.gif',ago:11,ate:6}]}),
   P({id:'p12',by:'u9',kind:'gif',src:'../img/gif/confused.gif',stickers:[{t:'prompt',x:.5,y:.13,r:-2},T('ตื่นสายแต่ยังสวย 💅',.5,.78,3,5)],prompt:true,ago:33,ate:96})
  ];
 }
@@ -827,7 +814,7 @@ function seedNotifs(){const n=Date.now();return[
  {id:'n3',kind:'place',place:'sala',text:'ศาลาพระเกี้ยว LIVE ตอนนี้: ดนตรีในสวน',at:n-120*60000,read:true}]}
 
 /* ============ state ============ */
-const KEY='et18v22', SEEDV=1;
+const KEY='et18v22', SEEDV=2;
 let S=load(); S.visit=S.visit||{};
 function fresh(){return{v:SEEDV,posts:seed(),notifs:seedNotifs(),sound:false,rate:1,filter:'mask',showId:false,onb:false,ob:{step:'welcome',slide:0,terms:false},me:{email:'',fac:null,year:null,dob:{d:'',m:'',y:''},prof:{name:'',img:null}},notifOn:true,visit:{p8:Date.now()-47*60000},vote:null,cc:true,replyAs:'anon',sub:null,tab:'home',view:'uni',sort:'hot',seenPlaces:[],log:[],t0:Date.now()}}
 function load(){try{const s=JSON.parse(localStorage.getItem(KEY));if(s&&s.v===SEEDV)return s}catch(e){}return fresh()}
@@ -893,24 +880,21 @@ function frameHTML(it,o={}){
 /* ============ screens ============ */
 function feedList(){
  const ps=[...S.posts];
- if(S.sort==='cx') return ps.filter(p=>p.cx).sort((a,b)=>(b.by==='me'&&Date.now()-b.at<6e5)-(a.by==='me'&&Date.now()-a.at<6e5)||b.same-a.same);
  if(S.sort==='new') return ps.sort((a,b)=>b.at-a.at);
  const hot=p=>(p.ate+3*new Set(p.replies.map(r=>r.by).filter(u=>u!==p.by)).size+1)/Math.pow((Date.now()-p.at)/3600000+2,1.4);
  const fresh=p=>p.by==='me'&&Date.now()-p.at<6e5;
  return ps.sort((a,b)=>fresh(b)-fresh(a)||hot(b)-hot(a));
 }
-function cxChips(p){if(!p.cx)return '';const c=cat(p.cx);return `<button class="chip cx" data-act="sort" data-arg="cx">😤 บ่น · ${c.e} ${c.n}</button>${p.same>=SAME_TOP?`<span class="chip top">📣 ติดท็อปห้องบ่น</span>`:''}`}
 function whoHTML(p,al){
  const a=idOf(p,al); const pl=p.place&&place(p.place);
  return `<div class="who">${avHTML(a)}<div><b>${a.n}${p.by==='me'?'<span class="badge">คุณ</span>':''}</b><span>${esc(p.showId||'นักศึกษาจุฬาฯ')} · ${ago(p.at)}</span></div></div>
- ${pl||p.prompt||p.cx?`<div style="display:flex;gap:6px;flex-wrap:wrap">${cxChips(p)}${pl?`<button class="chip" data-act="openPlace" data-arg="${pl.id}">${I('pin','xs')} ${esc(pl.n)}</button>`:''}${p.prompt?`<button class="chip brand" data-act="openPrompt">${PROMPT.e} คำถามวันนี้</button>`:''}</div>`:''}`;
+ ${pl||p.prompt?`<div style="display:flex;gap:6px;flex-wrap:wrap">${pl?`<button class="chip" data-act="openPlace" data-arg="${pl.id}">${I('pin','xs')} ${esc(pl.n)}</button>`:''}${p.prompt?`<button class="chip brand" data-act="openPrompt">${PROMPT.e} คำถามวันนี้</button>`:''}</div>`:''}`;
 }
-const sameBtn=p=>`<button class="rb same ${p.samed?'on':''}" data-act="same" data-arg="${p.id}"><span class="o">${I('hand')}</span>${nf(p.same)}<small>เหมือนกัน</small></button>`;
 function slideHTML(p){
  const al=aliasMap(p), n=p.replies.length;
  const avs=[...new Map(p.replies.map(r=>[r.by,r])).values()].slice(0,3).map(r=>avHTML(idOf(r,al),'sm')).join('');
  return `<section class="slide ${p.kind==='voice'?'lt':''}" data-pid="${p.id}"><div class="card">${frameHTML(p)}
-  <div class="rail">${p.cx?sameBtn(p):''}
+  <div class="rail">
    <button class="rb ${p.ated?'on':''}" data-act="ate" data-arg="${p.id}"><span class="o">${I(p.ated?'flameF':'flame')}</span>${nf(p.ate)}</button>
    <button class="rb" data-act="openStack" data-arg="${p.id}"><span class="o">${I('bubble')}</span>${n}</button>
    <button class="rb" data-act="more" data-arg="${p.id}"><span class="o">${I('more')}</span></button>
@@ -922,7 +906,7 @@ function slideHTML(p){
 function hdrHTML(){
  return `<div class="hdr"><div class="hdr-row"><div class="uni">จุฬาฯ ${VERIFIED}</div><button class="iconbtn" data-act="sound" aria-label="เสียง">${I(S.sound?'volOn':'volOff')}</button></div>
   <div class="feedtabs"><button class="feedtab ${S.view==='uni'?'on':''}" data-act="view" data-arg="uni">มหาลัย</button><button class="feedtab ${S.view==='bubble'?'on':''}" data-act="view" data-arg="bubble">บับเบิล</button>
-  ${S.view==='uni'?`<div class="seg"><button class="${S.sort==='hot'?'on':''}" data-act="sort" data-arg="hot">มาแรง</button><button class="${S.sort==='new'?'on':''}" data-act="sort" data-arg="new">ล่าสุด</button><button class="${S.sort==='cx'?'on':''}" data-act="sort" data-arg="cx">ห้องบ่น</button></div>`:''}</div></div>`;
+  ${S.view==='uni'?`<div class="seg"><button class="${S.sort==='hot'?'on':''}" data-act="sort" data-arg="hot">มาแรง</button><button class="${S.sort==='new'?'on':''}" data-act="sort" data-arg="new">ล่าสุด</button></div>`:''}</div></div>`;
 }
 function tabbarHTML(){
  const unread=S.notifs.filter(n=>!n.read).length;
@@ -931,15 +915,13 @@ function tabbarHTML(){
 }
 const iAnswered=()=>!!S.vote||S.posts.some(p=>p.by==='me'&&p.prompt);
 const promptCount=()=>S.posts.filter(p=>p.prompt&&p.by!=='me').length+PROMPT.n+(iAnswered()?1:0);
-const cxCount=()=>S.posts.filter(p=>p.cx).reduce((a,p)=>a+p.same,0);
 function renderHome(keep){
  const prevTop=keep&&$('#feed')?$('#feed').scrollTop:0;
  if(S.view==='bubble'){app.innerHTML=`<div class="scr">${hdrHTML()}<div class="pg">${bubbleHTML()}</div>${tabbarHTML()}</div>`;return}
  const done=iAnswered(), list=feedList();
  app.innerHTML=`<div class="scr imm ${list[0]&&list[0].kind==='voice'?'lit':''}"><div id="feed">${list.map(slideHTML).join('')}</div>
   <div class="chrome">${hdrHTML()}
-  ${S.sort==='cx'?`<button class="pstrip cxs" data-act="composeCx"><span class="e">😤</span><span class="t"><small>ห้องบ่น · คนกด “เหมือนกัน” แล้ว ${nf(cxCount())}</small><b>บ่นเรื่องได้เต็มที่ ไม่บ่นคน</b></span><span class="go">บ่น</span></button>`
-  :`<button class="pstrip ${done?'done':''}" data-act="openPrompt"><span class="e">${PROMPT.e}</span><span class="t"><small>คำถามวันนี้ · ตอบแล้ว ${promptCount()}${done?' · รวมคุณ':''}</small><b>${esc(PROMPT.q)}</b></span><span class="go" data-act="${done?'openPrompt':'openPromptCompose'}">${done?'ดูคำตอบ':'ตอบ'}</span></button>`}</div>
+  ${`<button class="pstrip ${done?'done':''}" data-act="openPrompt"><span class="e">${PROMPT.e}</span><span class="t"><small>คำถามวันนี้ · ตอบแล้ว ${promptCount()}${done?' · รวมคุณ':''}</small><b>${esc(PROMPT.q)}</b></span><span class="go" data-act="${done?'openPrompt':'openPromptCompose'}">${done?'ดูคำตอบ':'ตอบ'}</span></button>`}</div>
   ${tabbarHTML()}</div>`;
  const f=$('#feed'); f.scrollTop=prevTop; bindFeed(f);
 }
@@ -1120,7 +1102,7 @@ function renderStack(){
   who=`<div class="sv-who">${avHTML(a)}<div class="t"><b>${a.n}${isOP?'<span class="badge">เจ้าของโพสต์</span>':''}${it.by==='me'?'<span class="badge">คุณ</span>':''}</b><span>${esc(sub)} · ${ago(it.at)}</span></div>
    ${!rep?`<button class="iconbtn" data-act="svToReplies" aria-label="ดูคอมเมนต์">${I('bubble')}</button>`:listBtn}<button class="iconbtn" data-act="closeStack" aria-label="ปิด">${I('x')}</button></div>`;
   const rid=rep&&SV.i>0?it.id:'';
-  stage=frameHTML(it)+`<div class="sv-ate ${it.kind==='voice'?'lt':''}">${it.cx&&it.replies?sameBtn(it):''}<button class="rb ${it.ated?'on':''}" data-act="ate" data-arg="${post.id}${rid?'|'+rid:''}"><span class="o">${I(it.ated?'flameF':'flame')}</span>${nf(it.ate)}</button></div>`;
+  stage=frameHTML(it)+`<div class="sv-ate ${it.kind==='voice'?'lt':''}"><button class="rb ${it.ated?'on':''}" data-act="ate" data-arg="${post.id}${rid?'|'+rid:''}"><span class="o">${I(it.ated?'flameF':'flame')}</span>${nf(it.ate)}</button></div>`;
  }
  const pl=SV.place&&place(SV.place);
  const ctx=SV.mode==='place'?`<div class="sv-ctx">${I('pin','sm')} ${esc(pl.n)}${pl.live?' · ● LIVE '+esc(pl.live):''}</div>`:SV.mode==='prompt'?`<div class="sv-ctx"><span style="font-size:17px">${PROMPT.e}</span> ${esc(PROMPT.q)}</div>`
@@ -1274,7 +1256,7 @@ function simulateReply(pid){
 let C=null, camStream=null, vTick=0;
 const promptStk=()=>({t:'prompt',x:.5,y:.12,r:-2});
 function openComposer(o={}){
- stopActive(); closeSheet(); C=Object.assign({mode:'photo',step:'capture',media:null,stickers:[],filter:S.filter,cx:null,cxMode:false,asMe:false,capTop:false,vraw:null,bg:Math.floor(Math.random()*BG.length),place:null,showId:S.showId,target:null,prompt:false,facing:'environment'},o);
+ stopActive(); closeSheet(); C=Object.assign({mode:'photo',step:'capture',media:null,stickers:[],filter:S.filter,asMe:false,capTop:false,vraw:null,bg:Math.floor(Math.random()*BG.length),place:null,showId:S.showId,target:null,prompt:false,facing:'environment'},o);
  if(C.prompt)C.stickers=[promptStk()];
  const el=document.createElement('div');el.className='cmp';app.appendChild(el);C.el=el;log('composer_opened',{mode:C.mode,reply:!!C.target,prompt:!!C.prompt});renderComposer();
 }
@@ -1294,7 +1276,7 @@ async function startCam(){
 function renderComposer(){
  const el=C.el; const reply=!!C.target;
  if(C.step==='capture'){
-  const topChip=C.cxMode?`<span class="chip">😤 บ่นเรื่องได้ ไม่บ่นคน</span>`:C.prompt?`<span class="chip" style="max-width:75%;overflow:hidden;text-overflow:ellipsis">${PROMPT.e} ${esc(PROMPT.q)}</span>`:reply?`<span class="chip">${S.replyAs==='me'&&myProf()?avHTML(myProf(),'xs')+' คอมเมนต์ในชื่อ '+myProf().n:I('mask','xs')+' คอมเมนต์แบบไม่ระบุตัวตน'}</span>`:C.place?`<span class="chip">${I('pin','xs')} ${esc(place(C.place).n)}</span>`:'<span></span>';
+  const topChip=C.prompt?`<span class="chip" style="max-width:75%;overflow:hidden;text-overflow:ellipsis">${PROMPT.e} ${esc(PROMPT.q)}</span>`:reply?`<span class="chip">${S.replyAs==='me'&&myProf()?avHTML(myProf(),'xs')+' คอมเมนต์ในชื่อ '+myProf().n:I('mask','xs')+' คอมเมนต์แบบไม่ระบุตัวตน'}</span>`:C.place?`<span class="chip">${I('pin','xs')} ${esc(place(C.place).n)}</span>`:'<span></span>';
   let stage='',shut='',light=false;
   if(C.mode==='photo'){
    stage=`<video id="cv" playsinline muted autoplay></video>
@@ -1402,27 +1384,24 @@ const asCards=(on,act)=>{const mp=myProf();const c=(k,av,t,d)=>`<button class="a
  return `<div class="asrow">${c('anon','<span class="av" style="background:#e4d6ff">🎭</span>','ไม่ระบุตัวตน','ชื่อเล่นสุ่ม ใช้แค่โพสต์นี้')}${c('me',mp?avHTML(mp):`<span class="av nm" style="background:#7c3aed">${I('user','sm')}</span>`,mp?mp.n:'ใช้ชื่อฉัน',mp?'เพื่อนเห็นชื่อและรูปของคุณ':'ตั้งชื่อและรูปก่อน')}</div>`};
 function postSheet(inplace){
  const pl=C.place&&place(C.place), v=C.media.voice||(C.media.kind==='voice'?C.media:null);
- const html=`<h2 class="h1">${C.cxMode||C.cx?'พร้อมบ่น':'พร้อมโพสต์'}</h2><p class="sub">โพสต์ไปที่ฟีดมหาลัย · นักศึกษาจุฬาฯ เท่านั้นที่เห็น</p>
+ const html=`<h2 class="h1">พร้อมโพสต์</h2><p class="sub">โพสต์ไปที่ฟีดมหาลัย · นักศึกษาจุฬาฯ เท่านั้นที่เห็น</p>
   <div class="lbl2" style="margin-top:0">โพสต์ในชื่อ</div>${asCards(!!C.asMe,'setAs')}
-  ${C.asMe&&C.cx?`<div class="note warn" style="margin-bottom:8px">😬 บ่นแบบใช้ชื่อจริง ทุกคนจะรู้ว่าเป็นคุณ</div>`:''}
-  <div class="lbl2">${C.cxMode?'บ่นเรื่องอะไร?':'เป็นโพสต์บ่นไหม?'}</div><div class="chips">${C.cxMode?'':`<button class="pick ${!C.cx?'on':''}" data-act="setCx" data-arg="">ไม่ใช่</button>`}${CATS.map(c=>`<button class="pick ${C.cx===c.id?'on':''}" data-act="setCx" data-arg="${c.id}">${c.e} ${c.n}</button>`).join('')}</div>
-  ${C.cx?`<p class="cap" style="margin:8px 0 0">😤 ขึ้นในห้องบ่น ให้คนกด “เหมือนกัน” ได้ · บ่นเรื่องได้เต็มที่ แต่ห้ามระบุชื่อคน</p>`:''}
   <div style="height:8px"></div>
   <button class="row" id="sid"><span class="t"><b>แสดงคณะและชั้นปี</b><span>${C.showId?`ขึ้นว่า “${meLabel()}”`:'ปิดอยู่ · ขึ้นแค่ “นักศึกษาจุฬาฯ”'}</span></span><span class="tg ${C.showId?'on':''}"></span></button>
   <button class="row" data-act="placeSheet"><span class="t"><b>สถานที่</b><span>${pl?esc(pl.n)+' · ขึ้นในบับเบิล 72 ชม.':'ไม่ใส่ (ไม่บังคับ)'}</span></span>${I('chev','sm')}</button>
   ${v?`<div class="row"><span class="t"><b>คำบรรยายอัตโนมัติ</b><span>${v.text?'พร้อมแล้ว':esc(v.noSR?noSR:'ไม่ได้ยินคำพูด')}</span></span></div>`:''}
-  <button class="btn primary block" style="margin-top:14px${C.cxMode&&!C.cx?';opacity:.4':''}" data-act="doPost" ${C.cxMode&&!C.cx?'disabled':''}>${C.cx?'บ่นเลย':'โพสต์เลย'}</button>`;
+  <button class="btn primary block" style="margin-top:14px" data-act="doPost">โพสต์เลย</button>`;
  const sh=inplace&&$('.sheetw .sheet'); if(sh)sh.innerHTML='<div class="grab"></div>'+html; else sheet(html);
  $('#sid').onclick=()=>{C.showId=!C.showId;postSheet(true)};
 }
-/* name guard: complaints are about things; names get caught before they go out */
+/* name guard: names after a title or @handles get caught before they go out */
 function guardPost(){
  const m=C.media, texts=[...C.stickers.filter(x=>x.t==='text').map(x=>x.s),m.text||'',m.voice?m.voice.text:''];
  const hits=C.guardOk?[]:findNames(texts.join('\n'));
  if(!hits.length){doPost();return}
- C.hits=hits; log('name_guard_shown',{n:hits.length,cx:!!C.cx});
+ C.hits=hits; log('name_guard_shown',{n:hits.length});
  const html=`<div class="tile" style="width:60px;height:60px;font-size:28px;border-radius:20px;box-shadow:5px 5px 0 var(--lime);margin-bottom:12px">🫣</div><h2 class="h1">มีชื่อคนอยู่ในโพสต์หรือเปล่า?</h2>
-  <p class="sub">บ่นเรื่องได้เต็มที่ แต่การระบุชื่อคนอาจผิดกฎหมายหมิ่นประมาท และโพสต์จะถูกลบ</p><div class="hits">${hits.map(h=>`<span>${esc(h)}</span>`).join('')}</div>
+  <p class="sub">การระบุชื่อคนอาจผิดกฎหมายหมิ่นประมาท และโพสต์จะถูกลบ</p><div class="hits">${hits.map(h=>`<span>${esc(h)}</span>`).join('')}</div>
   <button class="btn primary block" data-act="guardFix">ซ่อนชื่อให้อัตโนมัติ</button><div style="height:8px"></div><button class="btn soft block" data-act="guardEdit">กลับไปแก้เอง</button>
   <button class="lnk gskip" data-act="guardSkip">ไม่ใช่ชื่อคน โพสต์เลย</button>`;
  const sh=$('.sheetw .sheet'); if(sh)sh.innerHTML='<div class="grab"></div>'+html; else sheet(html);
@@ -1435,13 +1414,13 @@ async function doPost(){
  if(m.kind==='voice'||(m.kind==='photo'&&m.src.startsWith('data:'))){key=uid('m');const data=m.kind==='voice'?await blobToData(m.blob):m.src;MEM[key]=data;await idb.put(key,data);src=null}
  if(m.voice){const vk=uid('m'),d=await blobToData(m.voice.blob);MEM[vk]=d;await idb.put(vk,d);voice={key:vk,dur:m.voice.dur,text:m.voice.text||'',filter:m.voice.filter}}
  const as=C.asMe&&myProf()?{n:S.me.prof.name,img:S.me.prof.img}:null;
- const p={id:uid('p'),by:'me',kind:m.kind,src,key,dur:m.dur,text:m.text||'',bg:C.bg,filter:m.kind==='voice'?C.filter:null,stickers:C.stickers,place:C.place,showId:C.showId?meLabel():null,prompt:C.stickers.some(s=>s.t==='prompt'),ate:0,ated:false,cx:C.cx,same:0,samed:false,as,voice,capTop:C.capTop,replies:[],at:Date.now()};
+ const p={id:uid('p'),by:'me',kind:m.kind,src,key,dur:m.dur,text:m.text||'',bg:C.bg,filter:m.kind==='voice'?C.filter:null,stickers:C.stickers,place:C.place,showId:C.showId?meLabel():null,prompt:C.stickers.some(s=>s.t==='prompt'),ate:0,ated:false,as,voice,capTop:C.capTop,replies:[],at:Date.now()};
  S.posts.unshift(p); const first=!S.log.some(l=>l.e==='post_created');
- log('post_created',{kind:p.kind,filter:p.filter||(voice&&voice.filter),cx:p.cx,as_me:!!p.as,photo_voice:!!voice,place:!!p.place,prompt:p.prompt,show_id:!!p.showId,has_transcript:!!p.text,first,secs_since_start:Math.round((Date.now()-S.t0)/1000)});
- closeComposerRaw(); if(SV){SV.el.remove();SV=null} S.tab='home'; S.view='uni'; S.sort=p.cx?'cx':'hot'; save(); render(); $('#feed').scrollTop=0;
+ log('post_created',{kind:p.kind,filter:p.filter||(voice&&voice.filter),as_me:!!p.as,photo_voice:!!voice,place:!!p.place,prompt:p.prompt,show_id:!!p.showId,has_transcript:!!p.text,first,secs_since_start:Math.round((Date.now()-S.t0)/1000)});
+ closeComposerRaw(); if(SV){SV.el.remove();SV=null} S.tab='home'; S.view='uni'; S.sort='hot'; save(); render(); $('#feed').scrollTop=0;
  simulateReply(p.id);
  if(fromRit&&p.prompt){openRitual('done');return}
- toast(p.as?`โพสต์แล้ว · ขึ้นในชื่อ ${S.me.prof.name}`:p.cx?'บ่นแล้ว · ไม่มีใครรู้ว่าเป็นคุณ 😤':'โพสต์แล้ว · ไม่มีใครรู้ว่าเป็นคุณ 🎭');
+ toast(p.as?`โพสต์แล้ว · ขึ้นในชื่อ ${S.me.prof.name}`:'โพสต์แล้ว · ไม่มีใครรู้ว่าเป็นคุณ 🎭');
 }
 async function sendReply(){
  const m=C.media,pid=C.target;let data=null;
@@ -1782,14 +1761,9 @@ const A={
  guardEdit(){log('name_guard',{action:'edit'});closeSheet()},
  guardSkip(){log('name_guard',{action:'not_a_name'});C.guardOk=true;doPost()},
  setAs(k){if(k==='me'&&!myProf()){profSheet(()=>{C.asMe=true;postSheet()});return}C.asMe=k==='me';postSheet(true)},
- setCx(id){C.cx=id||null;postSheet(true)},
  addVoice(){pvRecord()},
  capPos(){C.capTop=!C.capTop;renderComposer()},
  rmVoice(){stopActive();if(C.media.voice&&C.media.voice.src)URL.revokeObjectURL(C.media.voice.src);C.media.voice=null;C.vraw=null;renderComposer()},
- composeCx(){openComposer({mode:'photo',cxMode:true})},
- same(pid,el,e){const p=postById(pid);if(!p)return;p.samed=!p.samed;p.same+=p.samed?1:-1;save();log(p.samed?'same_here':'same_undo',{pid,cat:p.cx});
-  $$(`[data-act="same"][data-arg="${pid}"]`).forEach(b=>{b.classList.toggle('on',p.samed);b.innerHTML=`<span class="o">${I('hand')}</span>${nf(p.same)}<small>เหมือนกัน</small>`;b.classList.toggle('pop',p.samed)});
-  if(p.samed&&!S.sameTip){S.sameTip=1;save();toast('นับคุณแล้ว · ไม่มีใครรู้ว่าใครกด')}},
  cc(){S.cc=!S.cc;save();log('cc_toggled',{on:S.cc});applyAudioPrefs()},
  replyAs(){if(!myProf()){profSheet(()=>{S.replyAs='me';save();renderStack()});return}S.replyAs=S.replyAs==='me'?'anon':'me';save();log('reply_as',{as:S.replyAs});renderStack();toast(S.replyAs==='me'?`คอมเมนต์ในชื่อ ${S.me.prof.name}`:'คอมเมนต์แบบไม่ระบุตัวตน 🎭')},
  editProf(){profSheet()},
@@ -1800,7 +1774,7 @@ const A={
  obAv(a){S.me.prof.img=a||null;save();ob()},
  obIdNext(){const m=S.ob.idMode||'anon';if(m==='me'&&!S.me.prof.name){toast('ใส่ชื่อก่อน หรือเลือกไม่ระบุตัวตน');return}log('ob_identity',{mode:m,photo:!!S.me.prof.img});A.obGo('voice')},
  ritVote(id){S.vote=id;save();log('prompt_vote',{option:id,first_action:!S.log.some(l=>l.e==='post_created'||l.e==='reply_created')});ritGo('voted')},
- ritGif(src){if(!R)return;const p={id:uid('p'),by:'me',kind:'gif',src,stickers:[promptStk()],place:null,showId:null,prompt:true,ate:0,ated:false,cx:null,same:0,samed:false,as:null,voice:null,replies:[],at:Date.now()};
+ ritGif(src){if(!R)return;const p={id:uid('p'),by:'me',kind:'gif',src,stickers:[promptStk()],place:null,showId:null,prompt:true,ate:0,ated:false,as:null,voice:null,replies:[],at:Date.now()};
   S.posts.unshift(p);const first=!S.log.some(l=>l.e==='post_created');log('post_created',{kind:'gif',prompt:true,via:'ritual_gif',first,secs_since_start:Math.round((Date.now()-S.t0)/1000)});
   S.tab='home';S.view='uni';S.sort='hot';save();simulateReply(p.id);ritGo('done')},
  sendReply(){sendReply()},
@@ -1810,7 +1784,7 @@ const A={
   const cnt=k=>S.log.filter(l=>l.e===k).length;
   const rc=S.log.filter(l=>l.e==='replies_closed'), avg=rc.length?(rc.reduce((a,l)=>a+(l.p.viewed||0),0)/rc.length).toFixed(1):'–';
   sheet(`<h2 class="h1">ผลการทดสอบในเครื่องนี้</h2><p class="sub">เก็บไว้ในเครื่องนี้เท่านั้น</p><div class="stats" style="margin:0 0 12px"><div><b>${posts.length}</b><span>โพสต์</span></div><div><b>${reps.length}</b><span>คอมเมนต์</span></div><div><b>${first?Math.round((first.t-S.t0)/1000)+'s':'–'}</b><span>ถึงโพสต์แรก</span></div></div>
-  <div class="mono">เปิดคอมเมนต์ ${cnt('replies_opened')} · เปิดบับเบิล ${cnt('place_opened')} · เปิดคำถามวันนี้ ${cnt('prompt_opened')}\nเปิด/ปิดเสียง ${cnt('sound_toggled')} · เปลี่ยนความเร็ว ${cnt('speed_changed')} · ATE ${cnt('ate')}\nดูคอมเมนต์เฉลี่ย ${avg} อัน/ครั้ง · เปิดรายการทั้งหมด ${cnt('comments_list_opened')} · กระโดดจากรายการ ${cnt('comment_jump')}\nเหมือนกัน ${cnt('same_here')} · โหวตคำถามวันนี้ ${cnt('prompt_vote')} · เตือนชื่อคน ${cnt('name_guard_shown')} · ตั้งชื่อโปรไฟล์ ${cnt('profile_set')}\n\n${S.log.slice(0,25).map(l=>new Date(l.t).toLocaleTimeString('th-TH')+'  '+l.e+' '+JSON.stringify(l.p)).join('\n')}</div>`)},
+  <div class="mono">เปิดคอมเมนต์ ${cnt('replies_opened')} · เปิดบับเบิล ${cnt('place_opened')} · เปิดคำถามวันนี้ ${cnt('prompt_opened')}\nเปิด/ปิดเสียง ${cnt('sound_toggled')} · เปลี่ยนความเร็ว ${cnt('speed_changed')} · ATE ${cnt('ate')}\nดูคอมเมนต์เฉลี่ย ${avg} อัน/ครั้ง · เปิดรายการทั้งหมด ${cnt('comments_list_opened')} · กระโดดจากรายการ ${cnt('comment_jump')}\nโหวตคำถามวันนี้ ${cnt('prompt_vote')} · เตือนชื่อคน ${cnt('name_guard_shown')} · ตั้งชื่อโปรไฟล์ ${cnt('profile_set')}\n\n${S.log.slice(0,25).map(l=>new Date(l.t).toLocaleTimeString('th-TH')+'  '+l.e+' '+JSON.stringify(l.p)).join('\n')}</div>`)},
  reset(){if(!confirm('ล้างข้อมูลต้นแบบทั้งหมดในเครื่องนี้?'))return;try{localStorage.removeItem(KEY);indexedDB.deleteDatabase('et18v22')}catch(e){}location.reload()}
 };
 document.addEventListener('click',e=>{const b=e.target.closest('[data-act]');if(!b||!app.contains(b))return;const a=A[b.dataset.act];if(a){e.stopPropagation();a(b.dataset.arg,b,e)}});
