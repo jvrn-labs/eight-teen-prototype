@@ -752,6 +752,12 @@ button.popt:active{transform:scale(.97)}
 .svopt{display:flex;align-items:center;gap:12px;width:100%;text-align:left;padding:13px 14px;border:1px solid var(--border);border-radius:16px;margin-top:8px;font:600 15px/1.3 var(--f-b)}
 .svopt .e{font-size:20px}
 .rule .ic.em{font-size:20px;line-height:1}
+.infolink{display:inline-flex;align-items:center;gap:6px;margin-top:14px;min-height:44px;font:600 14px/1.3 var(--f-b);color:var(--brand);text-decoration:underline;text-underline-offset:3px}
+.popw{position:absolute;inset:0;z-index:90;display:flex;align-items:center;justify-content:center;padding:0 16px}
+.pbd{position:absolute;inset:0;background:var(--scrim);animation:fd 200ms ease}
+.popc{position:relative;width:100%;max-width:360px;max-height:86%;overflow:auto;background:var(--canvas);border-radius:24px;padding:20px;box-shadow:0 20px 60px rgba(11,16,38,.35);animation:popin 220ms var(--ease-out)}
+@keyframes popin{from{opacity:0;transform:scale(.96)}}
+@media (prefers-reduced-motion:reduce){.popc,.pbd{animation:none}}
 </style>
 </head>
 <body>
@@ -769,6 +775,7 @@ const mmss=s=>`${Math.floor(s/60)}:${String(Math.floor(s%60)).padStart(2,'0')}`;
 const hash=s=>{let h=2166136261;for(const c of String(s)){h^=c.charCodeAt(0);h=Math.imul(h,16777619)}return h>>>0};
 const app=$('#app');
 const ICON={
+ info:'<circle cx="12" cy="12" r="8.5"/><path d="M12 11v5.5M12 7.5v.2"/>',
  flame:'<path d="M12 3c.6 3 4.5 5 4.5 9.5a4.5 4.5 0 0 1-9 0c0-1.8.8-3.2 1.8-4.2.2 1.4.9 2.3 1.8 2.7C10.8 8 11.3 5.4 12 3z"/>',
  flameF:'<path fill="currentColor" stroke="none" d="M12 2.5c.8 3.4 5 5.4 5 10a5 5 0 0 1-10 0c0-2 .9-3.6 2-4.6.3 1.6 1 2.6 2 3-.4-3.2.2-6 1-8.4z"/>',
  stack:'<rect x="7" y="3" width="12" height="16" rx="3"/><path d="M4 7v10.5A3.5 3.5 0 0 0 7.5 21H15"/>',
@@ -1222,17 +1229,24 @@ function reachChip(p){const n=seenOf(p);if(n>=GUAR)return '';
  if(p.by==='me')return `<button class="chip reach" data-act="seenSheet" data-arg="${p.id}" data-reach="${p.id}" style="--p:${Math.round(n/GUAR*100)}%">🚀 กำลังส่งถึง 300 คนแรก · <b>${n}</b>/300</button>`;
  return `<span class="chip reach new">🆕 คุณอยู่ใน 300 คนแรกที่เห็น</span>`}
 function openSeenSheet(pid){const p=postById(pid);if(!p)return;const n=seenOf(p),mine=p.by==='me',pct=Math.min(100,n/GUAR*100);
- const facs=Math.min(FACS.length,2+Math.floor(n/35));log('seen_sheet_opened',{pid,mine,n,under:n<GUAR});
+ log('seen_sheet_opened',{pid,mine,n,under:n<GUAR});
+ /* the sheet shows only the total; the explanation sits behind the ⓘ link (popup) */
  sheet(`<div class="reachbig" data-seen="${pid}" data-fmt="num">${n.toLocaleString('en-US')}</div>
   <h2 class="h1" style="margin-top:6px">นิสิตจุฬาฯ ที่เห็น${mine?'โพสต์ของคุณ':'โพสต์นี้'}</h2>
-  <p class="sub">${mine?'ไม่ต้องมีผู้ติดตามสักคน ไม่ต้องรอยอดไลก์':'โพสต์นี้ไม่ต้องมีผู้ติดตามก็ไปถึงคนทั้งมหาลัย'} · เห็นจาก ${facs} คณะ</p>
-  <div class="reachbar"><i style="width:${pct}%"></i></div>
-  <div class="reachlbl"><span>${n>=GUAR?'✓ ถึง 300 คนแรกแล้ว':'กำลังส่งถึง 300 คนแรก'}</span><span>${Math.min(n,GUAR)}/300</span></div>
-  <div class="box2">
+  ${n<GUAR?`<div class="reachbar"><i style="width:${pct}%"></i></div>
+  <div class="reachlbl"><span>กำลังส่งถึง 300 คนแรก</span><span>${n}/300</span></div>`:''}
+  <button class="infolink" data-act="reachInfo">${I('info','sm')} ทำไมทุกโพสต์ถึงไปถึงทั้งจุฬาฯ?</button>`)}
+function reachInfo(){log('reach_info_opened');$$('.popw').forEach(w=>w.remove());
+ const w=document.createElement('div');w.className='popw';
+ w.innerHTML=`<div class="pbd" data-act="closePop"></div><div class="popc" role="dialog" aria-modal="true" aria-label="ทุกโพสต์ไปถึงทั้งจุฬาฯ">
+  <h2 class="h1" style="font-size:20px">📣 โพสต์เดียว ทั้งจุฬาฯ ได้ยิน</h2>
+  <div class="box2" style="margin-top:12px">
    <div class="rule"><span class="ic em">🎯</span><div><b>ทุกโพสต์ได้คนเห็นอย่างน้อย 300 คนแรก</b><span>แม้จะไม่ระบุตัวตน ไม่มีผู้ติดตาม หรือยังไม่มีใครกดอะไรเลย</span></div></div>
    <div class="rule"><span class="ic em">🔥</span><div><b>หลังจากนั้น ยิ่งมีคนอิน ยิ่งไปไกล</b><span>ATE, เหมือนกัน และคอมเมนต์ พาโพสต์ไปถึงคนทั้งจุฬาฯ</span></div></div>
    <div class="rule"><span class="ic em">🎭</span><div><b>นับแค่จำนวน ไม่บอกว่าใครเห็น</b><span>และคนที่เห็นก็ไม่รู้ว่าใครโพสต์</span></div></div>
-  </div>`)}
+  </div>
+  <button class="btn primary block" style="margin-top:14px" data-act="closePop">เข้าใจแล้ว</button></div>`;
+ app.appendChild(w)}
 function reachSurvey(pid){if(S.survey)return;S.survey=1;save();log('reach_survey_shown',{pid});
  const O=[['hole','🕳️','แอคหลุมใน X'],['ig','📸','IG สตอรี่ / Close Friends'],['page','📮','ส่งให้เพจ confession'],['line','💬','กลุ่ม LINE / OpenChat'],['none','🤐','ไม่โพสต์ที่ไหนเลย']];
  sheet(`<h2 class="h1">📣 ถึง 300 คนแล้ว</h2><p class="sub">ถามสั้นๆ 1 ข้อ · ถ้าไม่มี EIGHT TEEN คุณจะโพสต์เรื่องนี้ที่ไหน?</p>
@@ -1966,6 +1980,8 @@ async function previewFx(id){
 /* ============ actions ============ */
 const A={
  seenSheet(pid){openSeenSheet(pid)},
+ reachInfo(){reachInfo()},
+ closePop(){$$('.popw').forEach(w=>w.remove())},
  survey(k){log('reach_survey',{answer:k});closeSheet();toast(k==='none'?'ขอบคุณ 💜 แปลว่าที่นี่ทำให้คุณกล้าพูด':'ขอบคุณที่ตอบ 💜')},
  tab(t){S.tab=t;S.sub=null;save();render()},
  openSettings(){S.sub='settings';save();render();$('.pg').scrollTop=0},
