@@ -778,6 +778,55 @@ button.popt:active{transform:scale(.97)}
 .pq-in{animation:pqIn 420ms var(--ease-out)}
 @keyframes pqIn{from{opacity:0;transform:translateY(16px) scale(.98)}}
 @media (prefers-reduced-motion:reduce){.pq-in{animation:none}}
+
+/* ================= v2.4 · Story-style frame (layout A) ================= */
+.scr.imm.story{--hd:98px;--bar:56px;background:#0d0d14}
+.scr.imm.story .chrome{color:#fff}
+.scr.imm.story .chrome:before{display:none}
+.scr.imm.story.lit .chrome{color:#fff}
+.scr.imm.story .hdr .iconbtn,.scr.imm.story.lit .hdr .iconbtn{background:rgba(255,255,255,.12)}
+.scr.imm.story .seg,.scr.imm.story.lit .seg{background:rgba(255,255,255,.12)}
+.scr.imm.story .slide{display:flex;flex-direction:column;padding:calc(var(--st) + var(--hd)) 8px calc(var(--tb) + var(--sb))}
+.scr.imm.story .card{flex:1;min-height:0;height:auto;border-radius:20px}
+/* overlays inside the frame are measured from the frame, not the screen */
+.scr.imm.story .vwrap{top:64px;bottom:24px;right:20px}
+.scr.imm.story .gifb{top:auto;bottom:12px;left:12px}
+.scr.imm.story .deco{top:-46px}
+.scr.imm.story .deco2{top:30px}
+.scr.imm.story .stk:not(.blurbox){top:max(var(--y),64px)}
+.scr.imm.story .pvoice{--pvb:16px;--pvt:64px;right:14px}
+.scr.imm.story .fr .shade{background:linear-gradient(180deg,rgba(11,16,38,.5) 0,transparent 22%,transparent 70%,rgba(11,16,38,.35) 100%)}
+.scr.imm.story .fr.hasv .shade{background:linear-gradient(180deg,rgba(11,16,38,.5) 0,transparent 22%,transparent 45%,rgba(11,16,38,.8) 100%)}
+/* author, on top of the media like a Story */
+.stop{position:absolute;left:0;right:0;top:0;z-index:3;display:flex;align-items:center;gap:9px;padding:12px 6px 12px 12px;color:#fff;text-shadow:0 1px 3px rgba(11,16,38,.45)}
+.stop .av{width:32px;height:32px;font-size:16px;flex:none}
+.stop>div{flex:1;min-width:0}
+.stop b{display:block;font:700 14px/1.25 var(--f-d);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.stop span{display:block;font:500 12px/1.3 var(--f-b);opacity:.92;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.stop .badge{vertical-align:1px}
+.lt .stop{color:var(--ink);text-shadow:none}
+.sico{width:40px;height:40px;display:flex;align-items:center;justify-content:center;border-radius:50%;color:inherit;flex:none}
+/* the bar under the frame: everything you can do, nothing on the media */
+.sbar{flex:none;display:flex;flex-direction:column;gap:8px;padding:10px 4px 8px;color:#fff}
+.schips{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin:0 -4px;padding:0 4px}
+.schips::-webkit-scrollbar{display:none}
+.schips .chip{min-height:30px;font-size:12.5px;background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.14);color:#fff}
+.schips .chip.same.on{background:rgba(198,255,61,.18);border-color:rgba(198,255,61,.45)}
+.schips .chip.brand{background:rgba(124,58,237,.35);border-color:rgba(183,148,255,.5)}
+.schips .chip.reach{background:linear-gradient(90deg,rgba(198,255,61,.35) var(--p,0%),rgba(255,255,255,.1) var(--p,0%));border-color:rgba(198,255,61,.45);color:#fff}
+.schips .chip.reach.new{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.14)}
+.sact{display:flex;align-items:center;gap:6px;height:var(--bar)}
+.sreply{flex:1;min-width:0;height:46px;display:flex;align-items:center;gap:8px;padding:0 14px 0 8px;border-radius:99px;border:1px solid rgba(255,255,255,.3);color:#fff;font:600 13.5px/1 var(--f-b);white-space:nowrap;overflow:hidden}
+.sreply>svg{margin-left:6px}
+.sreply .avs{display:flex}.sreply .avs .av{width:26px;height:26px;font-size:13px;margin-left:-8px;box-shadow:0 0 0 2px #0d0d14}.sreply .avs .av:first-child{margin-left:0}
+.sbar .rb{flex-direction:row;width:auto;min-width:48px;height:46px;gap:2px;padding:0 6px 0 2px;color:#fff;text-shadow:none;font:700 13px/1 var(--f-n)}
+.sbar .rb .o{width:36px;height:36px;background:none;box-shadow:none;color:#fff}
+.sbar .rb .o svg.i{width:25px;height:25px}
+.sbar .rb small{display:none}
+.sbar .rb.on .o{background:none;box-shadow:none;color:#ff8a3d}
+.sbar .rb.same.on .o{background:none;box-shadow:none;color:#c6ff3d}
+/* the daily question fills the frame (no bar) */
+.scr.imm.story .pqb{padding:20px 20px 24px}
 </style>
 </head>
 <body>
@@ -1057,7 +1106,21 @@ function whoHTML(p,al){
  return `<div class="who">${avHTML(a)}<div><b>${a.n}${p.by==='me'?'<span class="badge">คุณ</span>':''}</b><span>${esc(p.showId||'นักศึกษาจุฬาฯ')} · ${ago(p.at)} · ${seenBtn(p,'short')}</span></div></div>
  ${pl||p.prompt||p.same||underGuar(p)?`<div style="display:flex;gap:6px;flex-wrap:wrap">${reachChip(p)}${sameChip(p)}${pl?`<button class="chip" data-act="openPlace" data-arg="${pl.id}">${I('pin','xs')} ${esc(pl.n)}</button>`:''}${p.prompt?`<button class="chip brand" data-act="openPrompt">${PROMPT.e} คำถามวันนี้</button>`:''}</div>`:''}`;
 }
+function storyChips(p){const pl=p.place&&place(p.place);
+ const c=reachChip(p)+sameChip(p)+(pl?`<button class="chip" data-act="openPlace" data-arg="${pl.id}">${I('pin','xs')} ${esc(pl.n)}</button>`:'')+(p.prompt?`<button class="chip brand" data-act="openPrompt">${PROMPT.e} คำถามวันนี้</button>`:'');
+ return c?`<div class="schips">${c}</div>`:''}
+/* v2.4 · Story-style slide: author on the media, actions in a bar below it */
 function slideHTML(p){
+ const al=aliasMap(p), a=idOf(p,al), n=p.replies.length, u=unseenOf(p).length;
+ const avs=[...new Map(p.replies.map(r=>[r.by,r])).values()].slice(0,3).map(r=>avHTML(idOf(r,al),'sm')).join('');
+ return `<section class="slide ${p.kind==='voice'?'lt':''}" data-pid="${p.id}"><div class="card">${frameHTML(p)}
+  <div class="stop">${avHTML(a)}<div><b>${a.n}${p.by==='me'?'<span class="badge">คุณ</span>':''}</b><span>${esc(p.showId||'นักศึกษาจุฬาฯ')} · ${ago(p.at)} · ${seenBtn(p,'short')}</span></div><button class="sico" data-act="more" data-arg="${p.id}" aria-label="เพิ่มเติม">${I('more')}</button></div></div>
+  <div class="sbar">${storyChips(p)}<div class="sact">
+   <button class="sreply" data-act="openStack" data-arg="${p.id}">${n?`<span class="avs">${avs}</span>${n} คอมเมนต์${u?` <span class="newb">ใหม่ ${u}</span>`:''}`:`${I('mic','sm')} คอมเมนต์คนแรกเลย…`}</button>
+   ${sameBtn(p)}<button class="rb ${p.ated?'on':''}" data-act="ate" data-arg="${p.id}" aria-label="ATE"><span class="o">${I(p.ated?'flameF':'flame')}</span>${nf(p.ate)}</button>
+  </div></div></section>`;
+}
+function slideHTML_v23(p){
  const al=aliasMap(p), n=p.replies.length;
  const avs=[...new Map(p.replies.map(r=>[r.by,r])).values()].slice(0,3).map(r=>avHTML(idOf(r,al),'sm')).join('');
  return `<section class="slide ${p.kind==='voice'?'lt':''}" data-pid="${p.id}"><div class="card">${frameHTML(p)}
@@ -1087,7 +1150,7 @@ function renderHome(keep){
  if(S.view==='bubble'){app.innerHTML=`<div class="scr">${hdrHTML()}<div class="pg">${bubbleHTML()}</div>${tabbarHTML()}</div>`;return}
  if(LAYOUT==='feed'){renderFeedB(prevTop);return}
  const done=iAnswered(), list=feedList();
- app.innerHTML=`<div class="scr imm ${list[0]&&list[0].kind==='voice'?'lit':''}"><div id="feed">${withPQ(list.map(slideHTML))}</div>
+ app.innerHTML=`<div class="scr imm story ${list[0]&&list[0].kind==='voice'?'lit':''}"><div id="feed">${withPQ(list.map(slideHTML))}</div>
   <div class="chrome">${hdrHTML()}</div>
   ${tabbarHTML()}</div>`;
  const f=$('#feed'); f.scrollTop=prevTop; bindFeed(f); bindPQ(f);
