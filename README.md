@@ -4,13 +4,17 @@ Clickable prototypes of EIGHT TEEN, a verified, campus-only social app for Thai 
 
 **Link for testers:** https://jvrn-labs.github.io/eight-teen-prototype/
 
-This link always opens the current test build. Right now that's **v2.2**. The older link testers already have, `/v2.1/`, also opens the current build.
+This link always opens the current test build. Right now that's **v2.3 A**. The older links testers already have, `/v2.1/` and `/v2.2/`, also open the current build.
+
+**A/B test (from 27 Nov 2026):** v2.3 A and v2.3 B are the same app with a different home feed. Give testers either the root link (A) or the B link; each version keeps its own saved data.
 
 ## Versions
 
 | Version | Link | What it is |
 | --- | --- | --- |
-| **v2.2** (current) | [/v2.2/](https://jvrn-labs.github.io/eight-teen-prototype/v2.2/) | User-testing round 1 fixes: speech-bubble comments, photo + voice, name or anonymous, one-tap poll and GIF answers, "same here" with faculty/year breakdown |
+| **v2.3 A** (current) | [/v2.3a/](https://jvrn-labs.github.io/eight-teen-prototype/v2.3a/) | Full-bleed feed (one post per screen) + photo filters, frames and emoji stickers |
+| **v2.3 B** | [/v2.3b/](https://jvrn-labs.github.io/eight-teen-prototype/v2.3b/) | Facebook-style card feed with text + voice posts first, plus the same photo filters and decorations |
+| v2.2 | [/archive/v2.2/](https://jvrn-labs.github.io/eight-teen-prototype/archive/v2.2/) | User-testing round 1 fixes: speech-bubble comments, photo + voice, name or anonymous, one-tap poll and GIF answers, "same here" with faculty/year breakdown |
 | v2.1 | [/archive/v2.1/](https://jvrn-labs.github.io/eight-teen-prototype/archive/v2.1/) | Stoic-style daily ritual, full-bleed feed, comment highlights |
 | v2 | [/v2/](https://jvrn-labs.github.io/eight-teen-prototype/v2/) | Media pivot: voice, photo and GIF posts, anonymous-first |
 | v1 | [/archive/v1/](https://jvrn-labs.github.io/eight-teen-prototype/archive/v1/) | MVP 1 (PRD v1.3, design v1.7): text-first campus feed, installable app |
@@ -18,8 +22,9 @@ This link always opens the current test build. Right now that's **v2.2**. The ol
 ## How versions work
 
 - **Testers get one link: the root.** `index.html` at the root redirects to the current build. To switch builds, change `CURRENT` (and the `<noscript>` line) in `index.html`.
-- **The current build has its own folder** (now `v2.2/`) with its own saved data on the phone.
-- **A link that testers already have keeps working.** When a version is replaced, its build moves into `archive/` and its old folder becomes a small redirect to the root, so it follows the current build too. `v2.1/` works this way. When moving a build into `archive/`, change its `../img/` and `../icons/` paths to `../../img/` and `../../icons/`.
+- **The current build has its own folder** (now `v2.3a/` and `v2.3b/`) with its own saved data on the phone.
+- **A and B share the same code.** Near the top of each `index.html`, `const LAYOUT` is `'full'` in A and `'feed'` in B, and the storage key differs. Apply a bug fix to both folders.
+- **A link that testers already have keeps working.** When a version is replaced, its build moves into `archive/` and its old folder becomes a small redirect to the root, so it follows the current build too. `v2.1/` and `v2.2/` work this way. When moving a build into `archive/`, change its `../img/` and `../icons/` paths to `../../img/` and `../../icons/`.
 - **Small fixes go into the current folder. A new idea to test gets a new folder** (copy the folder, bump the version in the title, footer and storage key), so results from one test round always match one build.
 - **Shared files** live at the root and are used by every version: `img/` (sample photos and GIFs), `icons/`, `brand/`.
 - **`sw.js` at the root is retired.** It clears the offline cache from when v1 was installed at the root. Keep it for a few weeks after 27 Nov 2026, then delete it.
