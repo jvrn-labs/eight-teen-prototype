@@ -758,6 +758,26 @@ button.popt:active{transform:scale(.97)}
 .popc{position:relative;width:100%;max-width:360px;max-height:86%;overflow:auto;background:var(--canvas);border-radius:24px;padding:20px;box-shadow:0 20px 60px rgba(11,16,38,.35);animation:popin 220ms var(--ease-out)}
 @keyframes popin{from{opacity:0;transform:scale(.96)}}
 @media (prefers-reduced-motion:reduce){.popc,.pbd{animation:none}}
+
+/* ================= v2.4 · daily question as a post in the feed ================= */
+.pqh{position:relative;font-size:19px}
+.pqh .pdot{position:absolute;top:7px;right:7px;width:9px;height:9px;border-radius:50%;background:#ff4d6d;box-shadow:0 0 0 2px #fff}
+.slide.pq .card{background:linear-gradient(165deg,#efe6ff 0%,#f6f1ff 55%,#f3ffd6 100%);color:var(--ink)}
+.pqb{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:calc(var(--st) + 104px) 22px calc(var(--tb) + var(--sb) + 18px);overflow:auto}
+.pqk{font:800 12px/1.3 var(--f-n);letter-spacing:.05em;color:var(--brand)}
+.pqe{font-size:46px;line-height:1;margin:12px 0 6px}
+.pqq{font:800 24px/1.3 var(--f-d);margin:0 0 4px}
+.pqb .poll,.pqc .poll{margin-top:14px;text-align:left}
+.pqb .proof,.pqc .proof{margin-top:14px}
+.pqa{display:flex;gap:8px;width:100%;margin-top:14px}
+.pqa .btn{flex:1;min-height:46px;font-size:14px}
+.pqskip{margin-top:12px;font:600 12.5px/1.3 var(--f-b);color:var(--muted)}
+.fbc.pqc{background:linear-gradient(165deg,#efe6ff,#f3ffd6);padding:18px 16px 16px;text-align:center}
+.fbc.pqc .pqe{font-size:38px;margin:8px 0 4px}
+.fbc.pqc .pqq{font-size:20px}
+.pq-in{animation:pqIn 420ms var(--ease-out)}
+@keyframes pqIn{from{opacity:0;transform:translateY(16px) scale(.98)}}
+@media (prefers-reduced-motion:reduce){.pq-in{animation:none}}
 </style>
 </head>
 <body>
@@ -956,6 +976,7 @@ function seedNotifs(){const n=Date.now();return[
 const LAYOUT='full'; /* 'full' = A (full-bleed), 'feed' = B (card feed) */
 const KEY='et18v24a', SEEDV=1;
 let S=load(); S.visit=S.visit||{};
+{const d=new Date().toDateString();if(!S.pq||S.pq.day!==d)S.pq={day:d,skips:0,opened:false}}
 function fresh(){return{v:SEEDV,posts:seedSame(seedLayout(seed())),notifs:seedNotifs(),sound:false,rate:1,filter:'mask',showId:false,onb:false,ob:{step:'welcome',slide:0,terms:false},me:{email:'',fac:null,year:null,dob:{d:'',m:'',y:''},prof:{name:'',img:null}},notifOn:true,visit:{p8:Date.now()-47*60000},vote:null,cc:true,replyAs:'anon',sub:null,tab:'home',view:'uni',sort:'hot',seenPlaces:[],log:[],t0:Date.now()}}
 function load(){try{const s=JSON.parse(localStorage.getItem(KEY));if(s&&s.v===SEEDV)return s}catch(e){}return fresh()}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
@@ -1050,7 +1071,7 @@ function slideHTML(p){
   </div></div></section>`;
 }
 function hdrHTML(){
- return `<div class="hdr"><div class="hdr-row"><div class="uni">จุฬาฯ ${VERIFIED}</div><button class="iconbtn" data-act="sound" aria-label="เสียง">${I(S.sound?'volOn':'volOff')}</button></div>
+ return `<div class="hdr"><div class="hdr-row"><div class="uni">จุฬาฯ ${VERIFIED}</div><div style="display:flex;gap:8px"><button class="iconbtn pqh" data-act="promptHub" aria-label="คำถามวันนี้">${PROMPT.e}${iAnswered()?'':'<span class="pdot"></span>'}</button><button class="iconbtn" data-act="sound" aria-label="เสียง">${I(S.sound?'volOn':'volOff')}</button></div></div>
   <div class="feedtabs"><button class="feedtab ${S.view==='uni'?'on':''}" data-act="view" data-arg="uni">มหาลัย</button><button class="feedtab ${S.view==='bubble'?'on':''}" data-act="view" data-arg="bubble">บับเบิล</button>
   ${S.view==='uni'?`<div class="seg"><button class="${S.sort==='hot'?'on':''}" data-act="sort" data-arg="hot">มาแรง</button><button class="${S.sort==='new'?'on':''}" data-act="sort" data-arg="new">ล่าสุด</button></div>`:''}</div></div>`;
 }
@@ -1066,11 +1087,10 @@ function renderHome(keep){
  if(S.view==='bubble'){app.innerHTML=`<div class="scr">${hdrHTML()}<div class="pg">${bubbleHTML()}</div>${tabbarHTML()}</div>`;return}
  if(LAYOUT==='feed'){renderFeedB(prevTop);return}
  const done=iAnswered(), list=feedList();
- app.innerHTML=`<div class="scr imm ${list[0]&&list[0].kind==='voice'?'lit':''}"><div id="feed">${list.map(slideHTML).join('')}</div>
-  <div class="chrome">${hdrHTML()}
-  ${`<button class="pstrip ${done?'done':''}" data-act="openPrompt"><span class="e">${PROMPT.e}</span><span class="t"><small>คำถามวันนี้ · ตอบแล้ว ${promptCount()}${done?' · รวมคุณ':''}</small><b>${esc(PROMPT.q)}</b></span><span class="go" data-act="${done?'openPrompt':'openPromptCompose'}">${done?'ดูคำตอบ':'ตอบ'}</span></button>`}</div>
+ app.innerHTML=`<div class="scr imm ${list[0]&&list[0].kind==='voice'?'lit':''}"><div id="feed">${withPQ(list.map(slideHTML))}</div>
+  <div class="chrome">${hdrHTML()}</div>
   ${tabbarHTML()}</div>`;
- const f=$('#feed'); f.scrollTop=prevTop; bindFeed(f);
+ const f=$('#feed'); f.scrollTop=prevTop; bindFeed(f); bindPQ(f);
 }
 function bubbleHTML(){
  const cnt=id=>S.posts.filter(p=>p.place===id).length;
@@ -1185,13 +1205,13 @@ function applyAudioPrefs(){
 let io=null;
 function bindFeed(f){
  io&&io.disconnect();
- io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting&&e.intersectionRatio>.6){const sc=f.closest('.scr');sc&&sc.classList.toggle('lit',e.target.classList.contains('lt'))}if(e.isIntersecting&&e.intersectionRatio>.6&&!$('.sv')&&!$('.cmp')&&!$('.rit')){const fr=e.target.querySelector('.fr');if(!active||active.root!==fr)activate(fr,{loop:true})}})},{root:f,threshold:[.6]});
+ io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting&&e.intersectionRatio>.6){const sc=f.closest('.scr');sc&&sc.classList.toggle('lit',e.target.classList.contains('lt'))}if(e.isIntersecting&&e.intersectionRatio>.6&&!$('.sv')&&!$('.cmp')&&!$('.rit')){const fr=e.target.querySelector('.fr');if(!fr){stopActive();return}if(!active||active.root!==fr)activate(fr,{loop:true})}})},{root:f,threshold:[.6]});
  $$('.slide',f).forEach(s=>io.observe(s));
  let sx=0,sy=0,st=0,lastTap=0,tapT=0;
  f.addEventListener('pointerdown',e=>{sx=e.clientX;sy=e.clientY;st=Date.now()});
  f.addEventListener('pointerup',e=>{
   if(e.target.closest('button'))return;
-  const dx=e.clientX-sx,dy=e.clientY-sy,sl=e.target.closest('.slide');if(!sl)return;
+  const dx=e.clientX-sx,dy=e.clientY-sy,sl=e.target.closest('.slide');if(!sl||sl.classList.contains('pq'))return;
   if(dx<-60&&Math.abs(dx)>Math.abs(dy)*1.4){openStack(sl.dataset.pid);return}
   if(Math.abs(dx)<10&&Math.abs(dy)<10&&Date.now()-st<300){
    const now=Date.now();
@@ -1263,6 +1283,51 @@ function reachTick(){let gone=false;
    else toast('📣 โพสต์ของคุณถึง 300 คนแรกแล้ว',{label:'ดู',fn:()=>openSeenSheet(p.id)})}});
  if(gone&&S.tab==='notif'&&!SV&&!C&&!R)render(true)}
 setInterval(reachTick,1200);
+
+/* ============ v2.4 · daily question as a post in the feed ============
+   Shown as the 4th item in the feed (after 3 posts), never floating over content.
+   Return logic (per day):
+   - answered or voted              → never returns (stays in place this session, showing results)
+   - swiped past, no action (≥1 s)  → returns once, 6 posts later, with social proof first
+   - skipped twice                  → gone for the day (⏰ in the header still opens it)
+   - opened but closed unanswered   → returns once as "ตอบต่อไหม?"                              */
+const PQ_AT=3, PQ_BACK=6, PQ_MIN_MS=1000;
+const PQS={keep:false,again:false};   /* session-only */
+function pqVariant(){if(iAnswered())return 'done';if(S.pq.opened)return 'resume';if(S.pq.skips>=1)return 'again';return 'first'}
+const pqShow=()=>PQS.keep||(!iAnswered()&&S.pq.skips<2);
+function pqInner(v){
+ const avs=[['🦊','#ffd2b3'],['🐙','#c9f2ea'],['🦉','#ffd3e7']].map(a=>avHTML({e:a[0],c:a[1]})).join('');
+ const proof=`<div class="proof"><span class="avs">${avs}</span>ตอบแล้ว ${promptCount()} คน${S.me.fac?` · ${esc(S.me.fac)} ${12+hash(S.me.fac)%30} คน`:''}</div>`;
+ const kick=v==='again'?'ยังไม่ได้ตอบนะ 👀':v==='resume'?'ตอบต่อไหม? ✍️':v==='done'?'ตอบแล้ว ✓ · คำถามวันนี้':`คำถามวันนี้ · ${thaiDate()}`;
+ let poll;
+ if(S.vote){const tot=PROMPT.poll.reduce((a,o)=>a+o[3],0)+1;
+  poll=`<div class="poll res">${PROMPT.poll.map(o=>{const n=o[3]+(S.vote===o[0]?1:0),pc=Math.round(n/tot*100);return `<div class="popt ${S.vote===o[0]?'mine':''}" style="--s:${(pc/100).toFixed(3)}"><i class="bar"></i><span class="pe">${o[1]}</span><span>${esc(o[2])}${S.vote===o[0]?' <em>· คุณ</em>':''}</span><span class="pc">${pc}%</span></div>`}).join('')}</div>`}
+ else poll=`<div class="poll">${PROMPT.poll.map(o=>`<button class="popt" data-act="pqVote" data-arg="${o[0]}"><span class="pe">${o[1]}</span><span>${esc(o[2])}</span></button>`).join('')}</div>`;
+ const posted=S.posts.some(p=>p.by==='me'&&p.prompt);
+ const acts=v==='done'?`<div class="pqa"><button class="btn soft" data-act="pqPeek">ดูคำตอบคนอื่น</button>${posted?'':`<button class="btn primary" data-act="pqAnswer">ตอบเอง ✍️</button>`}</div>`
+  :`<div class="pqa"><button class="btn primary" data-act="pqAnswer">${v==='resume'?'ตอบต่อ':'ตอบเอง ✍️'}</button><button class="btn soft" data-act="pqPeek">ดูคำตอบ</button></div>`;
+ /* the second time, lead with who already answered: the question alone did not work */
+ return `<div class="pqk">${kick}</div><div class="pqe">${PROMPT.e}</div><h2 class="pqq">${esc(PROMPT.q)}</h2>${v==='again'?proof+poll:poll+proof}${acts}${v==='first'&&LAYOUT==='full'?'<div class="pqskip">ไม่อยากตอบ? ปัดผ่านไปได้เลย</div>':''}`}
+function pqHTML(v,extra=''){return LAYOUT==='feed'
+ ?`<article class="fbc pqc ${extra}" data-pq="${v}">${pqInner(v)}</article>`
+ :`<section class="slide pq lt ${extra}" data-pq="${v}"><div class="card"><div class="pqb">${pqInner(v)}</div></div></section>`}
+function withPQ(items){if(!pqShow())return items.join('');const a=[...items];a.splice(Math.min(PQ_AT,a.length),0,pqHTML(pqVariant()));return a.join('')}
+function pqRefresh(){$$('[data-pq]').forEach(el=>{const v=pqVariant();el.dataset.pq=v;const box=LAYOUT==='feed'?el:$('.pqb',el);box.innerHTML=pqInner(v)})}
+let pio=null;
+function bindPQ(f){pio&&pio.disconnect();
+ pio=new IntersectionObserver(es=>es.forEach(e=>{const el=e.target;
+  if(e.isIntersecting&&e.intersectionRatio>=.6){if(!el._t0){el._t0=Date.now();log('prompt_card_shown',{variant:el.dataset.pq})}return}
+  if(!el._t0)return;const ms=Date.now()-el._t0;el._t0=0;
+  if(el._acted||PQS.keep||iAnswered()||ms<PQ_MIN_MS)return;
+  S.pq.skips++;save();log('prompt_card_skipped',{variant:el.dataset.pq,skips:S.pq.skips,ms});
+  $$('.pqh').forEach(b=>b.classList.toggle('skipped',true));
+  if(S.pq.skips===1&&!PQS.again){PQS.again=true;
+   const sel=LAYOUT==='feed'?'.fbc':'.slide';let n=el,k=0;while(n.nextElementSibling&&k<PQ_BACK){n=n.nextElementSibling;if(n.matches(sel))k++}
+   if(k<PQ_BACK)return;
+   const t=document.createElement('div');t.innerHTML=pqHTML('again','pq-in');const c=t.firstElementChild;n.after(c);pio.observe(c);if(io&&LAYOUT==='full')io.observe(c)}
+ }),{root:f,threshold:[0,.6]});
+ $$('[data-pq]',f).forEach(el=>pio.observe(el))}
+function pqActed(e,p){PQS.keep=true;$$('[data-pq]').forEach(el=>el._acted=true);log(e,Object.assign({variant:pqVariant()},p||{}))}
 /* ============ same here: "this is me too" — anonymous, counted by faculty + year ============ */
 const MIN_K=5;
 const facBoost=p=>S.me&&S.me.fac&&((p.sf||{})[S.me.fac]||0)>=MIN_K?1.25:1;
@@ -1328,8 +1393,8 @@ function renderFeedB(prevTop){
  const done=iAnswered(), list=feedList(), mp=myProf();
  const ps=`<button class="pstrip ${done?'done':''}" data-act="openPrompt"><span class="e">${PROMPT.e}</span><span class="t"><small>คำถามวันนี้ · ตอบแล้ว ${promptCount()}${done?' · รวมคุณ':''}</small><b>${esc(PROMPT.q)}</b></span><span class="go" data-act="${done?'openPrompt':'openPromptCompose'}">${done?'ดูคำตอบ':'ตอบ'}</span></button>`;
  const nw=`<div class="fbnew">${mp?avHTML(mp):'<span class="av" style="background:#e4d6ff">🎭</span>'}<button class="fbin" data-act="composeText">คิดอะไรอยู่? พิมพ์หรือพูดก็ได้</button><button class="iconbtn" data-act="composeVoice" aria-label="โพสต์เสียง">${I('mic','sm')}</button><button class="iconbtn" data-act="compose" aria-label="โพสต์รูป">${I('img','sm')}</button></div>`;
- app.innerHTML=`<div class="scr fbs">${hdrHTML()}<div class="pg" id="feed">${ps}${nw}${list.map(cardHTML).join('')}<div class="fbend">ดูครบแล้ว · ลองตอบคำถามวันนี้ดูไหม</div></div>${tabbarHTML()}</div>`;
- $('#feed').scrollTop=prevTop;
+ app.innerHTML=`<div class="scr fbs">${hdrHTML()}<div class="pg" id="feed">${nw}${withPQ(list.map(cardHTML))}<div class="fbend">ดูครบแล้ว · ลองตอบคำถามวันนี้ดูไหม</div></div>${tabbarHTML()}</div>`;
+ $('#feed').scrollTop=prevTop; bindPQ($('#feed'));
 }
 function fbPlayer(p,v,main){const bg=main&&p.kind==='voice'?BG[p.bg||0].bg:'';
  return `<div class="fbp" ${bg?`style="background:${bg}"`:''}><button class="fbpb" data-act="fbPlay" data-arg="${p.id}" aria-label="เล่นเสียง">${I('play','sm')}</button><div class="fbw"><div class="wave">${waveHTML(v.src||p.id)}</div><i class="prog"></i></div><span class="tm">${mmss(Math.round(v.dur||0))}</span><span class="fbfx">${fx(v.filter).e}</span><audio preload="none" playsinline src="${v.src}"></audio></div>
@@ -1980,6 +2045,11 @@ async function previewFx(id){
 /* ============ actions ============ */
 const A={
  seenSheet(pid){openSeenSheet(pid)},
+ pqVote(id){pqActed('prompt_vote',{option:id,from:'feed',first_action:!S.log.some(l=>l.e==='post_created'||l.e==='reply_created'||l.e==='same_here')});S.vote=id;save();pqRefresh();
+  $$('.pqh .pdot').forEach(d=>d.remove());toast('โหวตแล้ว แบบไม่ระบุตัวตน 🎭',{label:'ตอบเอง',fn:()=>A.pqAnswer()})},
+ pqAnswer(){S.pq.opened=true;save();pqActed('prompt_card_answer');openRitual('how')},
+ pqPeek(){pqActed('prompt_card_peek');A.openPrompt()},
+ promptHub(){log('prompt_header_opened',{answered:iAnswered()});if(iAnswered())A.openPrompt();else{S.pq.opened=true;save();openRitual()}},
  reachInfo(){reachInfo()},
  closePop(){$$('.popw').forEach(w=>w.remove())},
  survey(k){log('reach_survey',{answer:k});closeSheet();toast(k==='none'?'ขอบคุณ 💜 แปลว่าที่นี่ทำให้คุณกล้าพูด':'ขอบคุณที่ตอบ 💜')},
