@@ -980,6 +980,21 @@ button.popt:active{transform:scale(.97)}
 .rto span{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .rto button{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--canvas)}
 .sv.pd .rto+.rbar{border-top:0}
+
+/* ================= v2.4 · text + voice comment bar ================= */
+.rbar.cbar{gap:8px;align-items:flex-end;padding-top:10px}
+.cbar .asbtn{margin-bottom:1px}
+.cin{flex:1;min-width:0;display:flex;align-items:flex-end;gap:0;border:1.5px solid var(--border);border-radius:24px;padding:3px 3px 3px 14px;background:var(--canvas);transition:border-color 160ms ease}
+.cin:focus-within{border-color:var(--brand)}
+.cin textarea{flex:1;min-width:0;height:40px;border:0;outline:0;resize:none;font:500 16px/1.4 var(--f-b);padding:9px 0;max-height:110px;background:none;color:var(--ink)}
+.cin textarea::placeholder{color:var(--tert,#8a8fa3)}
+.cin button{width:38px;height:38px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;color:var(--ink2);font:800 12px/1 var(--f-n)}
+.cin button:active{background:var(--surface)}
+.cmic,.csend{width:48px;height:48px;border-radius:50%;background:var(--brand);color:#fff;flex:none;display:flex;align-items:center;justify-content:center;box-shadow:3px 3px 0 var(--lime);position:relative;touch-action:none;transition:transform var(--press)}
+.cmic:active,.csend:active{transform:scale(.94)}
+.cmic .fx{position:absolute;right:-5px;top:-7px;width:24px;height:24px;border-radius:50%;background:#fff;box-shadow:0 1px 4px rgba(11,16,38,.25);font-size:13px;display:flex;align-items:center;justify-content:center}
+.cmic[hidden],.csend[hidden]{display:none}
+.ctxt{margin:3px 0 0;font:500 15px/1.5 var(--f-b);color:var(--ink);white-space:pre-wrap;word-break:break-word}
 </style>
 </head>
 <body>
@@ -2520,7 +2535,7 @@ function cVoice(id,src,dur,filter,text){return `<div class="cvoice"><button clas
 function cmtRows2(p){const v=S.visit[p.id],list=SV.lsort==='top'?rankReplies(p):chrono(p);
  return list.map(r=>{const a=userAv(r.by),st=(r.stickers||[]).filter(x=>x.t==='text').map(x=>x.s).join(' · '),isNew=!!v&&r.by!=='me'&&r.at>v;if(r.by!=='me')SV.viewed.add(r.id);
   let body;
-  if(r.kind==='voice')body=cVoice(r.id,srcOf(r),r.dur,r.filter,r.text);
+  if(r.kind==='text')body=`<p class="ctxt">${esc(r.text)}</p>`;else if(r.kind==='voice')body=cVoice(r.id,srcOf(r),r.dur,r.filter,r.text);
   else{body=`<button class="cmed ${r.kind}" data-act="cView" data-arg="${r.id}" aria-label="ดูรูป"><img src="${srcOf(r)}" alt="" loading="lazy">${st?`<span class="cst">${esc(st)}</span>`:''}</button>`;if(r.voice)body+=cVoice(r.id+'v',vsrc(r.voice),r.voice.dur,r.voice.filter,r.voice.text)}
   return `<div class="crow2" data-rid="${r.id}"><button class="cav" data-act="profile" data-arg="${r.by}" aria-label="โปรไฟล์ ${a.n}">${avHTML(a)}</button><div class="t"><div class="cn"><button data-act="profile" data-arg="${r.by}">${a.n}</button>${r.by===p.by?'<span class="badge">เจ้าของโพสต์</span>':''}${r.by==='me'?'<span class="badge">คุณ</span>':''}${isNew?'<span class="newb">ใหม่</span>':''}<span class="ct">${ago(r.at)}</span></div>${body}</div>
    <button class="cate ${r.ated?'on':''}" data-act="ate" data-arg="${p.id}|${r.id}" aria-label="ATE"><span class="o">${I(r.ated?'flameF':'flame')}</span>${nf(r.ate)}</button></div>`}).join('')}
@@ -2536,18 +2551,19 @@ function renderPostDetail(){
   <div class="pd-acts">${ateBtn(p)}<button class="rb" data-act="pdComments" aria-label="คอมเมนต์"><span class="o">${I('bubble')}</span>${n}</button>${shareBtn(p)}</div>
   ${chips?`<div class="pd-chips">${chips}</div>`:''}
   <div class="pd-ch" id="pdc"><h2 class="h2">คอมเมนต์ ${n}</h2>${n>1?`<div class="seg"><button class="${SV.lsort==='old'?'on':''}" data-act="cmtSort" data-arg="old">ตามเวลา</button><button class="${SV.lsort==='top'?'on':''}" data-act="cmtSort" data-arg="top">เด่น</button></div>`:''}</div>
-  <div class="clist2">${n?cmtRows2(p):`<div class="empty" style="margin:6px 8px">ยังไม่มีคอมเมนต์ · กดค้างปุ่มด้านล่างเพื่อพูด หรือส่งรูปหรือ GIF ก็ได้</div>`}</div>
+  <div class="clist2">${n?cmtRows2(p):`<div class="empty" style="margin:6px 8px">ยังไม่มีคอมเมนต์ · พิมพ์ กดค้างไมค์เพื่อพูด หรือส่งรูปหรือ GIF ก็ได้</div>`}</div>
  </div>
- ${SV.replyTo?`<div class="rto"><span>ตอบกลับ <b>@${userAv(SV.replyTo.by).n}</b> · พูด ส่งรูป หรือ GIF</span><button data-act="cancelReplyTo" aria-label="ยกเลิกการตอบกลับ">${I('x','sm')}</button></div>`:''}
- <div class="rbar"><span class="asbtn" aria-hidden="true">${avHTML(userAv('me'))}</span><button class="iconbtn" style="width:46px;height:46px" data-act="replyPhoto" aria-label="คอมเมนต์ด้วยรูป">${I('cam')}</button><button class="iconbtn" style="width:46px;height:46px;font:800 13px/1 var(--f-n)" data-act="replyGif">GIF</button>
-  <div class="talk" id="talk"><span class="lbl">${I('mic')} กดค้างพูด</span><button class="fx" data-act="pickFx" aria-label="ฟิลเตอร์เสียง ${f.n}">${f.e}</button></div></div>`;
+ ${SV.replyTo?`<div class="rto"><span>ตอบกลับ <b>@${userAv(SV.replyTo.by).n}</b> · พิมพ์ พูด ส่งรูป หรือ GIF</span><button data-act="cancelReplyTo" aria-label="ยกเลิกการตอบกลับ">${I('x','sm')}</button></div>`:''}
+ <div class="rbar cbar"><span class="asbtn" aria-hidden="true">${avHTML(userAv('me'))}</span>
+  <div class="cin"><textarea id="ctx" rows="1" maxlength="500" placeholder="${SV.replyTo?`ตอบกลับ @${userAv(SV.replyTo.by).n}…`:'เขียนคอมเมนต์…'}" aria-label="เขียนคอมเมนต์"></textarea><button data-act="replyGif" aria-label="คอมเมนต์ด้วย GIF">GIF</button><button data-act="replyPhoto" aria-label="คอมเมนต์ด้วยรูป">${I('cam','sm')}</button></div>
+  <button class="cmic" id="talk" aria-label="กดค้างเพื่อพูด">${I('mic')}<span class="fx" data-act="pickFx" aria-label="ฟิลเตอร์เสียง ${f.n}">${f.e}</span></button><button class="csend" data-act="sendText" aria-label="ส่งคอมเมนต์" hidden>${I('send')}</button></div>`;
  const body=$('.pd-body',el),fr=$('.pd-media .fr',el);
  if(fr&&(p.kind==='voice'||p.voice))activate(fr,{loop:true});
  if(grew){if(y!=null)body.scrollTop=y;const mine=[...p.replies].reverse().find(r=>r.by==='me'&&Date.now()-r.at<4000);if(mine)requestAnimationFrame(()=>focusRow(mine.id));else{body.scrollTop=body.scrollHeight}}
  else if(y!=null)body.scrollTop=y;
  else if(SV.start==null&&n)requestAnimationFrame(()=>{const c=$('#pdc',el);if(c)body.scrollTop=c.offsetTop-body.offsetTop-4});
  else if(SV.start>0)requestAnimationFrame(()=>{body.scrollTop=body.scrollHeight});
- SV.lastN=n;const talk=$('#talk',el);talk&&bindTalk(talk)}
+ SV.lastN=n;const talk=$('#talk',el);talk&&bindTalk(talk);bindCbar(el)}
 function cView(rid){const p=SV&&postById(SV.pid),r=p&&p.replies.find(x=>x.id===rid);if(!r)return;const a=userAv(r.by);
  const el=pushPage(`<div class="pvh"><button class="iconbtn" data-act="back" aria-label="กลับ">${I('back')}</button><b>${a.n}</b><span style="width:44px"></span></div><div class="lbc">${frameHTML(r)}</div>`,'lbx');
  const fr=$('.fr',el);if(r.voice)activate(fr,{loop:true})}
@@ -2690,7 +2706,7 @@ const kidsOf=(p,id)=>p.replies.filter(r=>r.to===id).sort((a,b)=>a.at-b.at);
 function replyTarget(pid){if(!SV||SV.mode!=='replies'||SV.pid!==pid||!SV.replyTo)return null;const t=SV.replyTo;SV.replyTo=null;SV.exp=SV.exp||new Set();SV.exp.add(t.root);return t}
 function cRow(p,r,sub){const a=userAv(r.by),v=S.visit[p.id],st=(r.stickers||[]).filter(x=>x.t==='text').map(x=>x.s).join(' · '),isNew=!!v&&r.by!=='me'&&r.at>v;if(r.by!=='me')SV.viewed.add(r.id);
  let body;
- if(r.kind==='voice')body=cVoice(r.id,srcOf(r),r.dur,r.filter,r.text);
+ if(r.kind==='text')body=`<p class="ctxt">${esc(r.text)}</p>`;else if(r.kind==='voice')body=cVoice(r.id,srcOf(r),r.dur,r.filter,r.text);
  else{body=`<button class="cmed ${r.kind}" data-act="cView" data-arg="${r.id}" aria-label="ดูรูป"><img src="${srcOf(r)}" alt="" loading="lazy">${st?`<span class="cst">${esc(st)}</span>`:''}</button>`;if(r.voice)body+=cVoice(r.id+'v',vsrc(r.voice),r.voice.dur,r.voice.filter,r.voice.text)}
  const tag=r.toBy?`<button class="ctag" data-act="profile" data-arg="${r.toBy}">@${userAv(r.toBy).n}</button>`:'';
  const on=SV.replyTo&&SV.replyTo.rid===r.id;
@@ -2706,7 +2722,7 @@ function focusRow(rid){const el=SV&&SV.el;if(!el)return;const row=$(`.crow2[data
 function tagNotify(pid,r){if(!r.toBy||r.toBy==='me')return;const who=userOf(r.toBy).n;log('tag_notified',{pid,uid:r.toBy});
  setTimeout(()=>toast(`🔔 แจ้ง @${who} แล้วว่าคุณตอบกลับ`),1400);
  setTimeout(()=>{const p=postById(pid);if(!p)return;const g=['thanks','lol','fire','wow'][hash(r.id)%4];
-  const b={id:uid('r'),by:r.toBy,kind:'gif',src:`../img/gif/${g}.gif`,stickers:[],at:Date.now(),ate:0,ated:false,to:r.to,toBy:'me'};p.replies.push(b);
+  const b={id:uid('r'),by:r.toBy,kind:'text',text:['5555 จริงงง','ขอบคุณน้าา 🙏','เห็นด้วยเลย','อันนี้ ATE มาก 🔥'][hash(r.id)%4],stickers:[],at:Date.now(),ate:0,ated:false,to:r.to,toBy:'me'};p.replies.push(b);
   S.notifs.push({id:uid('n'),kind:'reply',pid,rid:b.id,text:`${who} ตอบกลับคอมเมนต์ของคุณ · @${userOf('me').n}`,alias:userAv(r.toBy).e,color:userAv(r.toBy).c,at:Date.now(),read:false});save();log('simulated_tag_reply',{pid});
   toast(`💬 ${who} ตอบกลับคุณ`,{label:'ดู',fn:()=>{openStack(pid,0);requestAnimationFrame(()=>focusRow(b.id))}});
   if(SV&&SV.mode==='replies'&&SV.pid===pid){const y=$('.pd-body',SV.el).scrollTop;SV.lastN=p.replies.length;renderStack();$('.pd-body',SV.el).scrollTop=y}else if(!SV&&!C)render(true)},9000)}
@@ -2730,6 +2746,28 @@ if(!S.nest1){seedNested();S.nest1=1;save()}
 /* ============ v2.4 · the first-300 guarantee stays in ranking, but is never shown ============ */
 function reachChip(){return ''}
 S.notifs=S.notifs.filter(n=>n.kind!=='reach');
+
+
+/* ============ v2.4 · text comments ============ */
+function bindCbar(el){const t=$('#ctx',el),mic=$('#talk',el),snd=$('.csend',el);if(!t)return;
+ t.value=SV.draft||'';
+ const sync=()=>{SV.draft=t.value;const has=!!t.value.trim();mic.hidden=has;snd.hidden=!has;t.style.height='auto';t.style.height=Math.min(110,Math.max(40,t.scrollHeight))+'px'};
+ t.oninput=sync;t.onkeydown=e=>{if(e.key==='Enter'&&!e.shiftKey&&!e.isComposing){e.preventDefault();A.sendText()}};sync();
+ if(SV.focusInput){SV.focusInput=false;t.focus();t.setSelectionRange(t.value.length,t.value.length)}}
+/* a few typed comments in the seed so the mix of text, voice, photo and GIF is visible */
+function seedText(){const now=Date.now(),R=o=>Object.assign({id:uid('r'),stickers:[],ate:0,ated:false,kind:'text'},o);
+ const n1=postById('n1');if(n1){const a=R({by:'u44',text:'ลองถามงานทะเบียนของคณะก่อนนะ เค้าช่วยเดินเรื่องให้ ปีที่แล้วเราก็ยื่นช้าเหมือนกัน',ate:18,at:now-3*60000});
+  n1.replies.push(a,R({by:'u41',text:'ขอบคุณมากก พรุ่งนี้ไปเลย 🙏',ate:4,at:now-2*60000,to:a.id,toBy:'u44'}))}
+ const c2=postById('c2');if(c2)c2.replies.push(R({by:'u46',text:'ห้อง 401 ใช่ไหม แจ้งอาคารไปสองรอบแล้วยังเงียบ',ate:37,at:now-6*60000}));
+ const p2=postById('p2');if(p2)p2.replies.push(R({by:'u45',text:'ชั้นห้าก็มีนะ นึกว่าได้ยินคนเดียว 😨',ate:22,at:now-5*60000}))}
+if(!S.text1){seedText();S.text1=1;save()}
+{const _rt=A.replyTo;Object.assign(A,{
+ replyTo(rid){if(SV)SV.focusInput=true;_rt(rid)},
+ sendText(){const t=SV&&$('#ctx',SV.el);if(!t)return;let v=t.value.trim();if(!v)return;
+  const hits=findNames(v);if(hits.length){v=maskNames(v,hits);log('name_guard',{action:'auto_hide',n:hits.length,where:'comment'})}
+  SV.draft='';log('comment_text_sent',{pid:SV.pid,len:v.length,reply:!!SV.replyTo,masked:hits.length});
+  addReply(SV.pid,{kind:'text',text:v}).then(()=>{if(hits.length)setTimeout(()=>toast('ซ่อนชื่อคนในคอมเมนต์ให้แล้ว · ห้ามระบุชื่อคน'),1200)})},
+});}
 
 /* ============ boot ============ */
 (async()=>{
