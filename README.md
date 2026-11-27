@@ -12,6 +12,8 @@ This link always opens the current test build. Right now that's **v2.3 A**. The 
 
 | Version | Link | What it is |
 | --- | --- | --- |
+| v2.4 A (for founder review) | [/v2.4a/](https://jvrn-labs.github.io/eight-teen-prototype/v2.4a/) | v2.3 A + "all of Chula hears it": every post is guaranteed its first 300 viewers (new posts get every 3rd slot in Hot), a "👁 seen by" count on every post, a live 🚀 0→300 progress chip on your own post, a reach onboarding slide, and a one-question survey ("where would you have posted this?") |
+| v2.4 B (for founder review) | [/v2.4b/](https://jvrn-labs.github.io/eight-teen-prototype/v2.4b/) | The same reach features on the v2.3 B card feed |
 | **v2.3 A** (current) | [/v2.3a/](https://jvrn-labs.github.io/eight-teen-prototype/v2.3a/) | Full-bleed feed (one post per screen) + photo filters, frames and emoji stickers |
 | **v2.3 B** | [/v2.3b/](https://jvrn-labs.github.io/eight-teen-prototype/v2.3b/) | Facebook-style card feed with text + voice posts first, plus the same photo filters and decorations |
 | v2.2 | [/archive/v2.2/](https://jvrn-labs.github.io/eight-teen-prototype/archive/v2.2/) | User-testing round 1 fixes: speech-bubble comments, photo + voice, name or anonymous, one-tap poll and GIF answers, "same here" with faculty/year breakdown |
