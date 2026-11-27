@@ -827,6 +827,138 @@ button.popt:active{transform:scale(.97)}
 .sbar .rb.same.on .o{background:none;box-shadow:none;color:#c6ff3d}
 /* the daily question fills the frame (no bar) */
 .scr.imm.story .pqb{padding:20px 20px 24px}
+
+/* ================= v2.4 · co-founder round: profiles, chat, share, list comments, ATE ================= */
+.tabbar{grid-template-columns:repeat(4,1fr);padding:0 4px}
+.tabbar .tab{margin:0 2px;font-size:11.5px}
+.stop .sauth{flex:none;display:flex;border-radius:50%}
+.sname{display:flex;align-items:center;max-width:100%;min-width:0}
+.stop .sname{font:700 14px/1.25 var(--f-d);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:inherit;text-align:left}
+.sbar .rb.shr .o svg.i{width:23px;height:23px}
+.chip.bub{background:linear-gradient(135deg,#efe6ff,#e6fbff);border-color:#d6c6ff;color:var(--brand-ink)}
+.chip.bub .bi{font-size:15px;line-height:1}
+.schips .chip.bub{background:linear-gradient(135deg,rgba(183,148,255,.4),rgba(120,220,255,.28));border-color:rgba(214,198,255,.6);color:#fff}
+.chip.astat{background:var(--ink);border-color:var(--ink);color:#fff}
+.schips .chip.astat{background:rgba(255,255,255,.92);border-color:transparent;color:var(--ink)}
+/* ATE burst: fire + the word */
+.burst.ate2{font-size:0;display:flex;flex-direction:column;align-items:center;gap:0;animation:none;z-index:95}
+.burst.ate2 .bf{font-size:86px;line-height:1;animation:ateF 900ms var(--ease-out) forwards}
+.burst.ate2 .bw{font:900 30px/1 var(--f-d);letter-spacing:.04em;color:#fff;background:linear-gradient(135deg,#ff8a3d,#ff3d6e);padding:6px 14px 7px;border-radius:14px;box-shadow:3px 3px 0 var(--lime);margin-top:-14px;animation:ateW 900ms var(--ease-out) forwards}
+@keyframes ateF{0%{transform:scale(.3);opacity:0}25%{transform:scale(1.15);opacity:1}60%{transform:scale(1) translateY(-6px);opacity:1}100%{transform:scale(1) translateY(-40px);opacity:0}}
+@keyframes ateW{0%{transform:scale(.2) rotate(-14deg);opacity:0}30%{transform:scale(1.2) rotate(-6deg);opacity:1}62%{transform:scale(1) rotate(-6deg);opacity:1}100%{transform:scale(1) rotate(-6deg) translateY(-34px);opacity:0}}
+@media (prefers-reduced-motion:reduce){.burst.ate2 .bf,.burst.ate2 .bw{animation:fadeAte 900ms ease forwards}@keyframes fadeAte{0%,60%{opacity:1}100%{opacity:0}}}
+/* pages that stack over the app: profile, chat thread, photo viewer */
+.pv{position:absolute;inset:0;z-index:46;background:var(--canvas);display:flex;flex-direction:column;padding-top:var(--st);animation:pvin 300ms var(--ease-drawer)}
+.pv.still{animation:none}
+.pv.out{transform:translateX(30%);opacity:0;transition:transform 200ms var(--ease-out),opacity 200ms ease;pointer-events:none}
+@keyframes pvin{from{transform:translateX(40%);opacity:0}}
+@media (prefers-reduced-motion:reduce){.pv{animation:none}}
+.pvh{display:flex;align-items:center;gap:8px;padding:8px 12px;flex:none;border-bottom:1px solid var(--divider)}
+.pvh>b{flex:1;text-align:center;font:700 17px/1.2 var(--f-d);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pvb{flex:1;min-height:0;overflow-y:auto;padding-bottom:calc(var(--sb) + 28px)}
+.pf-top{display:flex;align-items:center;gap:16px;padding:20px 20px 4px}
+.pf-av .av{width:84px;height:84px;font-size:36px;border-radius:28px;box-shadow:5px 5px 0 var(--lime)}
+.pf-av .av.nm{font-size:34px}
+.pf-id{min-width:0}.pf-id .h1{font-size:26px;line-height:1.2;margin:0;word-break:break-word}
+.pf-id .muted{display:flex;align-items:center;gap:4px;flex-wrap:wrap;font-size:13.5px;margin-top:4px}
+.pf-id .verified svg{width:16px;height:16px}
+.pf-acts{display:flex;gap:8px;margin:14px 20px 0}
+.pf-acts .btn{flex:1;min-height:46px;font-size:15px;padding:0 14px}
+.pf-note{margin:12px 20px 0;font-size:12.5px;color:var(--muted);display:flex;gap:6px;align-items:center}
+/* post detail: the post, then comments as a list */
+.sv.pd{background:var(--canvas);padding-top:var(--st)}
+.pd-body{flex:1;min-height:0;overflow-y:auto;padding:0 0 18px}
+.pd-auth{display:flex;align-items:center;gap:10px;padding:12px 16px}
+.pd-auth .t{flex:1;min-width:0}
+.pd-auth .t>span{display:block;font-size:12.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pd-auth .sname{font:700 15px/1.3 var(--f-d);text-align:left}
+.pd-media{position:relative;height:min(62vh,560px);margin:0 10px;border-radius:20px;overflow:hidden;background:#0d0d14}
+.pd-media .fr{position:absolute;inset:0}
+.pd-media .vwrap{top:24px;bottom:24px;right:20px}
+.pd-media .stk:not(.blurbox){top:max(var(--y),24px)}
+.pd-media .pvoice{--pvb:16px;--pvt:24px;right:14px}
+.pd-media .gifb{top:auto;bottom:12px;left:12px}
+.pd-acts{display:flex;align-items:center;gap:4px;padding:6px 8px 0}
+.pd-acts .rb{flex-direction:row;width:auto;min-width:48px;height:46px;gap:4px;padding:0 10px 0 4px;color:var(--ink);text-shadow:none;font:700 14px/1 var(--f-n)}
+.pd-acts .rb .o{width:36px;height:36px;background:none;box-shadow:none;color:var(--ink)}
+.pd-acts .rb .o svg.i{width:25px;height:25px}
+.pd-acts .rb small{display:none}
+.pd-acts .rb.on .o{background:none;box-shadow:none;color:#ff5a1f}
+.pd-chips{display:flex;gap:6px;flex-wrap:wrap;padding:4px 16px 0}
+.pd-ch{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:18px 16px 6px;border-top:1px solid var(--divider);margin-top:12px}
+.clist2{display:flex;flex-direction:column;padding:0 8px}
+.crow2{display:flex;gap:10px;align-items:flex-start;padding:10px 8px;border-radius:16px}
+.crow2.flash{animation:flash 1.4s ease}
+@keyframes flash{0%,40%{background:var(--info)}100%{background:transparent}}
+.crow2 .cav{flex:none;display:flex;border-radius:50%}
+.crow2 .cav .av{width:36px;height:36px;font-size:18px;box-shadow:none}
+.crow2 .t{flex:1;min-width:0}
+.crow2 .cn{display:flex;align-items:center;flex-wrap:wrap;gap:4px;font:700 14px/1.3 var(--f-d)}
+.crow2 .cn button{font:inherit;color:inherit}
+.crow2 .cn .badge{margin-left:0}
+.crow2 .ct{font:600 12px/1 var(--f-n);color:var(--muted);margin-left:2px}
+.cmed{display:block;position:relative;margin-top:6px;border-radius:14px;overflow:hidden;max-width:200px;background:var(--surface)}
+.cmed img{display:block;width:100%;max-height:240px;object-fit:cover}
+.cmed.gif{max-width:160px}
+.cmed .cst{position:absolute;left:8px;right:8px;bottom:8px;background:rgba(11,16,38,.72);color:#fff;font:600 12.5px/1.35 var(--f-b);padding:5px 8px;border-radius:10px;text-align:left}
+.cvoice{display:flex;align-items:center;gap:8px;margin-top:6px;padding:5px 12px 5px 5px;border-radius:999px;background:var(--surface);max-width:260px}
+.cvoice .cpb{width:34px;height:34px;border-radius:50%;background:var(--brand);color:#fff;display:flex;align-items:center;justify-content:center;flex:none}
+.cvoice .wave{flex:1;min-width:0;height:24px;display:flex;align-items:center;gap:2px;overflow:hidden}
+.cvoice .wave i{flex:none;width:3px;height:var(--h);background:var(--ink2);opacity:.55;border-radius:2px}
+.cvoice .tm{font:700 12px/1 var(--f-n);color:var(--muted)}
+.ctx{margin:6px 0 0;font:500 14.5px/1.45 var(--f-b);color:var(--ink)}
+.cate{flex:none;display:flex;flex-direction:column;align-items:center;gap:1px;min-width:40px;padding-top:4px;font:700 11.5px/1 var(--f-n);color:var(--muted)}
+.cate .o{display:flex}.cate .o svg.i{width:20px;height:20px}
+.cate.on{color:#ff5a1f}
+.sv.pd .rbar{background:var(--canvas);border-top:1px solid var(--divider)}
+.sv.pd .rbar .iconbtn{background:var(--surface);color:var(--ink)}
+.sv.pd .asbtn{background:var(--surface)}
+/* photo viewer */
+.pv.lbx{background:#0b1026;color:#fff}
+.pv.lbx .pvh{border-color:rgba(255,255,255,.1)}
+.pv.lbx .pvh .iconbtn{background:rgba(255,255,255,.14);color:#fff}
+.lbc{position:relative;flex:1;margin:10px 10px calc(var(--sb) + 14px);border-radius:20px;overflow:hidden}
+.lbc .fr{position:absolute;inset:0}
+.lbc .stk:not(.blurbox){top:max(var(--y),24px)}
+.lbc .pvoice{--pvb:16px;--pvt:24px;right:14px}
+/* chat */
+.nrow .t b{display:block;font:700 15px/1.3 var(--f-d)}
+.nrow .t i{display:block;font-style:normal;color:var(--ink2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.udot{min-width:22px;height:22px;border-radius:11px;background:var(--brand);color:#fff;font:800 12px/22px var(--f-n);text-align:center;padding:0 6px;flex:none}
+.dmwho{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;min-width:0;font:700 16px/1.2 var(--f-d)}
+.dmwho b{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dmwho .av{box-shadow:none}
+.dmb{flex:1;min-height:0;overflow-y:auto;padding:14px 14px 8px;display:flex;flex-direction:column;gap:6px}
+.dm-empty{display:flex;flex-direction:column;align-items:center;text-align:center;gap:8px;margin:28px 0 18px;color:var(--muted);font-size:14px}
+.dm-empty .av{width:72px;height:72px;font-size:32px;box-shadow:none}
+.dm-empty b{color:var(--ink);font:700 18px/1.2 var(--f-d)}
+.msg{max-width:78%;padding:9px 13px;border-radius:20px;font:500 15px/1.45 var(--f-b);background:var(--surface);align-self:flex-start;word-break:break-word}
+.msg.me{align-self:flex-end;background:var(--brand);color:#fff}
+.msg.typing{color:var(--muted);font-style:italic}
+.dmtime{align-self:center;font:600 11.5px/1 var(--f-n);color:var(--muted);margin:8px 0 2px}
+.dmpost{display:flex;gap:10px;align-items:center;max-width:78%;padding:8px;border-radius:18px;border:1px solid var(--border);background:var(--canvas);text-align:left;align-self:flex-start}
+.dmpost.me{align-self:flex-end}
+.dmpost .th{width:54px;height:72px;border-radius:12px;background-size:cover;background-position:center;flex:none;display:flex;align-items:center;justify-content:center}
+.dmpost span{display:flex;flex-direction:column;gap:3px;font-size:13px;line-height:1.4;color:var(--ink2);min-width:0}
+.dmpost span b{color:var(--ink);font:700 13.5px/1.3 var(--f-d)}
+.dmpost span em{font-style:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.dmin{display:flex;gap:8px;align-items:center;padding:10px 12px calc(var(--sb) + 12px);border-top:1px solid var(--divider);flex:none}
+.dmin input{flex:1;height:46px;border-radius:999px;border:1.5px solid var(--border);padding:0 16px;font:500 16px var(--f-b);background:var(--canvas);color:var(--ink);outline:0}
+.dmin input:focus{border-color:var(--brand)}
+.dmin .send{width:46px;height:46px;border-radius:50%;background:var(--brand);color:#fff;display:flex;align-items:center;justify-content:center;flex:none}
+/* share sheet */
+.shl{display:flex;flex-direction:column;margin-top:8px;max-height:38vh;overflow-y:auto}
+.shrow{display:flex;align-items:center;gap:12px;padding:9px 0;text-align:left;width:100%}
+.shrow .t{flex:1;min-width:0}.shrow .t b{display:block;font:700 15px/1.3 var(--f-d)}.shrow .t small{display:block;font-size:12.5px;color:var(--muted)}
+.shrow .go{min-width:64px;height:36px;border-radius:999px;background:var(--brand);color:#fff;font:700 13.5px/36px var(--f-b);text-align:center;padding:0 12px}
+.shrow.sent .go{background:var(--surface);color:var(--ink2)}
+.shx{display:flex;gap:14px;overflow-x:auto;padding-bottom:4px}
+.shx button{display:flex;flex-direction:column;align-items:center;gap:6px;font:600 12px/1.2 var(--f-b);color:var(--ink2);min-width:64px}
+.shx .ic{width:54px;height:54px;border-radius:50%;background:var(--surface);display:flex;align-items:center;justify-content:center;font:800 15px/1 var(--f-d);color:var(--ink)}
+.pswho{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:18px;background:var(--surface)}
+.pswho>div{flex:1;min-width:0}.pswho b{display:block;font:700 16px/1.3 var(--f-d)}.pswho span{display:block;font-size:13px;color:var(--muted)}
+.pswho .ul{margin:0}
+.me-acts{display:flex;gap:8px;margin:14px 20px 0}.me-acts .btn{flex:1;min-height:44px;font-size:14.5px;padding:0 12px}
 </style>
 </head>
 <body>
@@ -937,7 +1069,7 @@ const meLabel=()=>S.me&&S.me.fac&&S.me.year?`${S.me.fac} · ${S.me.year}`:'น�
 const FACS=['วิศวฯ','อักษรฯ','วิทยาศาสตร์','บัญชีฯ','นิติฯ','รัฐศาสตร์','เศรษฐศาสตร์','นิเทศฯ','ครุฯ','สถาปัตย์ฯ','แพทย์ฯ','ทันตะฯ','เภสัชฯ','สัตวแพทย์ฯ','จิตวิทยา','ศิลปกรรมฯ','สหเวชฯ','พยาบาลฯ','วิทยาศาสตร์การกีฬา','หลักสูตรอินเตอร์'];
 const YEARS=['ปี 1','ปี 2','ปี 3','ปี 4','ปี 5+','ป.โท / เอก'];
 
-function seed(){
+function seed_v24(){
  const now=Date.now();
  const R=o=>Object.assign({id:uid('r'),stickers:[],ate:0,ated:false},o,{at:now-(o.ago||0)*60000});
  const P=o=>Object.assign({stickers:[],place:null,showId:null,prompt:false,ate:0,ated:false,as:null,voice:null,same:0,samed:false,sf:{},sy:{}},o,{at:now-(o.ago||0)*60000,replies:(o.replies||[]).map(R)});
@@ -1023,8 +1155,8 @@ function seedNotifs(){const n=Date.now();return[
 
 /* ============ state ============ */
 const LAYOUT='full'; /* 'full' = A (full-bleed), 'feed' = B (card feed) */
-const KEY='et18v24a', SEEDV=1;
-let S=load(); S.visit=S.visit||{};
+const KEY='et18v24a', SEEDV=2;
+let S=load(); S.visit=S.visit||{}; S.dm=S.dm||seedDM();
 {const d=new Date().toDateString();if(!S.pq||S.pq.day!==d)S.pq={day:d,skips:0,opened:false}}
 function fresh(){return{v:SEEDV,posts:seedSame(seedLayout(seed())),notifs:seedNotifs(),sound:false,rate:1,filter:'mask',showId:false,onb:false,ob:{step:'welcome',slide:0,terms:false},me:{email:'',fac:null,year:null,dob:{d:'',m:'',y:''},prof:{name:'',img:null}},notifOn:true,visit:{p8:Date.now()-47*60000},vote:null,cc:true,replyAs:'anon',sub:null,tab:'home',view:'uni',sort:'hot',seenPlaces:[],log:[],t0:Date.now()}}
 function load(){try{const s=JSON.parse(localStorage.getItem(KEY));if(s&&s.v===SEEDV)return s}catch(e){}return fresh()}
@@ -1048,7 +1180,7 @@ function aliasMap(post){
 }
 const avHTML=(a,c='')=>a.img?`<span class="av img ${c}" style="background-image:url('${a.img}')"></span>`:`<span class="av ${a.named?'nm':''} ${c}" style="background:${a.c}">${a.e}</span>`;
 /* who wrote it: their chosen name + photo, or the random alias for this post */
-const idOf=(it,al)=>it.as?{e:esc([...it.as.n][0]||'?'),c:'#7c3aed',n:esc(it.as.n),img:it.as.img,named:true}:al[it.by];
+const idOf=(it,al)=>userAv(it.by);
 const myProf=()=>S.me.prof&&S.me.prof.name?{e:esc([...S.me.prof.name][0]),c:'#7c3aed',n:esc(S.me.prof.name),img:S.me.prof.img,named:true}:null;
 
 /* captions: Thai-aware word split, timed by length */
@@ -1175,7 +1307,7 @@ function thumbStyle(it){const s=srcOf(it);return it.kind==='voice'||it.kind==='t
 function renderNotif(){
  const list=[...S.notifs].sort((a,b)=>b.at-a.at);
  app.innerHTML=`<div class="scr"><div class="hdr"><div class="hdr-row"><div class="uni">แจ้งเตือน</div></div></div>
- <div class="pg" style="padding-top:8px">${list.length?list.map(n=>{const p=n.pid&&postById(n.pid);const em=n.kind==='prompt'?PROMPT.e:n.kind==='place'?'📍':n.kind==='reply'?(n.alias||'💬'):n.kind==='same'?'🙋':n.kind==='reach'?'📣':'💬';
+ <div class="pg" style="padding-top:8px">${list.length?list.map(n=>{const p=n.pid&&postById(n.pid);const em=n.kind==='prompt'?PROMPT.e:n.kind==='place'?'📍':n.kind==='reply'?(n.alias||'💬'):n.kind==='same'?'🔥':n.kind==='reach'?'📣':'💬';
   return `<button class="nrow ${n.read?'':'unread'}" data-act="openNotif" data-arg="${n.id}"><span class="av" style="background:${n.color||'#e4d6ff'}">${em}</span><span class="t">${esc(n.text)}<span>${ago(n.at)}</span></span>${p?`<span class="th" style="${thumbStyle(p)}">${p.kind==='voice'?'🎙':''}</span>`:''}</button>`}).join('')
  :`<div class="empty" style="margin-top:20px">ยังไม่มีอะไรใหม่</div>`}</div>${tabbarHTML()}</div>`;
 }
@@ -1196,7 +1328,7 @@ function renderMe(){
 }
 const facPicker=()=>`<div class="lbl2" style="margin-top:6px">คณะ</div><div class="chips">${FACS.map(f=>`<button class="pick ${S.me.fac===f?'on':''}" data-act="pickFac" data-arg="${f}">${f}</button>`).join('')}</div>
  <div class="lbl2">ชั้นปี</div><div class="chips">${YEARS.map(y=>`<button class="pick ${S.me.year===y?'on':''}" data-act="pickYear" data-arg="${y}">${y}</button>`).join('')}</div>`;
-const RULES=[['mask','นิรนามได้ แต่ไม่ใช่ล่องหน','เพื่อนไม่รู้ว่าเป็นคุณ แต่ทีมงานรู้ และเปิดเผยได้เฉพาะเมื่อมีคำสั่งตามกฎหมาย'],['cam','บ่นเรื่องได้ ไม่บ่นคน','บ่นคลาส อาหาร หรือบริการได้เต็มที่ แต่ห้ามระบุชื่อคน หรือโพสต์หน้าและเสียงของคนอื่นโดยเขาไม่ยินยอม'],['shield','ไม่หลอก ไม่สแปม','โพสต์หลอกลวงหรือสแปมถูกแบนถาวร']];
+const RULES=[['mask','ชื่ออะไรก็ได้ แต่ไม่ใช่ล่องหน','ตั้งชื่อเองได้ แต่ทุกบัญชีผูกกับอีเมลจุฬาฯ ทีมงานเปิดเผยได้เฉพาะเมื่อมีคำสั่งตามกฎหมาย'],['cam','บ่นเรื่องได้ ไม่บ่นคน','บ่นคลาส อาหาร หรือบริการได้เต็มที่ แต่ห้ามระบุชื่อคน หรือโพสต์หน้าและเสียงของคนอื่นโดยเขาไม่ยินยอม'],['shield','ไม่หลอก ไม่สแปม','โพสต์หลอกลวงหรือสแปมถูกแบนถาวร']];
 const rulesHTML=()=>`<div class="box2">${RULES.map(r=>`<div class="rule"><span class="ic">${I(r[0],'sm')}</span><div><b>${r[1]}</b><span>${r[2]}</span></div></div>`).join('')}</div>`;
 function renderSettings(){
  const row=(act,arg,t,sub,right)=>`<button class="row" data-act="${act}" data-arg="${arg}"><span class="t"><b>${t}</b>${sub?`<span>${sub}</span>`:''}</span>${right===undefined?I('chev','sm'):right}</button>`;
@@ -1207,10 +1339,10 @@ function renderSettings(){
   <div class="row"><span class="t"><b>อีเมลจุฬาฯ</b><span>${esc(S.me.email||'ยังไม่ได้ยืนยัน')}</span></span><span style="color:#14805a">${I('check','sm')}</span></div>
   ${row('editFac','','คณะและชั้นปี',`<span id="facRow">${esc(meLabel())}</span>`)}
  </div>
- <div class="sec">ความเป็นนิรนาม</div><div class="card2">
+ <div class="sec">โปรไฟล์และความเป็นส่วนตัว</div><div class="card2">
   ${row('tgl','showId','แสดงคณะและชั้นปีเป็นค่าเริ่มต้น',S.showId?`ทุกโพสต์ขึ้นว่า “${esc(meLabel())}”`:'ปิดอยู่ · ทุกโพสต์ขึ้นแค่ “นักศึกษาจุฬาฯ”',tg(S.showId))}
-  ${row('tgl','sameHide','นับคณะและปีของฉันใน “เหมือนกัน”',S.sameHide?'ปิดอยู่ · นับแค่จำนวน ไม่นับคณะและปี':`นับเป็น “${esc(meLabel())}” · ไม่มีใครรู้ว่าใครกด`,tg(!S.sameHide))}
-  ${row('editProf','','ชื่อและรูปสำหรับ “ใช้ชื่อฉัน”',S.me.prof.name?esc(S.me.prof.name):'ยังไม่ได้ตั้ง · ทุกโพสต์ไม่ระบุตัวตน')}
+
+  ${row('editProf','','ชื่อและรูปโปรไฟล์',S.me.prof.name?esc(S.me.prof.name):'ยังไม่ได้ตั้ง')}
   ${row('pickFx','','ฟิลเตอร์เสียงเริ่มต้น',`${fx(S.filter).e} ${fx(S.filter).n}`)}
  </div>
  <div class="sec">เสียงและคำบรรยาย</div><div class="card2">
@@ -1324,7 +1456,7 @@ function reachInfo(){log('reach_info_opened');$$('.popw').forEach(w=>w.remove())
  w.innerHTML=`<div class="pbd" data-act="closePop"></div><div class="popc" role="dialog" aria-modal="true" aria-label="ทุกโพสต์ไปถึงทั้งจุฬาฯ">
   <h2 class="h1" style="font-size:20px">📣 โพสต์เดียว ทั้งจุฬาฯ ได้ยิน</h2>
   <div class="box2" style="margin-top:12px">
-   <div class="rule"><span class="ic em">🎯</span><div><b>ทุกโพสต์ได้คนเห็นอย่างน้อย 300 คนแรก</b><span>แม้จะไม่ระบุตัวตน ไม่มีผู้ติดตาม หรือยังไม่มีใครกดอะไรเลย</span></div></div>
+   <div class="rule"><span class="ic em">🎯</span><div><b>ทุกโพสต์ได้คนเห็นอย่างน้อย 300 คนแรก</b><span>แม้จะไม่มีผู้ติดตาม หรือยังไม่มีใครกดอะไรเลย</span></div></div>
    <div class="rule"><span class="ic em">🔥</span><div><b>หลังจากนั้น ยิ่งมีคนอิน ยิ่งไปไกล</b><span>ATE, เหมือนกัน และคอมเมนต์ พาโพสต์ไปถึงคนทั้งจุฬาฯ</span></div></div>
    <div class="rule"><span class="ic em">🎭</span><div><b>นับแค่จำนวน ไม่บอกว่าใครเห็น</b><span>และคนที่เห็นก็ไม่รู้ว่าใครโพสต์</span></div></div>
   </div>
@@ -1400,7 +1532,7 @@ function sameHint(p){const f=topK(p.sf),y=topK(p.sy),mf=S.me&&S.me.fac,mine=mf?(
  if(f[0])return `ส่วนใหญ่ ${f[0][0]}${y[0]?' '+y[0][0]:''}`;return ''}
 function sameChip(p){if(!p.same)return '';const h=sameHint(p);
  return `<button class="chip same ${p.samed?'on':''}" data-act="sameSheet" data-arg="${p.id}">🙋 ${p.samed?`คุณกับอีก ${nf(p.same-1)}`:`${nf(p.same)} เหมือนกัน`}${h?` · ${h}`:''}</button>`}
-const sameBtn=p=>`<button class="rb same ${p.samed?'on':''}" data-act="${p.by==='me'?'sameSheet':'same'}" data-arg="${p.id}" aria-label="เหมือนกัน"><span class="o">${I('hand')}</span>${nf(p.same||0)}<small>เหมือนกัน</small></button>`;
+const sameBtn=p=>'';
 const myGroup=()=>S.sameHide||!S.me||!S.me.fac?null:{f:S.me.fac,y:S.me.year};
 const groupLabel=g=>g?`${g.f}${g.y?' · '+g.y:''}`:'นักศึกษาจุฬาฯ (ไม่นับคณะและปี)';
 function doSame(pid){
@@ -1455,7 +1587,7 @@ function openSameSheet(pid){const p=postById(pid);if(!p)return;log('same_sheet_o
 function renderFeedB(prevTop){
  const done=iAnswered(), list=feedList(), mp=myProf();
  const ps=`<button class="pstrip ${done?'done':''}" data-act="openPrompt"><span class="e">${PROMPT.e}</span><span class="t"><small>คำถามวันนี้ · ตอบแล้ว ${promptCount()}${done?' · รวมคุณ':''}</small><b>${esc(PROMPT.q)}</b></span><span class="go" data-act="${done?'openPrompt':'openPromptCompose'}">${done?'ดูคำตอบ':'ตอบ'}</span></button>`;
- const nw=`<div class="fbnew">${mp?avHTML(mp):'<span class="av" style="background:#e4d6ff">🎭</span>'}<button class="fbin" data-act="composeText">คิดอะไรอยู่? พิมพ์หรือพูดก็ได้</button><button class="iconbtn" data-act="composeVoice" aria-label="โพสต์เสียง">${I('mic','sm')}</button><button class="iconbtn" data-act="compose" aria-label="โพสต์รูป">${I('img','sm')}</button></div>`;
+ const nw=`<div class="fbnew">${avHTML(userAv('me'))}<button class="fbin" data-act="composeText">คิดอะไรอยู่? พิมพ์หรือพูดก็ได้</button><button class="iconbtn" data-act="composeVoice" aria-label="โพสต์เสียง">${I('mic','sm')}</button><button class="iconbtn" data-act="compose" aria-label="โพสต์รูป">${I('img','sm')}</button></div>`;
  app.innerHTML=`<div class="scr fbs">${hdrHTML()}<div class="pg" id="feed">${nw}${withPQ(list.map(cardHTML))}<div class="fbend">ดูครบแล้ว · ลองตอบคำถามวันนี้ดูไหม</div></div>${tabbarHTML()}</div>`;
  $('#feed').scrollTop=prevTop; bindPQ($('#feed'));
 }
@@ -1510,7 +1642,7 @@ function showStack(cfg){
 }
 function closeStack(){if(!SV)return;endReplies();stopActive();const el=SV.el;SV=null;el.classList.add('closing');setTimeout(()=>{el.remove();render(true)},230)}
 const svItems=()=>SV.items();
-function renderStack(){
+function renderStack_v23(){
  const items=svItems(); const n=items.length; SV.i=Math.max(0,Math.min(SV.i,n)); const end=SV.i>=n;
  const it=items[SV.i]; const post=SV.mode==='replies'?postById(SV.pid):it;
  const rep=SV.mode==='replies', total=rep?post.replies.length:0, partial=rep&&SV.view!=='all'&&total>n-1;
@@ -1519,7 +1651,7 @@ function renderStack(){
  if(end){
   if(partial) stage=`<div class="sv-end"><div class="tile">💬</div><h2 class="h1">${SV.view==='new'?'ดูคอมเมนต์ใหม่ครบแล้ว':'ดูคอมเมนต์เด่นครบแล้ว'}</h2><p>ยังมีอีก ${total-(n-1)} คอมเมนต์ อ่านคำบรรยายไล่ดูได้เร็วกว่าฟังทีละคลิป</p>
    <div class="acts"><button class="btn primary block" data-act="cmtList">${I('list','sm')} ดูทั้งหมด ${total} คอมเมนต์</button><button class="btn soft sm block" style="background:#fff" data-act="svRestart">ดูอีกรอบ</button></div></div>`;
-  else{const e=rep?{b:'💬',h:'ดูครบทุกคอมเมนต์แล้ว',p:'กดค้างปุ่มด้านล่างเพื่อคอมเมนต์ด้วยเสียง หรือส่งรูป GIF ก็ได้'}:SV.mode==='place'?{b:'📍',h:'ดูครบทุกโพสต์ที่นี่แล้ว',p:'อยู่แถวนี้ไหม? โพสต์แล้วติดสถานที่นี้ได้เลย'}:{b:PROMPT.e,h:'ดูคำตอบครบแล้ว',p:'ถึงตาคุณแล้ว ไม่มีใครรู้ว่าเป็นคุณ'};
+  else{const e=rep?{b:'💬',h:'ดูครบทุกคอมเมนต์แล้ว',p:'กดค้างปุ่มด้านล่างเพื่อคอมเมนต์ด้วยเสียง หรือส่งรูป GIF ก็ได้'}:SV.mode==='place'?{b:'📍',h:'ดูครบทุกโพสต์ที่นี่แล้ว',p:'อยู่แถวนี้ไหม? โพสต์แล้วติดสถานที่นี้ได้เลย'}:{b:PROMPT.e,h:'ดูคำตอบครบแล้ว',p:'ถึงตาคุณแล้ว พูดหรือถ่ายรูปตอบก็ได้'};
    stage=`<div class="sv-end"><div class="tile">${e.b}</div><h2 class="h1">${e.h}</h2><p>${e.p}</p><button class="btn soft sm" style="background:#fff" data-act="svRestart">ดูอีกรอบ</button></div>`}
   who=`<div class="sv-who"><div class="t"><b>${rep?'คอมเมนต์ทั้งหมด':SV.mode==='place'?esc(place(SV.place).n):'คำถามวันนี้'}</b><span>${rep?total:n} รายการ</span></div>${listBtn}<button class="iconbtn" data-act="closeStack" aria-label="ปิด">${I('x')}</button></div>`;
  } else {
@@ -1662,10 +1794,10 @@ async function addReply(pid,o){
  const p=postById(pid); const key=o.dataURL?uid('m'):null; if(key){MEM[key]=o.dataURL;await idb.put(key,o.dataURL)}
  const r={id:uid('r'),by:'me',kind:o.kind,src:o.src||null,key,dur:o.dur,text:o.text||'',filter:o.filter,bg:o.bg||0,stickers:o.stickers||[],at:Date.now(),ate:0,ated:false};
  if(o.voice){const vk=uid('m');MEM[vk]=o.voice.data;await idb.put(vk,o.voice.data);r.voice={key:vk,dur:o.voice.dur,text:o.voice.text,filter:o.voice.filter};r.capTop=o.capTop}
- if(S.replyAs==='me'&&myProf())r.as={n:S.me.prof.name,img:S.me.prof.img};
+ if(myProf())r.as={n:S.me.prof.name,img:S.me.prof.img};
  p.replies.push(r); save(); log('reply_created',{pid,kind:o.kind,filter:o.filter,has_transcript:!!o.text,as_me:!!r.as,photo_voice:!!r.voice});
  if(SV&&SV.mode==='replies'&&SV.pid===pid){SV.view='all';SV.order='old';SV.i=p.replies.length;renderStack()}
- toast(r.as?'ส่งแล้ว · ขึ้นในชื่อคุณ':'ส่งแล้ว · ขึ้นเป็นชื่อเล่นสุ่ม',{label:'เลิกทำ',fn:()=>{p.replies=p.replies.filter(x=>x.id!==r.id);save();log('reply_undone',{pid});if(SV&&SV.pid===pid){SV.i=Math.min(SV.i,p.replies.length);renderStack()}}});
+ toast('ส่งคอมเมนต์แล้ว',{label:'เลิกทำ',fn:()=>{p.replies=p.replies.filter(x=>x.id!==r.id);save();log('reply_undone',{pid});if(SV&&SV.pid===pid){SV.i=Math.min(SV.i,p.replies.length);renderStack()}}});
 }
 
 /* someone answers your post a little later, so testers feel the loop */
@@ -1703,7 +1835,7 @@ async function startCam(){
 function renderComposer(){
  const el=C.el; const reply=!!C.target;
  if(C.step==='capture'){
-  const topChip=C.prompt?`<span class="chip" style="max-width:75%;overflow:hidden;text-overflow:ellipsis">${PROMPT.e} ${esc(PROMPT.q)}</span>`:reply?`<span class="chip">${S.replyAs==='me'&&myProf()?avHTML(myProf(),'xs')+' คอมเมนต์ในชื่อ '+myProf().n:I('mask','xs')+' คอมเมนต์แบบไม่ระบุตัวตน'}</span>`:C.place?`<span class="chip">${I('pin','xs')} ${esc(place(C.place).n)}</span>`:'<span></span>';
+  const topChip=C.prompt?`<span class="chip" style="max-width:75%;overflow:hidden;text-overflow:ellipsis">${PROMPT.e} ${esc(PROMPT.q)}</span>`:reply?`<span class="chip">${avHTML(userAv('me'),'xs')+' คอมเมนต์ในชื่อ '+userAv('me').n}</span>`:C.place?`<span class="chip bub"><span class="bi">🫧</span>โพสต์ลงบับเบิล ${esc(place(C.place).n)}</span>`:'<span></span>';
   let stage='',shut='',light=false;
   if(C.mode==='photo'){
    stage=`<video id="cv" playsinline muted autoplay></video>
@@ -1712,7 +1844,7 @@ function renderComposer(){
    shut=`<div class="shut"><button class="side" data-act="gallery" aria-label="คลังภาพ">${I('img')}</button><button class="shutter" data-act="snap" aria-label="ถ่าย"><i></i></button><button class="side" data-act="flip" aria-label="สลับกล้อง">${I('flip')}</button></div>`;
   } else if(C.mode==='text'){
    light=true; const sh=(C.txt||'').length<=90, tb=C.tbg!=null?BG[C.tbg]:null, v=C.media&&C.media.kind==='text'&&C.media.voice;
-   stage=`<div class="tstage"><textarea id="ttx" class="${tb&&sh?'bgon':''}" style="${tb?'--tbg:'+tb.bg:''}" maxlength="600" placeholder="คิดอะไรอยู่? บ่น ถาม หรือขอความช่วยเหลือก็ได้ ไม่มีใครรู้ว่าเป็นคุณ">${esc(C.txt||'')}</textarea>
+   stage=`<div class="tstage"><textarea id="ttx" class="${tb&&sh?'bgon':''}" style="${tb?'--tbg:'+tb.bg:''}" maxlength="600" placeholder="คิดอะไรอยู่? บ่น ถาม หรือขอความช่วยเหลือก็ได้">${esc(C.txt||'')}</textarea>
     <div class="tdots"><span>พื้นหลัง (ข้อความสั้น)</span><div class="dots"><button class="${C.tbg==null?'on':''}" style="background:#fff" data-act="setTbg" data-arg="" aria-label="ไม่มีพื้นหลัง"></button>${BG.map((b,k)=>`<button class="${C.tbg===k?'on':''}" style="background:${b.bg}" data-act="setTbg" data-arg="${k}" aria-label="พื้นหลัง ${k+1}"></button>`).join('')}</div></div>
     ${v?`<div class="tvc">${I('mic','sm')}<b>เสียง ${mmss(Math.round(v.dur||0))}</b><span>${fx(v.filter).e} ${fx(v.filter).n}</span><button class="chip" data-act="rmVoiceT">${I('trash','xs')} ลบ</button></div>${v.text?`<p class="cap" style="margin:0">ถอดเสียง: ${esc(v.text)}</p>`:''}`:''}</div>`;
    shut=`<div class="tbar"><button class="btn soft sm" data-act="addVoiceT">${I('mic','sm')} ${v?'อัดเสียงใหม่':'เพิ่มเสียง'}</button><button class="btn primary sm" data-act="textNext">ถัดไป</button></div>`;
@@ -1727,7 +1859,7 @@ function renderComposer(){
    stage=`<div style="position:absolute;inset:0;overflow:auto;padding:68px 12px 12px;background:var(--surface)"><input id="gq" placeholder="ค้นหา GIF" value="${esc(C.gq||'')}" style="width:100%;height:46px;border-radius:999px;border:1px solid var(--border);background:#fff;padding:0 18px;margin-bottom:10px;outline:0">
     <div class="grid g">${g.map(x=>`<button style="background-image:url('../img/gif/${x[0]}.gif')" data-act="pickGif" data-arg="../img/gif/${x[0]}.gif" aria-label="GIF ${x[0]}"></button>`).join('')}</div><p class="cap">GIF จากผู้ให้บริการ เปิดตัวกรองเนื้อหาปลอดภัย</p></div>`;
   }
-  const modes=reply?'':`<div class="modes"><span class="mpill"></span>${(LAYOUT==='feed'?[['text','ข้อความ']]:[]).concat([['photo','รูป'],['voice','เสียง'],['gif','GIF']]).map(([m,l])=>`<button class="${C.mode===m?'on':''}" data-act="cmode" data-arg="${m}">${l}</button>`).join('')}</div>`;
+  const modes=reply?'':`<div class="modes"><span class="mpill"></span>${(LAYOUT==='feed'?[['text','ข้อความ']]:[]).concat([['photo','รูป'],['voice','เสียง']]).map(([m,l])=>`<button class="${C.mode===m?'on':''}" data-act="cmode" data-arg="${m}">${l}</button>`).join('')}</div>`;
   el.innerHTML=`<div class="cmp-stage ${light?'lightst':''} ${C.swap?'swap':''}">${stage}<div class="cmp-top"><button class="iconbtn w" data-act="closeCmp" aria-label="ปิด">${I('x')}</button>${topChip}</div></div><div class="cmp-bot">${C.mode==='gif'?'':shut}${modes}</div>`;
   C.swap=false; placePill(el,C.pillFrom); C.pillFrom=null;
   if(C.mode==='photo')startCam(); else stopCam();
@@ -1736,7 +1868,7 @@ function renderComposer(){
   return;
  }
  const it=draftItem();
- const tools=`<div class="cmp-tools"><button class="tool" data-act="addText" aria-label="เพิ่มข้อความ">Aa</button>${C.media.kind==='photo'?`<button class="tool ${C.panel==='pf'||(C.pf&&C.pf!=='orig')?'on':''}" data-act="pfPanel" aria-label="ฟิลเตอร์" style="font-size:20px">🎨</button><button class="tool ${C.panel==='deco'?'on':''}" data-act="decoPanel" aria-label="ตกแต่ง" style="font-size:20px">✨</button>`:''}${C.media.kind==='photo'?`<button class="tool ${C.media.voice?'on':''}" data-act="addVoice" aria-label="พูดทับรูป">${I('mic')}</button>`:''}${C.media.kind!=='voice'?`<button class="tool" data-act="addBlur" aria-label="เบลอ" style="font-size:20px">🫥</button>`:''}${reply?'':`<button class="tool" data-act="placeSheet" aria-label="สถานที่">${I('pin')}</button>`}</div>`;
+ const tools=`<div class="cmp-tools"><button class="tool" data-act="addText" aria-label="เพิ่มข้อความ">Aa</button>${C.media.kind==='photo'?`<button class="tool ${C.panel==='pf'||(C.pf&&C.pf!=='orig')?'on':''}" data-act="pfPanel" aria-label="ฟิลเตอร์" style="font-size:20px">🎨</button><button class="tool ${C.panel==='deco'?'on':''}" data-act="decoPanel" aria-label="ตกแต่ง" style="font-size:20px">✨</button>`:''}${C.media.kind==='photo'?`<button class="tool ${C.media.voice?'on':''}" data-act="addVoice" aria-label="พูดทับรูป">${I('mic')}</button>`:''}${C.media.kind!=='voice'?`<button class="tool" data-act="addBlur" aria-label="เบลอ" style="font-size:20px">🫥</button>`:''}${reply?'':`<button class="tool ${C.place?'on':''}" data-act="placeSheet" aria-label="ลงบับเบิล" style="font-size:21px">🫧</button>`}</div>`;
  const face=C.media.kind==='photo'&&!C.faceSeen?`<div class="face note warn"><span>🫥</span><div>มีหน้าคนอื่นในรูปไหม? แตะ 🫥 เพื่อเบลอก่อนโพสต์ <button style="font-weight:700;text-decoration:underline;color:inherit" data-act="faceOk">โอเค</button></div></div>`:'';
  const vctl=C.media.kind==='voice'?`<div class="fxstrip">${FX.map(f=>`<button class="fxb ${C.filter===f.id?'on':''}" data-act="setFx" data-arg="${f.id}"><span class="e">${f.e}</span>${f.n}</button>`).join('')}</div>
    ${C.filter==='orig'?`<div class="note warn">⚠️ เสียงจริง: คนที่รู้จักคุณอาจจำเสียงได้ ถึงโพสต์จะไม่ระบุตัวตนก็ตาม</div>`:''}
@@ -1747,7 +1879,7 @@ function renderComposer(){
  const panel=C.media.kind!=='photo'||!C.panel?'':C.panel==='pf'?`<div class="pnl"><span class="pnl-t">ฟิลเตอร์รูป</span><div class="fxstrip">${PHF.map(f=>`<button class="pfb ${(C.pf||'orig')===f.id?'on':''}" data-act="setPf" data-arg="${f.id}"><span class="th" style="background-image:url('${C.media.src}');${f.css?'filter:'+f.css:''}"></span>${f.n}</button>`).join('')}</div></div>`
   :`<div class="pnl"><span class="pnl-t">กรอบ</span><div class="fxstrip">${FRAMES.map(f=>`<button class="frb ${(C.frame||'none')===f.id?'on':''}" data-act="setFrame" data-arg="${f.id}"><span class="e">${f.e}</span>${f.n}</button>`).join('')}</div><span class="pnl-t">สติกเกอร์ · แตะเพื่อวาง ลากไปถังขยะเพื่อลบ</span><div class="emog">${EMO.map(e=>`<button data-act="addEmo" data-arg="${e}">${e}</button>`).join('')}</div></div>`;
  const pl=C.place&&place(C.place);
- el.innerHTML=`<div class="cmp-stage editing" id="edstage">${frameHTML(it,{final:false})}<div class="cmp-top"><button class="iconbtn w" data-act="cmpBack" aria-label="ย้อนกลับ">${I('back')}</button>${pl?`<span class="chip">${I('pin','xs')} ${esc(pl.n)}</span>`:'<span></span>'}</div>${tools}${face}<div class="trash" id="trash">${I('trash')}</div></div>
+ el.innerHTML=`<div class="cmp-stage editing" id="edstage">${frameHTML(it,{final:false})}<div class="cmp-top"><button class="iconbtn w" data-act="cmpBack" aria-label="ย้อนกลับ">${I('back')}</button>${pl?`<span class="chip bub"><span class="bi">🫧</span>บับเบิล ${esc(pl.n)}</span>`:'<span></span>'}</div>${tools}${face}<div class="trash" id="trash">${I('trash')}</div></div>
   <div class="cmp-bot">${vctl}${panel||pvc}<button class="btn primary block" data-act="${reply?'sendReply':'postSheet'}">${reply?I('send','sm')+' ส่งคอมเมนต์':'ถัดไป'}</button></div>`;
  const fr=$('.fr',el); if(C.media.kind==='voice'){$('.vwrap',fr).style.right='20px';activate(fr,{loop:true})}else if(C.media.voice)activate(fr,{loop:true});
  bindStickers($('#edstage',el));
@@ -1849,14 +1981,14 @@ async function doPost(){
  closeSheet(true); const m=C.media, fromRit=C.fromRit; let key=null,src=m.src,voice=null;
  if(m.kind==='voice'||(m.kind==='photo'&&m.src.startsWith('data:'))){key=uid('m');const data=m.kind==='voice'?await blobToData(m.blob):m.src;MEM[key]=data;await idb.put(key,data);src=null}
  if(m.voice){const vk=uid('m'),d=await blobToData(m.voice.blob);MEM[vk]=d;await idb.put(vk,d);voice={key:vk,dur:m.voice.dur,text:m.voice.text||'',filter:m.voice.filter}}
- const as=C.asMe&&myProf()?{n:S.me.prof.name,img:S.me.prof.img}:null;
+ const as=myProf()?{n:S.me.prof.name,img:S.me.prof.img}:null;
  const p={id:uid('p'),by:'me',kind:m.kind,src,key,dur:m.dur,text:m.text||'',bg:C.bg,filter:m.kind==='voice'?C.filter:null,stickers:C.stickers,place:C.place,showId:C.showId?meLabel():null,prompt:C.stickers.some(s=>s.t==='prompt'),ate:0,ated:false,same:0,samed:false,sf:{},sy:{},pf:C.pf,frame:C.frame,as,voice,capTop:C.capTop,replies:[],at:Date.now()};
  S.posts.unshift(p); const first=!S.log.some(l=>l.e==='post_created');
  log('post_created',{pf:p.pf,frame:p.frame,emo:p.stickers.filter(x=>x.t==='emo').length,kind:p.kind,filter:p.filter||(voice&&voice.filter),as_me:!!p.as,photo_voice:!!voice,place:!!p.place,prompt:p.prompt,show_id:!!p.showId,has_transcript:!!p.text,first,secs_since_start:Math.round((Date.now()-S.t0)/1000)});
  closeComposerRaw(); if(SV){SV.el.remove();SV=null} S.tab='home'; S.view='uni'; S.sort='hot'; save(); render(); $('#feed').scrollTop=0;
  simulateReply(p.id);simulateSame(p.id);
  if(fromRit&&p.prompt){openRitual('done');return}
- toast(p.as?`โพสต์แล้ว · กำลังส่งถึงนิสิตจุฬาฯ 300 คนแรก 🚀`:'โพสต์แล้ว 🎭 · กำลังส่งถึงนิสิตจุฬาฯ 300 คนแรก 🚀',{label:'ดู',fn:()=>openSeenSheet(p.id)});
+ toast('โพสต์แล้ว · กำลังส่งถึงนิสิตจุฬาฯ 300 คนแรก 🚀',{label:'ดู',fn:()=>openSeenSheet(p.id)});
 }
 async function sendReply(){
  const m=C.media,pid=C.target;let data=null;
@@ -1871,8 +2003,8 @@ let PF=null;
 function profSheet(after){PF={name:S.me.prof.name||'',img:S.me.prof.img||null,after};paintProf(false)}
 function paintProf(inplace){
  const up=PF.img&&PF.img.startsWith('data:'), ini=esc([...(PF.name.trim()||'?')][0]);
- const html=`<h2 class="h1">ชื่อและรูปของคุณ</h2><p class="sub">ใช้เฉพาะตอนที่คุณเลือก “ใช้ชื่อฉัน” · โพสต์ไม่ระบุตัวตนไม่ผูกกับชื่อนี้</p>
-  <div class="lbl2" style="margin-top:0">ชื่อที่เพื่อนเห็น</div><input class="input" id="pfName" maxlength="20" placeholder="เช่น มิ้นท์ หรือ ปั้น วิศวะ" value="${esc(PF.name)}">
+ const html=`<h2 class="h1">ชื่อและรูปของคุณ</h2><p class="sub">ขึ้นในทุกโพสต์ คอมเมนต์ และแชทของคุณ · ชื่ออะไรก็ได้ที่คุณเลือก</p>
+  <div class="lbl2" style="margin-top:0">ชื่อที่คนอื่นเห็น</div><input class="input" id="pfName" maxlength="20" placeholder="เช่น มิ้นท์ หรือ ปั้น วิศวะ" value="${esc(PF.name)}">
   <div class="lbl2">รูปโปรไฟล์</div><div class="avpick"><button class="ini ${!PF.img?'on':''}" data-act="pfImg" data-arg="">${ini}</button>${AVS.map(a=>`<button class="${PF.img===a?'on':''}" style="background-image:url('${a}')" data-act="pfImg" data-arg="${a}" aria-label="รูปตัวอย่าง"></button>`).join('')}<button class="up ${up?'on':''}" data-act="pfUpload" aria-label="เลือกรูปจากเครื่อง" ${up?`style="background-image:url('${PF.img}')"`:''}>${up?'':I('img')}</button></div>
   <button class="btn primary block" data-act="pfSave">บันทึก</button>`;
  const sh=inplace&&$('.sheetw .sheet'); if(sh)sh.innerHTML='<div class="grab"></div>'+html; else sheet(html);
@@ -1883,7 +2015,7 @@ function paintProf(inplace){
 let R=null;
 const RIT_SEQ=['intro','voted','how','gif','talk','hear','done'];
 const RIT_HOW=[
- {id:'gif',e:'✨',n:'ตอบด้วย GIF',w:'ไม่ต้องพูด ไม่ต้องถ่าย แตะ GIF แล้วโพสต์เลย'},
+
  {id:'voice',e:'🎙️',n:'พูดตอบ',w:'ปลอมเสียงให้อัตโนมัติ และมีคำบรรยายให้คนที่เปิดเสียงไม่ได้'},
  {id:'photo',e:'📷',n:'ถ่ายรูปตอบ',w:'เบลอหน้าคนอื่นได้ก่อนโพสต์ ติดข้อความสั้น ๆ บนรูปได้'},
 ];
@@ -1891,7 +2023,7 @@ const thaiDate=()=>new Date().toLocaleDateString('th-TH',{day:'numeric',month:'s
 function openRitual(step){
  stopActive(); closeSheet(true); if(SV){const el=SV.el;SV=null;el.remove()}
  if(R&&R.el)R.el.remove();
- R={step:step||(S.vote?'voted':'intro'),how:'gif',filter:S.filter,media:null,raw:null,mood:null,dir:'fwd'};
+ R={step:step||(S.vote?'voted':'intro'),how:'voice',filter:S.filter,media:null,raw:null,mood:null,dir:'fwd'};
  const el=document.createElement('div');el.className='rit';app.appendChild(el);R.el=el;
  log('ritual_opened',{step:R.step});renderRit();
 }
@@ -1914,15 +2046,15 @@ function ritHTML(){
    <div class="poll">${PROMPT.poll.map(o=>`<button class="popt" data-act="ritVote" data-arg="${o[0]}"><span class="pe">${o[1]}</span><span>${esc(o[2])}</span></button>`).join('')}</div>
    <div class="proof"><span class="avs">${avs}</span>ตอบแล้ว ${promptCount()} คน${S.me.fac?` · ${esc(S.me.fac)} ${12+hash(S.me.fac)%30} คน`:''}</div>
   </div></div>
-  <div class="rit-foot"><button class="btn soft block" data-act="ritGo" data-arg="how">ตอบด้วย GIF เสียง หรือรูปแทน</button><button class="lnk" data-act="ritPeek">ดูคำตอบคนอื่นก่อน</button></div>`;
+  <div class="rit-foot"><button class="btn soft block" data-act="ritGo" data-arg="how">ตอบด้วยเสียง หรือรูปแทน</button><button class="lnk" data-act="ritPeek">ดูคำตอบคนอื่นก่อน</button></div>`;
  }
  if(st==='voted'){const tot=PROMPT.poll.reduce((a,o)=>a+o[3],0)+1;
   return `${ritTop()}<div class="rit-body"><div class="center">
    <div class="kick">คำถามวันนี้ · ${thaiDate()}</div><h1 class="q sm">${esc(PROMPT.q)}</h1>
    <div class="poll res">${PROMPT.poll.map(o=>{const n=o[3]+(S.vote===o[0]?1:0),pc=Math.round(n/tot*100);return `<div class="popt ${S.vote===o[0]?'mine':''}" style="--s:${(pc/100).toFixed(3)}"><i class="bar"></i><span class="pe">${o[1]}</span><span>${esc(o[2])}${S.vote===o[0]?' <em>· คุณ</em>':''}</span><span class="pc">${pc}%</span></div>`}).join('')}</div>
-   <p class="sub">นับคุณแล้ว · ไม่มีใครรู้ว่าใครเลือกอะไร<br>อยากเล่าเพิ่มไหม? ส่ง GIF อันเดียวก็พอ</p>
+   <p class="sub">นับคุณแล้ว · ไม่มีใครรู้ว่าใครเลือกอะไร<br>อยากเล่าเพิ่มไหม? พูดหรือถ่ายรูปตอบก็ได้</p>
   </div></div>
-  <div class="rit-foot"><button class="btn primary block" data-act="ritGo" data-arg="how">เพิ่มคำตอบด้วย GIF หรือเสียง</button><button class="lnk" data-act="ritPeek">ดูคำตอบคนอื่น</button></div>`}
+  <div class="rit-foot"><button class="btn primary block" data-act="ritGo" data-arg="how">เพิ่มคำตอบด้วยเสียงหรือรูป</button><button class="lnk" data-act="ritPeek">ดูคำตอบคนอื่น</button></div>`}
  if(st==='gif') return `${ritTop('how')}<div class="rit-body">
    <div class="kick" style="margin-top:18px">ขั้นที่ 2 จาก 2</div>
    <h1 class="q sm">เลือก GIF ที่ตอบแทนคุณ</h1>
@@ -1932,7 +2064,7 @@ function ritHTML(){
  if(st==='how') return `${ritTop('intro')}<div class="rit-body">
    <div class="kick" style="margin-top:18px">เลือกวิธีตอบ</div>
    <h1 class="q sm">อยากตอบแบบไหน?</h1>
-   <p class="sub">ตอบแบบไหนก็ขึ้นเป็นชื่อเล่นสุ่มที่ใช้แค่โพสต์นี้</p>
+   <p class="sub">ตอบแบบไหนก็ขึ้นในชื่อและรูปโปรไฟล์ของคุณ</p>
    <div class="ropts">${RIT_HOW.map(h=>`<button class="ropt ${R.how===h.id?'on':''}" data-act="ritHow" data-arg="${h.id}">${h.e} ${h.n}${h.id==='gif'?' · เร็วสุด':''}<span class="why"><span>${h.w}</span></span></button>`).join('')}</div>
    <div class="fine">${I('lock')}<span>เลือกได้ทุกครั้ง ไม่ผูกกับโปรไฟล์ของคุณ</span></div>
   </div>
@@ -1956,14 +2088,14 @@ function ritHTML(){
    <div class="fxstrip" style="margin-top:14px">${FX.map(x=>`<button class="fxb ${R.filter===x.id?'on':''}" data-act="ritFx" data-arg="${x.id}"><span class="e">${x.e}</span>${x.n}</button>`).join('')}</div>
    ${R.filter==='orig'?`<div class="note warn" style="margin-top:10px">⚠️ เสียงจริง: คนที่รู้จักคุณอาจจำเสียงได้</div>`:''}
   </div>
-  <div class="rit-foot"><button class="btn primary block" data-act="ritPost">${I('mask','sm')} โพสต์แบบไม่ระบุตัวตน</button><button class="lnk" data-act="ritGo" data-arg="talk">อัดใหม่</button></div>`;
+  <div class="rit-foot"><button class="btn primary block" data-act="ritPost">โพสต์เลย</button><button class="lnk" data-act="ritGo" data-arg="talk">อัดใหม่</button></div>`;
  }
  if(st==='done'){
   const n=promptCount();
   return `${ritTop()}<div class="rit-body"><div class="center">
    <div class="breathe donebadge" style="animation:doneIn 620ms var(--ease-out) backwards">${I('check','lg')}</div>
    <h1 class="q" style="margin-top:34px">ตอบ<span class="hl">คำถามวันนี้</span>แล้ว!</h1>
-   <p class="sub">คุณเป็นหนึ่งใน ${n} คนที่ตอบวันนี้<br>ไม่มีใครรู้ว่าคำตอบนี้เป็นของคุณ</p>
+   <p class="sub">คุณเป็นหนึ่งใน ${n} คนที่ตอบวันนี้<br>คนทั้งจุฬาฯ เห็นคำตอบนี้แล้ว</p>
    <div class="kick" style="margin-top:26px;color:var(--ink2);letter-spacing:0;text-transform:none;font:600 13px/1.3 var(--f-b)">คำถามวันนี้สนุกไหม?</div>
    <div class="rtiles">${[['meh','😴','เฉย ๆ'],['ok','🙂','โอเค'],['fun','🔥','สนุก']].map(m=>`<button class="rtile ${R.mood===m[0]?'on':''}" data-act="ritMood" data-arg="${m[0]}"><span class="e">${m[1]}</span>${m[2]}</button>`).join('')}</div>
   </div></div>
@@ -2036,9 +2168,9 @@ function classifyEmail(e){
 }
 const OB_SLIDES=[
  {a:`<div class="bigtile logo"><div class="logo">EIGHT<br>TEEN</div><span class="vpill">${'✓'} นิสิตจุฬาฯ ตัวจริงเท่านั้น</span></div>`,h:'ที่ของ<span class="hl">เด็กจุฬาฯ</span><br>ตัวจริง',p:'ยืนยันด้วยอีเมลจุฬาฯ ครั้งเดียว ไม่มีบัญชีปลอม เปิดที่จุฬาฯ เป็นที่แรก'},
- {a:`<div class="bigtile">🎭</div>`,h:'พูด โพสต์ คอมเมนต์<br>โดย<span class="hl">ไม่มีใครรู้</span>ว่าเป็นคุณ',p:'ทุกโพสต์ไม่ระบุตัวตนเป็นค่าเริ่มต้น คนอื่นเห็นแค่ว่าคุณเป็นนักศึกษาจุฬาฯ'},
- {a:`<div class="bigtile">📣</div>`,h:'โพสต์เดียว<br><span class="hl">ทั้งจุฬาฯ</span> ได้ยิน',p:'ไม่ต้องมีผู้ติดตาม ไม่ต้องรอยอดไลก์ ทุกโพสต์ได้นิสิตจุฬาฯ เห็นอย่างน้อย 300 คนแรก แม้จะไม่ระบุตัวตน'},
- {a:`<div class="bigtile list"><div>${avHTML({e:'🦊',c:'#ffd2b3'})} จิ้งจอกส้ม</div><div>${avHTML({e:'🐙',c:'#c9f2ea'})} หมึกมิ้นต์</div><div>${avHTML({e:'🦉',c:'#ffd3e7'})} นกฮูกชมพู</div></div>`,h:'<span class="hl">ชื่อเล่นใหม่</span><br>ทุกโพสต์',p:'สามชื่อนี้อาจเป็นคนเดียวกัน ไม่มีใครโยงโพสต์ของคุณเข้าด้วยกันได้ และหน้า “ฉัน” มีแค่คุณที่เห็น'},
+ {a:`<div class="bigtile">🪪</div>`,h:'ชื่อไหนก็ได้<br>ที่<span class="hl">คุณเลือกเอง</span>',p:'ตั้งชื่อและรูปโปรไฟล์เอง จะชื่อเล่น ชื่อลับ หรือชื่อจริงก็ได้ แต่ทุกบัญชีเป็นนิสิตจุฬาฯ ตัวจริงที่ยืนยันอีเมลแล้ว'},
+ {a:`<div class="bigtile">📣</div>`,h:'โพสต์เดียว<br><span class="hl">ทั้งจุฬาฯ</span> ได้ยิน',p:'ไม่ต้องมีผู้ติดตาม ไม่ต้องรอยอดไลก์ ทุกโพสต์ได้นิสิตจุฬาฯ เห็นอย่างน้อย 300 คนแรก แม้จะเพิ่งสมัครวันแรก'},
+ {a:`<div class="bigtile">💬</div>`,h:'เจอโพสต์โดนใจ<br><span class="hl">ทักแชท</span>ได้เลย',p:'แตะชื่อหรือรูปเพื่อดูโปรไฟล์และโพสต์ทั้งหมดของคนนั้น ส่งข้อความหรือแชร์โพสต์ให้เพื่อนได้ในแอป'},
  {a:`<div class="bigtile">🎙️</div>`,h:'เสียงของคุณ<br>แต่<span class="hl">ไม่มีใครจำได้</span>',p:'ใส่ฟิลเตอร์ปลอมเสียงได้ ทุกคลิปมีคำบรรยาย เปิดเสียงไม่ได้ก็อ่านได้ หรือฟัง 2× ก็ได้'}];
 function obTop(step){
  const i=OB_ORDER.indexOf(step),back=OB_PREV[step];
@@ -2077,16 +2209,15 @@ function obHTML(){
  if(st==='fac'){const ok=S.me.fac&&S.me.year;
   return `${obTop('fac')}<div class="ob-body"><h1 class="h1">เรียนคณะอะไร ปีไหน?</h1><p class="lead">ใช้แนะนำเรื่องใกล้ตัวคุณ ปกติซ่อนไว้ ทุกโพสต์ขึ้นแค่ “นักศึกษาจุฬาฯ” จะโชว์คณะในโพสต์ไหนก็เลือกเองตอนโพสต์</p>${facPicker()}</div>
   ${foot(`<button class="btn primary block" ${ok?'':'disabled style="opacity:.4"'} data-act="obGo" data-arg="id">ไปต่อ</button>`)}`}
- if(st==='id'){const m=o.idMode||'anon',pf=S.me.prof;
-  return `${obTop('id')}<div class="ob-body"><h1 class="h1">อยากให้เพื่อนเห็นคุณแบบไหน?</h1><p class="lead">เลือกใหม่ได้ทุกครั้งที่โพสต์หรือคอมเมนต์ ค่าเริ่มต้นคือไม่ระบุตัวตน</p>
-  ${asCards(m==='me','obId').replace('ชื่อเล่นสุ่ม ใช้แค่โพสต์นี้','ชื่อเล่นสุ่มใหม่ทุกโพสต์ ไม่มีใครโยงได้')}
-  ${m==='me'?`<div class="lbl2">ชื่อที่เพื่อนเห็น</div><input class="input" id="obName" maxlength="20" placeholder="เช่น มิ้นท์ หรือ ปั้น วิศวะ" value="${esc(pf.name)}">
-   <div class="lbl2">รูปโปรไฟล์ (ไม่บังคับ)</div><div class="avpick">${[null,...AVS].map(a=>`<button class="${a?'':'ini'} ${(pf.img||null)===a?'on':''}" ${a?`style="background-image:url('${a}')"`:''} data-act="obAv" data-arg="${a||''}">${a?'':esc([...(pf.name||'?')][0])}</button>`).join('')}</div>`:''}
-  <div class="fine">${I('lock')}<span>โพสต์ไม่ระบุตัวตนไม่ผูกกับชื่อนี้ แม้คุณจะตั้งชื่อไว้</span></div></div>
+ if(st==='id'){const pf=S.me.prof;
+  return `${obTop('id')}<div class="ob-body"><h1 class="h1">ตั้งชื่อและรูปโปรไฟล์</h1><p class="lead">ชื่ออะไรก็ได้ ชื่อเล่น ชื่อลับ หรือชื่อจริง ทุกโพสต์ คอมเมนต์ และแชทจะขึ้นชื่อนี้ คนที่แตะชื่อคุณจะเห็นโปรไฟล์และโพสต์ของคุณ</p>
+  <div class="lbl2" style="margin-top:0">ชื่อที่คนอื่นเห็น</div><input class="input" id="obName" maxlength="20" placeholder="เช่น มิ้นท์ หรือ ปั้น วิศวะ" value="${esc(pf.name)}">
+  <div class="lbl2">รูปโปรไฟล์ (ไม่บังคับ)</div><div class="avpick">${[null,...AVS].map(a=>`<button class="${a?'':'ini'} ${(pf.img||null)===a?'on':''}" ${a?`style="background-image:url('${a}')"`:''} data-act="obAv" data-arg="${a||''}">${a?'':esc([...(pf.name||'?')][0])}</button>`).join('')}</div>
+  <div class="fine">${I('lock')}<span>เปลี่ยนชื่อและรูปได้ทุกเมื่อในหน้า “ฉัน” · อีเมลและวันเกิดไม่มีใครเห็น</span></div></div>
   ${foot(`<button class="btn primary block" data-act="obIdNext">ไปต่อ</button>`)}`}
  if(st==='voice')return `${obTop('voice')}<div class="ob-body"><h1 class="h1">เลือกเสียงลับของคุณ</h1><p class="lead">ทุกคลิปเสียงที่คุณส่งจะผ่านฟิลเตอร์นี้ แตะ ▶ เพื่อฟังตัวอย่าง เปลี่ยนได้ทุกครั้งที่อัด</p>
   ${FX.map(f=>`<div class="fxrow ${S.filter===f.id?'on':''}" data-act="obFx" data-arg="${f.id}" role="button"><span class="e">${f.e}</span><span class="t"><b>${f.n}${f.id==='mask'?' · แนะนำ':''}</b><span><i>${f.d}</i></span></span><button class="pl" data-act="obPreview" data-arg="${f.id}" aria-label="ฟังตัวอย่าง">${I('play')}</button><span class="rad"></span></div>`).join('')}
-  <div class="banner bad obwarn" style="margin-top:6px" ${S.filter==='orig'?'':'hidden'}>${I('mask')}<div><b>เสียงจริงอาจทำให้คนจำคุณได้</b>ถ้าอยากไม่ระบุตัวตนจริง ๆ แนะนำเสียงลับ</div></div></div>
+  <div class="banner bad obwarn" style="margin-top:6px" ${S.filter==='orig'?'':'hidden'}>${I('mask')}<div><b>เสียงจริงอาจทำให้คนจำคุณได้</b>ถ้าไม่อยากให้ใครจำเสียงได้ แนะนำเสียงลับ</div></div></div>
   ${foot(`<button class="btn primary block" data-act="obGo" data-arg="notif">ไปต่อ</button>`)}`;
  if(st==='notif')return `${obTop('notif')}<div class="ob-body" style="display:flex;flex-direction:column;justify-content:center"><div class="art" style="min-height:240px"><div class="bigtile" style="width:180px;height:180px;font-size:84px">🔔</div></div><h1 class="h1" style="text-align:center">รู้ทันทีเมื่อมีคนคอมเมนต์</h1><p class="lead" style="text-align:center">แจ้งเมื่อมีคนคอมเมนต์หรือ ATE โพสต์ของคุณ และตอนคำถามวันนี้มาแล้ว ไม่ส่งช่วง 00:00–07:00</p></div>
   ${foot(`<button class="btn primary block" data-act="obFinish" data-arg="on">เปิดการแจ้งเตือน</button><button class="lnk" style="color:var(--ink2)" data-act="obFinish" data-arg="off">ไว้ทีหลัง</button>`)}`;
@@ -2123,7 +2254,7 @@ const A={
  pickFac(f){S.me.fac=f;save();if($('.ob'))return ob();$$('[data-act=pickFac]').forEach(b=>b.classList.toggle('on',b.dataset.arg===f));const r=$('#facRow');if(r)r.textContent=meLabel()},
  pickYear(y){S.me.year=y;save();if($('.ob'))return ob();$$('[data-act=pickYear]').forEach(b=>b.classList.toggle('on',b.dataset.arg===y));const r=$('#facRow');if(r)r.textContent=meLabel()},
  showRules(){sheet(`<h2 class="h1">กติกาชุมชน</h2><p class="sub">ใช้กับทุกโพสต์และคอมเมนต์</p>${rulesHTML()}`)},
- privacy(){sheet(`<h2 class="h1">ความเป็นส่วนตัว</h2><p class="sub">สิ่งที่เราเก็บ และใครเห็นอะไร</p><div class="note" style="flex-direction:column;gap:6px"><div><b>คนอื่นเห็น</b> ชื่อเล่นสุ่มที่เปลี่ยนทุกโพสต์ และ “นักศึกษาจุฬาฯ” (คณะและชั้นปีเฉพาะโพสต์ที่คุณเลือกโชว์)</div><div><b>คนอื่นไม่เห็น</b> อีเมล วันเกิด และโพสต์อื่นของคุณ</div><div><b>ทีมงาน</b> เปิดดูตัวตนได้เฉพาะเมื่อมีคำสั่งตามกฎหมาย</div><div><b>เสียง</b> เก็บแค่คลิปที่ผ่านฟิลเตอร์แล้ว ไม่เก็บเสียงจริง</div></div>`)},
+ privacy(){sheet(`<h2 class="h1">ความเป็นส่วนตัว</h2><p class="sub">สิ่งที่เราเก็บ และใครเห็นอะไร</p><div class="note" style="flex-direction:column;gap:6px"><div><b>คนอื่นเห็น</b> ชื่อและรูปที่คุณตั้งเอง โพสต์ในหน้าโปรไฟล์ และ “นิสิตจุฬาฯ” (คณะและชั้นปีบนโปรไฟล์ และในโพสต์ที่คุณเลือกโชว์)</div><div><b>คนอื่นไม่เห็น</b> อีเมล วันเกิด แชทของคุณ และสถิติ ATE ของโพสต์คุณ</div><div><b>ทีมงาน</b> เปิดดูตัวตนได้เฉพาะเมื่อมีคำสั่งตามกฎหมาย</div><div><b>เสียง</b> เก็บแค่คลิปที่ผ่านฟิลเตอร์แล้ว ไม่เก็บเสียงจริง</div></div>`)},
  replayOb(){S.onb=false;S.sub=null;S.ob={step:'welcome',slide:0,terms:false};save();render();ob(true)},
  signOut(){if(!confirm('ออกจากระบบ?'))return;S.onb=false;S.sub=null;S.tab='home';S.ob={step:'sso',slide:0,terms:true};save();log('sign_out');render();ob()},
  obGo(st){S.ob.dir=OB_SEQ.indexOf(st)>=OB_SEQ.indexOf(S.ob.step)?'fwd':'back';S.ob.step=st;save();log('ob_step',{step:st});ob(true)},
@@ -2186,7 +2317,7 @@ const A={
  composePlace(){const id=SV.place;const el=SV.el;stopActive();SV=null;el.remove();openComposer({mode:'photo',place:id})},
  openMine(pid){openStack(pid,0)},
  openNotif(id){const n=S.notifs.find(x=>x.id===id);n.read=true;save();
-  if(n.kind==='prompt')A.openPrompt();else if(n.kind==='place')A.openPlace(n.place);else if(n.kind==='same')openSameSheet(n.pid);else if(n.pid){const p=postById(n.pid);openStack(n.pid,n.kind==='reply'?p.replies.length:1)}},
+  if(n.kind==='prompt')A.openPrompt();else if(n.kind==='place')A.openPlace(n.place);else if(n.kind==='same')openAteSheet(n.pid);else if(n.pid){const p=postById(n.pid);openStack(n.pid,n.kind==='reply'?p.replies.length:1)}},
  compose(){openComposer({mode:LAYOUT==='feed'?'text':'photo'})},
  closeCmp(){closeComposer()},
  cmode(m){if(C.recording||C.mode===m)return;const b=$('.modes button.on',C.el);C.pillFrom=b?{x:b.offsetLeft,w:b.offsetWidth}:null;C.swap=true;C.mode=m;renderComposer()},
@@ -2251,6 +2382,285 @@ const A={
  reset(){if(!confirm('ล้างข้อมูลต้นแบบทั้งหมดในเครื่องนี้?'))return;try{localStorage.removeItem(KEY);indexedDB.deleteDatabase('et18v24a')}catch(e){}location.reload()}
 };
 document.addEventListener('click',e=>{const b=e.target.closest('[data-act]');if(!b||!app.contains(b))return;const a=A[b.dataset.act];if(a){e.stopPropagation();a(b.dataset.arg,b,e)}});
+
+
+/* ============ v2.4 · co-founder round ============
+   1 · no anonymous aliases: every post, comment and chat shows the name + photo the person chose
+   2 · tap a name or photo → profile (posts + stats) → Direct Message; every post can be shared in-app or outside
+   3 · comments are a list under the post (post detail); the Stories-style comment timeline is parked for Repost later
+   4 · ATE is the only reaction (same here removed); tapping it shows 🔥 + "ATE"
+   5 · ATE breakdown by faculty / year is visible to the post's owner only
+   6 · posts are photo or voice (GIF only in comments)
+   7 · place chip is a 🫧 Bubble chip; the post sheet has no place or anonymous choice */
+const NICKS=['ต้นข้าว','ฟ้าใส','บอส','มายด์','ภูมิ','เฟิร์น','กัปตัน','ใบตอง','ปลื้ม','นนท์','จูน','ตาล','พีท','ออม','ข้าวหอม','มินนี่','ไอซ์','ปาล์ม','โบ๊ท','น้ำหวาน','แทน','ตะวัน','เอิร์ธ','แป้ง','กาย','ฝ้าย','ต้นน้ำ','มะปราง'];
+const NSUF=['','','','','.','_cu',' 🌷',' ✨'];
+const UCOL=['#7c3aed','#0ea5e9','#f97316','#14b8a6','#ec4899','#65a30d','#e11d48','#6366f1'];
+const AVS_ALL=['blossom','cat','dog','tea','sky','sneakers','petals','golden-hour','camera','concert','bokeh','dandelion'].map(x=>`../img/av/${x}.jpg`);
+let UMAP=null;
+function userOf(by){
+ if(by==='me'){const p=S.me.prof||{};return{id:'me',n:p.name||'คุณ',img:p.img||null,fac:S.me.fac,year:S.me.year}}
+ if(!UMAP){UMAP={};S.posts.forEach(p=>[p,...p.replies].forEach(x=>{if(x.as&&x.by!=='me'&&!UMAP[x.by])UMAP[x.by]={n:x.as.n,img:x.as.img}}))}
+ const h=hash('u|'+by), b=UMAP[by]||{n:NICKS[h%NICKS.length]+NSUF[(h>>>6)%NSUF.length],img:h%5<2?AVS_ALL[(h>>>3)%AVS_ALL.length]:null};
+ return{id:by,n:b.n,img:b.img,fac:FACS[(h>>>4)%FACS.length],year:YEARS[(h>>>9)%4]}}
+const ini=n=>{const c=[...n];return c.find(x=>!'เแโใไ'.includes(x))||c[0]||'?'};
+const userAv=by=>{const u=userOf(by);return{e:esc(ini(u.n)),c:UCOL[hash(by)%UCOL.length],n:esc(u.n),img:u.img,named:true}};
+const allUsers=()=>{const set=new Set(Object.keys(S.dm||{}));S.posts.forEach(p=>{set.add(p.by);p.replies.forEach(r=>set.add(r.by))});set.delete('me');return [...set]};
+
+/* ---------- seed: GIF posts become photos (GIF lives in comments only) ---------- */
+function seed(){const ps=seed_v24(),ph={p3:'../img/av/concert.jpg',p10:'../img/samyan.jpg',c1:'../img/chicken-rice.jpg',c3:'../img/arts-library.jpg',p12:'../img/av/golden-hour.jpg',n1:'../img/av/bokeh.jpg'};
+ ps.forEach(p=>{if(ph[p.id]){p.kind='photo';p.src=ph[p.id]}});return ps}
+function seedDM(){const n=Date.now();return{u5:{msgs:[{by:'u5',t:'สอบเสร็จยังง เห็นโพสต์เมื่อกี้ 555',at:n-36*60000},{by:'u5',t:'เย็นนี้ไปกินหมูกระทะสามย่านกันไหม 🍖',at:n-35*60000}],unread:2}}}
+
+/* ---------- pages stacked over the app ---------- */
+let PV=[];
+const zNext=()=>Math.min(49,41+PV.length+(SV?1:0));
+function pushPage(html,cls){const el=document.createElement('div');el.className='pv '+(cls||'');el.style.zIndex=zNext();el.innerHTML=html;
+ el.addEventListener('animationend',()=>el.classList.add('still'),{once:true});app.appendChild(el);PV.push(el);return el}
+function popPage(){const el=PV.pop();if(!el)return;el.classList.add('out');setTimeout(()=>el.remove(),200);if(S.tab==='chat'&&!SV)render(true)}
+function closePages(){PV.forEach(e=>e.remove());PV=[]}
+function render(keep){stopActive();const pv=[...PV];
+ if(S.tab==='home')renderHome(keep);else if(S.tab==='notif')renderNotif();else if(S.tab==='chat')renderChat();else if(S.sub==='settings')renderSettings();else renderMe();
+ pv.forEach(e=>{e.classList.add('still');app.appendChild(e)})}
+function tabbarHTML(){
+ const unread=S.notifs.filter(n=>!n.read).length, dm=Object.values(S.dm||{}).reduce((a,t)=>a+(t.unread||0),0);
+ const t=(k,ic,l,dot)=>`<button class="tab ${S.tab===k?'on':''}" data-act="tab" data-arg="${k}">${I(ic)}${l}${dot?`<span class="dot">${dot}</span>`:''}</button>`;
+ return `<nav class="tabbar">${t('home','home','หน้าแรก')}${t('chat','send','แชท',dm)}${t('notif','bell','แจ้งเตือน',unread)}${t('me','user','ฉัน')}</nav><button class="fab" data-act="compose" aria-label="โพสต์">${I('plus')}</button>`}
+
+/* ---------- ATE: the only reaction ---------- */
+function burst(x,y){const r=app.getBoundingClientRect(),b=document.createElement('div');b.className='burst ate2';b.innerHTML='<span class="bf">🔥</span><span class="bw">ATE</span>';
+ b.style.left=Math.min(Math.max(x-r.left,70),r.width-70)+'px';b.style.top=Math.max(y-r.top-60,90)+'px';app.appendChild(b);setTimeout(()=>b.remove(),950)}
+function sameChip(){return ''}
+const ateBtn=p=>`<button class="rb ${p.ated?'on':''}" data-act="ate" data-arg="${p.id}" aria-label="ATE"><span class="o">${I(p.ated?'flameF':'flame')}</span>${nf(p.ate)}</button>`;
+const shareBtn=p=>`<button class="rb shr" data-act="share" data-arg="${p.id}" aria-label="แชร์"><span class="o">${I('send')}</span></button>`;
+function ateStats(p){if(p.af)return{sf:p.af,sy:p.ay||{}};const d=SAME_SEED[p.id],h=hash(p.id),m=mkSame(p.id,p.ate||0,d?d[1]:FACS[h%8],d?d[2]:YEARS[h%4]);return{sf:m.sf,sy:m.sy}}
+function openAteSheet(pid){const p=postById(pid);if(!p)return;if(p.by!=='me'){toast('สถิติ ATE เห็นได้เฉพาะเจ้าของโพสต์');return}
+ log('ate_stats_opened',{pid,ate:p.ate});const st=ateStats(p),n=p.ate||0,mf=S.me.fac,my=S.me.year;
+ const f=topK(st.sf).slice(0,4),fSum=f.reduce((a,e)=>a+e[1],0),yrs=YEARS.map(y=>[y,st.sy[y]||0]).filter(e=>e[1]>=MIN_K),ySum=yrs.reduce((a,e)=>a+e[1],0);
+ const row=(lab,v,on,tg=' · คณะคุณ')=>`<div class="popt sm ${on?'mine':''}" style="--s:${n?(v/n).toFixed(3):0}"><i class="bar"></i><span>${esc(lab)}${on?tg:''}</span><span class="pc">${nf(v)}</span></div>`;
+ const few=!f.length&&!yrs.length;
+ sheet(`<h2 class="h1">🔥 ${nf(n)} ATE</h2><p class="sub">${I('lock','xs')} เห็นแค่คุณ (เจ้าของโพสต์) · ไม่มีใครรู้ว่าใครกด · แยกกลุ่มเฉพาะที่มี ${MIN_K} คนขึ้นไป</p>
+  ${few?`<div class="note" style="margin-top:10px">ยังน้อยเกินไปที่จะแยกกลุ่ม · ต้องมีอย่างน้อย ${MIN_K} คนต่อกลุ่ม</div>`
+  :`<div class="lbl2">ATE จากคณะไหน</div><div class="poll" style="margin-top:0">${f.map(e=>row(e[0],e[1],e[0]===mf)).join('')}${n-fSum>0?row('คณะอื่นๆ / ไม่ระบุ',n-fSum):''}</div>
+   <div class="lbl2">ชั้นปี</div><div class="poll" style="margin-top:0">${yrs.map(e=>row(e[0],e[1],e[0]===my,' · ปีคุณ')).join('')}${n-ySum>0?row('อื่นๆ / ไม่ระบุ',n-ySum):''}</div>`}
+  <div class="stats" style="margin:14px 0 0"><div><b>${nf(seenOf(p))}</b><span>คนเห็น</span></div><div><b>${n?Math.max(1,Math.round(n/Math.max(1,seenOf(p))*100)):0}%</b><span>ATE ต่อคนเห็น</span></div><div><b>${p.replies.length}</b><span>คอมเมนต์</span></div></div>`)}
+function paintAte(pid){const p=postById(pid);if(!p)return;$$(`[data-act="ate"][data-arg="${pid}"]`).forEach(b=>{if(b.classList.contains('fba'))return;b.innerHTML=`<span class="o">${I(p.ated?'flameF':'flame')}</span>${nf(p.ate)}`})}
+/* your post earns ATE from your own faculty first; one notification each time */
+function simulateSame(pid){
+ const add=k=>{const p=postById(pid);if(!p)return;p.af=p.af||{};p.ay=p.ay||{};const mf=S.me.fac||FACS[0],my=S.me.year||YEARS[0];
+  for(let i=0;i<k;i++){const j=p.ate,f=j%4===3?FACS.filter(x=>x!==mf)[j%5]:mf,y=j%3===2?YEARS.filter(x=>x!==my)[j%4]:my;p.ate++;p.af[f]=(p.af[f]||0)+1;p.ay[y]=(p.ay[y]||0)+1}
+  S.notifs.push({id:uid('n'),kind:'same',pid,text:`${p.ate} คน ATE โพสต์ของคุณ · ดูได้ว่ามาจากคณะไหน (เห็นแค่คุณ)`,at:Date.now(),read:false});save();log('simulated_ate',{pid,n:p.ate});
+  toast(`🔥 ${p.ate} คน ATE โพสต์ของคุณ`,{label:'ดูสถิติ',fn:()=>openAteSheet(pid)});paintAte(pid);if(!SV&&!C&&!PV.length&&S.tab!=='home')render(true)};
+ setTimeout(()=>add(5),9000); setTimeout(()=>add(9),16000)}
+function simulateReply(pid){
+ setTimeout(()=>{const p=postById(pid);if(!p)return;const g=GIFS[Math.floor(Math.random()*GIFS.length)][0],by='u'+(10+Math.floor(Math.random()*5)),a=userAv(by);
+  p.replies.push({id:uid('r'),by,kind:'gif',src:`../img/gif/${g}.gif`,stickers:[],at:Date.now(),ate:0,ated:false});
+  S.notifs.push({id:uid('n'),kind:'reply',pid,text:`${userOf(by).n} คอมเมนต์โพสต์ของคุณด้วย GIF`,alias:a.e,color:a.c,at:Date.now(),read:false});save();log('simulated_reply',{pid});
+  toast(`💬 ${userOf(by).n} คอมเมนต์โพสต์ของคุณ`,{label:'ดู',fn:()=>openStack(pid,p.replies.length)});
+  if(SV&&SV.mode==='replies'&&SV.pid===pid)renderStack();else if(!SV&&!C)render(true)},25000)}
+
+/* ---------- feed: A (Story frame) and B (cards) ---------- */
+const bubbleChip=p=>{const pl=p.place&&place(p.place);return pl?`<button class="chip bub" data-act="openPlace" data-arg="${pl.id}" aria-label="ดูบับเบิล ${esc(pl.n)}"><span class="bi">🫧</span>บับเบิล · ${esc(pl.n)}</button>`:''};
+const ateStatChip=p=>p.by==='me'?`<button class="chip astat" data-act="ateStats" data-arg="${p.id}">📊 สถิติ ATE · เห็นแค่คุณ</button>`:'';
+function storyChips(p){const c=ateStatChip(p)+reachChip(p)+bubbleChip(p)+(p.prompt?`<button class="chip brand" data-act="openPrompt">${PROMPT.e} คำถามวันนี้</button>`:'');return c?`<div class="schips">${c}</div>`:''}
+function slideHTML(p){
+ const a=userAv(p.by), n=p.replies.length, u=unseenOf(p).length;
+ const avs=[...new Set(p.replies.map(r=>r.by))].slice(0,3).map(b=>avHTML(userAv(b),'sm')).join('');
+ return `<section class="slide ${p.kind==='voice'?'lt':''}" data-pid="${p.id}"><div class="card">${frameHTML(p)}
+  <div class="stop"><button class="sauth" data-act="profile" data-arg="${p.by}" aria-label="โปรไฟล์ ${a.n}">${avHTML(a)}</button><div><button class="sname" data-act="profile" data-arg="${p.by}">${a.n}${p.by==='me'?'<span class="badge">คุณ</span>':''}</button><span>${esc(p.showId||'นิสิตจุฬาฯ')} · ${ago(p.at)} · ${seenBtn(p,'short')}</span></div><button class="sico" data-act="more" data-arg="${p.id}" aria-label="เพิ่มเติม">${I('more')}</button></div></div>
+  <div class="sbar">${storyChips(p)}<div class="sact">
+   <button class="sreply" data-act="openStack" data-arg="${p.id}">${n?`<span class="avs">${avs}</span>${n} คอมเมนต์${u?` <span class="newb">ใหม่ ${u}</span>`:''}`:`${I('mic','sm')} คอมเมนต์คนแรกเลย…`}</button>
+   ${ateBtn(p)}${shareBtn(p)}
+  </div></div></section>`}
+function cardHTML(p){
+ const a=userAv(p.by), n=p.replies.length, txs=(p.stickers||[]).filter(x=>x.t==='text').map(x=>x.s).join(' · ');
+ let body='';
+ if(p.kind==='text'){const big=p.bg!=null&&!p.voice&&(p.text||'').length<=90;
+  body=big?`<div class="fbt big" style="background:${BG[p.bg].bg}">${esc(p.text)}</div>`:`<div class="fbt">${esc(p.text)}</div>`;
+  if(p.voice)body+=fbPlayer(p,{src:vsrc(p.voice),dur:p.voice.dur,filter:p.voice.filter,text:p.voice.text},false);}
+ else if(p.kind==='voice'){body=(txs?`<div class="fbt">${esc(txs)}</div>`:'')+fbPlayer(p,{src:srcOf(p),dur:p.dur,filter:p.filter,text:p.text},true);}
+ else {body=`<div class="fbm" data-act="openPost" data-arg="${p.id}">${frameHTML(p)}</div>`+(p.voice?fbPlayer(p,{src:vsrc(p.voice),dur:p.voice.dur,filter:p.voice.filter,text:p.voice.text},false):'');}
+ const top=[...p.replies].sort((x,y)=>y.ate-x.ate)[0], ta=top&&userAv(top.by);
+ const peek=top?`<button class="fbpeek" data-act="openStack" data-arg="${p.id}">${avHTML(ta,'sm')}<span><b>${ta.n}</b> ${top.kind==='voice'?'🎙 '+esc(top.text||'เสียง'):top.kind==='gif'?'ตอบด้วย GIF':top.kind==='photo'?'📷 รูป':esc(top.text||'')}</span>${n>1?`<em>+${n-1}</em>`:''}</button>`:'';
+ const chips=ateStatChip(p)+bubbleChip(p);
+ return `<article class="fbc" data-pid="${p.id}">
+  <div class="fbh"><button data-act="profile" data-arg="${p.by}" style="display:flex;border-radius:50%" aria-label="โปรไฟล์ ${a.n}">${avHTML(a)}</button><div class="who2"><b><button data-act="profile" data-arg="${p.by}" style="font:inherit;color:inherit">${a.n}</button>${p.by==='me'?'<span class="badge">คุณ</span>':''}</b><span>${esc(p.showId||'นิสิตจุฬาฯ')} · ${ago(p.at)}</span></div><button class="iconbtn sm0" data-act="more" data-arg="${p.id}" aria-label="เพิ่มเติม">${I('more')}</button></div>
+  ${p.prompt?`<button class="chip brand fbq" data-act="openPrompt">${PROMPT.e} ${esc(PROMPT.q)}</button>`:''}
+  ${body}
+  ${chips?`<div style="display:flex;gap:6px;flex-wrap:wrap;padding:10px 16px 0">${chips}</div>`:''}
+  <div class="fbstats">${reachChip(p)}${p.ate?`<span>🔥 ${nf(p.ate)}</span>`:''}${n?`<button class="fbn" data-act="openStack" data-arg="${p.id}">${n} คอมเมนต์</button>`:''}${seenBtn(p,'long')}</div>
+  <div class="fbact"><button class="fba ${p.ated?'on':''}" data-act="ate" data-arg="${p.id}">${I(p.ated?'flameF':'flame','sm')} ATE</button><button class="fba" data-act="openStack" data-arg="${p.id}">${I('bubble','sm')} คอมเมนต์</button><button class="fba" data-act="share" data-arg="${p.id}">${I('send','sm')} แชร์</button></div>
+  ${peek}
+ </article>`}
+
+/* ---------- post detail: the post, then its comments as a list ---------- */
+function openStack(pid,start){const p=postById(pid);if(!p)return;
+ log('replies_opened',{pid,view:'list',total:p.replies.length,start:start==null?'comments':start===0?'post':'latest'});
+ showStack({mode:'replies',pid,view:'all',newIds:[],order:'old',lsort:'old',viewed:new Set(),listOpened:true,items:()=>[postById(pid),...replyList()],i:0,start});
+ SV.el.style.zIndex=Math.min(49,41+PV.length+1)}
+function renderStack(){if(SV.mode==='replies')return renderPostDetail();return renderStack_v23()}
+function cVoice(id,src,dur,filter,text){return `<div class="cvoice"><button class="cpb" data-act="cPlay" data-arg="${id}" aria-label="เล่นเสียง">${I('play','sm')}</button><div class="wave">${waveHTML(src||id)}</div><span class="tm">${mmss(Math.round(dur||0))}</span><span>${fx(filter).e}</span><audio preload="none" playsinline src="${src}"></audio></div>${text?`<p class="ctx">${esc(text)}</p>`:''}`}
+function cmtRows2(p){const v=S.visit[p.id],list=SV.lsort==='top'?rankReplies(p):chrono(p);
+ return list.map(r=>{const a=userAv(r.by),st=(r.stickers||[]).filter(x=>x.t==='text').map(x=>x.s).join(' · '),isNew=!!v&&r.by!=='me'&&r.at>v;if(r.by!=='me')SV.viewed.add(r.id);
+  let body;
+  if(r.kind==='voice')body=cVoice(r.id,srcOf(r),r.dur,r.filter,r.text);
+  else{body=`<button class="cmed ${r.kind}" data-act="cView" data-arg="${r.id}" aria-label="ดูรูป"><img src="${srcOf(r)}" alt="" loading="lazy">${st?`<span class="cst">${esc(st)}</span>`:''}</button>`;if(r.voice)body+=cVoice(r.id+'v',vsrc(r.voice),r.voice.dur,r.voice.filter,r.voice.text)}
+  return `<div class="crow2" data-rid="${r.id}"><button class="cav" data-act="profile" data-arg="${r.by}" aria-label="โปรไฟล์ ${a.n}">${avHTML(a)}</button><div class="t"><div class="cn"><button data-act="profile" data-arg="${r.by}">${a.n}</button>${r.by===p.by?'<span class="badge">เจ้าของโพสต์</span>':''}${r.by==='me'?'<span class="badge">คุณ</span>':''}${isNew?'<span class="newb">ใหม่</span>':''}<span class="ct">${ago(r.at)}</span></div>${body}</div>
+   <button class="cate ${r.ated?'on':''}" data-act="ate" data-arg="${p.id}|${r.id}" aria-label="ATE"><span class="o">${I(r.ated?'flameF':'flame')}</span>${nf(r.ate)}</button></div>`}).join('')}
+function renderPostDetail(){
+ const p=postById(SV.pid),el=SV.el;if(!p){closeStack();return}
+ const a=userAv(p.by),n=p.replies.length,old=$('.pd-body',el),y=old?old.scrollTop:null,grew=SV.lastN!=null&&n>SV.lastN;
+ el.classList.add('pd');el.classList.remove('lit');stopActive();
+ const f=fx(S.filter),chips=ateStatChip(p)+reachChip(p)+bubbleChip(p)+(p.prompt?`<button class="chip brand" data-act="openPrompt">${PROMPT.e} คำถามวันนี้</button>`:'');
+ el.innerHTML=`<div class="pvh"><button class="iconbtn" data-act="closeStack" aria-label="กลับ">${I('back')}</button><b>โพสต์</b><button class="iconbtn sm0" data-act="more" data-arg="${p.id}" aria-label="เพิ่มเติม">${I('more')}</button></div>
+ <div class="pd-body">
+  <div class="pd-auth"><button class="sauth" data-act="profile" data-arg="${p.by}" style="display:flex;border-radius:50%" aria-label="โปรไฟล์ ${a.n}">${avHTML(a)}</button><div class="t"><button class="sname" data-act="profile" data-arg="${p.by}">${a.n}${p.by==='me'?'<span class="badge">คุณ</span>':''}</button><span>${esc(p.showId||'นิสิตจุฬาฯ')} · ${ago(p.at)} · ${seenBtn(p,'short')}</span></div></div>
+  ${p.kind==='text'?`<div class="fbt" style="margin:0 16px">${esc(p.text)}</div>`:`<div class="pd-media">${frameHTML(p)}</div>`}
+  <div class="pd-acts">${ateBtn(p)}<button class="rb" data-act="pdComments" aria-label="คอมเมนต์"><span class="o">${I('bubble')}</span>${n}</button>${shareBtn(p)}</div>
+  ${chips?`<div class="pd-chips">${chips}</div>`:''}
+  <div class="pd-ch" id="pdc"><h2 class="h2">คอมเมนต์ ${n}</h2>${n>1?`<div class="seg"><button class="${SV.lsort==='old'?'on':''}" data-act="cmtSort" data-arg="old">ตามเวลา</button><button class="${SV.lsort==='top'?'on':''}" data-act="cmtSort" data-arg="top">เด่น</button></div>`:''}</div>
+  <div class="clist2">${n?cmtRows2(p):`<div class="empty" style="margin:6px 8px">ยังไม่มีคอมเมนต์ · กดค้างปุ่มด้านล่างเพื่อพูด หรือส่งรูปหรือ GIF ก็ได้</div>`}</div>
+ </div>
+ <div class="rbar"><span class="asbtn" aria-hidden="true">${avHTML(userAv('me'))}</span><button class="iconbtn" style="width:46px;height:46px" data-act="replyPhoto" aria-label="คอมเมนต์ด้วยรูป">${I('cam')}</button><button class="iconbtn" style="width:46px;height:46px;font:800 13px/1 var(--f-n)" data-act="replyGif">GIF</button>
+  <div class="talk" id="talk"><span class="lbl">${I('mic')} กดค้างพูด</span><button class="fx" data-act="pickFx" aria-label="ฟิลเตอร์เสียง ${f.n}">${f.e}</button></div></div>`;
+ const body=$('.pd-body',el),fr=$('.pd-media .fr',el);
+ if(fr&&(p.kind==='voice'||p.voice))activate(fr,{loop:true});
+ if(grew){body.scrollTop=body.scrollHeight;const last=$$('.crow2',el).pop();last&&last.classList.add('flash')}
+ else if(y!=null)body.scrollTop=y;
+ else if(SV.start==null&&n)requestAnimationFrame(()=>{const c=$('#pdc',el);if(c)body.scrollTop=c.offsetTop-body.offsetTop-4});
+ else if(SV.start>0)requestAnimationFrame(()=>{body.scrollTop=body.scrollHeight});
+ SV.lastN=n;const talk=$('#talk',el);talk&&bindTalk(talk)}
+function cView(rid){const p=SV&&postById(SV.pid),r=p&&p.replies.find(x=>x.id===rid);if(!r)return;const a=userAv(r.by);
+ const el=pushPage(`<div class="pvh"><button class="iconbtn" data-act="back" aria-label="กลับ">${I('back')}</button><b>${a.n}</b><span style="width:44px"></span></div><div class="lbc">${frameHTML(r)}</div>`,'lbx');
+ const fr=$('.fr',el);if(r.voice)activate(fr,{loop:true})}
+
+/* ---------- profiles ---------- */
+function tileHTML(p){return `<button style="${thumbStyle(p)}" data-act="openPost" data-arg="${p.id}">${p.kind==='voice'?`<span>🎙 ${esc((p.text||'คลิปเสียง').slice(0,40))}</span>`:''}<span class="n">🔥 ${nf(p.ate)} · ${I('bubble','xs')} ${p.replies.length}</span></button>`}
+function openProfile(by){
+ if(by==='me'){closePages();if(SV){const e=SV.el;SV=null;e.remove()}S.tab='me';S.sub=null;save();render();return}
+ const u=userOf(by),a=userAv(by),posts=S.posts.filter(p=>p.by===by).sort((x,y)=>y.at-x.at);
+ const ate=posts.reduce((t,p)=>t+p.ate,0),cm=S.posts.reduce((t,p)=>t+p.replies.filter(r=>r.by===by).length,0);
+ log('profile_opened',{uid:by,posts:posts.length});
+ pushPage(`<div class="pvh"><button class="iconbtn" data-act="back" aria-label="กลับ">${I('back')}</button><b>${a.n}</b><button class="iconbtn sm0" data-act="profMore" data-arg="${by}" aria-label="เพิ่มเติม">${I('more')}</button></div>
+ <div class="pvb"><div class="pf-top"><div class="pf-av">${avHTML(a)}</div><div class="pf-id"><h1 class="h1">${a.n}</h1><span class="muted">${esc(u.fac)} · ${esc(u.year)} · นิสิตจุฬาฯ ${VERIFIED}</span></div></div>
+  <div class="stats"><div><b>${posts.length}</b><span>โพสต์</span></div><div><b>${nf(ate)}</b><span>ATE ที่ได้</span></div><div><b>${cm}</b><span>คอมเมนต์</span></div></div>
+  <div class="pf-acts"><button class="btn primary" data-act="dm" data-arg="${by}">${I('send','sm')} ส่งข้อความ</button><button class="btn soft" data-act="shareProf" data-arg="${by}">แชร์โปรไฟล์</button></div>
+  <div class="sec">โพสต์</div>${posts.length?`<div class="mine">${posts.map(tileHTML).join('')}</div>`:`<div class="empty">ยังไม่มีโพสต์</div>`}</div>`,'prof')}
+function renderMe(){
+ const mine=S.posts.filter(p=>p.by==='me'),a=userAv('me'),u=userOf('me');
+ const myReplies=S.posts.reduce((t,p)=>t+p.replies.filter(r=>r.by==='me').length,0),ateGot=mine.reduce((t,p)=>t+p.ate,0);
+ app.innerHTML=`<div class="scr" style="padding-top:0"><div class="pg">
+ <div class="me-band" style="padding-top:var(--st)"><span class="c1"></span><span class="c2"></span><span class="c3"></span><button class="iconbtn gear" data-act="openSettings" aria-label="ตั้งค่า">${I('gear')}</button></div>
+ <div class="me-av">${avHTML(a,'big')}</div>
+ <div class="pad" style="margin-top:12px"><h1 class="h1">${a.n}</h1><div class="muted" style="font-size:13.5px;display:flex;align-items:center;gap:4px;flex-wrap:wrap">${S.me.fac?meLabel()+' · ':''}นิสิตจุฬาฯ ${VERIFIED}</div></div>
+ <div class="me-acts"><button class="btn soft" data-act="editProf">แก้ชื่อและรูป</button><button class="btn soft" data-act="shareProf" data-arg="me">แชร์โปรไฟล์</button></div>
+ <div class="stats"><div><b>${mine.length}</b><span>โพสต์</span></div><div><b>${nf(ateGot)}</b><span>ATE ที่ได้</span></div><div><b>${myReplies}</b><span>คอมเมนต์</span></div></div>
+ <p class="pf-note">${I('lock','xs')} คนอื่นเห็นหน้านี้เมื่อแตะชื่อคุณ · สถิติ ATE แยกคณะ/ปี เห็นแค่คุณ</p>
+ <div class="sec">โพสต์ของฉัน</div>
+ ${mine.length?`<div class="mine">${mine.map(tileHTML).join('')}</div>`
+ :`<div class="empty"><div class="tile" style="width:76px;height:76px;font-size:34px;border-radius:24px;box-shadow:6px 6px 0 var(--lime)">🎙</div><b class="h2" style="color:var(--ink)">ยังไม่มีโพสต์</b>ลองตอบคำถามวันนี้ดูไหม ถ่ายรูปหรือพูดตอบก็ได้<button class="btn primary sm" data-act="openPromptCompose">${PROMPT.e} ตอบคำถามวันนี้</button></div>`}
+ <p class="cap" style="text-align:center;margin-top:18px">EIGHT TEEN v2.4 A · โปรไฟล์ แชท แชร์ · ต้นแบบสำหรับทดสอบ · 27 พ.ย. 2026</p></div>${tabbarHTML()}</div>`}
+
+/* ---------- chat ---------- */
+const lastAt=t=>t.msgs.length?t.msgs[t.msgs.length-1].at:0;
+function renderChat(){
+ const th=Object.entries(S.dm||{}).filter(([,t])=>t.msgs.length).sort((x,y)=>lastAt(y[1])-lastAt(x[1]));
+ const pv=m=>m.pid?(m.by==='me'?'คุณส่งโพสต์':'ส่งโพสต์ให้คุณ'):(m.by==='me'?'คุณ: ':'')+m.t;
+ app.innerHTML=`<div class="scr"><div class="hdr"><div class="hdr-row"><div class="uni">แชท</div><button class="iconbtn" data-act="newChat" aria-label="แชทใหม่">${I('plus')}</button></div></div>
+ <div class="pg" style="padding-top:8px">${th.length?th.map(([by,t])=>{const a=userAv(by),m=t.msgs[t.msgs.length-1];return `<button class="nrow ${t.unread?'unread':''}" data-act="dm" data-arg="${by}">${avHTML(a)}<span class="t"><b>${a.n}</b><i>${esc(pv(m))}</i><span>${ago(m.at)}</span></span>${t.unread?`<span class="udot">${t.unread}</span>`:''}</button>`}).join('')
+ :`<div class="empty" style="margin-top:20px">ยังไม่มีแชท<button class="btn primary sm" data-act="newChat">เริ่มแชท</button></div>`}
+ <p class="cap pad" style="margin-top:14px">แชทเห็นกันแค่สองคน · แตะชื่อหรือรูปใครก็ได้ในโพสต์ เพื่อดูโปรไฟล์และทักแชท</p></div>${tabbarHTML()}</div>`}
+function msgHTML(m){const me=m.by==='me';
+ if(m.pid){const p=postById(m.pid);if(!p)return '';const a=userAv(p.by),cap=(p.stickers||[]).filter(x=>x.t==='text').map(x=>x.s).join(' · ')||p.text||(p.voice&&p.voice.text)||'';
+  return `<button class="dmpost ${me?'me':''}" data-act="openPost" data-arg="${p.id}"><span class="th" style="${thumbStyle(p)}">${p.kind==='voice'?'🎙':''}</span><span><b>${a.n}</b><em>${esc(cap||'โพสต์')}</em><small>🔥 ${nf(p.ate)} · แตะเพื่อดูโพสต์</small></span></button>`}
+ return `<div class="msg ${me?'me':''} ${m.typing?'typing':''}">${esc(m.t)}</div>`}
+function dmBody(by){const t=S.dm[by]||{msgs:[]},a=userAv(by);
+ return (t.msgs.length?`<div class="dmtime">${ago(t.msgs[0].at)}</div>`:`<div class="dm-empty">${avHTML(a)}<b>${a.n}</b><span>เริ่มแชทกับ ${a.n}<br>ข้อความเห็นกันแค่สองคน</span></div>`)+t.msgs.map(msgHTML).join('')+(DMT[by]&&DMT[by].typing?`<div class="msg typing">กำลังพิมพ์…</div>`:'')}
+function openDM(by){
+ if(by==='me')return; S.dm=S.dm||{}; const t=S.dm[by]=S.dm[by]||{msgs:[],unread:0}; t.unread=0; save();
+ const ex=PV.find(e=>e.dataset.dm===by); if(ex){paintDM(by);return}
+ log('dm_opened',{uid:by,msgs:t.msgs.length});const a=userAv(by);
+ const el=pushPage(`<div class="pvh"><button class="iconbtn" data-act="back" aria-label="กลับ">${I('back')}</button><button class="dmwho" data-act="profile" data-arg="${by}">${avHTML(a,'sm')}<b>${a.n}</b></button><span style="width:44px"></span></div>
+  <div class="dmb">${dmBody(by)}</div><form class="dmin"><input placeholder="ส่งข้อความถึง ${a.n}…" autocomplete="off" enterkeyhint="send" aria-label="ข้อความ"><button class="send" aria-label="ส่ง">${I('send','sm')}</button></form>`,'dmp');
+ el.dataset.dm=by; const b=$('.dmb',el); b.scrollTop=b.scrollHeight;
+ $('.dmin',el).onsubmit=e=>{e.preventDefault();const i=$('input',el),v=i.value.trim();if(!v)return;i.value='';sendDM(by,{t:v})};
+ if(S.tab==='chat')$$('.tabbar').forEach(x=>{const t2=document.createElement('div');t2.innerHTML=tabbarHTML();x.replaceWith(t2.firstElementChild)})}
+function paintDM(by){const el=PV.find(e=>e.dataset.dm===by);if(!el)return;const b=$('.dmb',el);b.innerHTML=dmBody(by);b.scrollTop=b.scrollHeight}
+const DMT={};
+const DM_REPLIES=['5555 จริงงง','เดี๋ยวไปดู 👀','โอเคเลย','ขอบคุณน้าา 🙏','ได้เลย เจอกันที่สามย่าน','อันนี้ ATE มาก 🔥','จริงดิ ไม่รู้มาก่อนเลย'];
+function sendDM(by,m){S.dm=S.dm||{};const t=S.dm[by]=S.dm[by]||{msgs:[],unread:0};t.msgs.push(Object.assign({by:'me',at:Date.now()},m));save();
+ log(m.pid?'post_shared_dm':'dm_sent',{uid:by,pid:m.pid||null,len:m.t?m.t.length:0});paintDM(by);
+ const d=DMT[by]=DMT[by]||{};clearTimeout(d.tm);d.tm=setTimeout(()=>{d.typing=true;paintDM(by);setTimeout(()=>{d.typing=false;const r=DM_REPLIES[(t.msgs.length+hash(by))%DM_REPLIES.length];
+  t.msgs.push({by,t:r,at:Date.now()});const open=PV.some(e=>e.dataset.dm===by&&e.isConnected);if(!open){t.unread=(t.unread||0)+1;toast(`💬 ${userOf(by).n}: ${r}`,{label:'ตอบ',fn:()=>openDM(by)})}save();paintDM(by);
+  if(S.tab==='chat'&&!SV)render(true);else $$('.tabbar').forEach(x=>{const t2=document.createElement('div');t2.innerHTML=tabbarHTML();x.replaceWith(t2.firstElementChild)})},1600)},1400)}
+
+/* ---------- share ---------- */
+function sharePeople(q){const recent=Object.entries(S.dm||{}).filter(([,t])=>t.msgs.length).sort((x,y)=>lastAt(y[1])-lastAt(x[1])).map(e=>e[0]);
+ const all=[...new Set([...recent,...allUsers()])].filter(by=>by!=='me'),k=q.trim().toLowerCase();
+ return (k?all.filter(by=>userOf(by).n.toLowerCase().includes(k)):all).slice(0,k?20:8)}
+function shareRows(pid,q){const ps=sharePeople(q);if(!ps.length)return `<p class="cap" style="padding:10px 0">ไม่พบ “${esc(q)}” ในแอป · ลองพิมพ์ชื่ออื่น</p>`;
+ return ps.map(by=>{const a=userAv(by),u=userOf(by),sent=SHS.has(by);return `<button class="shrow ${sent?'sent':''}" data-act="sendTo" data-arg="${pid}|${by}">${avHTML(a)}<span class="t"><b>${a.n}</b><small>${esc(u.fac)} · ${esc(u.year)}</small></span><span class="go">${sent?'ส่งแล้ว ✓':'ส่ง'}</span></button>`}).join('')}
+let SHS=new Set();
+function openShare(pid){const p=postById(pid);if(!p)return;SHS=new Set();log('share_opened',{pid});
+ sheet(`<h2 class="h1">แชร์โพสต์</h2><input class="input" id="shq" placeholder="พิมพ์ชื่อคนในแอป…" autocomplete="off" style="margin-top:6px"><div class="shl" id="shl">${shareRows(pid,'')}</div>
+  <div class="lbl2">แชร์ไปแอปอื่น</div><div class="shx"><button data-act="shareOut" data-arg="${pid}|more"><span class="ic">${I('send')}</span>แอปอื่น</button><button data-act="shareOut" data-arg="${pid}|copy"><span class="ic">🔗</span>คัดลอกลิงก์</button><button data-act="shareOut" data-arg="${pid}|line"><span class="ic" style="background:#06c755;color:#fff">LINE</span>LINE</button><button data-act="shareOut" data-arg="${pid}|ig"><span class="ic" style="background:linear-gradient(45deg,#f9a03f,#e1306c,#833ab4);color:#fff">IG</span>IG Story</button></div>
+  <p class="cap" style="margin:12px 0 0">คนนอกจุฬาฯ ที่เปิดลิงก์เห็นแค่ตัวอย่างโพสต์ ต้องยืนยันอีเมลจุฬาฯ ก่อนดูคอมเมนต์</p>`);
+ const i=$('#shq');i.oninput=()=>{$('#shl').innerHTML=shareRows(pid,i.value)}}
+async function shareOut(pid,to){const p=postById(pid),url=location.origin+location.pathname+'#post='+pid,cap=p?((p.stickers||[]).filter(x=>x.t==='text').map(x=>x.s).join(' ')||p.text||'โพสต์ใน EIGHT TEEN'):'';
+ log('share_external',{pid,to});
+ if(to!=='copy'&&navigator.share){try{await navigator.share({title:'EIGHT TEEN',text:cap,url});closeSheet();return}catch(e){if(e&&e.name==='AbortError')return}}
+ try{await navigator.clipboard.writeText(url)}catch(e){}
+ closeSheet();toast(to==='line'||to==='ig'?`คัดลอกลิงก์แล้ว · ในแอปจริงจะเปิด ${to==='ig'?'IG Story':'LINE'} ให้เลย`:'คัดลอกลิงก์แล้ว')}
+
+/* ---------- post sheet: no place, no anonymous choice ---------- */
+function postSheet(inplace){
+ const pl=C.place&&place(C.place), v=C.media.voice||(C.media.kind==='voice'?C.media:null), a=userAv('me');
+ const html=`<h2 class="h1">พร้อมโพสต์</h2><p class="sub">ไปถึงนิสิตจุฬาฯ ตัวจริงอย่างน้อย 300 คนแรก · ไม่ต้องมีผู้ติดตาม · คนนอกจุฬาฯ มองไม่เห็น</p>
+  <div class="pswho">${avHTML(a)}<div><b>${a.n}</b><span>${C.showId?esc(meLabel()):'นิสิตจุฬาฯ'}${pl?` · 🫧 บับเบิล ${esc(pl.n)}`:''}</span></div><button class="ul" data-act="editProfPost">แก้ชื่อ/รูป</button></div>
+  <div style="height:4px"></div>
+  <button class="row" id="sid"><span class="t"><b>แสดงคณะและชั้นปี</b><span>${C.showId?`ขึ้นว่า “${meLabel()}”`:'ปิดอยู่ · ขึ้นแค่ “นิสิตจุฬาฯ”'}</span></span><span class="tg ${C.showId?'on':''}"></span></button>
+  ${v?`<div class="row"><span class="t"><b>คำบรรยายอัตโนมัติ</b><span>${v.text?'พร้อมแล้ว':esc(v.noSR?noSR:'ไม่ได้ยินคำพูด')}</span></span></div>`:''}
+  <button class="btn primary block" style="margin-top:14px" data-act="doPost">โพสต์เลย</button>`;
+ const sh=inplace&&$('.sheetw .sheet'); if(sh)sh.innerHTML='<div class="grab"></div>'+html; else sheet(html);
+ $('#sid').onclick=()=>{C.showId=!C.showId;postSheet(true)}}
+
+/* ---------- actions ---------- */
+{const _tab=A.tab,_more=A.more;
+Object.assign(A,{
+ tab(t,...r){closePages();_tab(t,...r)},
+ profile(by){if(SV&&SV.mode!=='replies'){const e=SV.el;stopActive();SV=null;e.remove()}openProfile(by)},
+ back(){stopActive();popPage()},
+ dm(by){openDM(by)},
+ newChat(){sheet(`<h2 class="h1">แชทใหม่</h2><input class="input" id="ncq" placeholder="พิมพ์ชื่อคนในแอป…" autocomplete="off" style="margin-top:6px"><div class="shl" id="ncl"></div>`);
+  const paint=q=>{$('#ncl').innerHTML=sharePeople(q).map(by=>{const a=userAv(by),u=userOf(by);return `<button class="shrow" data-act="ncPick" data-arg="${by}">${avHTML(a)}<span class="t"><b>${a.n}</b><small>${esc(u.fac)} · ${esc(u.year)}</small></span><span class="go">แชท</span></button>`}).join('')||'<p class="cap">ไม่พบชื่อนี้ในแอป</p>'};
+  paint('');const i=$('#ncq');i.oninput=()=>paint(i.value)},
+ ncPick(by){closeSheet(true);openDM(by)},
+ share(pid){openShare(pid)},
+ sendTo(arg,el){const [pid,by]=arg.split('|');if(SHS.has(by))return;SHS.add(by);sendDM(by,{pid});el.classList.add('sent');$('.go',el).textContent='ส่งแล้ว ✓';toast(`ส่งให้ ${userOf(by).n} แล้ว`,{label:'ดูแชท',fn:()=>{closeSheet(true);openDM(by)}})},
+ shareOut(arg){const [pid,to]=arg.split('|');shareOut(pid,to)},
+ shareProf(by){const url=location.origin+location.pathname+'#u='+by;log('profile_shared',{uid:by});
+  if(navigator.share)navigator.share({title:'EIGHT TEEN',text:userOf(by).n+' ใน EIGHT TEEN',url}).catch(()=>{});else{try{navigator.clipboard.writeText(url)}catch(e){}toast('คัดลอกลิงก์โปรไฟล์แล้ว')}},
+ profMore(by){sheet(`<h2 class="h1">${userAv(by).n}</h2><button class="row" data-act="shareProf" data-arg="${by}"><span class="t"><b>แชร์โปรไฟล์</b></span></button><button class="row" data-act="blockUser" data-arg="${by}"><span class="t"><b>บล็อก</b><span>ไม่เห็นโพสต์และแชทจากคนนี้</span></span></button><button class="row" data-act="report" data-arg=""><span class="t"><b style="color:var(--danger)">รายงานบัญชีนี้</b><span>ทีมงานตรวจภายใน 24 ชม. เจ้าของบัญชีไม่รู้ว่าใครรายงาน</span></span></button>`)},
+ blockUser(by){closeSheet();log('user_blocked',{uid:by});toast('ต้นแบบ: บล็อกแล้ว (ในแอปจริงจะซ่อนโพสต์และแชทของคนนี้)')},
+ more(pid){const p=postById(pid);if(!p)return _more(pid);
+  sheet(`<h2 class="h1">โพสต์นี้</h2><button class="row" data-act="share" data-arg="${pid}"><span class="t"><b>แชร์</b><span>ส่งให้คนในแอป หรือแชร์ไปแอปอื่น</span></span></button>
+   ${p.by==='me'?`<button class="row" data-act="ateStats" data-arg="${pid}"><span class="t"><b>📊 สถิติ ATE</b><span>ATE มาจากคณะและชั้นปีไหน · เห็นแค่คุณ</span></span></button>`:`<button class="row" data-act="profile" data-arg="${p.by}"><span class="t"><b>ดูโปรไฟล์ ${userAv(p.by).n}</b></span></button>`}
+   <button class="row" data-act="hide" data-arg="${pid}"><span class="t"><b>ไม่อยากเห็นโพสต์นี้</b><span>ซ่อนจากฟีดของคุณเท่านั้น</span></span></button>
+   ${p.by==='me'?'':`<button class="row" data-act="report" data-arg="${pid}"><span class="t"><b style="color:var(--danger)">รายงาน</b><span>ทีมงานตรวจภายใน 24 ชม.</span></span></button>`}`)},
+ ateStats(pid){closeSheet(true);openAteSheet(pid)},
+ sameSheet(pid){openAteSheet(pid)},
+ cPlay(id,el){const box=el.closest('.cvoice'),a=$('audio',box);if(!a)return;const playing=!a.paused;stopActive();
+  $$('.cvoice audio').forEach(x=>x.pause());$$('.cvoice .cpb').forEach(b=>b.innerHTML=I('play','sm'));if(playing)return;
+  a.currentTime=0;a.muted=false;a.playbackRate=S.rate;a.play().catch(()=>toast('เล่นเสียงไม่ได้'));el.innerHTML=I('pause','sm');a.onended=()=>{el.innerHTML=I('play','sm')};log('comment_voice_play',{id})},
+ cView(rid){$$('.cvoice audio').forEach(x=>x.pause());cView(rid)},
+ pdComments(){const el=SV&&SV.el,c=el&&$('#pdc',el),b=el&&$('.pd-body',el);if(c&&b)b.scrollTo({top:c.offsetTop-b.offsetTop-4,behavior:'smooth'})},
+ cmtSort(st){SV.lsort=st;log('comments_sorted',{pid:SV.pid,sort:st});renderStack()},
+ openPost(pid){openStack(pid,0)},
+ openMine(pid){openStack(pid,0)},
+ editProfPost(){profSheet(()=>postSheet())},
+ obIdNext(){const i=$('#obName');if(i)S.me.prof.name=i.value.trim();if(!S.me.prof.name){toast('ตั้งชื่อก่อนนะ ชื่ออะไรก็ได้');return}save();log('ob_identity',{photo:!!S.me.prof.img});A.obGo('voice')},
+ replyAs(){},
+ placeSheet(){sheet(`<h2 class="h1">🫧 ลงบับเบิล</h2><p class="sub">บับเบิลคือสตอรี่ของแต่ละที่ในจุฬาฯ อยู่ 72 ชม. · เลือกเองว่าโพสต์นี้เกี่ยวกับที่ไหน ไม่ใช้ GPS และไม่แชร์ตำแหน่งของคุณ</p><div class="chips"><button class="pick ${!C.place?'on':''}" data-act="setPlace" data-arg="">ไม่ลงบับเบิล</button>${PLACES.map(p=>`<button class="pick ${C.place===p.id?'on':''}" data-act="setPlace" data-arg="${p.id}">${p.emoji||'🫧'} ${esc(p.n)}</button>`).join('')}</div>`)},
+});}
 
 /* ============ boot ============ */
 (async()=>{
