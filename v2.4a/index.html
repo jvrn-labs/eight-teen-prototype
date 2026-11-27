@@ -1462,30 +1462,28 @@ const underGuar=p=>seenOf(p)<GUAR;
 const seenTxt=(p,fmt)=>{const n=seenOf(p);return fmt==='long'?`👁 ${n.toLocaleString('en-US')} คนเห็น`:`👁 ${nf(n)}`};
 const seenBtn=(p,fmt)=>`<button class="seenb ${fmt==='long'?'fbseen':''}" data-act="seenSheet" data-arg="${p.id}" data-seen="${p.id}" data-fmt="${fmt}" aria-label="จำนวนคนเห็น">${seenTxt(p,fmt)}</button>`;
 function reachChip(p){const n=seenOf(p);if(n>=GUAR)return '';
- if(p.by==='me')return `<button class="chip reach" data-act="seenSheet" data-arg="${p.id}" data-reach="${p.id}" style="--p:${Math.round(n/GUAR*100)}%">🚀 กำลังส่งถึง 300 คนแรก · <b>${n}</b>/300</button>`;
- return `<span class="chip reach new">🆕 คุณอยู่ใน 300 คนแรกที่เห็น</span>`}
+ if(p.by==='me')return `<button class="chip reach" data-act="seenSheet" data-arg="${p.id}" data-reach="${p.id}" style="--p:${Math.round(n/GUAR*100)}%"></button>`;
+ return `<span class="chip reach new"></span>`}
 function openSeenSheet(pid){const p=postById(pid);if(!p)return;const n=seenOf(p),mine=p.by==='me',pct=Math.min(100,n/GUAR*100);
  log('seen_sheet_opened',{pid,mine,n,under:n<GUAR});
  /* the sheet shows only the total; the explanation sits behind the ⓘ link (popup) */
  sheet(`<div class="reachbig" data-seen="${pid}" data-fmt="num">${n.toLocaleString('en-US')}</div>
   <h2 class="h1" style="margin-top:6px">นิสิตจุฬาฯ ที่เห็น${mine?'โพสต์ของคุณ':'โพสต์นี้'}</h2>
-  ${n<GUAR?`<div class="reachbar"><i style="width:${pct}%"></i></div>
-  <div class="reachlbl"><span>กำลังส่งถึง 300 คนแรก</span><span>${n}/300</span></div>`:''}
   <button class="infolink" data-act="reachInfo">${I('info','sm')} ทำไมทุกโพสต์ถึงไปถึงทั้งจุฬาฯ?</button>`)}
 function reachInfo(){log('reach_info_opened');$$('.popw').forEach(w=>w.remove());
  const w=document.createElement('div');w.className='popw';
  w.innerHTML=`<div class="pbd" data-act="closePop"></div><div class="popc" role="dialog" aria-modal="true" aria-label="ทุกโพสต์ไปถึงทั้งจุฬาฯ">
   <h2 class="h1" style="font-size:20px">📣 โพสต์เดียว ทั้งจุฬาฯ ได้ยิน</h2>
   <div class="box2" style="margin-top:12px">
-   <div class="rule"><span class="ic em">🎯</span><div><b>ทุกโพสต์ได้คนเห็นอย่างน้อย 300 คนแรก</b><span>แม้จะไม่มีผู้ติดตาม หรือยังไม่มีใครกดอะไรเลย</span></div></div>
-   <div class="rule"><span class="ic em">🔥</span><div><b>หลังจากนั้น ยิ่งมีคนอิน ยิ่งไปไกล</b><span>ATE, เหมือนกัน และคอมเมนต์ พาโพสต์ไปถึงคนทั้งจุฬาฯ</span></div></div>
-   <div class="rule"><span class="ic em">🎭</span><div><b>นับแค่จำนวน ไม่บอกว่าใครเห็น</b><span>และคนที่เห็นก็ไม่รู้ว่าใครโพสต์</span></div></div>
+   <div class="rule"><span class="ic em">🎯</span><div><b>ทุกโพสต์ไปถึงนิสิตจุฬาฯ ทั้งมหาลัย</b><span>ไม่ต้องมีผู้ติดตาม แม้จะเพิ่งสมัครหรือยังไม่มีใครกดอะไรเลย</span></div></div>
+   <div class="rule"><span class="ic em">🔥</span><div><b>หลังจากนั้น ยิ่งมีคนอิน ยิ่งไปไกล</b><span>ATE และคอมเมนต์ พาโพสต์ไปถึงคนทั้งจุฬาฯ</span></div></div>
+   <div class="rule"><span class="ic em">🎭</span><div><b>นับแค่จำนวน ไม่บอกว่าใครเห็น</b><span>ตัวเลขนี้ไม่บอกว่าใครเปิดดูโพสต์ของคุณ</span></div></div>
   </div>
   <button class="btn primary block" style="margin-top:14px" data-act="closePop">เข้าใจแล้ว</button></div>`;
  app.appendChild(w)}
 function reachSurvey(pid){if(S.survey)return;S.survey=1;save();log('reach_survey_shown',{pid});
  const O=[['hole','🕳️','แอคหลุมใน X'],['ig','📸','IG สตอรี่ / Close Friends'],['page','📮','ส่งให้เพจ confession'],['line','💬','กลุ่ม LINE / OpenChat'],['none','🤐','ไม่โพสต์ที่ไหนเลย']];
- sheet(`<h2 class="h1">📣 ถึง 300 คนแล้ว</h2><p class="sub">ถามสั้นๆ 1 ข้อ · ถ้าไม่มี EIGHT TEEN คุณจะโพสต์เรื่องนี้ที่ไหน?</p>
+ sheet(`<h2 class="h1">📣 ถามสั้นๆ 1 ข้อ</h2><p class="sub">ถามสั้นๆ 1 ข้อ · ถ้าไม่มี EIGHT TEEN คุณจะโพสต์เรื่องนี้ที่ไหน?</p>
   ${O.map(o=>`<button class="svopt" data-act="survey" data-arg="${o[0]}"><span class="e">${o[1]}</span>${o[2]}</button>`).join('')}`)}
 function reachTick(){let gone=false;
  S.posts.forEach(p=>{if(p.by!=='me'||Date.now()-p.at>15*60000)return;const n=seenOf(p);
@@ -1493,10 +1491,9 @@ function reachTick(){let gone=false;
   $$(`[data-reach="${p.id}"]`).forEach(e=>{if(n>=GUAR){e.remove();return}e.style.setProperty('--p',Math.round(n/GUAR*100)+'%');const b=e.querySelector('b');if(b)b.textContent=n});
   $$('.reachbar i').forEach(i=>{if($(`.sheet [data-seen="${p.id}"]`))i.style.width=Math.min(100,n/GUAR*100)+'%'});
   if(n>=GUAR&&!p.guarDone){p.guarDone=1;gone=true;
-   S.notifs.push({id:uid('n'),kind:'reach',pid:p.id,text:'โพสต์ของคุณถึงนิสิตจุฬาฯ 300 คนแรกแล้ว 📣 โดยไม่ต้องมีผู้ติดตามสักคน',at:Date.now(),read:false});save();
+   save();
    log('reach_guarantee_met',{pid:p.id,secs:Math.round((Date.now()-p.at)/1000)});
-   if(!S.survey)toast('📣 ถึงนิสิตจุฬาฯ 300 คนแล้ว',{label:'ตอบ 1 ข้อ',fn:()=>reachSurvey(p.id)});
-   else toast('📣 โพสต์ของคุณถึง 300 คนแรกแล้ว',{label:'ดู',fn:()=>openSeenSheet(p.id)})}});
+  }});
  if(gone&&S.tab==='notif'&&!SV&&!C&&!R)render(true)}
 setInterval(reachTick,1200);
 
@@ -1973,7 +1970,7 @@ const asCards=(on,act)=>{const mp=myProf();const c=(k,av,t,d)=>`<button class="a
  return `<div class="asrow">${c('anon','<span class="av" style="background:#e4d6ff">🎭</span>','ไม่ระบุตัวตน','ชื่อเล่นสุ่ม ใช้แค่โพสต์นี้')}${c('me',mp?avHTML(mp):`<span class="av nm" style="background:#7c3aed">${I('user','sm')}</span>`,mp?mp.n:'ใช้ชื่อฉัน',mp?'เพื่อนเห็นชื่อและรูปของคุณ':'ตั้งชื่อและรูปก่อน')}</div>`};
 function postSheet(inplace){
  const pl=C.place&&place(C.place), v=C.media.voice||(C.media.kind==='voice'?C.media:null);
- const html=`<h2 class="h1">พร้อมโพสต์</h2><p class="sub">ไปถึงนิสิตจุฬาฯ ตัวจริงอย่างน้อย 300 คนแรก · ไม่ต้องมีผู้ติดตาม · คนนอกจุฬาฯ มองไม่เห็น</p>
+ const html=`<h2 class="h1">พร้อมโพสต์</h2><p class="sub">ไปถึงนิสิตจุฬาฯ ทั้งมหาลัย · ไม่ต้องมีผู้ติดตาม · คนนอกจุฬาฯ มองไม่เห็น</p>
   <div class="lbl2" style="margin-top:0">โพสต์ในชื่อ</div>${asCards(!!C.asMe,'setAs')}
   <div style="height:8px"></div>
   <button class="row" id="sid"><span class="t"><b>แสดงคณะและชั้นปี</b><span>${C.showId?`ขึ้นว่า “${meLabel()}”`:'ปิดอยู่ · ขึ้นแค่ “นักศึกษาจุฬาฯ”'}</span></span><span class="tg ${C.showId?'on':''}"></span></button>
@@ -2009,7 +2006,7 @@ async function doPost(){
  closeComposerRaw(); if(SV){SV.el.remove();SV=null} S.tab='home'; S.view='uni'; S.sort='hot'; save(); render(); $('#feed').scrollTop=0;
  simulateReply(p.id);simulateSame(p.id);
  if(fromRit&&p.prompt){openRitual('done');return}
- toast('โพสต์แล้ว · กำลังส่งถึงนิสิตจุฬาฯ 300 คนแรก 🚀',{label:'ดู',fn:()=>openSeenSheet(p.id)});
+ toast('โพสต์แล้ว 🎉');
 }
 async function sendReply(){
  const m=C.media,pid=C.target;let data=null;
@@ -2190,7 +2187,7 @@ function classifyEmail(e){
 const OB_SLIDES=[
  {a:`<div class="bigtile logo"><div class="logo">EIGHT<br>TEEN</div><span class="vpill">${'✓'} นิสิตจุฬาฯ ตัวจริงเท่านั้น</span></div>`,h:'ที่ของ<span class="hl">เด็กจุฬาฯ</span><br>ตัวจริง',p:'ยืนยันด้วยอีเมลจุฬาฯ ครั้งเดียว ไม่มีบัญชีปลอม เปิดที่จุฬาฯ เป็นที่แรก'},
  {a:`<div class="bigtile">🪪</div>`,h:'ชื่อไหนก็ได้<br>ที่<span class="hl">คุณเลือกเอง</span>',p:'ตั้งชื่อและรูปโปรไฟล์เอง จะชื่อเล่น ชื่อลับ หรือชื่อจริงก็ได้ แต่ทุกบัญชีเป็นนิสิตจุฬาฯ ตัวจริงที่ยืนยันอีเมลแล้ว'},
- {a:`<div class="bigtile">📣</div>`,h:'โพสต์เดียว<br><span class="hl">ทั้งจุฬาฯ</span> ได้ยิน',p:'ไม่ต้องมีผู้ติดตาม ไม่ต้องรอยอดไลก์ ทุกโพสต์ได้นิสิตจุฬาฯ เห็นอย่างน้อย 300 คนแรก แม้จะเพิ่งสมัครวันแรก'},
+ {a:`<div class="bigtile">📣</div>`,h:'โพสต์เดียว<br><span class="hl">ทั้งจุฬาฯ</span> ได้ยิน',p:'ไม่ต้องมีผู้ติดตาม ไม่ต้องรอยอดไลก์ ทุกโพสต์ไปถึงนิสิตจุฬาฯ ทั้งมหาลัย แม้จะเพิ่งสมัครวันแรก'},
  {a:`<div class="bigtile">💬</div>`,h:'เจอโพสต์โดนใจ<br><span class="hl">ทักแชท</span>ได้เลย',p:'แตะชื่อหรือรูปเพื่อดูโปรไฟล์และโพสต์ทั้งหมดของคนนั้น ส่งข้อความหรือแชร์โพสต์ให้เพื่อนได้ในแอป'},
  {a:`<div class="bigtile">🎙️</div>`,h:'เสียงของคุณ<br>แต่<span class="hl">ไม่มีใครจำได้</span>',p:'ใส่ฟิลเตอร์ปลอมเสียงได้ ทุกคลิปมีคำบรรยาย เปิดเสียงไม่ได้ก็อ่านได้ หรือฟัง 2× ก็ได้'}];
 function obTop(step){
@@ -2636,7 +2633,7 @@ async function shareOut(pid,to){const p=postById(pid),url=location.origin+locati
 /* ---------- post sheet: no place, no anonymous choice ---------- */
 function postSheet(inplace){
  const pl=C.place&&place(C.place), v=C.media.voice||(C.media.kind==='voice'?C.media:null), a=userAv('me');
- const html=`<h2 class="h1">พร้อมโพสต์</h2><p class="sub">ไปถึงนิสิตจุฬาฯ ตัวจริงอย่างน้อย 300 คนแรก · ไม่ต้องมีผู้ติดตาม · คนนอกจุฬาฯ มองไม่เห็น</p>
+ const html=`<h2 class="h1">พร้อมโพสต์</h2><p class="sub">ไปถึงนิสิตจุฬาฯ ทั้งมหาลัย · ไม่ต้องมีผู้ติดตาม · คนนอกจุฬาฯ มองไม่เห็น</p>
   <div class="pswho">${avHTML(a)}<div><b>${a.n}</b><span>${C.showId?esc(meLabel()):'นิสิตจุฬาฯ'}${pl?` · 🫧 บับเบิล ${esc(pl.n)}`:''}</span></div><button class="ul" data-act="editProfPost">แก้ชื่อ/รูป</button></div>
   <div style="height:4px"></div>
   <button class="row" id="sid"><span class="t"><b>แสดงคณะและชั้นปี</b><span>${C.showId?`ขึ้นว่า “${meLabel()}”`:'ปิดอยู่ · ขึ้นแค่ “นิสิตจุฬาฯ”'}</span></span><span class="tg ${C.showId?'on':''}"></span></button>
@@ -2728,6 +2725,11 @@ if(!S.nest1){seedNested();S.nest1=1;save()}
  cExpand(rid){SV.exp=SV.exp||new Set();SV.exp.add(rid);renderStack()},
  openNotif(id){const n=S.notifs.find(x=>x.id===id);if(n&&n.rid&&postById(n.pid)){n.read=true;save();openStack(n.pid,0);requestAnimationFrame(()=>focusRow(n.rid));return}_on(id)},
 });}
+
+
+/* ============ v2.4 · the first-300 guarantee stays in ranking, but is never shown ============ */
+function reachChip(){return ''}
+S.notifs=S.notifs.filter(n=>n.kind!=='reach');
 
 /* ============ boot ============ */
 (async()=>{
