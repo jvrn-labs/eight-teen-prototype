@@ -959,6 +959,27 @@ button.popt:active{transform:scale(.97)}
 .pswho>div{flex:1;min-width:0}.pswho b{display:block;font:700 16px/1.3 var(--f-d)}.pswho span{display:block;font-size:13px;color:var(--muted)}
 .pswho .ul{margin:0}
 .me-acts{display:flex;gap:8px;margin:14px 20px 0}.me-acts .btn{flex:1;min-height:44px;font-size:14.5px;padding:0 12px}
+
+/* ================= v2.4 · post-level mute + replies to comments ================= */
+.psnd{position:absolute;right:12px;bottom:12px;z-index:8;width:38px;height:38px;border-radius:50%;background:rgba(11,16,38,.55);color:#fff;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);transition:transform var(--press)}
+.psnd:active{transform:scale(.92)}
+.psnd svg.i{width:19px;height:19px}
+.scr.imm.story .fr .pvoice,.pd-media .fr .pvoice,.lbc .fr .pvoice,.cmp .fr .pvoice{right:60px}
+.fbm .psnd{display:none}
+.crow2.sub{padding-left:54px}
+.crow2.sub .cmed{max-width:150px}
+.crow2.sub .cav .av{width:28px;height:28px;font-size:14px}
+.ctag{display:inline-flex;margin-top:4px;font:700 13.5px/1.3 var(--f-b);color:var(--brand)}
+.cfoot{display:flex;gap:14px;align-items:center;margin-top:6px;font:700 12.5px/1 var(--f-b);color:var(--muted)}
+.cfoot button{font:inherit;color:inherit;min-height:28px}
+.cmore{display:flex;align-items:center;gap:10px;margin:0 0 4px 62px;min-height:32px;font:700 13px/1 var(--f-b);color:var(--muted)}
+.cmore:before{content:'';width:24px;height:1px;background:var(--border)}
+.crow2.target{background:var(--info)}
+.rto{display:flex;align-items:center;gap:8px;padding:9px 16px;background:var(--surface);font:500 13.5px/1.3 var(--f-b);color:var(--ink2);flex:none}
+.rto b{color:var(--brand)}
+.rto span{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rto button{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--canvas)}
+.sv.pd .rto+.rbar{border-top:0}
 </style>
 </head>
 <body>
@@ -1203,7 +1224,7 @@ function stickersHTML(it){
   const c=STK[s.c||0]; return `<div class="stk" data-si="${i}" style="${st};background:${c.bg};color:${c.fg}">${esc(s.s)}</div>`}).join('');
 }
 function pvoiceHTML(it){const v=it.voice,f=fx(v.filter);
- return `<div class="pvoice ${it.capTop?'top':''}"><div class="pv-chip"><button class="pbtn" data-act="playpause" aria-label="เล่น/หยุด">${I('play','sm')}</button><div class="wave">${waveHTML(vsrc(v)||it.id)}</div><span class="tm">${mmss(v.dur||0)}</span><span class="pvfx" title="${f.n}">${f.e}</span><button class="cc ${S.cc?'':'off'}" data-act="cc" aria-label="คำบรรยาย">${I('cc','xs')}</button><button class="snd" data-act="sound" aria-label="เสียง">${I(S.sound?'volOn':'volOff','xs')}</button></div>
+ return `<div class="pvoice ${it.capTop?'top':''}"><div class="pv-chip"><button class="pbtn" data-act="playpause" aria-label="เล่น/หยุด">${I('play','sm')}</button><div class="wave">${waveHTML(vsrc(v)||it.id)}</div><span class="tm">${mmss(v.dur||0)}</span><span class="pvfx" title="${f.n}">${f.e}</span><button class="cc ${S.cc?'':'off'}" data-act="cc" aria-label="คำบรรยาย">${I('cc','xs')}</button></div>
   <div class="pcap">${capHTML(v.text,v.dur)}</div></div><audio preload="auto" playsinline src="${vsrc(v)}"></audio>`}
 function frameHTML(it,o={}){
  const src=srcOf(it); let m='';
@@ -1215,10 +1236,10 @@ function frameHTML(it,o={}){
   <div class="vwrap">
    <div class="vtag"><span class="chip">${I('mic','xs')} เสียง</span><span class="chip">${f.e} ${f.n}</span></div>
    ${capHTML(it.text,it.dur)}
-   <div class="player"><button class="pbtn" data-act="playpause" aria-label="เล่น/หยุด">${I('play','sm')}</button><div class="wave">${waveHTML(src||it.id)}</div><span class="tm">${mmss(it.dur||0)}</span><button class="spd" data-act="speed">${S.rate}×</button><button class="snd" data-act="sound" aria-label="เสียง">${I(S.sound?'volOn':'volOff','xs')}</button></div>
+   <div class="player"><button class="pbtn" data-act="playpause" aria-label="เล่น/หยุด">${I('play','sm')}</button><div class="wave">${waveHTML(src||it.id)}</div><span class="tm">${mmss(it.dur||0)}</span><button class="spd" data-act="speed">${S.rate}×</button></div>
   </div>
   <audio preload="auto" playsinline src="${src}"></audio>`;}
- return `<div class="fr ${o.final===false?'':'final'} ${it.voice?'hasv':''} ${S.cc?'':'nocc'}" data-kind="${it.kind}">${m}<div class="shade"></div><div class="stks">${stickersHTML(it)}</div></div>`;
+ return `<div class="fr ${o.final===false?'':'final'} ${it.voice?'hasv':''} ${S.cc?'':'nocc'}" data-kind="${it.kind}">${m}<div class="shade"></div><div class="stks">${stickersHTML(it)}</div>${it.kind==='voice'||it.voice?psndHTML():''}</div>`;
 }
 
 /* ============ screens ============ */
@@ -1266,7 +1287,7 @@ function slideHTML_v23(p){
   </div></div></section>`;
 }
 function hdrHTML(){
- return `<div class="hdr"><div class="hdr-row"><div class="uni">จุฬาฯ ${VERIFIED}</div><div style="display:flex;gap:8px"><button class="iconbtn pqh" data-act="promptHub" aria-label="คำถามวันนี้">${PROMPT.e}${iAnswered()?'':'<span class="pdot"></span>'}</button><button class="iconbtn" data-act="sound" aria-label="เสียง">${I(S.sound?'volOn':'volOff')}</button></div></div>
+ return `<div class="hdr"><div class="hdr-row"><div class="uni">จุฬาฯ ${VERIFIED}</div><div style="display:flex;gap:8px"><button class="iconbtn pqh" data-act="promptHub" aria-label="คำถามวันนี้">${PROMPT.e}${iAnswered()?'':'<span class="pdot"></span>'}</button></div></div>
   <div class="feedtabs"><button class="feedtab ${S.view==='uni'?'on':''}" data-act="view" data-arg="uni">มหาลัย</button><button class="feedtab ${S.view==='bubble'?'on':''}" data-act="view" data-arg="bubble">บับเบิล</button>
   ${S.view==='uni'?`<div class="seg"><button class="${S.sort==='hot'?'on':''}" data-act="sort" data-arg="hot">มาแรง</button><button class="${S.sort==='new'?'on':''}" data-act="sort" data-arg="new">ล่าสุด</button></div>`:''}</div></div>`;
 }
@@ -1795,9 +1816,9 @@ async function addReply(pid,o){
  const r={id:uid('r'),by:'me',kind:o.kind,src:o.src||null,key,dur:o.dur,text:o.text||'',filter:o.filter,bg:o.bg||0,stickers:o.stickers||[],at:Date.now(),ate:0,ated:false};
  if(o.voice){const vk=uid('m');MEM[vk]=o.voice.data;await idb.put(vk,o.voice.data);r.voice={key:vk,dur:o.voice.dur,text:o.voice.text,filter:o.voice.filter};r.capTop=o.capTop}
  if(myProf())r.as={n:S.me.prof.name,img:S.me.prof.img};
- p.replies.push(r); save(); log('reply_created',{pid,kind:o.kind,filter:o.filter,has_transcript:!!o.text,as_me:!!r.as,photo_voice:!!r.voice});
+ const rt=replyTarget(pid); if(rt){r.to=rt.root;r.toBy=rt.by} p.replies.push(r); save(); if(rt)tagNotify(pid,r); log('reply_created',{pid,kind:o.kind,filter:o.filter,has_transcript:!!o.text,as_me:!!r.as,photo_voice:!!r.voice});
  if(SV&&SV.mode==='replies'&&SV.pid===pid){SV.view='all';SV.order='old';SV.i=p.replies.length;renderStack()}
- toast('ส่งคอมเมนต์แล้ว',{label:'เลิกทำ',fn:()=>{p.replies=p.replies.filter(x=>x.id!==r.id);save();log('reply_undone',{pid});if(SV&&SV.pid===pid){SV.i=Math.min(SV.i,p.replies.length);renderStack()}}});
+ toast(r.toBy?`ตอบกลับ @${userOf(r.toBy).n} แล้ว`:'ส่งคอมเมนต์แล้ว',{label:'เลิกทำ',fn:()=>{p.replies=p.replies.filter(x=>x.id!==r.id);save();log('reply_undone',{pid});if(SV&&SV.pid===pid){SV.i=Math.min(SV.i,p.replies.length);renderStack()}}});
 }
 
 /* someone answers your post a little later, so testers feel the loop */
@@ -2520,11 +2541,12 @@ function renderPostDetail(){
   <div class="pd-ch" id="pdc"><h2 class="h2">คอมเมนต์ ${n}</h2>${n>1?`<div class="seg"><button class="${SV.lsort==='old'?'on':''}" data-act="cmtSort" data-arg="old">ตามเวลา</button><button class="${SV.lsort==='top'?'on':''}" data-act="cmtSort" data-arg="top">เด่น</button></div>`:''}</div>
   <div class="clist2">${n?cmtRows2(p):`<div class="empty" style="margin:6px 8px">ยังไม่มีคอมเมนต์ · กดค้างปุ่มด้านล่างเพื่อพูด หรือส่งรูปหรือ GIF ก็ได้</div>`}</div>
  </div>
+ ${SV.replyTo?`<div class="rto"><span>ตอบกลับ <b>@${userAv(SV.replyTo.by).n}</b> · พูด ส่งรูป หรือ GIF</span><button data-act="cancelReplyTo" aria-label="ยกเลิกการตอบกลับ">${I('x','sm')}</button></div>`:''}
  <div class="rbar"><span class="asbtn" aria-hidden="true">${avHTML(userAv('me'))}</span><button class="iconbtn" style="width:46px;height:46px" data-act="replyPhoto" aria-label="คอมเมนต์ด้วยรูป">${I('cam')}</button><button class="iconbtn" style="width:46px;height:46px;font:800 13px/1 var(--f-n)" data-act="replyGif">GIF</button>
   <div class="talk" id="talk"><span class="lbl">${I('mic')} กดค้างพูด</span><button class="fx" data-act="pickFx" aria-label="ฟิลเตอร์เสียง ${f.n}">${f.e}</button></div></div>`;
  const body=$('.pd-body',el),fr=$('.pd-media .fr',el);
  if(fr&&(p.kind==='voice'||p.voice))activate(fr,{loop:true});
- if(grew){body.scrollTop=body.scrollHeight;const last=$$('.crow2',el).pop();last&&last.classList.add('flash')}
+ if(grew){if(y!=null)body.scrollTop=y;const mine=[...p.replies].reverse().find(r=>r.by==='me'&&Date.now()-r.at<4000);if(mine)requestAnimationFrame(()=>focusRow(mine.id));else{body.scrollTop=body.scrollHeight}}
  else if(y!=null)body.scrollTop=y;
  else if(SV.start==null&&n)requestAnimationFrame(()=>{const c=$('#pdc',el);if(c)body.scrollTop=c.offsetTop-body.offsetTop-4});
  else if(SV.start>0)requestAnimationFrame(()=>{body.scrollTop=body.scrollHeight});
@@ -2660,6 +2682,51 @@ Object.assign(A,{
  obIdNext(){const i=$('#obName');if(i)S.me.prof.name=i.value.trim();if(!S.me.prof.name){toast('ตั้งชื่อก่อนนะ ชื่ออะไรก็ได้');return}save();log('ob_identity',{photo:!!S.me.prof.img});A.obGo('voice')},
  replyAs(){},
  placeSheet(){sheet(`<h2 class="h1">🫧 ลงบับเบิล</h2><p class="sub">บับเบิลคือสตอรี่ของแต่ละที่ในจุฬาฯ อยู่ 72 ชม. · เลือกเองว่าโพสต์นี้เกี่ยวกับที่ไหน ไม่ใช้ GPS และไม่แชร์ตำแหน่งของคุณ</p><div class="chips"><button class="pick ${!C.place?'on':''}" data-act="setPlace" data-arg="">ไม่ลงบับเบิล</button>${PLACES.map(p=>`<button class="pick ${C.place===p.id?'on':''}" data-act="setPlace" data-arg="${p.id}">${p.emoji||'🫧'} ${esc(p.n)}</button>`).join('')}</div>`)},
+});}
+
+
+/* ============ v2.4 · mute lives on the post; replies to comments ============ */
+const psndHTML=()=>`<button class="psnd" data-act="sound" aria-label="${S.sound?'ปิดเสียง':'เปิดเสียง'}">${I(S.sound?'volOn':'volOff')}</button>`;
+/* 2 levels only: post > comment > reply. Replying to a reply stays under the same comment and @tags that person. */
+const topReplies=(p,ord)=>(ord==='top'?rankReplies(p):chrono(p)).filter(r=>!r.to);
+const kidsOf=(p,id)=>p.replies.filter(r=>r.to===id).sort((a,b)=>a.at-b.at);
+function replyTarget(pid){if(!SV||SV.mode!=='replies'||SV.pid!==pid||!SV.replyTo)return null;const t=SV.replyTo;SV.replyTo=null;SV.exp=SV.exp||new Set();SV.exp.add(t.root);return t}
+function cRow(p,r,sub){const a=userAv(r.by),v=S.visit[p.id],st=(r.stickers||[]).filter(x=>x.t==='text').map(x=>x.s).join(' · '),isNew=!!v&&r.by!=='me'&&r.at>v;if(r.by!=='me')SV.viewed.add(r.id);
+ let body;
+ if(r.kind==='voice')body=cVoice(r.id,srcOf(r),r.dur,r.filter,r.text);
+ else{body=`<button class="cmed ${r.kind}" data-act="cView" data-arg="${r.id}" aria-label="ดูรูป"><img src="${srcOf(r)}" alt="" loading="lazy">${st?`<span class="cst">${esc(st)}</span>`:''}</button>`;if(r.voice)body+=cVoice(r.id+'v',vsrc(r.voice),r.voice.dur,r.voice.filter,r.voice.text)}
+ const tag=r.toBy?`<button class="ctag" data-act="profile" data-arg="${r.toBy}">@${userAv(r.toBy).n}</button>`:'';
+ const on=SV.replyTo&&SV.replyTo.rid===r.id;
+ return `<div class="crow2 ${sub?'sub':''} ${on?'target':''}" data-rid="${r.id}"><button class="cav" data-act="profile" data-arg="${r.by}" aria-label="โปรไฟล์ ${a.n}">${avHTML(a)}</button><div class="t"><div class="cn"><button data-act="profile" data-arg="${r.by}">${a.n}</button>${r.by===p.by?'<span class="badge">เจ้าของโพสต์</span>':''}${r.by==='me'?'<span class="badge">คุณ</span>':''}${isNew?'<span class="newb">ใหม่</span>':''}<span class="ct">${ago(r.at)}</span></div>${tag}${body}
+  <div class="cfoot"><button data-act="replyTo" data-arg="${r.id}">ตอบกลับ</button></div></div>
+  <button class="cate ${r.ated?'on':''}" data-act="ate" data-arg="${p.id}|${r.id}" aria-label="ATE"><span class="o">${I(r.ated?'flameF':'flame')}</span>${nf(r.ate)}</button></div>`}
+function cmtRows2(p){SV.exp=SV.exp||new Set();
+ return topReplies(p,SV.lsort).map(r=>{const k=kidsOf(p,r.id),open=SV.exp.has(r.id)||k.length<=2,shown=open?k:k.slice(0,1);
+  return cRow(p,r,false)+shown.map(x=>cRow(p,x,true)).join('')+(open?'':`<button class="cmore" data-act="cExpand" data-arg="${r.id}">ดูการตอบกลับอีก ${k.length-1} รายการ</button>`)}).join('')}
+function focusRow(rid){const el=SV&&SV.el;if(!el)return;const row=$(`.crow2[data-rid="${rid}"]`,el),b=$('.pd-body',el);if(!row||!b)return;
+ b.scrollTop=row.offsetTop-b.offsetTop-120;row.classList.add('flash')}
+/* the person you tag gets notified; in the prototype they answer you back so you see the loop */
+function tagNotify(pid,r){if(!r.toBy||r.toBy==='me')return;const who=userOf(r.toBy).n;log('tag_notified',{pid,uid:r.toBy});
+ setTimeout(()=>toast(`🔔 แจ้ง @${who} แล้วว่าคุณตอบกลับ`),1400);
+ setTimeout(()=>{const p=postById(pid);if(!p)return;const g=['thanks','lol','fire','wow'][hash(r.id)%4];
+  const b={id:uid('r'),by:r.toBy,kind:'gif',src:`../img/gif/${g}.gif`,stickers:[],at:Date.now(),ate:0,ated:false,to:r.to,toBy:'me'};p.replies.push(b);
+  S.notifs.push({id:uid('n'),kind:'reply',pid,rid:b.id,text:`${who} ตอบกลับคอมเมนต์ของคุณ · @${userOf('me').n}`,alias:userAv(r.toBy).e,color:userAv(r.toBy).c,at:Date.now(),read:false});save();log('simulated_tag_reply',{pid});
+  toast(`💬 ${who} ตอบกลับคุณ`,{label:'ดู',fn:()=>{openStack(pid,0);requestAnimationFrame(()=>focusRow(b.id))}});
+  if(SV&&SV.mode==='replies'&&SV.pid===pid){const y=$('.pd-body',SV.el).scrollTop;SV.lastN=p.replies.length;renderStack();$('.pd-body',SV.el).scrollTop=y}else if(!SV&&!C)render(true)},9000)}
+/* a few seeded replies-to-comments so the thread shape is visible on first open */
+function seedNested(){const add=(pid,parentBy,o)=>{const p=postById(pid);if(!p)return;const par=p.replies.find(r=>r.by===parentBy&&!r.to);if(!par)return;
+  p.replies.push(Object.assign({id:uid('r'),stickers:[],ate:0,ated:false},o,{to:par.id,toBy:o.toBy||par.by,at:par.at+(o.after||2)*60000}))};
+ add('p8','u3',{by:'u7',kind:'gif',src:'../img/gif/thanks.gif',ate:24,after:3});
+ add('p8','u3',{by:'u5',kind:'photo',src:'../img/av/sneakers.jpg',stickers:[{t:'text',s:'เห็นด้วย ทักไปเลยยย',x:.5,y:.72,r:2,c:1}],ate:9,after:5});
+ add('p2','u7',{by:'u3',kind:'gif',src:'../img/gif/confused.gif',ate:12,after:2});
+ add('c1','u32',{by:'u30',kind:'gif',src:'../img/gif/thanks.gif',ate:5,after:1});}
+if(!S.nest1){seedNested();S.nest1=1;save()}
+{const _on=A.openNotif;Object.assign(A,{
+ replyTo(rid){const p=postById(SV.pid),r=p&&p.replies.find(x=>x.id===rid);if(!r)return;SV.replyTo={root:r.to||r.id,by:r.by,rid};log('reply_to_opened',{pid:SV.pid,nested:!!r.to});renderStack();
+  const t=$('#talk',SV.el);t&&t.animate([{transform:'scale(1)'},{transform:'scale(1.04)'},{transform:'scale(1)'}],{duration:320})},
+ cancelReplyTo(){SV.replyTo=null;renderStack()},
+ cExpand(rid){SV.exp=SV.exp||new Set();SV.exp.add(rid);renderStack()},
+ openNotif(id){const n=S.notifs.find(x=>x.id===id);if(n&&n.rid&&postById(n.pid)){n.read=true;save();openStack(n.pid,0);requestAnimationFrame(()=>focusRow(n.rid));return}_on(id)},
 });}
 
 /* ============ boot ============ */
